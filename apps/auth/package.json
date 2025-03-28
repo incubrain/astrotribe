@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts,.vue",
     "test": "vitest run",
-    "dev": "pnpx nuxi dev",
+    "dev": "pnpx nuxi dev --no-port-scanning",
     "build": "pnpx nuxi build",
     "start": "node .output/server/index.mjs"
   },
@@ -18,11 +18,10 @@
     "@astronera/referral": "workspace:*",
     "@astronera/supabase": "workspace:*",
     "@nuxt/image": "^1.10.0",
-    "@primeuix/themes": "^1.0.0",
-    "@primevue/core": "^4.3.2",
-    "@primevue/nuxt-module": "^4.3.2",
+    "@primevue/core": "^4.2.5",
+    "@primevue/nuxt-module": "^4.2.5",
     "dotenv": "^16.4.5",
-    "primevue": "^4.3.2",
+    "primevue": "^4.2.5",
     "uuid": "^10.0.0",
     "zod": "^3.23.8"
   },

@@ -33,13 +33,6 @@ vi.mock('posthog-js', () => ({
   },
 }))
 
-// Mock Formbricks
-vi.mock('@formbricks/js', () => ({
-  default: {
-    init: vi.fn(),
-    registerRouteChange: vi.fn(),
-  },
-}))
 
 // Mock `navigateTo`
 vi.mock('#app', async () => {

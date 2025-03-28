@@ -1,26 +1,47 @@
 <script setup lang="ts">
-interface Job {
-  title: string
-  salary: number
-  location: string
-  tags: string[]
-  company?: string
-  employmentType?: string
-  url: string
-  publishedAt: string
-  expiresAt: string
-  officeHours?: string
-  verified?: boolean
-  featured?: boolean
+import type { Job } from '~/types/jobs'
+import { calculateDaysToDeadline, formatSalary } from '~/utils/jobFormatters'
+
+interface Props {
+  job: Job
 }
 
-const props = defineProps<{
-  job: Job
-}>()
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
   (e: 'filterTag', tag: string): void
 }>()
+
+// Calculate deadline days remaining
+const daysRemaining = computed(() => {
+  if (!props.job.expires_at) return null
+  return calculateDaysToDeadline(props.job.expires_at)
+})
+
+// Format salary with appropriate currency
+const formattedSalary = computed(() => {
+  if (!props.job.salary) return ''
+  return formatSalary(props.job.salary, 'EUR')
+})
+
+// Extract base domain from job URL
+const companyDomain = computed(() => {
+  if (!props.job.url) return ''
+  try {
+    const url = new URL(props.job.url)
+    return url.hostname.replace('www.', '')
+  } catch (e) {
+    return ''
+  }
+})
+
+// Track recent views if component is mounted
+onMounted(() => {
+  if (import.meta.client) {
+    const { addToRecentlyViewedJobs } = useJobStorage()
+    addToRecentlyViewedJobs(props.job.id)
+  }
+})
 </script>
 
 <template>
@@ -47,9 +68,10 @@ const emit = defineEmits<{
       </div>
     </div>
 
+    <!-- Main Card -->
     <div
-      class="group bg-primary bg-opacity-20 hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-jobs-primary/20 relative overflow-hidden"
-      :class="job.featured ? 'border-jobs-primary/30 rounded-tr-2xl rounded-bl-2xl' : 'rounded-2xl'"
+      class="group h-full bg-primary bg-opacity-20 hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-jobs-primary/20 relative overflow-hidden rounded-2xl flex flex-col"
+      :class="job.featured ? 'border-jobs-primary/30 rounded-tr-2xl rounded-bl-2xl' : ''"
     >
       <!-- Enhanced gradient background for featured jobs -->
       <div
@@ -59,8 +81,27 @@ const emit = defineEmits<{
         "
       ></div>
 
-      <div class="flex justify-between items-start relative gap-4">
+      <div class="flex justify-between items-start relative gap-4 mb-auto">
         <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <!-- Add deadline indicator -->
+            <DeadlineIndicator
+              v-if="job.expires_at"
+              :deadline="job.expires_at"
+              size="sm"
+              indicator-only
+            />
+
+            <!-- Add TimeAgo for publication date -->
+            <TimeAgo
+              v-if="job.published_at"
+              :date="job.published_at"
+              prefix="Posted"
+              compact
+              text-class="text-xs text-gray-400"
+            />
+          </div>
+
           <h2
             class="text-xl text-white font-semibold text-gray-900 group-hover:text-jobs-primary transition-colors duration-300"
           >
@@ -73,35 +114,33 @@ const emit = defineEmits<{
               >{{ job.employmentType }}</span
             >
             <span class="font-medium">{{ job.company }}</span>
-            <!-- Added verified badge if needed -->
+            <!-- Verified badge if needed -->
             <span
               v-if="job.verified"
-              class="text-jobs-primary/80"
+              class="text-jobs-primary/80 flex items-center gap-1"
             >
               <Icon
                 name="material-symbols:verified"
                 class="w-4 h-4"
               />
+              <span class="text-xs">Verified</span>
             </span>
           </div>
         </div>
 
+        <!-- Salary display -->
         <span
           v-if="job.salary"
           class="bg-jobs-primary/10 text-white text-xs text-jobs-primary px-4 py-2 rounded-full font-semibold backdrop-blur-sm shadow-sm"
         >
-          {{
-            new Intl.NumberFormat('fr-FR', {
-              style: 'currency',
-              currency: 'EUR',
-            }).format(job.salary)
-          }}
+          {{ formattedSalary }}
         </span>
       </div>
 
+      <!-- Location with icon -->
       <div
         v-if="job.location"
-        class="mt-6 flex items-center text-gray-600 space-x-4"
+        class="mt-4 flex items-center text-gray-600 space-x-4"
       >
         <div class="flex items-center space-x-2">
           <Icon
@@ -112,33 +151,36 @@ const emit = defineEmits<{
           <span class="text-sm text-white font-medium">{{ job.location }}</span>
         </div>
       </div>
-      <div
-        v-if="job.publishedAt || job.expiresAt"
-        class="flex text-white items-center space-x-2"
-      >
+
+      <!-- Dates section with enhanced display -->
+      <div class="flex text-white items-center space-x-2 mt-2">
         <Icon
           name="uil:clock"
           color="white"
           class="w-4 h-4 text-jobs-primary/70"
         />
+
+        <!-- Publication date -->
         <span
-          v-if="job.publishedAt && job.expiresAt"
+          v-if="job.publishedAt"
           class="text-sm"
-          >{{ job.publishedAt }}{{ job.expiresAt ? ` - ${job.expiresAt}` : '' }}</span
         >
-        <span
-          v-else-if="job.publishedAt"
-          class="text-sm"
-          >Posted On: {{ job.publishedAt }}</span
-        >
-        <span
-          v-else-if="job.expiresAt"
-          class="text-sm"
-          >Deadline: {{ job.expiresAt }}</span
-        >
+          {{ job.publishedAt }}
+        </span>
+
+        <!-- Expiration date with countdown -->
+        <template v-if="job.expiresAt">
+          <span class="text-gray-400 mx-1">•</span>
+          <DeadlineIndicator
+            :deadline="job.expires_at"
+            size="sm"
+            :show-icon="false"
+          />
+        </template>
       </div>
 
-      <div class="mt-6 flex flex-wrap gap-2">
+      <!-- Tags section -->
+      <div class="mt-4 flex flex-wrap gap-2">
         <button
           v-for="tag in job.tags"
           :key="tag"
@@ -149,6 +191,7 @@ const emit = defineEmits<{
         </button>
       </div>
 
+      <!-- Apply button -->
       <NuxtLink
         :to="job.url"
         target="_blank"
@@ -161,6 +204,14 @@ const emit = defineEmits<{
           class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
         />
       </NuxtLink>
+
+      <!-- Company domain display -->
+      <div
+        v-if="companyDomain"
+        class="mt-2 text-center text-xs text-gray-400"
+      >
+        {{ companyDomain }}
+      </div>
     </div>
   </div>
 </template>

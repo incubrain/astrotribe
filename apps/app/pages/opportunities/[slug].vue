@@ -1,34 +1,40 @@
 <script setup lang="ts">
-const job = {
-  title: 'Frontend Developer',
-  company: 'Acme Inc.',
-  location: 'Paris, France',
-  salary: 60000,
-  tags: ['Frontend', 'JavaScript', 'Vue.js'],
-  description: 'We are looking for a skilled Frontend Developer to join our team.',
-  date: '2023-10-01',
-}
+import { parseJobDescription, calculateDaysToDeadline, formatSalary } from '~/utils/jobFormatters'
+import type { Job } from '~/types/jobs'
 
-// 404 redirect if job doesn't exist
+// Route parameters and job data loading
+const route = useRoute()
+const jobId = computed(() => route.params.slug as string)
+const loading = ref(true)
+const error = ref(null)
+const job = ref<Job | null>(null)
 
-// Replace the formatSalary function with a computed property
+// Format job salary
 const formattedSalary = computed(() => {
-  if (!job?.salary) return ''
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'EUR',
-    maximumFractionDigits: 0,
-  }).format(job.salary)
+  if (!job.value?.salary) return ''
+  return formatSalary(job.value.salary, 'EUR')
 })
 
 // Formatted publication date
 const formattedDate = computed(() => {
-  if (!job?.date) return ''
+  if (!job.value?.published_at) return ''
   return new Intl.DateTimeFormat('en-US', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
-  }).format(new Date(job.date))
+  }).format(new Date(job.value.published_at))
+})
+
+// Parse job description
+const parsedDescription = computed(() => {
+  if (!job.value?.description) return null
+  return parseJobDescription(job.value.description)
+})
+
+// Deadline status
+const daysToDeadline = computed(() => {
+  if (!job.value?.expires_at) return null
+  return calculateDaysToDeadline(job.value.expires_at)
 })
 
 // Cache for coordinates
@@ -37,7 +43,7 @@ const coordinatesCache = new Map()
 // Loading state for map and geocoding
 const isMapLoading = ref(true)
 const isGeocodingLoading = ref(false)
-const isLoading = computed(() => isMapLoading.value || isGeocodingLoading)
+const isLoading = computed(() => isMapLoading.value || isGeocodingLoading.value || loading.value)
 
 // Function to convert address to coordinates with cache
 const getCoordinates = async (address: string) => {
@@ -79,18 +85,84 @@ const getCoordinates = async (address: string) => {
 // Reactive coordinates based on job location
 const mapCenter = ref([48.8566, 2.3522]) // Note: Leaflet uses [lat, lng]
 
-// Update coordinates when job is loaded
-watch(
-  () => job?.location,
-  async (newLocation) => {
-    if (newLocation) {
-      isMapLoading.value = true // Reactivate loading when location changes
-      const coords = await getCoordinates(newLocation)
+// Extract tags from job description
+const extractedTags = computed(() => {
+  if (!job.value?.description) return []
+  // This is a simple extraction - ideally you'd use a more sophisticated approach
+  const commonKeywords = [
+    'JavaScript',
+    'Python',
+    'React',
+    'Vue',
+    'Angular',
+    'Node',
+    'Java',
+    'C#',
+    'PHP',
+    'HTML',
+    'CSS',
+    'TypeScript',
+    'SQL',
+    'AWS',
+    'Docker',
+    'DevOps',
+    'Front-end',
+    'Back-end',
+    'Full-stack',
+    'UI/UX',
+    'Agile',
+    'Scrum',
+    'Machine Learning',
+    'Data Science',
+    'API',
+  ]
+
+  const tags: string[] = []
+  if (job.value.description) {
+    commonKeywords.forEach((keyword) => {
+      if (job.value?.description?.toLowerCase().includes(keyword.toLowerCase())) {
+        tags.push(keyword)
+      }
+    })
+  }
+
+  return tags.slice(0, 6) // Limit to 6 tags
+})
+
+// Similar jobs (placeholder - in a real implementation, you'd fetch related jobs from API)
+const similarJobs = ref([])
+
+// Fetch job data
+const fetchJob = async () => {
+  loading.value = true
+  error.value = null
+
+  try {
+    // In a real implementation, you'd fetch this from your API
+    // For this example, we're using dummy data
+    const response = await $fetch(`/api/jobs/${jobId.value}`)
+
+    job.value = response
+
+    // Once we have job data, update coordinates based on location
+    if (job.value && job.value.location) {
+      const coords = await getCoordinates(job.value.location)
       mapCenter.value = coords
     }
-  },
-  { immediate: true },
-)
+
+    // Fetch similar jobs
+    // This would be a real API call in your implementation
+    // similarJobs.value = await $fetch(`/api/jobs/similar/${jobId.value}`);
+  } catch (e) {
+    console.error('Error fetching job:', e)
+    error.value = e
+  } finally {
+    loading.value = false
+  }
+}
+
+// Update job data when route changes
+watch(() => route.params.slug, fetchJob, { immediate: true })
 
 // Map configuration
 const zoom = ref(13)
@@ -105,243 +177,393 @@ const handleMapReady = () => {
     isMapLoading.value = false
   }, 500)
 }
+
+// Track viewed jobs in localStorage
+onMounted(() => {
+  if (import.meta.client) {
+    const { addToRecentlyViewedJobs } = useJobStorage()
+    if (jobId.value) {
+      addToRecentlyViewedJobs(jobId.value)
+    }
+  }
+})
 </script>
 
 <template>
-  <div
-    v-if="job"
-    class="min-h-screen bg-gray-50/50 container mx-auto mt-24"
-  >
-    <!-- Job header with subtle gradient -->
-    <div class="relative h-[400px] rounded-t-lg overflow-hidden">
-      <!-- Skeleton loader for map -->
-      <div
-        v-if="isLoading"
-        class="absolute inset-0 z-0 bg-gray-100 animate-pulse"
+  <div class="min-h-screen container mx-auto mt-6 md:mt-12">
+    <!-- Loading skeleton -->
+    <JobDetailSkeleton v-if="isLoading" />
+
+    <!-- Error state -->
+    <div
+      v-else-if="error"
+      class="p-8 bg-red-500/10 rounded-lg border border-red-500/20 text-center"
+    >
+      <h2 class="text-xl font-semibold mb-2">Error loading job</h2>
+      <p class="text-gray-400">Unable to load job details. Please try again later.</p>
+      <NuxtLink
+        to="/opportunities"
+        class="inline-block mt-4 px-4 py-2 bg-primary-700 rounded-lg"
       >
-        <div class="h-full w-full flex items-center justify-center">
-          <div class="space-y-4 w-full max-w-sm px-4">
-            <!-- Simulate map elements -->
-            <div class="h-4 bg-gray-200 rounded-full w-3/4"></div>
-            <div class="h-4 bg-gray-200 rounded-full"></div>
-            <div class="h-4 bg-gray-200 rounded-full w-5/6"></div>
-            <!-- Styled map icon -->
-            <div class="flex justify-center mt-8">
-              <Icon
-                name="heroicons:map"
-                class="w-12 h-12 text-gray-300"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Map background -->
-      <client-only>
-        <div
-          class="absolute inset-0 z-0"
-          :class="{ 'opacity-0': isLoading }"
-        >
-          <l-map
-            style="height: 100%; width: 100%"
-            :zoom="zoom"
-            :center="mapCenter"
-            :zoom-control="false"
-            :dragging="false"
-            :double-click-zoom="false"
-            :scroll-wheel-zoom="false"
-            :touch-zoom="false"
-            @ready="handleMapReady"
-          >
-            <l-tile-layer
-              :url="tileLayer.url"
-              :attribution="tileLayer.attribution"
-            />
-            <l-marker :lat-lng="mapCenter" />
-          </l-map>
-        </div>
-      </client-only>
-
-      <!-- Overlay gradient -->
-      <div
-        class="absolute inset-0 bg-gradient-to-b from-transparent via-white/40 to-gray-50/40 z-10"
-      ></div>
-
-      <!-- Content -->
-      <div class="relative max-w-6xl mx-auto px-4 py-12 z-20">
-        <!-- Breadcrumb -->
-        <div
-          class="flex items-center gap-2 text-sm text-gray-500 mb-8 backdrop-blur-sm p-2 rounded-lg"
-        >
-          <NuxtLink
-            to="/"
-            class="hover:text-blue-600 transition-colors"
-            >Home</NuxtLink
-          >
-          <Icon
-            name="heroicons:chevron-right"
-            class="w-4 h-4"
-          />
-          <span class="text-gray-900">{{ job.title }}</span>
-        </div>
-
-        <div class="grid lg:grid-cols-2 gap-12 items-start">
-          <!-- Left column -->
-          <div class="space-y-6">
-            <div class="flex items-center gap-3">
-              <span
-                class="px-3 backdrop-blur-sm py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-medium"
-              >
-                {{ job.location }}
-              </span>
-              <span class="text-sm text-gray-500 backdrop-blur-sm p-2 rounded-lg"
-                >Posted on {{ formattedDate }}</span
-              >
-            </div>
-
-            <h1 class="text-4xl font-bold text-gray-900 leading-tight">
-              {{ job.title }}
-            </h1>
-
-            <div class="flex flex-wrap items-center gap-6 text-gray-600">
-              <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-xl shadow-sm">
-                <Icon
-                  name="heroicons:building-office-2"
-                  class="w-5 h-5 text-blue-600"
-                />
-                <span class="font-medium">{{ job.company }}</span>
-              </div>
-              <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-xl shadow-sm">
-                <Icon
-                  name="heroicons:currency-euro"
-                  class="w-5 h-5 text-green-600"
-                />
-                <span class="font-medium text-gray-900">{{ formattedSalary }}/year</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right column -->
-          <div class="lg:text-right space-y-6">
-            <div class="flex lg:justify-end gap-3">
-              <button
-                class="group relative px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20"
-              >
-                <span class="relative z-10 flex items-center gap-2">
-                  <span>Apply Now</span>
-                  <Icon
-                    name="heroicons:arrow-right"
-                    class="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                  />
-                </span>
-              </button>
-              <button
-                class="p-4 text-gray-500 hover:text-blue-600 rounded-xl border hover:border-blue-200 transition-all hover:shadow-lg hover:shadow-blue-500/5 bg-white"
-              >
-                <Icon
-                  name="heroicons:bookmark"
-                  class="w-5 h-5"
-                />
-              </button>
-            </div>
-
-            <p class="text-sm text-gray-500">
-              Average response time:
-              <span class="text-gray-900 font-medium">48 hours</span>
-            </p>
-          </div>
-        </div>
-      </div>
+        Back to Jobs
+      </NuxtLink>
     </div>
 
-    <!-- Main content -->
-    <div class="max-w-6xl mx-auto px-4 py-12">
-      <div class="grid lg:grid-cols-3 gap-8">
-        <!-- Job description -->
-        <div class="lg:col-span-2 space-y-6">
-          <!-- Content -->
-          <div
-            class="prose prose-lg prose-blue max-w-none bg-white rounded-2xl p-8 shadow-sm border border-gray-100"
-          >
-            <ContentRenderer :value="job" />
-          </div>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="h-full">
-          <div class="space-y-6 sticky top-24">
-            <!-- Company card -->
-            <div
-              class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 relative overflow-hidden"
+    <!-- Job details when data is loaded -->
+    <div
+      v-else-if="job"
+      class="relative"
+    >
+      <!-- Job header with subtle gradient -->
+      <div class="relative h-[400px] rounded-t-lg overflow-hidden">
+        <!-- Map background -->
+        <client-only>
+          <div class="absolute inset-0 z-0">
+            <l-map
+              style="height: 100%; width: 100%"
+              :zoom="zoom"
+              :center="mapCenter"
+              :zoom-control="false"
+              :dragging="false"
+              :double-click-zoom="false"
+              :scroll-wheel-zoom="false"
+              :touch-zoom="false"
+              @ready="handleMapReady"
             >
-              <div
-                class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full -translate-y-16 translate-x-16"
-              ></div>
+              <l-tile-layer
+                :url="tileLayer.url"
+                :attribution="tileLayer.attribution"
+              />
+              <l-marker :lat-lng="mapCenter" />
+            </l-map>
+          </div>
+        </client-only>
 
-              <div class="relative">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">
-                  {{ job.company }}
-                </h2>
-                <p class="text-gray-600 mb-6">
-                  Leading company in its sector, {{ job.company }} constantly innovates to create
-                  the best technological solutions.
-                </p>
-                <div class="space-y-4">
-                  <div class="flex items-center gap-3 text-sm">
-                    <Icon
-                      name="heroicons:users"
-                      class="w-5 h-5 text-blue-600"
-                    />
-                    <span>50-200 employees</span>
-                  </div>
-                  <div class="flex items-center gap-3 text-sm">
-                    <Icon
-                      name="heroicons:globe-europe-africa"
-                      class="w-5 h-5 text-blue-600"
-                    />
-                    <span>{{ job.location }}</span>
-                  </div>
-                  <div class="flex items-center gap-3 text-sm">
-                    <Icon
-                      name="heroicons:building-office"
-                      class="w-5 h-5 text-blue-600"
-                    />
-                    <span>Tech / Digital</span>
-                  </div>
-                </div>
-                <a
-                  href="#"
-                  class="inline-flex items-center gap-2 mt-6 text-blue-600 hover:text-blue-700 font-medium"
+        <!-- Overlay gradient -->
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/70 z-10"
+        ></div>
+
+        <!-- Content -->
+        <div class="relative max-w-6xl mx-auto px-4 py-12 z-20">
+          <!-- Breadcrumb -->
+          <div
+            class="flex items-center gap-2 text-sm text-gray-300 mb-8 backdrop-blur-sm p-2 rounded-lg"
+          >
+            <NuxtLink
+              to="/"
+              class="hover:text-primary-400 transition-colors"
+              >Home</NuxtLink
+            >
+            <Icon
+              name="heroicons:chevron-right"
+              class="w-4 h-4"
+            />
+            <NuxtLink
+              to="/opportunities"
+              class="hover:text-primary-400 transition-colors"
+              >Jobs</NuxtLink
+            >
+            <Icon
+              name="heroicons:chevron-right"
+              class="w-4 h-4"
+            />
+            <span class="text-white">{{ job.title }}</span>
+          </div>
+
+          <div class="grid lg:grid-cols-2 gap-12 items-start">
+            <!-- Left column -->
+            <div class="space-y-6">
+              <div class="flex flex-wrap items-center gap-3">
+                <span
+                  class="px-3 backdrop-blur-sm py-1 bg-primary-900/50 border border-primary-700/30 text-primary-400 rounded-full text-sm font-medium"
                 >
-                  <span>View full profile</span>
+                  {{ job.location }}
+                </span>
+
+                <!-- Deadline indicator for application -->
+                <DeadlineIndicator
+                  v-if="job.expires_at"
+                  :deadline="job.expires_at"
+                  size="md"
+                />
+
+                <!-- Employment type badge -->
+                <span
+                  v-if="job.employmentType"
+                  class="px-3 backdrop-blur-sm py-1 bg-primary-900/50 border border-primary-700/30 text-gray-300 rounded-full text-sm font-medium"
+                >
+                  {{ job.employmentType }}
+                </span>
+              </div>
+
+              <h1 class="text-4xl font-bold text-white leading-tight">
+                {{ job.title }}
+              </h1>
+
+              <div class="flex flex-wrap items-center gap-6 text-gray-300">
+                <div
+                  class="flex items-center gap-3 bg-primary-900/50 border border-primary-800/30 px-4 py-2 rounded-xl backdrop-blur-sm"
+                >
                   <Icon
-                    name="heroicons:arrow-right"
-                    class="w-4 h-4"
+                    name="heroicons:building-office-2"
+                    class="w-5 h-5 text-primary-400"
                   />
-                </a>
+                  <span class="font-medium">{{ job.company }}</span>
+                </div>
+                <div
+                  v-if="job.salary"
+                  class="flex items-center gap-3 bg-primary-900/50 border border-primary-800/30 px-4 py-2 rounded-xl backdrop-blur-sm"
+                >
+                  <Icon
+                    name="heroicons:currency-euro"
+                    class="w-5 h-5 text-green-400"
+                  />
+                  <span class="font-medium text-white">{{ formattedSalary }}/year</span>
+                </div>
+              </div>
+
+              <!-- Posted date display -->
+              <div class="flex items-center gap-2 text-gray-400 text-sm">
+                <Icon
+                  name="heroicons:calendar"
+                  class="w-4 h-4"
+                />
+                <span>Posted <TimeAgo :date="job.published_at" /></span>
               </div>
             </div>
 
-            <!-- Share -->
-            <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-              <h2 class="text-lg font-semibold text-gray-900 mb-4"> Share this job </h2>
-              <div class="grid grid-cols-3 gap-4">
+            <!-- Right column -->
+            <div class="lg:text-right space-y-6">
+              <div class="flex lg:justify-end gap-3">
                 <button
-                  v-for="(network, i) in ['linkedin', 'twitter', 'facebook']"
-                  :key="network"
-                  class="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-gray-50 transition-colors group"
+                  class="group relative px-8 py-4 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-all duration-300 hover:shadow-xl hover:shadow-primary-600/20"
+                >
+                  <span class="relative z-10 flex items-center gap-2">
+                    <span>Apply Now</span>
+                    <Icon
+                      name="heroicons:arrow-right"
+                      class="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                    />
+                  </span>
+                </button>
+                <button
+                  class="p-4 text-gray-400 hover:text-primary-400 rounded-xl border border-primary-800/30 hover:border-primary-700/30 transition-all hover:shadow-lg hover:shadow-primary-600/5 bg-primary-900/50"
                 >
                   <Icon
-                    :name="`simple-icons:${network}`"
-                    class="w-6 h-6"
-                    :class="[
-                      i === 0 ? 'text-[#0077B5] group-hover:text-[#0077B5]/80' : '',
-                      i === 1 ? 'text-[#1DA1F2] group-hover:text-[#1DA1F2]/80' : '',
-                      i === 2 ? 'text-[#4267B2] group-hover:text-[#4267B2]/80' : '',
-                    ]"
+                    name="heroicons:bookmark"
+                    class="w-5 h-5"
                   />
-                  <span class="text-xs text-gray-500 capitalize">{{ network }}</span>
                 </button>
+              </div>
+
+              <p class="text-sm text-gray-400">
+                Average response time:
+                <span class="text-gray-300 font-medium">48 hours</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="max-w-6xl mx-auto px-4 py-12">
+        <div class="grid lg:grid-cols-3 gap-8">
+          <!-- Job description -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span
+                v-for="tag in extractedTags"
+                :key="tag"
+                class="px-3 py-1 bg-primary-900/50 border border-primary-800/30 text-primary-400 rounded-full text-sm"
+              >
+                {{ tag }}
+              </span>
+            </div>
+
+            <!-- Content (parsed description) -->
+            <div
+              v-if="parsedDescription"
+              class="prose prose-lg prose-invert max-w-none space-y-8"
+            >
+              <!-- Overview -->
+              <div
+                v-if="parsedDescription.overview"
+                class="bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8"
+              >
+                <h2 class="text-2xl font-semibold mb-4">Overview</h2>
+                <p>{{ parsedDescription.overview }}</p>
+              </div>
+
+              <!-- Responsibilities -->
+              <div
+                v-if="parsedDescription.responsibilities.length"
+                class="bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8"
+              >
+                <h2 class="text-2xl font-semibold mb-4">Responsibilities</h2>
+                <ul>
+                  <li
+                    v-for="(item, index) in parsedDescription.responsibilities"
+                    :key="`resp-${index}`"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Requirements -->
+              <div
+                v-if="parsedDescription.requirements.length"
+                class="bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8"
+              >
+                <h2 class="text-2xl font-semibold mb-4">Requirements</h2>
+                <ul>
+                  <li
+                    v-for="(item, index) in parsedDescription.requirements"
+                    :key="`req-${index}`"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Benefits -->
+              <div
+                v-if="parsedDescription.benefits.length"
+                class="bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8"
+              >
+                <h2 class="text-2xl font-semibold mb-4">Benefits</h2>
+                <ul>
+                  <li
+                    v-for="(item, index) in parsedDescription.benefits"
+                    :key="`ben-${index}`"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Remaining content -->
+              <div
+                v-if="parsedDescription.remaining"
+                class="bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8"
+              >
+                <div v-html="parsedDescription.remaining"></div>
+              </div>
+            </div>
+
+            <!-- Fallback for unparsed description -->
+            <div
+              v-else-if="job.description"
+              class="prose prose-lg prose-invert max-w-none bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8"
+            >
+              <div v-html="job.description"></div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="h-full">
+            <div class="space-y-6 sticky top-24">
+              <!-- Company card -->
+              <div
+                class="bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8 relative overflow-hidden"
+              >
+                <div
+                  class="absolute top-0 right-0 w-32 h-32 bg-primary-800/30 rounded-full -translate-y-16 translate-x-16"
+                ></div>
+
+                <div class="relative">
+                  <h2 class="text-xl font-semibold text-white mb-4">
+                    {{ job.company }}
+                  </h2>
+                  <p class="text-gray-400 mb-6">
+                    Leading company in its sector, {{ job.company }} constantly innovates to create
+                    the best technological solutions.
+                  </p>
+                  <div class="space-y-4">
+                    <div class="flex items-center gap-3 text-sm">
+                      <Icon
+                        name="heroicons:users"
+                        class="w-5 h-5 text-primary-400"
+                      />
+                      <span>50-200 employees</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm">
+                      <Icon
+                        name="heroicons:globe-europe-africa"
+                        class="w-5 h-5 text-primary-400"
+                      />
+                      <span>{{ job.location }}</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm">
+                      <Icon
+                        name="heroicons:building-office"
+                        class="w-5 h-5 text-primary-400"
+                      />
+                      <span>Tech / Digital</span>
+                    </div>
+                  </div>
+                  <a
+                    href="#"
+                    class="inline-flex items-center gap-2 mt-6 text-primary-400 hover:text-primary-300 font-medium"
+                  >
+                    <span>View full profile</span>
+                    <Icon
+                      name="heroicons:arrow-right"
+                      class="w-4 h-4"
+                    />
+                  </a>
+                </div>
+              </div>
+
+              <!-- Share -->
+              <div class="bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8">
+                <h2 class="text-lg font-semibold text-white mb-4">Share this job</h2>
+                <div class="grid grid-cols-3 gap-4">
+                  <button
+                    v-for="(network, i) in ['linkedin', 'twitter', 'facebook']"
+                    :key="network"
+                    class="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-primary-800/30 transition-colors group"
+                  >
+                    <Icon
+                      :name="`simple-icons:${network}`"
+                      class="w-6 h-6"
+                      :class="[
+                        i === 0 ? 'text-[#0077B5] group-hover:text-[#0077B5]/80' : '',
+                        i === 1 ? 'text-[#1DA1F2] group-hover:text-[#1DA1F2]/80' : '',
+                        i === 2 ? 'text-[#4267B2] group-hover:text-[#4267B2]/80' : '',
+                      ]"
+                    />
+                    <span class="text-xs text-gray-400 capitalize">{{ network }}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Similar jobs -->
+              <div
+                v-if="similarJobs.length"
+                class="bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8"
+              >
+                <h2 class="text-lg font-semibold text-white mb-4">Similar jobs</h2>
+                <div class="space-y-4">
+                  <div
+                    v-for="similarJob in similarJobs"
+                    :key="similarJob.id"
+                    class="p-4 border border-primary-800/30 rounded-xl hover:bg-primary-800/20 transition-colors"
+                  >
+                    <h3 class="font-medium text-white mb-1">{{ similarJob.title }}</h3>
+                    <p class="text-sm text-gray-400 mb-2">{{ similarJob.company }}</p>
+                    <div class="flex justify-between items-center">
+                      <span class="text-xs text-gray-500">{{ similarJob.location }}</span>
+                      <NuxtLink
+                        :to="`/opportunities/${similarJob.id}`"
+                        class="text-primary-400 text-sm"
+                        >View</NuxtLink
+                      >
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -361,7 +583,7 @@ const handleMapReady = () => {
 .prose h2 {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #f3f4f6;
   margin-top: 2.5rem;
   margin-bottom: 1.2rem;
 }
@@ -369,7 +591,7 @@ const handleMapReady = () => {
 .prose h3 {
   font-size: 1.4rem;
   font-weight: 600;
-  color: #374151;
+  color: #e5e7eb;
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
@@ -377,7 +599,7 @@ const handleMapReady = () => {
 .prose p {
   margin-top: 1.2rem;
   margin-bottom: 1.2rem;
-  color: #4b5563;
+  color: #9ca3af;
 }
 
 .prose ul {
@@ -389,6 +611,7 @@ const handleMapReady = () => {
   position: relative;
   padding-left: 1.8rem;
   margin: 0.8rem 0;
+  color: #9ca3af;
 }
 
 .prose ul li::before {
@@ -398,31 +621,13 @@ const handleMapReady = () => {
   top: 0.7rem;
   width: 0.5rem;
   height: 0.5rem;
-  background-color: #3b82f6;
+  background-color: #6366f1;
   border-radius: 50%;
 }
 
-/* Animation on button hover */
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
-  }
-}
-
-.animate-pulse-blue {
-  animation: pulse 2s infinite;
-}
-
-/* Styles for map */
-#job-location-map {
-  height: 100%;
-  width: 100%;
+/* Map styles */
+.leaflet-container {
+  filter: grayscale(100%) brightness(40%) !important;
 }
 
 /* Hide Mapbox controls */
@@ -430,33 +635,36 @@ const handleMapReady = () => {
   display: none;
 }
 
-/* Add styles for Leaflet if needed */
-.leaflet-container {
-  background: #f8fafc;
+/* Hide Leaflet controls */
+.leaflet-control-container {
+  display: none;
 }
 
-.leaflet-marker-icon {
-  filter: hue-rotate(200deg);
+/* Hide marker shadow */
+.leaflet-shadow-pane {
+  display: none;
 }
 
-/* Animation for skeleton loader */
-@keyframes pulse {
-  0%,
-  100% {
+/* Entry animation for elements */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
     opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
+    transform: translateY(0);
   }
 }
 
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out forwards;
 }
 
-/* Transition for map */
-.opacity-0 {
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+/* Enhanced glassmorphism effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 </style>
