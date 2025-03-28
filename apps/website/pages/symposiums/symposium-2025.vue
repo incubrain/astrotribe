@@ -58,7 +58,7 @@ onBeforeUnmount(() => {
           class="w-full h-full"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
+          allowfullscreen="true"
         ></iframe>
       </div>
     </div>
