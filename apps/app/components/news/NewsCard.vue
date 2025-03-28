@@ -1,154 +1,133 @@
 <script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useTimeAgo } from '@vueuse/core'
-import { ref, onMounted } from 'vue'
+import { useBookmarkStore } from '@/stores/useBookmarkStore'
+import { useVoteStore } from '@/stores/useVotesStore'
 
-// Updated interface to match new content structure
-interface NewsCardT {
-  id: string
-  content_type: string
-  title: string
-  url: string
-  hot_score: number
-  vote_count?: number
-  created_at: string
-  updated_at: string
-  published_at: string | null
-  featured_image: string | null
-  author: string | null
-  description: string | null
-  source_id: string | null
-  company_id: string | null
-  content_sources?: {
+// Define props with better typing
+interface NewsCardProps {
+  news: {
     id: string
-    name: string
+    content_type: string
+    title: string
     url: string
-  }
-  details: {
-    // Type-specific details stored in JSONB
-    categories?: Array<{ name: string; isPrimary: boolean }>
-    tags?: string[]
-    summaries?: {
-      undefined?: Array<{ id: string; summary: string; version: number }> | null
-      beginner?: Array<{ id: string; summary: string; version: number }> | null
-      intermediate?: Array<{ id: string; summary: string; version: number }> | null
-      expert?: Array<{ id: string; summary: string; version: number }> | null
+    hot_score: number
+    vote_count?: number
+    created_at: string
+    updated_at: string
+    published_at: string | null
+    featured_image: string | null
+    author: string | null
+    description: string | null
+    source_id: string | null
+    details?: {
+      categories?: Array<{ name: string; isPrimary: boolean }>
+      tags?: string[]
+      summaries?: Record<string, Array<{ id: string; summary: string; version: number }> | null>
+      readTime?: number
+      company_name?: string
+      company_logo?: string
+      source_name?: string
     }
-    company_name?: string
-    company_logo?: string
-    source_name?: string // Added source_name field
+  }
+  layout?: 'grid' | 'list'
+}
+
+const props = defineProps<NewsCardProps>()
+
+// Setup stores
+const bookmarkStore = useBookmarkStore()
+const voteStore = useVoteStore()
+
+// Local card state
+const isFlipped = ref(false)
+const isBookmarked = computed(() =>
+  bookmarkStore.isBookmarked(props.news.id, props.news.content_type),
+)
+const displayScore = computed(() => voteStore.getScore(props.news.id) ?? props.news.vote_count ?? 0)
+const currentVote = computed(() => voteStore.getVoteType(props.news.id))
+
+// Handle voting
+const handleVote = async (voteType: number) => {
+  try {
+    await voteStore.submitVote(props.news.id, voteType, props.news.content_type)
+  } catch (error) {
+    console.error('Error submitting vote:', error)
   }
 }
 
-interface Props {
-  news: NewsCardT
+// Toggle bookmark
+const toggleBookmark = async () => {
+  try {
+    await bookmarkStore.handleToggleBookmark({
+      id: props.news.id,
+      type: props.news.content_type,
+      title: props.news.title,
+      description: props.news.description,
+      thumbnail: props.news.featured_image,
+      url: props.news.url,
+      author: props.news.author,
+    })
+  } catch (error) {
+    console.error('Error toggling bookmark:', error)
+  }
 }
 
-const props = defineProps<Props>()
+// Extract category badges
+const categories = computed(() => props.news.details?.categories?.map((c) => c.name) || [])
 
-// Helper to get data from either direct properties or details JSONB
-const getContentProperty = <T,>(
-  directValue: T | null | undefined,
-  detailsPath?: string,
-  defaultValue?: T,
-): T | undefined => {
-  if (directValue !== null && directValue !== undefined) {
-    return directValue
-  }
+// Extract the primary category
+const primaryCategory = computed(() => {
+  const primary = props.news.details?.categories?.find((c) => c.isPrimary)
+  return primary?.name || categories.value[0] || 'News'
+})
 
-  if (detailsPath && props.news.details) {
-    const pathParts = detailsPath.split('.')
-    let value: any = props.news.details
-
-    for (const part of pathParts) {
-      if (!value || typeof value !== 'object') return defaultValue
-      value = value[part]
-    }
-
-    return value !== null && value !== undefined ? value : defaultValue
-  }
-
-  return defaultValue
-}
-
-// Get source name from content_sources if available
+// Get source name from details
 const sourceName = computed(() => {
-  // First priority: Check if content_sources data is directly available
-  if (props.news.content_sources?.name) {
-    return props.news.content_sources.name
+  if (props.news.details?.source_name) return props.news.details.source_name
+
+  // Try to extract from URL
+  if (props.news.url) {
+    try {
+      const url = new URL(props.news.url)
+      return url.hostname.replace('www.', '')
+    } catch {
+      return 'Source'
+    }
   }
-
-  // Second priority: Try to get source_name from details
-  const sourceNameFromDetails = getContentProperty<string>(null, 'source_name')
-  if (sourceNameFromDetails) return sourceNameFromDetails
-
-  // Third priority: Try company_name as fallback
-  const companyName = getContentProperty<string>(null, 'company_name')
-  if (companyName) return companyName
-
-  // As a last resort, use author
-  if (props.news.author) return props.news.author
-
-  return 'Source Unknown'
+  return 'Source'
 })
 
-const hasSummary = computed(() => {
-  const summaries = getContentProperty<any>(null, 'summaries.undefined')
-  return summaries?.[0]?.summary !== undefined
+// Calculate reading time (fallback to estimate if not provided)
+const readingTime = computed(() => {
+  if (props.news.details?.readTime) return props.news.details.readTime
+
+  // Estimate based on description length (avg reading speed: 200 words/min)
+  if (props.news.description) {
+    const wordCount = props.news.description.split(/\s+/).length
+    return Math.max(1, Math.ceil(wordCount / 200))
+  }
+  return 2 // Default fallback
 })
 
-const summary = computed(() => {
-  if (hasSummary.value) {
-    const summaries = getContentProperty<any>(null, 'summaries.undefined')
-    return summaries[0].summary
+// Get summary text
+const summaryText = computed(() => {
+  const summaries = props.news.details?.summaries
+  if (summaries?.undefined?.[0]) {
+    return summaries.undefined[0].summary
   }
   return props.news.description
 })
 
-const voteStore = useVoteStore()
-const isFlipped = ref(false)
-
-const showModal = ref(false)
-const modalContent = ref('')
-const votes = ref(props.news.hot_score || 0)
-
-const currentVote = computed(() => voteStore.getVoteType(props.news.id))
-const displayScore = computed(() => voteStore.getScore(props.news.id) ?? props.news.vote_count ?? 0)
-
-const bookmarkStore = useBookmarkStore()
-const isBookmarked = computed(() =>
-  bookmarkStore.isBookmarked(props.news.id, props.news.content_type),
-)
-
-const readTime = computed(() => {
-  // Calculate read time based on content length
-  // This is a placeholder, replace with actual logic
-  return '2m read time'
+// Format published date
+const publishedTimeAgo = computed(() => {
+  if (!props.news.published_at) return ''
+  return useTimeAgo(new Date(props.news.published_at)).value
 })
 
-onMounted(async () => {
-  try {
-    if (voteStore.getScore(props.news.id) == null)
-      voteStore.setVotes(props.news.id, props.news.hot_score || 0)
-  } catch (error: any) {
-    console.error('Error fetching vote status:', error)
-  }
-})
-
-const handleVoteChange = ({ change }: { voteType: number | null; change: number }) => {
-  votes.value += change
-}
-
-const openModal = (feature: string) => {
-  modalContent.value = `The ${feature} feature is coming soon! Stay tuned for updates.`
-  showModal.value = true
-}
-
-const imageSource = computed(() => {
-  return 'fallback-news.jpg'
-})
-
-// Handle clicks for touch devices
-const handleClick = (event: MouseEvent) => {
+// Handle interaction based on device
+const handleCardClick = (event: MouseEvent) => {
+  // Don't flip if clicking on a link or button
   const target = event.target as HTMLElement
   if (target.closest('a') || target.closest('button')) {
     event.stopPropagation()
@@ -157,7 +136,6 @@ const handleClick = (event: MouseEvent) => {
   isFlipped.value = !isFlipped.value
 }
 
-// Handle hover states
 const handleMouseEnter = () => {
   isFlipped.value = true
 }
@@ -166,7 +144,7 @@ const handleMouseLeave = () => {
   isFlipped.value = false
 }
 
-// METRICS
+// Metrics tracking
 const { trackNewsVisit } = useUserMetricsStore()
 let cleanupVisit: (() => Promise<void>) | null = null
 
@@ -181,12 +159,17 @@ onBeforeUnmount(async () => {
     await cleanupVisit()
   }
 })
+
+// Image fallback
+const fallbackImage = '/images/news_fallback.jpg'
+const imageSource = computed(() => props.news.featured_image || fallbackImage)
 </script>
 
 <template>
   <div
     class="group relative h-[450px] perspective-1000 hover:cursor-pointer"
-    @click="handleClick"
+    :class="{ 'h-[200px] flex': layout === 'list' }"
+    @click="handleCardClick"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
   >
@@ -194,41 +177,54 @@ onBeforeUnmount(async () => {
       class="relative w-full h-full transition-all duration-500 transform-style-preserve-3d border rounded-lg"
       :class="[
         { 'rotate-y-180': isFlipped },
-        isBookmarked ? 'border-amber-500/30 ' : 'border-color',
+        isBookmarked ? 'border-amber-500/30' : 'border-primary-800/30',
+        { flex: layout === 'list' },
       ]"
     >
       <!-- Front of card -->
-      <div class="absolute w-full h-full backface-hidden">
-        <div class="p-4 flex flex-col justify-between h-full">
-          <div>
-            <!-- Simplified source display -->
-            <div class="flex items-center mb-3">
-              <span class="text-sm text-primary-500 font-bold">{{ sourceName }}</span>
+      <div
+        class="absolute w-full h-full backface-hidden"
+        :class="{ flex: layout === 'list' }"
+      >
+        <div
+          class="p-4 flex flex-col justify-between h-full w-full"
+          :class="{ 'flex-row gap-4': layout === 'list' }"
+        >
+          <div :class="{ 'w-2/3': layout === 'list' }">
+            <!-- Category & Source -->
+            <div class="flex items-center justify-between mb-3">
+              <NewsCategoryBadge :category="primaryCategory" />
+              <span class="text-xs text-primary-500 font-medium">{{ sourceName }}</span>
             </div>
 
+            <!-- Title & Metadata -->
             <h3
-              class="text-xl font-bold mb-2 line-clamp-3 min-h-[3.5rem]"
+              class="text-xl font-bold mb-2 line-clamp-3"
+              :class="{ 'text-lg line-clamp-2': layout === 'list' }"
               :title="news.title"
             >
               {{ news.title }}
             </h3>
-            <div class="flex items-center text-sm mb-4">
-              {{ useTimeAgo(new Date(news.published_at ?? news.created_at)).value }}
+            <div class="flex items-center text-xs text-gray-400 mb-4">
+              <span>{{ publishedTimeAgo }}</span>
               <span class="mx-2">•</span>
-              <span>{{ readTime }}</span>
+              <span class="flex items-center">
+                <Icon
+                  name="mdi:clock-outline"
+                  class="w-3 h-3 mr-1"
+                />
+                {{ readingTime }}m read
+              </span>
             </div>
           </div>
-          <div>
+
+          <!-- Image and Actions -->
+          <div :class="{ 'w-1/3': layout === 'list' }">
             <div
-              v-if="imageSource"
+              v-if="imageSource && layout !== 'list'"
               class="mb-4"
             >
               <div class="relative w-full pb-[56.25%]">
-                <div
-                  class="absolute z-50 w-full h-full flex items-center justify-center text-white font-bold text-xl"
-                >
-                  <h5>IMAGES SOON</h5>
-                </div>
                 <NuxtImg
                   :src="imageSource"
                   :alt="news.title"
@@ -237,18 +233,60 @@ onBeforeUnmount(async () => {
                 />
               </div>
             </div>
-            <NewsActions
-              :content="news"
-              :score="displayScore"
-              :comments-count="null"
-              :bookmarked="isBookmarked"
-              :url="news.url"
-              :current-vote="currentVote"
-              card-side="front"
-              :on-source-visit="handleSourceVisit"
-              @vote-change="handleVoteChange"
-              @open-modal="openModal"
-            />
+
+            <!-- Action bar -->
+            <div class="flex items-center justify-between">
+              <!-- Vote buttons -->
+              <div class="flex items-center gap-1 bg-primary-950/70 rounded-lg p-1">
+                <button
+                  class="p-1 rounded hover:bg-primary-800/50 transition-colors"
+                  :class="currentVote === 1 ? 'text-green-500' : ''"
+                  @click.stop="handleVote(1)"
+                >
+                  <Icon
+                    name="mdi:arrow-up-bold"
+                    class="w-5 h-5"
+                  />
+                </button>
+                <span class="text-sm font-medium px-1">{{ displayScore }}</span>
+                <button
+                  class="p-1 rounded hover:bg-primary-800/50 transition-colors"
+                  :class="currentVote === -1 ? 'text-red-500' : ''"
+                  @click.stop="handleVote(-1)"
+                >
+                  <Icon
+                    name="mdi:arrow-down-bold"
+                    class="w-5 h-5"
+                  />
+                </button>
+              </div>
+
+              <!-- Bookmark & Source buttons -->
+              <div class="flex items-center gap-2">
+                <button
+                  class="p-1 rounded hover:bg-primary-800/50 transition-colors"
+                  :class="isBookmarked ? 'text-amber-500' : ''"
+                  @click.stop="toggleBookmark"
+                >
+                  <Icon
+                    :name="isBookmarked ? 'mdi:bookmark' : 'mdi:bookmark-outline'"
+                    class="w-5 h-5"
+                  />
+                </button>
+                <NuxtLink
+                  :to="news.url"
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  class="p-1 rounded hover:bg-primary-800/50 transition-colors"
+                  @click.stop="handleSourceVisit"
+                >
+                  <Icon
+                    name="mdi:link-variant"
+                    class="w-5 h-5"
+                  />
+                </NuxtLink>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -263,39 +301,100 @@ onBeforeUnmount(async () => {
             class="text-xl font-bold mb-4 line-clamp-1"
             :title="news.title"
           >
-            {{ news.title }}</h3
-          >
+            {{ news.title }}
+          </h3>
           <div
-            v-if="hasSummary"
-            class="flex items-center w-full justify-center gap-2 pb-4 text-xs"
+            v-if="summaryText"
+            class="flex-grow overflow-y-auto"
           >
-            <p class="text-sm overflow-y-auto flex-grow">
-              {{ summary }}
+            <p class="text-sm text-gray-300 leading-relaxed">
+              {{ summaryText }}
             </p>
           </div>
           <div
             v-else
-            class="flex items-center w-full justify-center gap-2 pb-4 text-xs"
+            class="flex-grow overflow-y-auto"
           >
-            <p class="text-sm overflow-y-auto flex-grow">
+            <p class="text-sm text-gray-300 leading-relaxed">
               {{ news.description }}
             </p>
+          </div>
+
+          <!-- Tags -->
+          <div
+            v-if="news.details?.tags && news.details.tags.length > 0"
+            class="mt-4 flex flex-wrap gap-2"
+          >
+            <PrimeChip
+              v-for="tag in news.details.tags.slice(0, 5)"
+              :key="tag"
+              class="bg-primary-800/50 text-xs"
+            >
+              {{ tag }}
+            </PrimeChip>
+            <PrimeChip
+              v-if="news.details.tags.length > 5"
+              class="bg-primary-800/50 text-xs"
+            >
+              +{{ news.details.tags.length - 5 }} more
+            </PrimeChip>
           </div>
         </div>
 
         <!-- Back side actions -->
-        <NewsActions
-          :score="displayScore"
-          :comments-count="null"
-          :bookmarked="isBookmarked"
-          :url="news.url"
-          :current-vote="currentVote"
-          card-side="back"
-          :content="news"
-          :on-source-visit="handleSourceVisit"
-          @vote-change="handleVoteChange"
-          @open-modal="openModal"
-        />
+        <div class="flex items-center justify-between pt-4 border-t border-primary-800/50 mt-4">
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-1 bg-primary-950/70 rounded-lg p-1">
+              <button
+                class="p-1 rounded hover:bg-primary-800/50 transition-colors"
+                :class="currentVote === 1 ? 'text-green-500' : ''"
+                @click.stop="handleVote(1)"
+              >
+                <Icon
+                  name="mdi:arrow-up-bold"
+                  class="w-5 h-5"
+                />
+              </button>
+              <span class="text-sm font-medium px-1">{{ displayScore }}</span>
+              <button
+                class="p-1 rounded hover:bg-primary-800/50 transition-colors"
+                :class="currentVote === -1 ? 'text-red-500' : ''"
+                @click.stop="handleVote(-1)"
+              >
+                <Icon
+                  name="mdi:arrow-down-bold"
+                  class="w-5 h-5"
+                />
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              class="p-1 rounded hover:bg-primary-800/50 transition-colors"
+              :class="isBookmarked ? 'text-amber-500' : ''"
+              @click.stop="toggleBookmark"
+            >
+              <Icon
+                :name="isBookmarked ? 'mdi:bookmark' : 'mdi:bookmark-outline'"
+                class="w-5 h-5"
+              />
+            </button>
+            <NuxtLink
+              :to="news.url"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              class="flex items-center gap-1 bg-primary-600 hover:bg-primary-700 transition-colors px-3 py-1 rounded-md text-sm font-medium"
+              @click.stop="handleSourceVisit"
+            >
+              <span>Read Full Article</span>
+              <Icon
+                name="mdi:arrow-top-right"
+                class="w-4 h-4"
+              />
+            </NuxtLink>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -316,19 +415,5 @@ onBeforeUnmount(async () => {
 
 .rotate-y-180 {
   transform: rotateY(180deg);
-}
-
-/* Optional: Add a smooth transition for the hover effect */
-.transition-transform {
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 500ms;
-}
-
-/* Optional: Add hover state styles */
-@media (hover: hover) {
-  .hover\:cursor-pointer:hover {
-    cursor: pointer;
-  }
 }
 </style>

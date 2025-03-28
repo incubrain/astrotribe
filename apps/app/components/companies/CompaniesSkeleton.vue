@@ -1,53 +1,64 @@
 <template>
-  <table
-    class="min-w-full select-none border-collapse text-primary-500 table-auto bg-transparent rounded-lg"
-  >
-    <tbody>
-      <!-- Repeat Skeleton Rows for a Loading Effect -->
-      <tr
-        v-for="index in 5"
-        :key="index"
-        class="relative p-5 mt-1 mb-1 border border-primary-500 rounded-xl gap-2 shadow-md bg-gray-800 animate-pulse"
-      >
-        <!-- Logo Skeleton -->
-        <td class="px-4 py-3 text-center">
-          <PrimeSkeleton
-            shape="circle"
-            width="50px"
-            height="50px"
-            class="rounded-full"
-          />
-        </td>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div
+      v-for="index in 8"
+      :key="index"
+      class="animate-pulse bg-primary-900/50 border border-primary-800/30 rounded-lg overflow-hidden"
+    >
+      <!-- Image skeleton -->
+      <div class="h-40 bg-primary-800/70"></div>
 
-        <!-- Company Name Skeleton -->
-        <td class="px-4 py-3">
-          <PrimeSkeleton
-            width="120px"
-            height="76px"
-          />
-        </td>
+      <!-- Content skeleton -->
+      <div class="p-4 space-y-4">
+        <!-- Title and tags -->
+        <div>
+          <div class="h-6 bg-primary-800/70 rounded w-3/4 mb-3"></div>
+          <div class="flex gap-2">
+            <div class="h-5 bg-primary-800/70 rounded-full w-20"></div>
+            <div class="h-5 bg-primary-800/70 rounded-full w-16"></div>
+          </div>
+          <div class="h-4 bg-primary-800/70 rounded w-1/2 mt-2"></div>
+        </div>
 
-        <!-- Description Skeleton -->
-        <td class="px-4 py-3 whitespace-wrap max-w-xs text-center">
-          <PrimeSkeleton
-            width="200px"
-            height="12px"
-            class="mb-2"
-          />
-          <PrimeSkeleton
-            width="180px"
-            height="12px"
-          />
-        </td>
+        <!-- Description -->
+        <div>
+          <div class="h-4 bg-primary-800/70 rounded w-full mb-2"></div>
+          <div class="h-4 bg-primary-800/70 rounded w-full mb-2"></div>
+          <div class="h-4 bg-primary-800/70 rounded w-2/3"></div>
+        </div>
 
-        <!-- Government Badge Skeleton -->
-        <td class="absolute top-2 right-2 p-2">
-          <PrimeSkeleton
-            width="60px"
-            height="20px"
-          />
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        <!-- Keywords -->
+        <div class="flex gap-2">
+          <div class="h-5 bg-primary-800/70 rounded-full w-16"></div>
+          <div class="h-5 bg-primary-800/70 rounded-full w-20"></div>
+          <div class="h-5 bg-primary-800/70 rounded-full w-14"></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-between items-center">
+          <div class="flex space-x-1">
+            <div class="w-7 h-7 bg-primary-800/70 rounded-full"></div>
+            <div class="w-7 h-7 bg-primary-800/70 rounded-full"></div>
+          </div>
+          <div class="h-6 bg-primary-800/70 rounded-full w-14"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+</style>
