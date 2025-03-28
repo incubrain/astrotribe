@@ -47,68 +47,75 @@ const contentRef = ref<HTMLElement | null>(null)
 // Carousel items
 const carouselItems: CarouselItem[] = [
   {
-    title: 'Effects On Different Species',
-    subtitle: 'Artificial light disrupts wildlife behavior and ecosystems',
-    image: 'darksky/carousel_(1).jpeg',
+    title: 'Wildlife Can’t Adapt to Our Lights',
+    subtitle: 'Artificial light is reshaping ecosystems and threatening species.',
+    image: 'darksky/wildlife-impact.jpg',
     shortDescription:
-      'Artificial light disrupts wildlife behavior, affecting foraging, mating, and migration patterns. Dark sky preservation helps maintain biodiversity and ecosystem health.',
+      'From disoriented birds to misdirected turtle hatchlings, artificial lighting severely disrupts wildlife behavior and habitat. Protecting dark skies means protecting biodiversity.',
   },
   {
-    title: 'Circadian Rhythm',
-    subtitle: 'Light pollution affects human health and wellbeing',
-    image: 'darksky/carousel_(2).jpeg',
+    title: 'Your Body Needs the Dark',
+    subtitle: 'Light at night confuses your internal clock and steals your sleep.',
+    image: 'darksky/circadian-rhythm.jpg',
     shortDescription:
-      'Excessive light at night disrupts human circadian rhythms, leading to sleep disorders and health issues. Dark sky practices improve wellbeing and enhance stargazing opportunities.',
+      'Excessive light at night disrupts our circadian rhythms, affecting melatonin production, sleep quality, and overall health. Darker nights help restore balance and wellbeing.',
   },
   {
-    title: 'Energy Waste',
-    subtitle: 'Reducing unnecessary lighting decreases carbon footprint',
-    image: 'darksky/carousel_(3).jpeg',
+    title: 'We’re Burning Money Into the Sky',
+    subtitle: 'Poor lighting wastes energy and your community’s resources.',
+    image: 'darksky/wasted-energy.jpg',
     shortDescription:
-      'Excessive lighting wastes energy and increases greenhouse gas emissions. Dark sky initiatives help communities reduce their carbon footprint and mitigate climate change.',
+      'Unshielded, excessive lighting not only pollutes the sky—it burns through electricity budgets. Smarter lighting reduces emissions and saves both energy and money.',
   },
   {
-    title: 'Tribal Community Preservation',
-    subtitle: 'Natural darkness supports cultural practices',
-    image: 'darksky/carousel_(4).jpeg',
+    title: 'That Light Doesn’t Belong in Your Garden',
+    subtitle: 'Light trespass disrupts peace, privacy, and nearby ecosystems.',
+    image: 'darksky/light-tresspass.jpg',
     shortDescription:
-      'Many tribal communities rely on natural darkness for cultural practices, storytelling, and ceremonies. Preserving dark skies supports these traditions and local wildlife conservation.',
+      'When artificial light spills beyond property lines, it becomes pollution. It invades homes, disorients wildlife, and erodes our right to darkness. Dark sky principles protect shared space.',
   },
   {
-    title: 'Sustainable Development',
-    subtitle: 'Economic benefits of dark sky policies',
-    image: 'darksky/carousel_(5).jpeg',
+    title: 'The Stars Are Disappearing',
+    subtitle: 'Entire generations are growing up without ever seeing the Milky Way.',
+    image: 'darksky/cultural-heritage.jpg',
     shortDescription:
-      'Optimizing public lighting reduces energy costs, allowing funds to be redirected to other community needs. Smart lighting solutions benefit both dark skies and municipal budgets.',
+      'Light pollution hides the night sky from billions. Preserving dark skies restores wonder, connects us to our history, and ensures future generations can look up in awe.',
+  },
+  {
+    title: 'There Is a Better Way',
+    subtitle: 'Smart lighting protects the night, saves money, and improves lives.',
+    image: 'darksky/better-way.jpg',
+    shortDescription:
+      'Downward, dimmer, warmer lighting keeps skies dark and streets safe. Communities benefit from reduced costs, healthier ecosystems, and the return of the stars.',
   },
 ]
 
 // Impact Statistics
-const impactStatistics: ImpactStatistic[] = [
+const impactStats: ImpactStatistic[] = [
   {
-    value: '83%',
-    description:
-      'of the global population lives under light-polluted skies, limiting their view of stars and planets',
+    value: '~80%',
+    description: 'India’s population under light-polluted skies.',
+    globalStat: 'Globally ~80%',
   },
   {
-    value: '2-6%',
-    description:
-      'annual increase in light pollution in many regions, especially in developing countries',
+    value: '7-10%',
+    description: 'Annual increase in light pollution in India.',
+    globalStat: 'Globally 7–10%',
   },
   {
-    value: '$3.3B',
-    description:
-      'annual cost of wasted outdoor lighting in the US alone—30% of all outdoor lighting',
+    value: '~$800M',
+    description: 'Annual cost of wasted outdoor lighting in India.',
+    globalStat: 'Globally ~$16B PA',
   },
   {
     value: '50%',
-    description:
-      'higher risk of certain health issues linked to nighttime exposure to artificial light',
+    description: 'Higher breast cancer risk from nighttime light exposure.',
+    globalStat: 'Globally 50%',
   },
   {
     value: '70%',
-    description:
-      'reduction in activity for many nocturnal animals in artificially lit environments',
+    description: 'Reduction in activity for nocturnal animals in India.',
+    globalStat: 'Globally 70%',
   },
 ]
 
@@ -131,42 +138,100 @@ const actionSteps: ActionStep[] = [
   {
     title: 'Assess Your Home',
     description:
-      'Audit your outdoor lighting for unnecessary brightness, upward-pointing fixtures, and light spillover into neighboring properties or the sky.',
+      'Audit your outdoor lighting to identify unnecessary brightness, upward-pointing fixtures, and light spillover, especially in urban areas like Mumbai where light pollution is rising rapidly.',
     actionText: 'Download Audit Checklist',
-    actionUrl: '#',
+    actionUrl: 'https://darksky.org/get-involved/home-lighting-assessment/',
     icon: 'mdi:clipboard-check',
+    primaryResource: {
+      title: 'DarkSky International Home Lighting Assessment',
+      url: 'https://darksky.org/get-involved/home-lighting-assessment/',
+    },
+    moreResources: [
+      {
+        title: 'LED Lighting Supply Checklist',
+        url: 'https://www.ledlightingsupply.com/blog/lighting-audit-checklist',
+      },
+      {
+        title: 'Mongabay India Study on Light Pollution',
+        url: 'https://india.mongabay.com/2019/01/light-pollution-on-the-rise-in-india-study/',
+      },
+    ],
   },
   {
     title: 'Make Simple Changes',
     description:
-      'Install shields on existing lights, switch to warm-colored bulbs under 3000K, add motion sensors, and use timers to reduce hours of operation.',
+      'Shield your lights, use warm-colored bulbs under 3000K, and install motion sensors or timers to cut down on light pollution, saving up to $800 million annually in India.',
     actionText: 'View Lighting Guide',
-    actionUrl: '#',
+    actionUrl: 'https://darksky.org/resources/guides-and-how-tos/lighting-principles/',
     icon: 'mdi:lightbulb',
+    primaryResource: {
+      title: 'DarkSky Lighting Principles',
+      url: 'https://darksky.org/resources/guides-and-how-tos/lighting-principles/',
+    },
+    moreResources: [
+      {
+        title: 'DarkSky Approved Lighting Products',
+        url: 'https://darksky.org/what-we-do/darksky-approved/darksky-approved-luminaires-program/luminaires/',
+      },
+      { title: 'Bureau of Energy Efficiency India', url: 'https://beeindia.gov.in/' },
+    ],
   },
   {
     title: 'Spread Awareness',
     description:
-      'Share information about light pollution with neighbors, local businesses, and community groups to create broader understanding.',
+      'Educate your community about light pollution’s impact—80% of India’s population can’t see the stars—using films and events like Earth Hour India.',
     actionText: 'Get Sharing Tools',
-    actionUrl: '#share-section',
+    actionUrl: 'https://vimeo.com/178841667',
     icon: 'mdi:share-variant',
+    primaryResource: {
+      title: 'Sriram Murali’s "Lost in Light" Film',
+      url: 'https://vimeo.com/178841667',
+    },
+    moreResources: [
+      { title: 'Earth Hour India', url: 'https://www.earthhour.org/india' },
+      { title: 'DarkSky Social Media', url: 'https://www.facebook.com/DarkSkyInternational' },
+    ],
   },
   {
     title: 'Contact Officials',
     description:
-      'Advocate for dark sky-friendly lighting ordinances in your community by contacting local representatives and attending planning meetings.',
+      'Push for dark sky-friendly ordinances in your city, inspired by Mumbai’s public interest litigation, to reduce the 7-10% annual increase in light pollution.',
     actionText: 'Advocacy Resources',
-    actionUrl: '#',
+    actionUrl: 'https://darksky.org/what-we-do/advocacy/',
     icon: 'mdi:gavel',
+    primaryResource: {
+      title: 'DarkSky Advocacy Guide',
+      url: 'https://darksky.org/what-we-do/advocacy/',
+    },
+    moreResources: [
+      {
+        title: 'Model Lighting Ordinances',
+        url: 'https://darksky.org/resources/model-lighting-ordinances/',
+      },
+      {
+        title: 'Mongabay India on Mumbai Litigation',
+        url: 'https://india.mongabay.com/2019/01/light-pollution-on-the-rise-in-india-study/',
+      },
+    ],
   },
   {
     title: 'Join the Movement',
     description:
-      'Participate in community dark sky events, citizen science projects, and local initiatives to monitor and reduce light pollution.',
+      'Get involved in events like Hanle Dark Sky Reserve star parties or citizen science projects to protect nocturnal animals facing a 70% activity reduction.',
     actionText: 'Find Local Events',
-    actionUrl: '#',
+    actionUrl: 'https://ladakh.gov.in/hanle-dark-sky-reserve-celebrates-its-first-star-party/',
     icon: 'mdi:account-group',
+    primaryResource: {
+      title: 'Hanle Dark Sky Reserve Star Parties',
+      url: 'https://ladakh.gov.in/hanle-dark-sky-reserve-celebrates-its-first-star-party/',
+    },
+    moreResources: [
+      { title: 'Globe at Night Citizen Science', url: 'https://www.globeatnight.org/' },
+      {
+        title: 'Astronomy Clubs in India',
+        url: 'https://www.go-astronomy.com/astronomy-clubs-global.php?Country=India',
+      },
+    ],
   },
 ]
 
@@ -338,7 +403,7 @@ const ctaText =
 
     <!-- Impact Statistics Section -->
     <DarkskyStats
-      :stats="impactStatistics"
+      :stats="impactStats"
       title="The Impact of Light Pollution"
       subtitle="Key statistics that highlight the urgent need for change"
     />

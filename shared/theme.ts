@@ -144,6 +144,58 @@ const AstroPreset = definePreset(Aura, {
       },
     },
 
+    popover: {
+      colorScheme: {
+        dark: {
+          root: {
+            // Root properties
+            background: '{surface.100}',
+            color: '{surface.900}',
+            borderColor: '{surface.300}',
+            borderWidth: '1px',
+            borderRadius: '0.5rem',
+            shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.4)',
+            transitionDuration: '{astro.transition.normal}',
+            zIndex: '1000',
+          },
+          content: {
+            // Content area properties
+            padding: '0.75rem',
+            borderRadius: '0.5rem',
+            background: '{surface.100}',
+            color: '{surface.900}',
+          },
+          arrow: {
+            // Arrow properties
+            borderTopColor: '{surface.300}',
+            borderRightColor: 'transparent',
+            borderBottomColor: 'transparent',
+            borderLeftColor: 'transparent',
+          },
+          header: {
+            // Optional header for the popover if needed
+            padding: '0.5rem 0.75rem',
+            background: '{surface.200}',
+            color: '{surface.900}',
+            borderBottomColor: '{surface.300}',
+            borderBottomWidth: '1px',
+            borderTopLeftRadius: '0.5rem',
+            borderTopRightRadius: '0.5rem',
+          },
+          footer: {
+            // Optional footer for the popover if needed
+            padding: '0.5rem 0.75rem',
+            background: '{surface.200}',
+            color: '{surface.900}',
+            borderTopColor: '{surface.300}',
+            borderTopWidth: '1px',
+            borderBottomLeftRadius: '0.5rem',
+            borderBottomRightRadius: '0.5rem',
+          },
+        },
+      },
+    },
+
     tabview: {
       colorScheme: {
         dark: {
