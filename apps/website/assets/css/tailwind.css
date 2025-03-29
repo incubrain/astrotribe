@@ -1,4 +1,5 @@
 @import '../../../../theme/tailwind.base.css';
+@import './shooting-star.css';
 
 /* App-specific styles */
 @layer base {

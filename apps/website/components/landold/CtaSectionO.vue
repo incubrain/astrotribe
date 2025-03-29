@@ -184,18 +184,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-}
-
 .animate-pulse {
   animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

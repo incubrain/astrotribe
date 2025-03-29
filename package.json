@@ -42,6 +42,7 @@
     "db:migrate": "pnpx tsx scripts/db/migrate/1.perform-migration.ts",
     "db:setup": "pnpx tsx scripts/db/init/2.main.ts",
     "db:clean": "pnpx tsx ./scripts/db/db-cleanup.ts",
+    "db:test-seeding": "pnpx tsx scripts/db/init/test-seeding.ts",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
     "format": "prettier --write \"**/*.{js,ts,jsx,tsx,vue,json,md,yml,yaml}\"",
