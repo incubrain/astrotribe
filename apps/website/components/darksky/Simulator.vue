@@ -43,7 +43,6 @@ const bortleScaleLevels: BortleLevel[] = [
 
 // State
 const selectedBortleScale = ref<number>(3) // Default to rural sky
-const stars = ref<any[]>([])
 const skyRef = ref<HTMLElement | null>(null)
 const isScaleInfoOpen = ref(false)
 const isSkyQualityInfoOpen = ref(false)
@@ -66,29 +65,6 @@ const lightPollutionStyle = computed(() => {
   return { opacity: opacityValue }
 })
 
-// Star generation
-const generateStars = () => {
-  const starCount = 200
-  stars.value = Array.from({ length: starCount }, (_, i) => {
-    const size = Math.random() * 2 + 0.5
-    const brightness = Math.random()
-    const isBright = Math.random() > 0.9
-
-    return {
-      id: i,
-      style: {
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        width: `${isBright ? size * 1.5 : size}px`,
-        height: `${isBright ? size * 1.5 : size}px`,
-        opacity: brightness,
-        animation: isBright ? 'twinkle 4s ease-in-out infinite' : 'none',
-      },
-      brightness,
-    }
-  })
-}
-
 // Update stars based on Bortle scale
 const updateStars = () => {
   const visibilityFactor = 1 - (selectedBortleScale.value - 1) / 8
@@ -107,9 +83,10 @@ const selectBortleLevel = (level: number) => {
 // Watch for changes to update stars
 watch(selectedBortleScale, updateStars)
 
+const { stars, isClient } = useStarfield(30)
+
 // Initialize stars on mount
 onMounted(() => {
-  generateStars()
   updateStars()
 })
 </script>
@@ -199,6 +176,7 @@ onMounted(() => {
 
         <!-- Night sky background with stars -->
         <div
+          v-if="isClient"
           ref="skyRef"
           class="absolute inset-0 bg-primary-950"
         >

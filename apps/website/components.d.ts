@@ -22,6 +22,7 @@ declare module 'vue' {
     PrimeDataTable: typeof import('primevue/datatable')['default']
     PrimeDatePicker: typeof import('primevue/datepicker')['default']
     PrimeDialog: typeof import('primevue/dialog')['default']
+    PrimeDropdown: typeof import('primevue/dropdown')['default']
     PrimeInputNumber: typeof import('primevue/inputnumber')['default']
     PrimeInputText: typeof import('primevue/inputtext')['default']
     PrimeMessage: typeof import('primevue/message')['default']

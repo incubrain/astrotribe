@@ -702,16 +702,6 @@ onMounted(() => {
   animation: fadeIn 0.8s ease-out forwards;
 }
 
-/* Pulse effect */
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
 .animate-pulse {
   animation: pulse 3s infinite ease-in-out;
   animation-fill-mode: both;
