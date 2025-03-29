@@ -237,7 +237,7 @@ const agents: ChatAgent[] = [
   },
 ]
 
-const chatStore = useChatStore()
+const chatStore = useAIChatStore()
 
 definePageMeta({ name: 'Q&A' })
 

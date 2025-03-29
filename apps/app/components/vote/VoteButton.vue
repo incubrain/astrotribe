@@ -12,7 +12,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), { contentType: 'news', count: 0 })
 
-const voteStore = useVoteStore()
+const voteStore = useVotesStore()
 const notification = useNotification()
 const animationRef = ref()
 

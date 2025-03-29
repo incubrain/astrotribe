@@ -40,7 +40,7 @@ const searchFuseOptions = {
 }
 
 // Job storage composable for preferences
-const jobStorage = useJobStorage()
+const jobStorage = useJobStore()
 
 // Initialize filters from stored preferences or defaults
 const filters = ref<JobFilter>(

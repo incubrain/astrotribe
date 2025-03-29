@@ -29,7 +29,7 @@ const ChatCompletionSchema = z.object({
 
 type Chat = z.infer<typeof ChatCompletionSchema>
 
-export const useChatStore = defineStore('chatStore', () => {
+export const useAIChatStore = defineStore('chatStore', () => {
   const { fetch } = useBaseFetch()
   const loading = useLoadingStore()
   const client = useSupabaseClient()
@@ -145,5 +145,5 @@ export const useChatStore = defineStore('chatStore', () => {
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useChatStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useAIChatStore, import.meta.hot))
 }

@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useTimeAgo } from '@vueuse/core'
 import { useBookmarkStore } from '@/stores/useBookmarkStore'
-import { useVoteStore } from '@/stores/useVotesStore'
+import { useVotesStore } from '@/stores/useVotesStore'
 
 // Define props with better typing
 interface NewsCardProps {
@@ -37,7 +37,7 @@ const props = defineProps<NewsCardProps>()
 
 // Setup stores
 const bookmarkStore = useBookmarkStore()
-const voteStore = useVoteStore()
+const voteStore = useVotesStore()
 
 // Local card state
 const isFlipped = ref(false)

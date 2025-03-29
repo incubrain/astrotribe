@@ -101,6 +101,8 @@ onMounted(() => {
         </template>
       </MetricStatCard>
 
+      <EventUpcomingLink class="xl:col-start-3 xl:row-start-3" />
+
       <!-- Achievements Section -->
       <div
         class="bg-gray-900/50 rounded-xl p-6 border border-gray-800 md:col-span-2 xl:col-span-1 xl:col-start-3 xl:row-start-1 xl:row-span-2"

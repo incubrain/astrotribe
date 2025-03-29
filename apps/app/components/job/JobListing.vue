@@ -71,7 +71,7 @@ const containerClass = computed(() => {
       :id="'job-list'"
       :class="[containerClass, { 'opacity-50': loading }]"
     >
-      <Transition-group
+      <TransitionGroup
         name="job-cards"
         tag="div"
         :class="containerClass"
@@ -91,7 +91,7 @@ const containerClass = computed(() => {
             @filter-tag="emit('filterTag', $event)"
           />
         </template>
-      </Transition-group>
+      </TransitionGroup>
     </div>
   </div>
 </template>

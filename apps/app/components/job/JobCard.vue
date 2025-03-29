@@ -38,7 +38,7 @@ const companyDomain = computed(() => {
 // Track recent views if component is mounted
 onMounted(() => {
   if (import.meta.client) {
-    const { addToRecentlyViewedJobs } = useJobStorage()
+    const { addToRecentlyViewedJobs } = useJobStore()
     addToRecentlyViewedJobs(props.job.id)
   }
 })

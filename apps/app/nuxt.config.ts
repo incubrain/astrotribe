@@ -61,6 +61,10 @@ export default defineNuxtConfig({
     '@nuxt/test-utils/module',
   ],
 
+  imports: {
+    dirs: ['stores'],
+  },
+
   runtimeConfig: {
     serviceName: 'app',
     ...pick(env.private, [...privateKeys]),

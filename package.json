@@ -34,7 +34,7 @@
     "dev:back": "NUXT_MULTI_APP=true turbo run dev --filter=@astronera/api --filter=@astronera/cron-jobs",
     "dev:all": "NUXT_MULTI_APP=true turbo run dev --filter=@astronera/auth --filter=@astronera/app --filter=@astronera/admin --filter=@astronera/api",
     "docker:all": "pnpx tsx ./ci/2.build-docker-containers.ts",
-    "build:libs": "turbo run build --filter=@astronera/db --filter=@ib/logger --filter=@ib/cache",
+    "build:libs": "turbo run build --filter=@astronera/db  --filter=@ib/cache",
     "build:layers": "scripts/build-layers.sh",
     "build:auth": "turbo run build --filter=@astronera/auth",
     "build:admin": "turbo run build --filter=@astronera/admin",
@@ -73,8 +73,7 @@
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/vue3": "^6.1.15",
     "@ib/cache": "workspace:*",
-    "@ib/logger": "workspace:*",
-    "@iconify-json/game-icons": "^1.2.0",
+    "@iconify-json/game-icons": "^1.2.1",
     "@iconify-json/material-symbols": "^1.2.1",
     "@iconify-json/mdi": "^1.2.0",
     "@influxdata/influxdb-client": "^1.35.0",
@@ -104,6 +103,7 @@
     "@opentelemetry/sdk-node": "^0.57.1",
     "@parcel/watcher": "^2.4.1",
     "@pinia/nuxt": "^0.9.0",
+    "@primeuix/themes": "^1.0.0",
     "@primevue/core": "^4.2.5",
     "@primevue/nuxt-module": "^4.2.5",
     "@prisma/client": "^6.2.1",
@@ -266,7 +266,6 @@
     "overrides": {
       "vue-tsc": "~2.1.6",
       "@astronera/db": "workspace:*",
-      "@ib/logger": "workspace:*",
       "@ib/cache": "workspace:*"
     },
     "peerDependencyRules": {
