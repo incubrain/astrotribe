@@ -58,7 +58,7 @@ const layoutClasses = computed(() => {
     <!-- <AdsBanner v-if="topBannerAd" :ad="topBannerAd" /> -->
 
     <!-- Category Filters -->
-    <NewsFilterBar />
+    <NewsFilterBar class="p-4" />
 
     <!-- Trending Topics -->
     <div
@@ -72,7 +72,7 @@ const layoutClasses = computed(() => {
         <h3 class="text-lg font-semibold">Trending Topics</h3>
       </div>
 
-      <HorizontalScroll>
+      <UiHorizontalScroll>
         <div class="flex gap-3 py-1">
           <button
             v-for="topic in trendingTopics"
@@ -83,7 +83,7 @@ const layoutClasses = computed(() => {
             {{ topic }}
           </button>
         </div>
-      </HorizontalScroll>
+      </UiHorizontalScroll>
     </div>
 
     <!-- Advanced Filters -->

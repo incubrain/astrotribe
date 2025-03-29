@@ -61,6 +61,12 @@ const navigationCategories = ref([
         slug: '/opportunities',
         icon: 'material-symbols:work',
       },
+      {
+        id: '4',
+        label: 'Events',
+        slug: '/astronomy-events',
+        icon: 'mdi:calendar-star',
+      },
     ],
   },
   {

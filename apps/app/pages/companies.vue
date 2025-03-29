@@ -231,6 +231,7 @@ const showSkeletonGrid = computed(() => loading.value)
 
     <!-- Company detail modal -->
     <CompanyDetailView
+      v-if="selectedCompany"
       v-model:visible="showDetailModal"
       :company="selectedCompany"
     />

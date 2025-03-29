@@ -20,7 +20,7 @@ export interface ViewPreference {
   mode: 'grid' | 'list'
 }
 
-export function useJobStorage() {
+export function useJobStore() {
   // Filter preferences
   const filters = ref<JobFilter>({
     location: { value: '', options: [] },

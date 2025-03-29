@@ -4,7 +4,7 @@ const props = defineProps<{
   systemPrompt?: string
 }>()
 
-const chatStore = useChatStore()
+const chatStore = useAIChatStore()
 const { question, isLoading } = storeToRefs(chatStore)
 
 watch(

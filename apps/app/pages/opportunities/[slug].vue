@@ -181,7 +181,7 @@ const handleMapReady = () => {
 // Track viewed jobs in localStorage
 onMounted(() => {
   if (import.meta.client) {
-    const { addToRecentlyViewedJobs } = useJobStorage()
+    const { addToRecentlyViewedJobs } = useJobStore()
     if (jobId.value) {
       addToRecentlyViewedJobs(jobId.value)
     }

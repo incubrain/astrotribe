@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 
 const route = useRoute()
-const voteStore = useVoteStore()
+const voteStore = useVotesStore()
 
 const voteString = computed(() => route.params.type)
 const voteType = computed(() => (voteString.value === 'upvoted' ? 1 : -1))

@@ -3,7 +3,7 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-const voteStore = useVoteStore()
+const voteStore = useVotesStore()
 const {
   isLoading,
   totalVotes,

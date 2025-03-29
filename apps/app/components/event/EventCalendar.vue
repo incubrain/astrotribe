@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import Popover from 'primevue/popover'
+import type { AstronomyEvent } from '@/stores/useAstronomyEventsStore'
 
 // PROPS
 const props = defineProps({
   events: {
-    type: Array,
+    type: Array as () => AstronomyEvent[],
     default: () => [],
   },
   categories: {

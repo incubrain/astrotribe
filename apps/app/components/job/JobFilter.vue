@@ -249,7 +249,7 @@ onUnmounted(() => {
           </button>
 
           <!-- Sort dropdown -->
-          <SortDropdown
+          <FilterSortDropdown
             :model-value="activeSortOption.value"
             :is-ascending="activeSortOption.isAscending"
             :options="sortOptions"

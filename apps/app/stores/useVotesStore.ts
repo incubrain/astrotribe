@@ -1,4 +1,4 @@
-// stores/useVoteStore.ts
+// stores/useVotesStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
@@ -19,7 +19,7 @@ interface VoteMetrics {
   streakData: any[]
 }
 
-export const useVoteStore = defineStore('votes', () => {
+export const useVotesStore = defineStore('votes', () => {
   // Original vote store state
   const votes = ref<Record<string, number>>({})
   const userVotes = ref<Record<string, number>>({})

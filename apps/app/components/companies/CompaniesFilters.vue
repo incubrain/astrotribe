@@ -216,7 +216,7 @@ onUnmounted(() => {
               class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"
             />
             <input
-              v-model="filters.location.value.value"
+              v-model="filters.location.value"
               type="text"
               class="pl-10 w-full py-2 bg-primary-900/50 text-white rounded-lg border-none focus:ring-primary-500 transition-all hover:bg-primary-800/50"
               placeholder="Search location..."
@@ -267,7 +267,7 @@ onUnmounted(() => {
               class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"
             />
             <input
-              v-model="filters.category.value.value"
+              v-model="filters.category.value"
               type="text"
               class="pl-10 w-full py-2 bg-primary-900/50 text-white rounded-lg border-none focus:ring-primary-500 transition-all hover:bg-primary-800/50"
               placeholder="Search category..."
@@ -318,7 +318,7 @@ onUnmounted(() => {
               class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"
             />
             <input
-              v-model="filters.type.value.value"
+              v-model="filters.type.value"
               type="text"
               class="pl-10 w-full py-2 bg-primary-900/50 text-white rounded-lg border-none focus:ring-primary-500 transition-all hover:bg-primary-800/50"
               placeholder="Select type..."
