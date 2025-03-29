@@ -1,6 +1,4 @@
 import { faker } from '@faker-js/faker'
-import type { Pool } from 'pg'
-import { generateUUID, bulkInsert } from './seed-helpers'
 
 export const ERROR_MESSAGES = [
   'Failed to connect to database',

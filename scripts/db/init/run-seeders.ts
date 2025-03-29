@@ -1,7 +1,7 @@
 import chalk from 'chalk'
-import client from '../../client'
+import client from '../client'
+import { checkAndSeed } from './utils'
 import * as seed from './seeders'
-import { checkAndSeed } from './seed-helpers'
 
 interface SeedConfig {
   batchSize: number
@@ -52,14 +52,14 @@ export async function runSeeders() {
     const cities = await checkAndSeed(client, 'cities', () => seed.seedCities(client))
 
     const socialMedia = await checkAndSeed(client, 'social_media', () =>
-      seed.seedSocialMedia(client, config.counts.socialMedia),
+      seed.seedSocialMedia(client, companyIds),
     )
 
     const categories = await checkAndSeed(client, 'categories', () =>
       seed.seedCategories(client, config.counts.categories),
     )
 
-    const tags = await checkAndSeed(client, 'tags', () => seed.seedTags(client))
+    const tags = await checkAndSeed(client, 'tags', () => seed.seedTags(client, 100))
 
     const categoryIds = categories.map((c) => c.id)
 
@@ -87,7 +87,7 @@ export async function runSeeders() {
     const companyIds = companies.map((c) => c.id)
 
     const contentSources = await checkAndSeed(client, 'content_sources', () =>
-      seed.seedContentSources(client, companyIds),
+      seed.seedContentSources(client, 100),
     )
     const contentSourceIds = contentSources.map((cs) => cs.id)
 
@@ -95,14 +95,16 @@ export async function runSeeders() {
       seed.seedCompanyEmployees(client, companyIds, userIds),
     )
 
-    await checkAndSeed(client, 'contacts', () => seed.seedContacts(client, companyIds, userIds))
+    await checkAndSeed(client, 'contacts', () => seed.seedContacts(client, companyIds))
 
     await checkAndSeed(client, 'newsletters', () =>
-      seed.seedNewsletters(client, newsletterContentIds),
+      seed.seedNewsletters(client, newsletterContentIds, companyIds),
     )
 
     // Seed ads and related data
-    const adPackages = await checkAndSeed(client, 'ad_packages', () => seed.seedAdPackages(client))
+    const adPackages = await checkAndSeed(client, 'ad_packages', () =>
+      seed.seedAdPackages(client, 100),
+    )
 
     const ads = await checkAndSeed(client, 'ads', () =>
       seed.seedAds(
@@ -153,43 +155,47 @@ export async function runSeeders() {
         client,
         cities.map((c: any) => c.id),
         countries.map((c: any) => c.id),
-        userIds,
-        companyIds,
       ),
     )
 
     // 6. Seed news and research
-    await checkAndSeed(client, 'news', () =>
-      seed.seedNews(client, contents, companyIds, contentSourceIds),
-    )
+    await checkAndSeed(client, 'news', () => seed.seedNews(client, newsContentIds, companyIds))
 
-    await checkAndSeed(client, 'research', () => seed.seedResearch(client, researchContentIds))
+    await checkAndSeed(client, 'research', () =>
+      seed.seedResearch(client, researchContentIds, companyIds),
+    )
 
     // 7. Seed user-related content
     const folders = await checkAndSeed(client, 'bookmark_folders', () =>
       seed.seedBookmarkFolders(client, userIds),
     )
 
-    await checkAndSeed(client, 'bookmarks', () => seed.seedBookmarks(client, folders, contents))
+    const folderIds = folders.map((f) => f.id)
+
+    await checkAndSeed(client, 'bookmarks', () =>
+      seed.seedBookmarks(client, userIds, allContentIds, folderIds),
+    )
 
     await checkAndSeed(client, 'content_source_visits', () =>
-      seed.seedContentSourceVisits(client, userIds, newsContentIds),
+      seed.seedContentSourceVisits(client, contentSourceIds),
     )
 
     await checkAndSeed(client, 'comments', () => seed.seedComments(client, allContentIds, userIds))
 
     await checkAndSeed(client, 'votes', () => seed.seedVotes(client, allContentIds, userIds))
 
-    const features = await checkAndSeed(client, 'feature_requests', () =>
-      seed.seedFeatureRequests(client),
+    const featureRequests = await checkAndSeed(client, 'feature_requests', () =>
+      seed.seedFeatureRequests(client, userIds),
     )
 
+    const featureRequestIds = featureRequests.map((f) => f.id)
+
     await checkAndSeed(client, 'feature_votes', () =>
-      seed.seedFeatureVotes(client, userIds, features),
+      seed.seedFeatureVotes(client, userIds, featureRequestIds),
     )
 
     await checkAndSeed(client, 'jobs', () =>
-      seed.seedJobs(client, contents, companyIds, contentSourceIds, config.counts.jobs),
+      seed.seedJobs(client, allContentIds, companyIds, contentSourceIds, 100),
     )
 
     // 8. Seed feedback and follows
@@ -198,42 +204,28 @@ export async function runSeeders() {
     await checkAndSeed(client, 'follows', () => seed.seedFollows(client, userIds, companyIds))
 
     // 9. Seed feeds and feed categories
-    const feeds = await checkAndSeed(client, 'feeds', () => seed.seedFeeds(client, userIds))
+    const feeds = await checkAndSeed(client, 'feeds', () =>
+      seed.seedFeeds(client, categoryIds, contentSourceIds),
+    )
     const feedIds = feeds.map((f) => f.id)
 
-    await checkAndSeed(client, 'feed_categories', () =>
-      seed.seedFeedCategories(
-        client,
-        feeds.map((f) => f.id),
-        categoryIds,
-      ),
-    )
+    await checkAndSeed(client, 'feed_categories', () => seed.seedFeedCategories(client, 100))
 
-    await checkAndSeed(client, 'feed_sources', () =>
-      seed.seedFeedSources(client, feedIds, contentSourceIds),
-    )
+    await checkAndSeed(client, 'feed_sources', () => seed.seedFeedSources(client, 100))
 
-    await checkAndSeed(client, 'error_logs', () => seed.seedErrorLogs(client, userIds))
+    await checkAndSeed(client, 'error_logs', () => seed.seedErrorLogs(client, 100))
 
     await client.query('ALTER TABLE referrals DISABLE TRIGGER refresh_referral_stats_trigger')
     await client.query('ALTER TABLE referrals DISABLE TRIGGER refresh_risk_metrics_trigger')
 
-    // First check and seed referrals
-    const referrers = await checkAndSeed(client, 'referrals', () =>
-      seed.seedReferrers(client, userIds),
-    )
-
-    // Then seed referral records
-    const referrals = await checkAndSeed(client, 'referrals', () =>
-      seed.seedReferrals(client, referrers),
-    )
+    // // Then seed referral records
+    // const referrals = await checkAndSeed(client, 'referrals', () =>
+    //   seed.seedReferrals(client, visitorIds),
+    // )
 
     // Seed blocked IPs
-    const blockedIPs = await checkAndSeed(client, 'blocked_ips', () => seed.seedBlockedIPs(client))
-
-    // Seed referrer blocks
-    const referrerBlocks = await checkAndSeed(client, 'referrer_blocks', () =>
-      seed.seedReferrerBlocks(client, referrers),
+    const blockedIPs = await checkAndSeed(client, 'blocked_ips', () =>
+      seed.seedBlockedIPs(client, 10),
     )
 
     // Re-enable triggers

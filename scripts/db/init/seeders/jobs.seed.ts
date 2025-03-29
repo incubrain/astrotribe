@@ -1,21 +1,6 @@
-import { createHash } from 'crypto'
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
-import {
-  bulkInsert,
-  generateUUID,
-  generateUniqueId,
-  generateUniqueUrl,
-  generateUniqueValue,
-} from './seed-helpers'
-import {
-  ERROR_MESSAGES,
-  ERROR_TYPES,
-  SERVICE_NAMES,
-  SEVERITIES,
-  COMMON_ERRORS,
-  generateStackTrace,
-} from './errors'
+import { bulkInsert, generateUniqueUrl } from '../utils'
 
 const EMPLOYMENT_TYPES = ['FULL_TIME', 'PART_TIME', 'CONTRACT', 'TEMPORARY', 'INTERNSHIP'] as const
 const REMOTE_TYPES = ['REMOTE', 'HYBRID', 'ON_SITE'] as const
@@ -76,21 +61,21 @@ function generateSkills(jobTitle: string) {
 
 export async function seedJobs(
   pool: Pool,
-  contents: { id: string }[],
+  contentsIds: string[],
   companyIds: string[],
-  contentSourceIds: number[],
+  contentSourceIds: string[],
   count = 50,
 ) {
   const usedUrls = new Set<string>()
 
-  if (contents.length < count) {
-    throw new Error(`Not enough contents to create ${count} jobs. Found: ${contents.length}`)
+  if (contentsIds.length < count) {
+    throw new Error(`Not enough contents to create ${count} jobs. Found: ${contentsIds.length}`)
   }
 
   // Ensure we pick unique contents_id values
-  const jobContents = faker.helpers.shuffle(contents).slice(0, count)
+  const jobContents = faker.helpers.shuffle(contentsIds).slice(0, count)
 
-  const jobs = jobContents.map((content) => {
+  const jobs = jobContents.map((contentID) => {
     const title = faker.person.jobTitle()
     const url = generateUniqueUrl(usedUrls, 'https://careers.', '.com/jobs/')
     const publishedAt = faker.date.past()
@@ -98,7 +83,7 @@ export async function seedJobs(
 
     return {
       id: crypto.randomUUID(),
-      contents_id: content.id, // ✅ Ensures each job has a unique contents_id
+      contents_id: contentID, // ✅ Ensures each job has a unique contents_id
       title,
       company_id: faker.helpers.arrayElement(companyIds),
       location: faker.location.city() + ', ' + faker.location.country(),
