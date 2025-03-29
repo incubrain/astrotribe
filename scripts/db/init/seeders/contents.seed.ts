@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
-import { bulkInsert, generateUUID, generateUniqueUrl } from '../utils'
+import { bulkInsert, generateUUID } from '../utils'
 
 export async function seedContents(pool: Pool, count: number) {
   const usedUrls = new Set<string>()
@@ -9,9 +9,20 @@ export async function seedContents(pool: Pool, count: number) {
     url: string
     content_type: string
     title: string
-    rss_url: string | null
     created_at: Date
     updated_at: Date
+    author?: string
+    company_id?: string
+    content_signature?: string
+    deleted_at?: Date
+    description?: string
+    details?: any
+    featured_image?: string
+    hash?: string
+    is_active?: boolean
+    published_at?: Date
+    source_id?: string
+    hot_score?: number
   }> = []
 
   // Keep generating until we have the desired count
@@ -26,26 +37,43 @@ export async function seedContents(pool: Pool, count: number) {
 
     usedUrls.add(url)
 
-    // Generate RSS URL if needed, ensuring it's also unique
-    let rssUrl: string | null = null
-    if (Math.random() > 0.5) {
-      rssUrl = `https://rss.${faker.internet.domainWord()}-${faker.number.int({ min: 1000, max: 9999 })}.${faker.internet.domainSuffix()}/feed`
-      while (usedUrls.has(rssUrl)) {
-        rssUrl = `https://rss.${faker.internet.domainWord()}-${faker.number.int({ min: 1000, max: 9999 })}.${faker.internet.domainSuffix()}/feed`
-      }
-      usedUrls.add(rssUrl)
-    }
-
     const date = faker.date.recent()
+    const title = faker.company.name()
 
     contents.push({
       id: generateUUID(),
       url,
-      content_type: faker.helpers.arrayElement(['news', 'research', 'newsletters', 'jobs']),
-      title: faker.company.name(),
-      rss_url: rssUrl,
+      content_type: faker.helpers.arrayElement([
+        'news',
+        'research',
+        'newsletters',
+        'jobs',
+        'companies',
+        'contact',
+        'people',
+        'unknown',
+      ]),
+      title,
       created_at: date,
       updated_at: date,
+      author: faker.person.fullName(),
+      description: faker.lorem.paragraph(),
+      featured_image: faker.image.url(),
+      is_active: true,
+      published_at: faker.date.recent(),
+      content_signature: title
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '')
+        .slice(0, 50),
+      details: {
+        tags: faker.helpers.arrayElements(['technology', 'science', 'business', 'health'], {
+          min: 1,
+          max: 3,
+        }),
+        reading_time: faker.number.int({ min: 2, max: 15 }),
+        language: 'en',
+      },
+      hot_score: faker.number.float({ min: 0, max: 100, fractionDigits: 1 }),
     })
   }
 

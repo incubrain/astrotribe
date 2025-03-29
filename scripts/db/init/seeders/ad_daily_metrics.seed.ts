@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
-import { bulkInsert, generateUUID } from './helpers'
+import { bulkInsert, generateUUID } from '../utils'
 
 export async function seedAdDailyMetrics(pool: Pool, variantIds: string[]) {
   const metrics = variantIds.flatMap((variantId) =>
