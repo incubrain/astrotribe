@@ -1,29 +1,20 @@
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
-import { bulkInsert, generateUUID } from '../utils'
+import { bulkInsert } from '../utils'
 
-export async function seedSocialMedia(pool: Pool, companyIds: string[]) {
-  const socialMedia = companyIds.flatMap((companyId) =>
-    Array.from({ length: faker.number.int({ min: 1, max: 4 }) }, () => ({
-      id: generateUUID(),
-      company_id: companyId,
-      platform: faker.helpers.arrayElement([
-        'twitter',
-        'linkedin',
-        'facebook',
-        'instagram',
-        'youtube',
-        'github',
-        'medium',
-      ]),
-      url: faker.internet.url(),
-      username: faker.internet.userName(),
-      followers_count: faker.number.int({ min: 100, max: 1000000 }),
-      is_verified: faker.datatype.boolean(),
-      created_at: faker.date.past(),
-      updated_at: faker.date.recent(),
-    })),
-  )
+export async function seedSocialMedia(pool: Pool, count: number = 100) {
+  // Create social media entries with sequential IDs to ensure we have the specific IDs
+  // that the companies seeder is trying to reference
+  const socialMedia = Array.from({ length: count }, (_, index) => ({
+    id: index + 1, // Use sequential IDs starting from 1
+    facebook_url: faker.helpers.maybe(() => faker.internet.url(), { probability: 0.7 }),
+    twitter_url: faker.helpers.maybe(() => faker.internet.url(), { probability: 0.7 }),
+    linkedin_url: faker.helpers.maybe(() => faker.internet.url(), { probability: 0.7 }),
+    instagram_url: faker.helpers.maybe(() => faker.internet.url(), { probability: 0.6 }),
+    youtube_url: faker.helpers.maybe(() => faker.internet.url(), { probability: 0.5 }),
+    created_at: faker.date.past(),
+    updated_at: faker.date.recent(),
+  }))
 
   await bulkInsert(pool, 'social_media', socialMedia)
   return socialMedia

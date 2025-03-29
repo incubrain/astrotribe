@@ -5,7 +5,7 @@ import { bulkInsert, generateUUID } from '../utils'
 export async function seedFeedCategories(
   pool: Pool,
   feedIds: string[] = [],
-  categoryIds: string[] = [],
+  categoryIds: string[] = [], // Use string type for UUID values
 ) {
   // Handle empty inputs
   if (feedIds.length === 0) {
@@ -26,7 +26,7 @@ export async function seedFeedCategories(
 
   if (categoryIds.length === 0) {
     try {
-      // Try to get category IDs from database
+      // Try to get category IDs from database - now expecting UUID values
       const { rows: categoryRows } = await pool.query('SELECT id FROM categories LIMIT 100')
       if (categoryRows.length > 0) {
         categoryIds = categoryRows.map((row) => row.id)
@@ -61,11 +61,12 @@ export async function seedFeedCategories(
       if (!feedCategoryPairs.has(pairKey)) {
         feedCategoryPairs.add(pairKey)
 
+        // Use the UUID directly since the database now expects UUID type
         feedCategories.push({
           id: generateUUID(),
           created_at: faker.date.past(),
           feed_id: feedId,
-          category_id: categoryId,
+          category_id: categoryId, // Use the UUID directly
         })
       }
     }
