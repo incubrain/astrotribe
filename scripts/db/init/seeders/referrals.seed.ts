@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
-import { bulkInsert, generateUUID } from './helpers'
+import { bulkInsert, generateUUID } from '../utils'
 
 export async function seedReferrals(pool: Pool, visitorIds: string[]) {
   const referrals = visitorIds.map((visitorId) => ({

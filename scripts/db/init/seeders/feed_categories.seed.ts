@@ -2,18 +2,75 @@ import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
 import { bulkInsert, generateUUID } from '../utils'
 
-export async function seedFeedCategories(pool: Pool, count: number) {
-  const categories = Array.from({ length: count }, () => ({
-    id: generateUUID(),
-    name: faker.word.noun(),
-    description: faker.lorem.sentence(),
-    slug: faker.helpers.slugify(faker.word.noun()).toLowerCase(),
-    parent_id: null,
-    is_active: faker.datatype.boolean(),
-    created_at: faker.date.past(),
-    updated_at: faker.date.recent(),
-  }))
+export async function seedFeedCategories(
+  pool: Pool,
+  feedIds: string[] = [],
+  categoryIds: string[] = [],
+) {
+  // Handle empty inputs
+  if (feedIds.length === 0) {
+    try {
+      // Try to get feed IDs from database
+      const { rows: feedRows } = await pool.query('SELECT id FROM feeds LIMIT 100')
+      if (feedRows.length > 0) {
+        feedIds = feedRows.map((row) => row.id)
+      } else {
+        console.warn('No feeds found for feed categories')
+        return []
+      }
+    } catch (error) {
+      console.error('Error fetching feed IDs:', error)
+      return []
+    }
+  }
 
-  await bulkInsert(pool, 'feed_categories', categories)
-  return categories
+  if (categoryIds.length === 0) {
+    try {
+      // Try to get category IDs from database
+      const { rows: categoryRows } = await pool.query('SELECT id FROM categories LIMIT 100')
+      if (categoryRows.length > 0) {
+        categoryIds = categoryRows.map((row) => row.id)
+      } else {
+        console.warn('No categories found for feed categories')
+        return []
+      }
+    } catch (error) {
+      console.error('Error fetching category IDs:', error)
+      return []
+    }
+  }
+
+  // If we still don't have feeds or categories, return empty array
+  if (feedIds.length === 0 || categoryIds.length === 0) {
+    console.warn('Could not find feeds or categories for feed_categories')
+    return []
+  }
+
+  // Create unique feed-category pairs to avoid duplicates
+  const feedCategoryPairs = new Set<string>()
+  const feedCategories = [] as any[]
+
+  // Each feed can have 1-3 categories
+  for (const feedId of feedIds) {
+    // Randomly select 1-3 categories for this feed
+    const numCategories = faker.number.int({ min: 1, max: Math.min(3, categoryIds.length) })
+    const shuffledCategories = faker.helpers.shuffle([...categoryIds]).slice(0, numCategories)
+
+    for (const categoryId of shuffledCategories) {
+      const pairKey = `${feedId}-${categoryId}`
+      if (!feedCategoryPairs.has(pairKey)) {
+        feedCategoryPairs.add(pairKey)
+
+        feedCategories.push({
+          id: generateUUID(),
+          created_at: faker.date.past(),
+          feed_id: feedId,
+          category_id: categoryId,
+        })
+      }
+    }
+  }
+
+  await bulkInsert(pool, 'feed_categories', feedCategories)
+  return feedCategories
 }

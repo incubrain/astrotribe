@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
-import { bulkInsert, generateUUID } from './helpers'
+import { bulkInsert, generateUUID } from '../utils'
 
 export async function seedAdVariants(pool: Pool, adIds: string[]) {
   const variants = adIds.flatMap((adId) =>
