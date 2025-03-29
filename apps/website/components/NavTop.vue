@@ -41,7 +41,11 @@ const isMobileMenuOpen = ref(false)
 const isMobile = ref(false)
 const isScrolled = ref(false)
 
-// Static data
+// These track which menu items are expanded in mobile view
+const expandedItems = ref<Record<number, boolean>>({})
+const expandedSubItems = ref<Record<string, boolean>>({})
+
+// Static data - including the nested structure for conferences and symposiums
 const websiteLinks: NavItem[] = [
   {
     key: 'about-us',
@@ -141,10 +145,10 @@ const websiteLinks: NavItem[] = [
     disabled: false,
     items: [
       {
-        key: 'telescope_workshop_2025',
-        label: 'Telescope Workshop 2025',
+        key: 'telescope_workshop',
+        label: 'Telescope Workshop',
         icon: 'i-mdi-telescope',
-        url: '/events/telescope-workshop-2025',
+        url: '/events/telescope-workshop',
         visible: true,
         disabled: false,
       },
@@ -158,7 +162,7 @@ const websiteLinks: NavItem[] = [
     disabled: false,
     items: [
       {
-        key: 'darkskyAbout',
+        key: 'darksky-about',
         label: 'About',
         icon: 'i-mdi-weather-night',
         url: '/darksky',
@@ -166,20 +170,40 @@ const websiteLinks: NavItem[] = [
         disabled: false,
       },
       {
-        key: 'conferences',
+        key: 'darksky-conferences',
         label: 'Conferences',
         icon: 'i-mdi-presentation',
         url: '/conferences',
         visible: true,
         disabled: false,
+        items: [
+          {
+            key: 'dark-sky-conference-2023',
+            label: 'DSCI Conference 2023',
+            icon: 'i-mdi-calendar-star',
+            url: '/conferences/dark-sky-conference-2023',
+            visible: true,
+            disabled: false,
+          },
+        ],
       },
       {
-        key: 'symposiums',
+        key: 'darksky-symposiums',
         label: 'Symposiums',
         icon: 'i-mdi-school-outline',
         url: '/symposiums',
         visible: true,
         disabled: false,
+        items: [
+          {
+            key: 'symposium-2025',
+            label: 'IDSPS Symposium 2025',
+            icon: 'i-mdi-calendar-star',
+            url: '/symposiums/symposium-2025',
+            visible: true,
+            disabled: false,
+          },
+        ],
       },
     ],
   },
@@ -243,6 +267,21 @@ onBeforeUnmount(() => {
 // 11. Methods
 function checkMobile() {
   isMobile.value = window.innerWidth < 1024
+}
+
+// Toggle mobile submenu visibility
+function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
+  if (level === 'main') {
+    expandedItems.value = {
+      ...expandedItems.value,
+      [index as number]: !expandedItems.value[index as number],
+    }
+  } else {
+    expandedSubItems.value = {
+      ...expandedSubItems.value,
+      [index as string]: !expandedSubItems.value[index as string],
+    }
+  }
 }
 </script>
 
@@ -312,24 +351,54 @@ function checkMobile() {
               </div>
             </button>
 
-            <!-- Dropdown for desktop -->
+            <!-- Dropdown for desktop (Level 1) -->
             <div
               v-if="item.items && item.items.length"
-              class="dropdown-menu absolute top-full left-0 mt-1 w-48 rounded-md shadow-lg border border-primary-100/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible"
+              class="dropdown-menu absolute top-full left-0 mt-1 w-48 rounded-md shadow-lg border border-primary-100/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible z-50"
             >
               <div class="py-1">
                 <NuxtLink
                   v-for="subItem in item.items"
                   :key="subItem.key"
                   :to="subItem.url || '/'"
-                  class="block px-4 py-2 text-sm text-gray-100 hover:bg-primary-50/50 hover:text-primary-600"
+                  class="block px-4 py-2 text-sm text-gray-100 hover:bg-primary-50/50 hover:text-primary-600 relative group/sub"
                 >
-                  <div class="flex items-center gap-2">
+                  <div class="flex items-center gap-2 justify-between">
+                    <div class="flex items-center gap-2">
+                      <Icon
+                        :name="subItem.icon"
+                        class="w-4 h-4"
+                      />
+                      <span>{{ subItem.label }}</span>
+                    </div>
                     <Icon
-                      :name="subItem.icon"
+                      v-if="subItem.items && subItem.items.length"
+                      name="i-mdi-chevron-right"
                       class="w-4 h-4"
                     />
-                    <span>{{ subItem.label }}</span>
+                  </div>
+
+                  <!-- Dropdown for desktop (Level 2) -->
+                  <div
+                    v-if="subItem.items && subItem.items.length"
+                    class="dropdown-submenu absolute left-full top-0 mt-0 ml-0 w-56 rounded-md shadow-lg border border-primary-100/10 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible"
+                  >
+                    <div class="py-1">
+                      <NuxtLink
+                        v-for="childItem in subItem.items"
+                        :key="childItem.key"
+                        :to="childItem.url || '/'"
+                        class="block px-4 py-2 text-sm text-gray-100 hover:bg-primary-50/50 hover:text-primary-600"
+                      >
+                        <div class="flex items-center gap-2">
+                          <Icon
+                            :name="childItem.icon"
+                            class="w-4 h-4"
+                          />
+                          <span>{{ childItem.label }}</span>
+                        </div>
+                      </NuxtLink>
+                    </div>
                   </div>
                 </NuxtLink>
               </div>
@@ -405,13 +474,14 @@ function checkMobile() {
     >
       <div class="px-2 pt-2 pb-3 space-y-1">
         <div
-          v-for="item in websiteLinks"
+          v-for="(item, index) in websiteLinks"
           :key="item.key"
           class="mobile-nav-item"
         >
+          <!-- Main nav item with dropdown toggle -->
           <div
             class="px-3 py-2 rounded-md text-white font-medium cursor-pointer"
-            @click="item.url ? navigateTo(item.url) : null"
+            @click="toggleMobileSubMenu(index, 'main')"
           >
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
@@ -423,30 +493,71 @@ function checkMobile() {
               </div>
               <Icon
                 v-if="item.items && item.items.length"
-                name="i-mdi-chevron-down"
+                :name="expandedItems[index] ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down'"
                 size="20"
               />
             </div>
           </div>
 
+          <!-- Level 1 submenu -->
           <div
-            v-if="item.items && item.items.length"
+            v-if="item.items && item.items.length && expandedItems[index]"
             class="pl-4 mt-1 space-y-1"
           >
-            <NuxtLink
-              v-for="subItem in item.items"
+            <div
+              v-for="(subItem, subIndex) in item.items"
               :key="subItem.key"
-              :to="subItem.url || '/'"
-              class="block px-3 py-2 rounded-md text-white text-sm"
             >
-              <div class="flex items-center gap-2">
+              <!-- Level 1 item with potential level 2 dropdown -->
+              <div
+                class="flex items-center justify-between px-3 py-2 rounded-md text-white text-sm cursor-pointer"
+                @click="
+                  subItem.items && subItem.items.length
+                    ? toggleMobileSubMenu(`${index}-${subIndex}`, 'sub')
+                    : navigateTo(subItem.url || '/')
+                "
+              >
+                <div class="flex items-center gap-2">
+                  <Icon
+                    :name="subItem.icon"
+                    size="20"
+                  />
+                  <span>{{ subItem.label }}</span>
+                </div>
                 <Icon
-                  :name="subItem.icon"
-                  size="20"
+                  v-if="subItem.items && subItem.items.length"
+                  :name="
+                    expandedSubItems[`${index}-${subIndex}`]
+                      ? 'i-mdi-chevron-up'
+                      : 'i-mdi-chevron-down'
+                  "
+                  size="16"
                 />
-                <span>{{ subItem.label }}</span>
               </div>
-            </NuxtLink>
+
+              <!-- Level 2 submenu -->
+              <div
+                v-if="
+                  subItem.items && subItem.items.length && expandedSubItems[`${index}-${subIndex}`]
+                "
+                class="pl-4 mt-1 space-y-1"
+              >
+                <NuxtLink
+                  v-for="childItem in subItem.items"
+                  :key="childItem.key"
+                  :to="childItem.url || '/'"
+                  class="block px-3 py-2 rounded-md text-white text-xs"
+                >
+                  <div class="flex items-center gap-2">
+                    <Icon
+                      :name="childItem.icon"
+                      size="16"
+                    />
+                    <span>{{ childItem.label }}</span>
+                  </div>
+                </NuxtLink>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -483,10 +594,16 @@ function checkMobile() {
 </template>
 
 <style scoped>
-.dropdown-menu {
+.dropdown-menu,
+.dropdown-submenu {
   background-color: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(12px);
   transition: all 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  z-index: 50;
+}
+
+.dropdown-submenu {
+  margin-left: 1px; /* Small offset to prevent flickering */
 }
 
 /* Remove animations that could cause flicker */
