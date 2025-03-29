@@ -8,36 +8,54 @@ export async function seedComments(pool: Pool, userIds: string[], contentIds: st
     return []
   }
 
-  const comments = contentIds.flatMap((contentId) =>
-    Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => ({
+  console.log(`Generating comments with ${userIds.length} users and ${contentIds.length} content items`)
+
+  try {
+    // Generate main comments
+    const comments = contentIds.flatMap((contentId) =>
+      Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => ({
+        id: generateUUID(),
+        comment_text: faker.lorem.paragraph(),
+        user_id: faker.helpers.arrayElement(userIds),
+        content_id: contentId,
+        parent_comment_id: null,
+        created_at: new Date(faker.date.past()),
+        updated_at: new Date(faker.date.recent()),
+        deleted_at: null,
+        is_active: true,
+      })),
+    )
+
+    console.log(`Generated ${comments.length} main comments`)
+
+    // Add some nested comments (replies) - about 20% of comments will be replies
+    const parentComments = comments.slice(0, Math.floor(comments.length * 0.8))
+    const nestedComments = Array.from({ length: Math.floor(comments.length * 0.2) }, () => ({
       id: generateUUID(),
-      comment_text: faker.lorem.paragraph(), // Changed from 'content' to 'comment_text' based on schema
+      comment_text: faker.lorem.paragraph(),
       user_id: faker.helpers.arrayElement(userIds),
-      content_id: contentId,
-      parent_comment_id: null, // Most comments don't have a parent
-      created_at: faker.date.past(),
-      updated_at: faker.date.recent(),
+      content_id: faker.helpers.arrayElement(contentIds),
+      parent_comment_id: faker.helpers.arrayElement(parentComments).id,
+      created_at: new Date(faker.date.recent()),
+      updated_at: new Date(faker.date.recent()),
       deleted_at: null,
       is_active: true,
-    })),
-  )
+    }))
 
-  // Add some nested comments (replies) - about 20% of comments will be replies
-  const parentComments = comments.slice(0, Math.floor(comments.length * 0.8))
-  const nestedComments = Array.from({ length: Math.floor(comments.length * 0.2) }, () => ({
-    id: generateUUID(),
-    comment_text: faker.lorem.paragraph(),
-    user_id: faker.helpers.arrayElement(userIds),
-    content_id: faker.helpers.arrayElement(contentIds),
-    parent_comment_id: faker.helpers.arrayElement(parentComments).id,
-    created_at: faker.date.recent(),
-    updated_at: faker.date.recent(),
-    deleted_at: null,
-    is_active: true,
-  }))
+    console.log(`Generated ${nestedComments.length} nested comments (replies)`)
 
-  const allComments = [...comments, ...nestedComments]
+    // Combine main comments and nested comments
+    const allComments = [...comments, ...nestedComments]
 
-  await bulkInsert(pool, 'comments', allComments)
-  return allComments
+    // Log a sample comment for debugging
+    if (allComments.length > 0) {
+      console.log('Sample comment:', JSON.stringify(allComments[0], null, 2))
+    }
+
+    await bulkInsert(pool, 'comments', allComments)
+    return allComments
+  } catch (error) {
+    console.error('Error in seedComments:', error)
+    throw error
+  }
 }

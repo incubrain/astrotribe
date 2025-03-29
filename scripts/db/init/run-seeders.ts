@@ -107,7 +107,12 @@ export async function runSeeders() {
       seed.seedBlacklistedDomains(client, config.counts.blacklistedDomains),
     )
 
-    // 5. Seed companies and related data
+    // 5. First seed social media before companies
+    const socialMedia = await checkAndSeed(client, 'social_media', () =>
+      seed.seedSocialMedia(client, config.counts.socialMedia),
+    )
+
+    // Then seed companies which depend on social_media
     const companies = await checkAndSeed(client, 'companies', () =>
       seed.seedCompanies(client, config.counts.companies),
     )
@@ -133,10 +138,6 @@ export async function runSeeders() {
       seed.seedContentSources(client, 100),
     )
     const contentSourceIds = contentSources.map((cs) => cs.id)
-
-    const socialMedia = await checkAndSeed(client, 'social_media', () =>
-      seed.seedSocialMedia(client, companyIds),
-    )
 
     // 6. Seed company related details
     await checkAndSeed(client, 'company_employees', () =>
@@ -181,27 +182,25 @@ export async function runSeeders() {
       seed.seedAdPackages(client, 100),
     )
 
+    // Make sure we have the ads seeded before ad variants
     const ads = await checkAndSeed(client, 'ads', () =>
-      seed.seedAds(
-        client,
-        companyIds,
-        adPackages.map((p) => p.id),
-      ),
+      seed.seedAds(client, companyIds, adPackages.map((p) => p.id)),
     )
 
+    // Seed ad-related tables
     const adVariants = await checkAndSeed(client, 'ad_variants', () =>
-      seed.seedAdVariants(
-        client,
-        ads.map((a) => a.id),
-      ),
+      seed.seedAdVariants(client, ads.map((a) => a.id)),
     )
 
     await checkAndSeed(client, 'ad_daily_metrics', () =>
-      seed.seedAdDailyMetrics(
-        client,
-        adVariants.map((v) => v.id),
-      ),
+      seed.seedAdDailyMetrics(client, adVariants.map((v) => v.id)),
     )
+
+    await checkAndSeed(client, 'jobs', () =>
+      seed.seedJobs(client, companyIds, 100),
+    )
+
+    await checkAndSeed(client, 'follows', () => seed.seedFollows(client, userIds, companyIds))
 
     // 9. Seed content relationships
     await checkAndSeed(client, 'content_tags', () =>
@@ -248,6 +247,7 @@ export async function runSeeders() {
 
     await checkAndSeed(client, 'votes', () => seed.seedVotes(client, userIds, allContentIds))
 
+    // 13. Seed feature requests and votes
     const featureRequests = await checkAndSeed(client, 'feature_requests', () =>
       seed.seedFeatureRequests(client),
     )
@@ -258,11 +258,41 @@ export async function runSeeders() {
       seed.seedFeatureVotes(client, userIds, featureRequestIds),
     )
 
-    await checkAndSeed(client, 'jobs', () =>
-      seed.seedJobs(client, allContentIds, companyIds, contentSourceIds, 100),
+    // Seed company-related tables
+    await checkAndSeed(client, 'company_employees', () =>
+      seed.seedCompanyEmployees(client, companyIds, userIds),
     )
 
-    await checkAndSeed(client, 'follows', () => seed.seedFollows(client, userIds, companyIds))
+    await checkAndSeed(client, 'company_extras', () =>
+      seed.seedCompanyExtras(client, companyIds, 50),
+    )
+
+    await checkAndSeed(client, 'company_metrics', () =>
+      seed.seedCompanyMetrics(client, companyIds),
+    )
+
+    await checkAndSeed(client, 'company_contacts', () =>
+      seed.seedCompanyContacts(client, companyIds, userIds),
+    )
+
+    // Seed contact-related tables
+    await checkAndSeed(client, 'contacts', () =>
+      seed.seedContacts(client, userIds),
+    )
+
+    // Seed newsletter-related tables
+    await checkAndSeed(client, 'newsletters', () =>
+      seed.seedNewsletters(client),
+    )
+
+    // Seed ad-related tables
+    await checkAndSeed(client, 'ad_variants', () =>
+      seed.seedAdVariants(client, ads.map((a) => a.id)),
+    )
+
+    await checkAndSeed(client, 'ad_daily_metrics', () =>
+      seed.seedAdDailyMetrics(client, adVariants.map((v) => v.id)),
+    )
 
     // 14. Seed feeds and feed categories
     const feeds = await checkAndSeed(client, 'feeds', () => seed.seedFeeds(client, userIds))

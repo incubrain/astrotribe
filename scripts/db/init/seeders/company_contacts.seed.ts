@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
-import { bulkInsert } from '../utils'
+import { bulkInsert, generateUUID } from '../utils'
 
 export async function seedCompanyContacts(
   pool: Pool,
@@ -14,28 +14,44 @@ export async function seedCompanyContacts(
     return []
   }
 
-  // Generate unique combinations of company_id and contact_id
-  const companyContactPairs = new Set()
+  console.log(`Generating company contacts with ${companyIds.length} companies and ${contactIds.length} contacts`)
 
-  // Create a mapping to ensure we don't create duplicates
-  while (companyContactPairs.size < Math.min(count, companyIds.length * contactIds.length)) {
-    const companyId = faker.helpers.arrayElement(companyIds)
-    const contactId = faker.helpers.arrayElement(contactIds)
-    companyContactPairs.add(`${companyId}-${contactId}`)
-  }
+  try {
+    // Generate unique combinations of company_id and contact_id
+    const companyContactPairs = new Set()
 
-  const companyContacts = [...companyContactPairs].map((pair, index) => {
-    const [companyId, contactId] = (pair as string).split('-')
-
-    return {
-      id: index + 1, // Using sequential IDs since the schema uses integer
-      contact_id: parseInt(contactId, 10),
-      created_at: faker.date.past(),
-      updated_at: faker.date.recent(),
-      company_id: companyId,
+    // Create a mapping to ensure we don't create duplicates
+    while (companyContactPairs.size < Math.min(count, companyIds.length * contactIds.length)) {
+      const companyId = faker.helpers.arrayElement(companyIds)
+      const contactId = faker.helpers.arrayElement(contactIds)
+      companyContactPairs.add(`${companyId}-${contactId}`)
     }
-  })
 
-  await bulkInsert(pool, 'company_contacts', companyContacts)
-  return companyContacts
+    const companyContacts = [...companyContactPairs].map((pair) => {
+      const [companyId, contactId] = (pair as string).split('-')
+
+      return {
+        id: generateUUID(),
+        contact_id: contactId,
+        created_at: new Date(faker.date.past()),
+        updated_at: new Date(faker.date.recent()),
+        company_id: companyId,
+        // Note: The schema has a duplicate company_id column which is problematic.
+        // We're only setting one company_id field as the database should handle this correctly.
+      }
+    })
+
+    console.log(`Generated ${companyContacts.length} company contacts`)
+    
+    // Log a sample company contact for debugging
+    if (companyContacts.length > 0) {
+      console.log('Sample company contact:', JSON.stringify(companyContacts[0], null, 2))
+    }
+
+    await bulkInsert(pool, 'company_contacts', companyContacts)
+    return companyContacts
+  } catch (error) {
+    console.error('Error in seedCompanyContacts:', error)
+    throw error
+  }
 }

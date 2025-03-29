@@ -3,11 +3,10 @@
 import chalk from 'chalk'
 import permissionsConfig from '../generated/role-permissions.json'
 import client from '../client'
-import { generatePermissions } from '../update/generate-permissions'
 import { databaseConfig } from './1.config'
 import { setAdminUser } from './create-admin'
 import { updateDatabasePermissions } from './upsert-permissions'
-import { runSeeders } from './seeders/run-seeders'
+import { runSeeders } from './run-seeders'
 import { refreshDatabaseViews } from './refresh-views'
 
 async function main() {
@@ -29,14 +28,7 @@ async function main() {
       await setAdminUser(client, databaseConfig.admins)
     }
 
-    // 3. Generate Permissions
-    if (databaseConfig.steps.generatePermissions) {
-      console.log(chalk.blue('\n🔑 Generating new permissions configuration...'))
-      await generatePermissions()
-      console.log(chalk.green('✓ Permissions configuration generated'))
-    }
-
-    // 4. Update Database Permissions
+    // 3. Update Database Permissions
     if (databaseConfig.steps.updatePermissions) {
       console.log(chalk.blue('\n🔑 Updating database permissions...'))
       const permissionsUpdated = await updateDatabasePermissions(client, permissionsConfig)
@@ -47,7 +39,6 @@ async function main() {
     }
 
     // Refresh database views
-
     if (databaseConfig.steps.refreshViews) {
       // Add this to your config
       console.log(chalk.blue('\n🔄 Refreshing database views...'))

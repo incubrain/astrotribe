@@ -52,8 +52,10 @@ export async function seedCategorizedURLs(
       found_on: faker.helpers.maybe(() => `https://${faker.internet.domainName()}`, {
         probability: 0.7,
       }),
-      url: url,
-      priority: faker.number.int({ min: 1, max: 5 }),
+      url,
+      // The priority column is of type 'priority' (enum)
+      // Valid values: very_low, low, medium, high, critical
+      priority: faker.helpers.arrayElement(['very_low', 'low', 'medium', 'high', 'critical']),
       content_error_count: faker.number.int({ min: 0, max: 5 }),
       error_count: faker.number.int({ min: 0, max: 10 }),
       last_content_error: faker.helpers.maybe(() => `Error: ${faker.lorem.sentence()}`, { probability: 0.3 }),
