@@ -18,6 +18,22 @@ export interface PlanetMoon {
   description: string
 }
 
+export interface Timeline {
+  year: string
+  event: string
+}
+
+export interface MythologyInfo {
+  name: string
+  origin: string
+  description: string
+  significance: string
+}
+
+export interface DidYouKnow {
+  fact: string
+}
+
 export interface Planet {
   id: string
   name: string
@@ -25,6 +41,9 @@ export interface Planet {
   resources: Resource[]
   moons: PlanetMoon[]
   image: string
+  mythology: MythologyInfo
+  timeline: Timeline[]
+  didYouKnow: string[]
   missions: {
     previous: Mission[]
     upcoming: Mission[]
