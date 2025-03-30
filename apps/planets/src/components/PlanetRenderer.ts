@@ -75,6 +75,14 @@ export class PlanetRenderer {
     // Ambient light for overall illumination
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.4)
     this.scene.add(ambientLight)
+
+    // If we're rendering the Sun, add a special glow effect
+    if (this.config.isStar) {
+      // Add a subtle point light at the center to enhance the glow effect
+      const sunLight = new THREE.PointLight(this.config.color, 1.5, 3, 1)
+      sunLight.position.set(0, 0, 0)
+      this.scene.add(sunLight)
+    }
   }
 
   private createPlanet(): THREE.Mesh {
@@ -87,6 +95,13 @@ export class PlanetRenderer {
       metalness: 0.2,
       color: this.config.color,
     })
+
+    // Apply emissive properties for the Sun or other emissive objects
+    if (this.config.emissive) {
+      material.emissive = new THREE.Color(this.config.color)
+      material.emissiveIntensity = this.config.emissiveIntensity || 0.5
+      material.roughness = 0.3 // Lower roughness for more glow effect
+    }
 
     // Create mesh
     const mesh = new THREE.Mesh(geometry, material)

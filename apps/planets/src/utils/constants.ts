@@ -8,6 +8,9 @@ export interface PlanetConfig {
   color: string // Accent color for UI
   hasRings?: boolean // For Saturn
   ringsTexturePath?: string
+  isStar?: boolean // For the Sun
+  emissive?: boolean // For objects that emit light
+  emissiveIntensity?: number // Intensity of emitted light
 }
 
 export interface ConfigOverrides {
@@ -20,6 +23,17 @@ export const DEFAULT_SIZE = 0.15 // Same size for all planets
 export const DEFAULT_ROTATION_PERIOD = 120 // 2 minutes for all planets by default
 
 export const PLANETS: Record<string, PlanetConfig> = {
+  sun: {
+    id: 'sun',
+    name: 'Sun',
+    texturePath: '/textures/sun_map.jpg',
+    rotationPeriod: DEFAULT_ROTATION_PERIOD,
+    axialTilt: 7.25,
+    color: '#FDB813',
+    isStar: true,
+    emissive: true,
+    emissiveIntensity: 0.8,
+  },
   mercury: {
     id: 'mercury',
     name: 'Mercury',
