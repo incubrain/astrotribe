@@ -22,3 +22,67 @@ canvas {
   outline: none; /* Remove focus border */
   display: block; /* Ensure it takes up space */
 }
+
+/* Tab Navigation */
+#tab-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.planet-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.planet-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.planet-tab:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.planet-tab.active {
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.planet-color-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.planet-name {
+  font-weight: 500;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .planet-tabs {
+    gap: 5px;
+  }
+  
+  .planet-tab {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+}
