@@ -12,7 +12,7 @@ if (!canvas) {
 }
 
 // Initialize variables
-let currentPlanetId = 'jupiter' // Default to Jupiter
+let currentPlanetId = 'sun' // Default to Sun
 let planetRenderer: PlanetRenderer | null = null
 
 // Create tab navigation
