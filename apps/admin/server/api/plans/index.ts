@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   try {
     const plans = await razorpay.plans.all()
     return { plans: plans.items, count: plans.count }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error Getting Plans From Razorpay', error)
   }
 })

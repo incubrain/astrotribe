@@ -8,11 +8,13 @@ export async function seedCompanyEmployees(pool: Pool, companyIds: string[], use
     return []
   }
 
-  console.log(`Generating company employees for ${companyIds.length} companies with ${userIds.length} users`)
+  console.log(
+    `Generating company employees for ${companyIds.length} companies with ${userIds.length} users`,
+  )
 
   try {
     const accessLevels = ['read', 'write', 'admin', 'owner']
-    
+
     const employees = companyIds.flatMap((companyId) =>
       Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => ({
         id: generateUUID(),
@@ -30,7 +32,7 @@ export async function seedCompanyEmployees(pool: Pool, companyIds: string[], use
     )
 
     console.log(`Generated ${employees.length} company employees`)
-    
+
     // Log a sample employee for debugging
     if (employees.length > 0) {
       console.log('Sample company employee:', JSON.stringify(employees[0], null, 2))
@@ -38,7 +40,7 @@ export async function seedCompanyEmployees(pool: Pool, companyIds: string[], use
 
     await bulkInsert(pool, 'company_employees', employees)
     return employees
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in seedCompanyEmployees:', error)
     throw error
   }

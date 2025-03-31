@@ -31,9 +31,10 @@ export async function seedCompanyMetrics(
     ]
 
     // Use provided metric definition IDs or default ones
-    const metricIds = metricDefinitionIds.length > 0 ? 
-      metricDefinitionIds : 
-      defaultMetricTypes.map((metric) => metric.id)
+    const metricIds =
+      metricDefinitionIds.length > 0
+        ? metricDefinitionIds
+        : defaultMetricTypes.map((metric) => metric.id)
 
     const metrics = Array.from({ length: count }, (_, index) => {
       const metricId = faker.helpers.arrayElement(metricIds)
@@ -93,7 +94,7 @@ export async function seedCompanyMetrics(
 
     await bulkInsert(pool, 'company_metrics', metrics)
     return metrics
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in seedCompanyMetrics:', error)
     throw error
   }

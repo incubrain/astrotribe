@@ -25,7 +25,7 @@ export async function seedCategorizedURLs(
         )
         domainIds = [dummyDomainId]
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching business domains:', error)
       // Create a dummy domain ID
       const dummyDomainId = generateUUID()
@@ -58,8 +58,12 @@ export async function seedCategorizedURLs(
       priority: faker.helpers.arrayElement(['very_low', 'low', 'medium', 'high', 'critical']),
       content_error_count: faker.number.int({ min: 0, max: 5 }),
       error_count: faker.number.int({ min: 0, max: 10 }),
-      last_content_error: faker.helpers.maybe(() => `Error: ${faker.lorem.sentence()}`, { probability: 0.3 }),
-      last_error: faker.helpers.maybe(() => `Error: ${faker.lorem.sentence()}`, { probability: 0.3 }),
+      last_content_error: faker.helpers.maybe(() => `Error: ${faker.lorem.sentence()}`, {
+        probability: 0.3,
+      }),
+      last_error: faker.helpers.maybe(() => `Error: ${faker.lorem.sentence()}`, {
+        probability: 0.3,
+      }),
       content_hash: faker.helpers.maybe(() => faker.git.commitSha(), { probability: 0.8 }),
       updated_at: faker.date.recent(),
       ...companyField,

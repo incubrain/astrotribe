@@ -33,11 +33,7 @@ export abstract class BaseCacheManager {
     const lockKey = `lock:${key}`
     const token = Math.random().toString(36).slice(2)
 
-    const acquired = await this.redis
-      .multi()
-      .set(lockKey, token)
-      .expire(lockKey, ttl)
-      .exec()
+    const acquired = await this.redis.multi().set(lockKey, token).expire(lockKey, ttl).exec()
 
     return acquired ? token : null
   }
@@ -70,7 +66,7 @@ export abstract class BaseCacheManager {
     try {
       await this.redis.ping()
       return true
-    } catch (error) {
+    } catch (error: any) {
       return false
     }
   }

@@ -1,9 +1,0 @@
-{
-  "extends": ["../../shared/tsconfig.web.json", "./.nuxt/tsconfig.json"],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "types": ["node"]
-  },
-  "include": ["./**/*"],
-  "exclude": ["node_modules", "dist"]
-}

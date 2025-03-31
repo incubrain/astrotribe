@@ -58,7 +58,7 @@ export async function seedVotes(pool: Pool, userIds: string[], contentIds: strin
         votes.splice(i, 1)
       }
     }
-  } catch (error) {
+  } catch (error: any) {
     console.warn('Error checking existing votes:', error)
   }
 

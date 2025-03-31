@@ -89,7 +89,7 @@ const freePlan = {
   },
   razorPayConfig: {
     isActive: true,
-    buttonLabel: `Current Plan`,
+    buttonLabel: 'Current Plan',
   },
   isActive: true,
   availableFrom: null,
@@ -140,7 +140,7 @@ const plans = computed<PlanConfig>(() =>
                   break
                 case 'pending':
                   isActive = true
-                  buttonLabel = `Please Update Payment Method`
+                  buttonLabel = 'Please Update Payment Method'
                   break
                 default:
                   buttonLabel = `Subscribe to ${item.name} (${period})`
@@ -217,7 +217,7 @@ onMounted(async () => {
       status: { notIn: ['cancelled', 'expired'] },
     })
     plansData.value = await razorpay.fetchPlans()
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching subscriptions:', error)
   } finally {
     loading.value = false
@@ -360,8 +360,8 @@ onMounted(async () => {
       </div> -->
     </SettingsCard>
     <div
-      class="flex items-center justify-center"
       v-if="loading"
+      class="flex items-center justify-center"
     >
       <PrimeProgressSpinner />
     </div>

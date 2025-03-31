@@ -12,7 +12,7 @@ export const usePopup = (trackingId: string) => {
     try {
       isVisible.value = true
       await handleView()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error showing popup:', error)
     }
   }

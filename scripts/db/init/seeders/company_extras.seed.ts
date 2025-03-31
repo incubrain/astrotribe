@@ -53,7 +53,7 @@ export async function seedCompanyExtras(pool: Pool, companyIds: string[], count:
     })
 
     console.log(`Generated ${companyExtras.length} company extras`)
-    
+
     // Log a sample company extra for debugging
     if (companyExtras.length > 0) {
       console.log('Sample company extra:', JSON.stringify(companyExtras[0], null, 2))
@@ -61,7 +61,7 @@ export async function seedCompanyExtras(pool: Pool, companyIds: string[], count:
 
     await bulkInsert(pool, 'company_extras', companyExtras)
     return companyExtras
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in seedCompanyExtras:', error)
     throw error
   }

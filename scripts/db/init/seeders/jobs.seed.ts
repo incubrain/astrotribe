@@ -12,7 +12,7 @@ export async function seedJobs(pool: Pool, companyIds: string[] = [], count: num
       count,
     ])
     contentsIds = rows.map((row) => row.id)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching content IDs:', error)
   }
 
@@ -36,7 +36,7 @@ export async function seedJobs(pool: Pool, companyIds: string[] = [], count: num
         contentsIds = [...contentsIds, ...newContents.map((c) => c.id)]
         console.log(`Created ${newContents.length} new content entries`)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating content entries:', error)
     }
   }
@@ -58,7 +58,7 @@ export async function seedJobs(pool: Pool, companyIds: string[] = [], count: num
   try {
     const { rows } = await pool.query('SELECT id FROM content_sources LIMIT 10')
     contentSourceIds = rows.map((row) => row.id)
-  } catch (error) {
+  } catch (error: any) {
     console.log('No content sources found or error fetching them:', error)
   }
 
@@ -79,7 +79,11 @@ export async function seedJobs(pool: Pool, companyIds: string[] = [], count: num
       scraped_at: faker.date.recent(),
       updated_at: faker.date.recent(),
       created_at: faker.date.past(),
-      content_status: faker.helpers.arrayElement(['draft', 'published', 'archived']) as ContentStatus,
+      content_status: faker.helpers.arrayElement([
+        'draft',
+        'published',
+        'archived',
+      ]) as ContentStatus,
       url: faker.internet.url(),
       hash: faker.number.int({ min: 1000000000, max: 9999999999 }),
       metadata: JSON.stringify({

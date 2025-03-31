@@ -35,7 +35,7 @@ export async function seedAdDailyMetrics(pool: Pool, variantIds: string[]) {
 
     await bulkInsert(pool, 'ad_daily_metrics', metrics)
     return metrics
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in seedAdDailyMetrics:', error)
     throw error
   }

@@ -81,7 +81,7 @@ export class LogGateway extends BaseGateway implements OnGatewayConnection, OnGa
         clientId: client.id,
         timestamp: new Date().toISOString(),
       })
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Error handling client connection', {
         error,
         clientId: client.id,
@@ -109,7 +109,7 @@ export class LogGateway extends BaseGateway implements OnGatewayConnection, OnGa
       this.logger.log('Client disconnected from log stream', {
         clientId: client.id,
       })
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Error handling client disconnect', {
         error,
         clientId: client.id,
@@ -156,7 +156,7 @@ export class LogGateway extends BaseGateway implements OnGatewayConnection, OnGa
           timestamp: new Date().toISOString(),
         },
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Error handling subscription', {
         error,
         clientId: client.id,
@@ -203,7 +203,7 @@ export class LogGateway extends BaseGateway implements OnGatewayConnection, OnGa
         severity: log.severity,
         rooms: roomPatterns,
       })
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Error broadcasting log', {
         error,
         log,

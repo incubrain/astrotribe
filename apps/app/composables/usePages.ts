@@ -1,6 +1,12 @@
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
+declare global {
+  interface Window {
+    __APP_NAV?: NavigationCategory[]
+  }
+}
+
 export interface PageType {
   id: string
   label: string
@@ -249,7 +255,13 @@ export default function usePages() {
     myFeeds.children = shouldShowUpgrade ? [upgradePlan, ...feeds] : [createFeedItem, ...feeds]
   }
 
-  onMounted(initializeFeeds)
+  onMounted(() => {
+    initializeFeeds()
+
+    if (process.env.NODE_ENV !== 'production') {
+      window.__APP_NAV = navigationCategories.value
+    }
+  })
 
   return {
     appLinks: navigationCategories,

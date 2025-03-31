@@ -16,7 +16,7 @@ export const usePopupTracking = () => {
       if (type === 'view') {
         startTime.value = now
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error tracking popup event:', error)
     }
   }

@@ -67,7 +67,7 @@ export class BarrelGenerator {
       }
 
       this.logger.log('Barrel file generation completed successfully')
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(
         'Failed to generate barrel files',
         error instanceof Error ? error.stack : String(error),
@@ -122,7 +122,7 @@ export class BarrelGenerator {
       }
 
       return exports
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(
         `Error processing directory ${dirPath}:`,
         error instanceof Error ? error.stack : String(error),
@@ -156,7 +156,7 @@ export class BarrelGenerator {
     try {
       await fs.promises.writeFile(barrelPath, content)
       this.logger.debug(`Generated barrel file: ${barrelPath}`)
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(
         `Error writing barrel file ${barrelPath}:`,
         error instanceof Error ? error.stack : String(error),

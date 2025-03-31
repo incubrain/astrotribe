@@ -59,7 +59,7 @@ ${content}
     tsConfigFiles.forEach((file) => {
       console.log(`- ${path.relative(rootDir, file)}`)
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error collecting tsconfig files:', error)
   }
 }

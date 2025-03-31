@@ -35,7 +35,7 @@ try {
   execSync(command, { stdio: 'inherit' })
 
   console.log(`Restored from backup: ${backupFile}`)
-} catch (error) {
+} catch (error: any) {
   console.error('Restore failed:', error)
   process.exit(1)
 }

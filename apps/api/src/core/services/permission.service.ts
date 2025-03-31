@@ -39,7 +39,7 @@ export class PermissionService implements OnModuleInit {
       this.logger.log('Permission service initializing...')
       await this.loadRoleHierarchy()
       this.logger.log('Permission service initialized with role hierarchy')
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to initialize permission service', error)
       throw error // rethrow so Nest knows to fail startup
     }
@@ -77,7 +77,7 @@ export class PermissionService implements OnModuleInit {
       }
 
       return Array.from(allRoles)
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`Failed to get role hierarchy for ${role}`, error)
       return [role] // Return just the current role if hierarchy lookup fails
     }

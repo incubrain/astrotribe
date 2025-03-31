@@ -50,7 +50,7 @@ export class ErrorMetricService {
         data: frequency,
         timestamp: new Date().toISOString(),
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to get error frequency', { error })
       throw error
     }
@@ -88,7 +88,7 @@ export class ErrorMetricService {
         total: totalErrors._sum.error_count || 0,
         timestamp: new Date().toISOString(),
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to get error metrics', { error })
       throw error
     }
@@ -110,7 +110,7 @@ export class ErrorMetricService {
         data: stats,
         timestamp: new Date().toISOString(),
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to get error stats', { error })
       throw error
     }
@@ -125,7 +125,11 @@ export class ErrorMetricService {
         '30d': { days: 30, interval: 'day' },
       }
 
-      const { hours, days } = intervals[timeframe] as { hours?: number; days?: number; interval: string }
+      const { hours, days } = intervals[timeframe] as {
+        hours?: number
+        days?: number
+        interval: string
+      }
       const startDate = new Date()
       if (hours) startDate.setHours(startDate.getHours() - hours)
       if (days) startDate.setDate(startDate.getDate() - days)
@@ -159,7 +163,7 @@ export class ErrorMetricService {
         startDate: startDate.toISOString(),
         endDate: new Date().toISOString(),
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to get error trends', { error })
       throw error
     }

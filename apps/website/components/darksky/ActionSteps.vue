@@ -31,7 +31,7 @@ const togglePopover = (index: number, event: Event) => {
     if (popoverRefs.value[index]) {
       popoverRefs.value[index].toggle(event)
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error toggling popover:', error)
   }
 }

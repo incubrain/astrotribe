@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
     })
 
     return Array.from(routes)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error generating sitemap routes:', error)
     return []
   }

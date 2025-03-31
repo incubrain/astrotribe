@@ -51,7 +51,7 @@ const currentVote = computed(() => voteStore.getVoteType(props.news.id))
 const handleVote = async (voteType: number) => {
   try {
     await voteStore.submitVote(props.news.id, voteType, props.news.content_type)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error submitting vote:', error)
   }
 }
@@ -68,7 +68,7 @@ const toggleBookmark = async () => {
       url: props.news.url,
       author: props.news.author,
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error toggling bookmark:', error)
   }
 }

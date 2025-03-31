@@ -150,7 +150,7 @@ async function bootstrap() {
       console.error(`Port ${port} is already in use!`)
       process.exit(1)
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error checking port:', error)
   }
 
@@ -161,7 +161,7 @@ async function bootstrap() {
   try {
     await Promise.race([listenPromise, timeoutPromise])
     console.log('Listen successful!')
-  } catch (error) {
+  } catch (error: any) {
     console.error('Listen failed or timed out:', error)
     throw error
   }

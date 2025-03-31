@@ -34,7 +34,7 @@ const handleClick = async () => {
     setTimeout(() => {
       showFeedback.value = false
     }, 1500)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to toggle bookmark:', error)
   }
 }

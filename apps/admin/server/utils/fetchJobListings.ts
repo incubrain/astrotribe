@@ -65,7 +65,7 @@ async function fetchPageWithJS(url: string): Promise<cheerio.CheerioAPI | null> 
         let totalHeight = 0
         const distance = 100
         const timer = setInterval(() => {
-          let scrollHeight = document.body.scrollHeight
+          const scrollHeight = document.body.scrollHeight
           window.scrollBy(0, distance)
           totalHeight += distance
 
@@ -78,12 +78,12 @@ async function fetchPageWithJS(url: string): Promise<cheerio.CheerioAPI | null> 
     })
 
     content = await page.content()
-  } catch (error) {
-    console.warn(`Failed with 'networkidle', retrying with 'domcontentloaded'...`)
+  } catch (error: any) {
+    console.warn("Failed with 'networkidle', retrying with 'domcontentloaded'...")
     try {
       await page.goto(url, { waitUntil: 'domcontentloaded' })
       content = await page.content()
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Both 'domcontentloaded' and 'networkidle' failed for ${url}:`, error)
     }
   }
@@ -110,7 +110,7 @@ async function fetchJobDetails(job: JobListing, site: JobSite): Promise<JobListi
     job.department = job.department || cleanText($(site.selectors.department).text())
     job.description = job.description || cleanText($(site.selectors.description).text())
     job.salary = job.salary || cleanText($(site.selectors.salary).text())
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error fetching job details for ${job.url}:`, error)
   }
   return job
@@ -174,7 +174,7 @@ async function fetchJobListings(site: JobSite): Promise<Company> {
     }
 
     return { name: site.name, jobs }
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error fetching job listings from ${site.name}:`, error)
     return { name: site.name, jobs: [] }
   }

@@ -122,7 +122,7 @@ const submitForm = async () => {
         life: 5000,
       })
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Form submission error:', error)
     submitError.value = true
     errorMessage.value = 'Network error. Please try again later.'

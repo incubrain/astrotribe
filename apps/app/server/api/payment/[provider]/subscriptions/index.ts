@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     }
 
     return data
-  } catch (error) {
+  } catch (error: any) {
     console.error('Get Subscriptions', error)
     return error
   }

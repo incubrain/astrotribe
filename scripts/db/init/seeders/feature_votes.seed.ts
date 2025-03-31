@@ -9,7 +9,9 @@ export async function seedFeatureVotes(pool: Pool, userIds: string[], featureReq
     return []
   }
 
-  console.log(`Generating feature votes with ${userIds.length} users and ${featureRequestIds.length} feature requests`)
+  console.log(
+    `Generating feature votes with ${userIds.length} users and ${featureRequestIds.length} feature requests`,
+  )
 
   try {
     // Generate a reasonable number of votes per feature request
@@ -26,7 +28,7 @@ export async function seedFeatureVotes(pool: Pool, userIds: string[], featureReq
     )
 
     console.log(`Generated ${votes.length} feature votes`)
-    
+
     // Log a sample vote for debugging
     if (votes.length > 0) {
       console.log('Sample vote:', JSON.stringify(votes[0], null, 2))
@@ -34,7 +36,7 @@ export async function seedFeatureVotes(pool: Pool, userIds: string[], featureReq
 
     await bulkInsert(pool, 'feature_votes', votes)
     return votes
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in seedFeatureVotes:', error)
     throw error
   }

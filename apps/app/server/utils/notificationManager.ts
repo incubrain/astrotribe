@@ -26,7 +26,7 @@ class NotificationService {
       const formattedMessage = this.formatMessage(message, severity, context)
       await this.sendToWhatsApp(formattedMessage)
       // log.info('Notification sent successfully', { severity, context })
-    } catch (error) {
+    } catch (error: any) {
       // log.error('Failed to send notification', { error, severity, context })
     }
   }

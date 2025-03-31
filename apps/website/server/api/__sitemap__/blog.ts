@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
         }
       })
     }
-  } catch (error) {
+  } catch (error: any) {
     // Log error but don't crash
     console.warn(
       '[sitemap] Failed to fetch articles:',

@@ -190,7 +190,7 @@ const persistPreferences = () => {
         order: props.isAscending,
       }),
     )
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to save sort preferences:', error)
   }
 }

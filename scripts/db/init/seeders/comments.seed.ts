@@ -8,7 +8,9 @@ export async function seedComments(pool: Pool, userIds: string[], contentIds: st
     return []
   }
 
-  console.log(`Generating comments with ${userIds.length} users and ${contentIds.length} content items`)
+  console.log(
+    `Generating comments with ${userIds.length} users and ${contentIds.length} content items`,
+  )
 
   try {
     // Generate main comments
@@ -54,7 +56,7 @@ export async function seedComments(pool: Pool, userIds: string[], contentIds: st
 
     await bulkInsert(pool, 'comments', allComments)
     return allComments
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in seedComments:', error)
     throw error
   }

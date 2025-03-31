@@ -41,7 +41,7 @@ export class RedisClient {
     try {
       this.client = new Redis(finalConfig)
       this.setupEventListeners()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to initialize Redis client:', error)
       throw error
     }

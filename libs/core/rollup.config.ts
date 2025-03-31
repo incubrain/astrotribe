@@ -35,7 +35,7 @@ export default async (config: RollupOptions): Promise<RollupOptions> => {
 
             console.log('Final package.json written to:', outputPath)
             console.log('Content:', JSON.stringify(transformedPackageJson, null, 2))
-          } catch (error) {
+          } catch (error: any) {
             console.error('Failed to process package.json:', error)
             throw error
           }

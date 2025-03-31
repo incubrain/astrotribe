@@ -84,7 +84,7 @@ export class LogService implements OnModuleInit {
         meta: this.paginationService.getPaginationMeta(total, query),
         created_at: new Date().toISOString(),
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to get recent logs', { error })
       throw error
     }
@@ -106,7 +106,7 @@ export class LogService implements OnModuleInit {
         .exec()
 
       await this.logGateway.broadcastLog(log)
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to process log', { error })
       throw error
     }
@@ -141,7 +141,7 @@ export class LogService implements OnModuleInit {
       })
 
       return stats
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to get log stats', { error })
       throw error
     }
@@ -187,7 +187,7 @@ export class LogService implements OnModuleInit {
 
       // Cleanup processed logs
       await Promise.all(logsToProcess.map((log) => this.redis.del(log.key)))
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to batch process logs', { error })
       throw error
     }
@@ -210,7 +210,7 @@ export class LogService implements OnModuleInit {
           await this.redis.del(key)
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to cleanup old logs', { error })
     }
   }
@@ -321,7 +321,7 @@ export class LogService implements OnModuleInit {
         ),
         created_at: new Date().toISOString(),
       }
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to get error patterns', { error })
       throw error
     }

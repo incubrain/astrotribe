@@ -79,7 +79,7 @@ export default defineEventHandler(async (event) => {
 
     if (!success) console.error('Create Subscription', meta)
     return subscription
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to create subscription', {
       error,
       domain: 'customers',

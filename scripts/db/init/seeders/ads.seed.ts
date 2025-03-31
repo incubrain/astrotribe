@@ -8,14 +8,16 @@ export async function seedAds(pool: Pool, companyIds: string[], packageIds: stri
     return []
   }
 
-  console.log(`Generating ads for ${companyIds.length} companies with ${packageIds.length} packages`)
+  console.log(
+    `Generating ads for ${companyIds.length} companies with ${packageIds.length} packages`,
+  )
 
   try {
     const ads = companyIds.flatMap((companyId) =>
       Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, () => {
         const startDate = new Date(faker.date.past())
         const endDate = new Date(faker.date.future())
-        
+
         return {
           id: generateUUID(),
           company_id: companyId,
@@ -30,7 +32,7 @@ export async function seedAds(pool: Pool, companyIds: string[], packageIds: stri
     )
 
     console.log(`Generated ${ads.length} ads`)
-    
+
     // Log a sample ad for debugging
     if (ads.length > 0) {
       console.log('Sample ad:', JSON.stringify(ads[0], null, 2))
@@ -38,7 +40,7 @@ export async function seedAds(pool: Pool, companyIds: string[], packageIds: stri
 
     await bulkInsert(pool, 'ads', ads)
     return ads
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in seedAds:', error)
     throw error
   }

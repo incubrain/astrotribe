@@ -38,7 +38,7 @@ const handleVote = async () => {
     if (animationRef.value) {
       animationRef.value.triggerAnimation()
     }
-  } catch (error) {
+  } catch (error: any) {
     notification.error({ summary: 'Vote Error', message: 'Failed to submit vote' })
   }
 }

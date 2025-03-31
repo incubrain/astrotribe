@@ -32,7 +32,7 @@ export async function seedContacts(pool: Pool, userIds: string[]) {
     )
 
     console.log(`Generated ${contacts.length} contacts`)
-    
+
     // Log a sample contact for debugging
     if (contacts.length > 0) {
       console.log('Sample contact:', JSON.stringify(contacts[0], null, 2))
@@ -40,7 +40,7 @@ export async function seedContacts(pool: Pool, userIds: string[]) {
 
     await bulkInsert(pool, 'contacts', contacts)
     return contacts
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in seedContacts:', error)
     throw error
   }
