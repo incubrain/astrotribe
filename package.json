@@ -65,7 +65,8 @@
     "pg:backup": "pnpm --filter @astronera/pg-service backup",
     "pg:restore": "pnpm --filter @astronera/pg-service restore",
     "website:setup": "./apps/pg-service/scripts/generate-init-files.sh && docker compose -f docker-compose.website.yaml down -v && docker compose -f docker-compose.website.yaml up -d --build",
-    "website:dev": "docker compose -f docker-compose.website.yaml up -d"
+    "website:dev": "docker compose -f docker-compose.website.yaml up -d",
+    "typewriter": "tsx ./libs/typewriter/src/index.ts"
   },
   "dependencies": {
     "@astronera/db": "workspace:*",
@@ -104,9 +105,9 @@
     "@opentelemetry/sdk-node": "^0.57.1",
     "@parcel/watcher": "^2.4.1",
     "@pinia/nuxt": "^0.9.0",
-    "@primeuix/themes": "^1.0.0",
-    "@primevue/core": "^4.2.5",
-    "@primevue/nuxt-module": "^4.2.5",
+    "@primevue/core": "^4.3.3",
+    "@primevue/nuxt-module": "^4.3.3",
+    "@primevue/themes": "^4.3.3",
     "@prisma/client": "^6.2.1",
     "@prisma/internals": "^6.2.1",
     "@sentry/vue": "^8.31.0",
@@ -161,7 +162,7 @@
     "pinia": "^2.2.2",
     "postcss": "^8.4.47",
     "posthog-js": "^1.164.3",
-    "primevue": "^4.2.5",
+    "primevue": "^4.3.3",
     "prisma": "^6.2.1",
     "qrcode": "^1.5.4",
     "qs": "^6.13.0",

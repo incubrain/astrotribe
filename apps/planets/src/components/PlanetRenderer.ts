@@ -27,7 +27,12 @@ export class PlanetRenderer {
     this.scene = new THREE.Scene()
 
     // Initialize camera
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200000)
+    this.camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      200000,
+    )
     this.camera.position.set(0, 0, 0.25) // Positioned to see a portion of planet's surface in detail
     this.camera.lookAt(0, 0, 0)
 
@@ -237,7 +242,7 @@ export class PlanetRenderer {
     try {
       // Render scene
       this.renderer.render(this.scene, this.camera)
-    } catch (error) {
+    } catch (error: any) {
       console.warn('Rendering error:', error)
       // If we encounter a rendering error, we'll just skip this frame
       // This prevents the WebGL context from getting into a bad state
