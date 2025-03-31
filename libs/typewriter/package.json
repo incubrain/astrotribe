@@ -1,0 +1,23 @@
+{
+  "name": "@incubrain/typewriter",
+  "version": "0.1.0",
+  "description": "Extract and process TypeScript definition files",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx src/index.ts",
+    "extract": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "micromatch": "^4.0.5",
+    "minimist": "^1.2.8"
+  },
+  "devDependencies": {
+    "@types/minimist": "^1.2.5",
+    "@types/micromatch": "^4.0.6",
+    "@types/node": "^20.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  }
+}
