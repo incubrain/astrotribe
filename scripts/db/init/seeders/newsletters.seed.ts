@@ -9,16 +9,18 @@ export async function seedNewsletters(pool: Pool, contentIds: string[], companyI
     return []
   }
 
-  console.log(`Generating newsletters with ${contentIds.length} content items and ${companyIds.length} companies`)
+  console.log(
+    `Generating newsletters with ${contentIds.length} content items and ${companyIds.length} companies`,
+  )
 
   try {
     // Generate newsletters with proper frequencies and date ranges
     const frequencies = ['daily', 'weekly', 'monthly', 'quarterly']
-    
+
     const newsletters = contentIds.map((contentId) => {
       const startDate = new Date(faker.date.past())
       const endDate = faker.helpers.maybe(() => new Date(faker.date.future()), { probability: 0.3 })
-      
+
       return {
         id: generateUUID(),
         title: faker.lorem.sentence(),
@@ -38,7 +40,7 @@ export async function seedNewsletters(pool: Pool, contentIds: string[], companyI
     })
 
     console.log(`Generated ${newsletters.length} newsletters`)
-    
+
     // Log a sample newsletter for debugging
     if (newsletters.length > 0) {
       console.log('Sample newsletter:', JSON.stringify(newsletters[0], null, 2))
@@ -46,7 +48,7 @@ export async function seedNewsletters(pool: Pool, contentIds: string[], companyI
 
     await bulkInsert(pool, 'newsletters', newsletters)
     return newsletters
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in seedNewsletters:', error)
     throw error
   }

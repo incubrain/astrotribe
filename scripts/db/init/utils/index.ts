@@ -40,7 +40,7 @@ export async function checkAndSeed<T>(
     const result = await seedFn()
     console.log(chalk.green(`✓ Seeded ${result.length} rows in ${tableName}`))
     return result
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red(`Error seeding ${tableName}:`), error)
     seedingErrors.push({ table: tableName, error: error as Error })
     return []

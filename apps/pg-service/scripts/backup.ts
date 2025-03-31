@@ -23,7 +23,7 @@ try {
   execSync(command)
 
   console.log(`Backup created: ${backupFile}`)
-} catch (error) {
+} catch (error: any) {
   console.error('Backup failed:', error)
   process.exit(1)
 }

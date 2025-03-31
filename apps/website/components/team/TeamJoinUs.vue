@@ -90,7 +90,7 @@ const setupJupiterSystem = () => {
 
     // Handle window resize
     window.addEventListener('resize', handleResize)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error setting up Jupiter system:', error)
   }
 }
@@ -146,7 +146,7 @@ const createJupiter = () => {
 
     jupiter.value = new THREE.Mesh(jupiterGeometry, jupiterMaterial)
     scene.value.add(jupiter.value)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating Jupiter:', error)
   }
 }
@@ -239,11 +239,11 @@ const createMoons = () => {
           data: data,
           initialAngle: Math.random() * Math.PI * 2,
         })
-      } catch (error) {
+      } catch (error: any) {
         console.error(`Error creating moon ${data.name}:`, error)
       }
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating moons:', error)
   }
 }
@@ -273,7 +273,7 @@ const animate = () => {
     if (renderer.value && scene.value && camera.value) {
       renderer.value.render(scene.value, camera.value)
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in animation loop:', error)
     if (animationFrameId.value) {
       cancelAnimationFrame(animationFrameId.value)
@@ -293,7 +293,7 @@ const handleResize = () => {
     camera.value.aspect = width / height
     camera.value.updateProjectionMatrix()
     renderer.value.setSize(width, height)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error handling resize:', error)
   }
 }

@@ -68,7 +68,7 @@ export default defineEventHandler(async (event) => {
       message: 'Your consultation request has been submitted successfully',
       id: data?.id,
     }
-  } catch (error) {
+  } catch (error: any) {
     // Log the error for debugging
     console.error('Email sending error:', error)
 

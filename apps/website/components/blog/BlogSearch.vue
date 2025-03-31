@@ -62,7 +62,7 @@ const fetchSections = async () => {
       // Fetch from single collection
       return await queryCollectionSearchSections(props.collection)
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching sections:', error)
     return []
   }
@@ -91,7 +91,7 @@ const debouncedSearch = useDebounceFn(async () => {
 
     const results = fuse.search(query)
     searchResults.value = results.map((r) => r.item).slice(0, resultLimit.value)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Search error:', error)
     searchResults.value = []
   } finally {
@@ -103,7 +103,6 @@ const debouncedSearch = useDebounceFn(async () => {
 watch(searchQuery, () => {
   debouncedSearch()
 })
-
 
 // Close search on escape key
 useEventListener('keydown', (e) => {

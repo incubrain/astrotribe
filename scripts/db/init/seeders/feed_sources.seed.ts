@@ -18,7 +18,7 @@ export async function seedFeedSources(
         console.warn('No feeds found for feed sources')
         return []
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching feed IDs:', error)
       return []
     }
@@ -35,7 +35,7 @@ export async function seedFeedSources(
         console.warn('No content sources found for feed sources')
         return []
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching content source IDs:', error)
       return []
     }

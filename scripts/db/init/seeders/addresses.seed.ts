@@ -22,7 +22,7 @@ export async function seedAddresses(
         cityIds = Array.from({ length: 10 }, (_, i) => i + 1)
         console.log('No cities found. Using fallback city IDs:', cityIds)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching city IDs:', error)
       // Create fallback city IDs
       cityIds = Array.from({ length: 10 }, (_, i) => i + 1)
@@ -41,7 +41,7 @@ export async function seedAddresses(
         countryIds = Array.from({ length: 10 }, (_, i) => i + 1)
         console.log('No countries found. Using fallback country IDs:', countryIds)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching country IDs:', error)
       // Create fallback country IDs
       countryIds = Array.from({ length: 10 }, (_, i) => i + 1)
@@ -57,14 +57,24 @@ export async function seedAddresses(
 
   const addresses = Array.from({ length: faker.number.int({ min: 10, max: 50 }) }, () => {
     // Only include user_id if userIds array is not empty
-    const userIdField = userIds.length > 0 ?
-      { user_id: faker.helpers.maybe(() => faker.helpers.arrayElement(userIds), { probability: 0.3 }) } :
-      {}
+    const userIdField =
+      userIds.length > 0
+        ? {
+            user_id: faker.helpers.maybe(() => faker.helpers.arrayElement(userIds), {
+              probability: 0.3,
+            }),
+          }
+        : {}
 
     // Only include company_id if companyIds array is not empty
-    const companyIdField = companyIds.length > 0 ?
-      { company_id: faker.helpers.maybe(() => faker.helpers.arrayElement(companyIds), { probability: 0.3 }) } :
-      {}
+    const companyIdField =
+      companyIds.length > 0
+        ? {
+            company_id: faker.helpers.maybe(() => faker.helpers.arrayElement(companyIds), {
+              probability: 0.3,
+            }),
+          }
+        : {}
 
     // Ensure city_id and country_id are numbers
     const cityId = faker.helpers.arrayElement(cityIds)

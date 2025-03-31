@@ -39,7 +39,6 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
   extends: [
-    '../../layers/logging',
     '../../layers/base',
     '../../layers/supabase',
     '../../layers/crud',
@@ -62,7 +61,7 @@ export default defineNuxtConfig({
   ],
 
   imports: {
-    dirs: ['stores'],
+    dirs: ['stores/**', 'composables/**', 'utils/**'],
   },
 
   runtimeConfig: {

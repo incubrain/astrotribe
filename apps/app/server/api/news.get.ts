@@ -102,7 +102,7 @@ export default defineEventHandler(async (event) => {
       hasMore: filteredData.length === pageSize,
       page,
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching news:', error)
     return {
       data: [],

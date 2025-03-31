@@ -22,7 +22,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
       console.log('Prisma connecting...')
       await this.$connect()
       console.log('Prisma connected')
-    } catch (error) {
+    } catch (error: any) {
       console.error('Prisma connection failed', error)
       throw error
     }

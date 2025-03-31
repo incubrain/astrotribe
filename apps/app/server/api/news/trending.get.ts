@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       data: topics.slice(0, 10), // Return top 10 topics
       error: null,
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching trending topics:', error)
     return {
       data: [

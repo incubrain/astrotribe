@@ -84,7 +84,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
 
         return profile.value
       }
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Failed to refresh user store', { error })
       const toast = useNotification()
       toast.error({

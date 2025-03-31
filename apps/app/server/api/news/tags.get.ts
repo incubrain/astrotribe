@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
       data: Array.from(tags).sort(),
       error: null,
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching news tags:', error)
     return {
       data: [],

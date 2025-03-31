@@ -18,7 +18,7 @@ export async function seedFeedCategories(
         console.warn('No feeds found for feed categories')
         return []
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching feed IDs:', error)
       return []
     }
@@ -34,7 +34,7 @@ export async function seedFeedCategories(
         console.warn('No categories found for feed categories')
         return []
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching category IDs:', error)
       return []
     }

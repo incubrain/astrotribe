@@ -74,7 +74,7 @@ const getCoordinates = async (address: string) => {
       return coordinates
     }
     return [48.8566, 2.3522] // Paris default
-  } catch (error) {
+  } catch (error: any) {
     console.error('Geocoding error:', error)
     return [48.8566, 2.3522] // Paris default
   } finally {

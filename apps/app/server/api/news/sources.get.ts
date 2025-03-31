@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       })),
       error: null,
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching news sources:', error)
     return {
       data: [],

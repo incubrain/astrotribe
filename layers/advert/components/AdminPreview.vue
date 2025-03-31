@@ -29,7 +29,7 @@ const fetchAds = async () => {
 
     if (adsError) throw adsError
     ads.value = adsData || []
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching ads:', error)
   } finally {
     isLoading.value = false

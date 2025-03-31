@@ -14,7 +14,9 @@ export async function seedCompanyContacts(
     return []
   }
 
-  console.log(`Generating company contacts with ${companyIds.length} companies and ${contactIds.length} contacts`)
+  console.log(
+    `Generating company contacts with ${companyIds.length} companies and ${contactIds.length} contacts`,
+  )
 
   try {
     // Generate unique combinations of company_id and contact_id
@@ -42,7 +44,7 @@ export async function seedCompanyContacts(
     })
 
     console.log(`Generated ${companyContacts.length} company contacts`)
-    
+
     // Log a sample company contact for debugging
     if (companyContacts.length > 0) {
       console.log('Sample company contact:', JSON.stringify(companyContacts[0], null, 2))
@@ -50,7 +52,7 @@ export async function seedCompanyContacts(
 
     await bulkInsert(pool, 'company_contacts', companyContacts)
     return companyContacts
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in seedCompanyContacts:', error)
     throw error
   }

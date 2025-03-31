@@ -80,7 +80,7 @@ export function useJobStore() {
       if (savedViewedJobs) {
         recentlyViewedJobs.value = JSON.parse(savedViewedJobs)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading preferences from localStorage:', error)
       // If error, reset to defaults
       resetAllPreferences()
@@ -93,7 +93,7 @@ export function useJobStore() {
   const saveFilters = () => {
     try {
       localStorage.setItem('job_filters', JSON.stringify(filters.value))
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving filters to localStorage:', error)
     }
   }
@@ -104,7 +104,7 @@ export function useJobStore() {
   const saveSortPreference = () => {
     try {
       localStorage.setItem('job_sort_preference', JSON.stringify(sortPreference.value))
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving sort preference to localStorage:', error)
     }
   }
@@ -115,7 +115,7 @@ export function useJobStore() {
   const saveViewPreference = () => {
     try {
       localStorage.setItem('job_view_preference', JSON.stringify(viewPreference.value))
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving view preference to localStorage:', error)
     }
   }
@@ -143,7 +143,7 @@ export function useJobStore() {
     // Save to localStorage
     try {
       localStorage.setItem('job_recent_searches', JSON.stringify(recentSearches.value))
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving recent searches to localStorage:', error)
     }
   }
@@ -155,7 +155,7 @@ export function useJobStore() {
     recentSearches.value = []
     try {
       localStorage.removeItem('job_recent_searches')
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error clearing recent searches from localStorage:', error)
     }
   }
@@ -180,7 +180,7 @@ export function useJobStore() {
     // Save to localStorage
     try {
       localStorage.setItem('job_recently_viewed', JSON.stringify(recentlyViewedJobs.value))
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving recently viewed jobs to localStorage:', error)
     }
   }
@@ -213,7 +213,7 @@ export function useJobStore() {
       localStorage.removeItem('job_filters')
       localStorage.removeItem('job_sort_preference')
       localStorage.removeItem('job_view_preference')
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error resetting preferences in localStorage:', error)
     }
   }
@@ -231,7 +231,7 @@ export function useJobStore() {
 
     try {
       localStorage.removeItem('job_filters')
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error removing filters from localStorage:', error)
     }
   }

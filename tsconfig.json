@@ -2,6 +2,7 @@
   "files": [],
   "compilerOptions": {
     "skipLibCheck": true,
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "#layers/*": ["layers/*"],
@@ -26,7 +27,6 @@
     { "path": "layers/crud" },
     { "path": "layers/advert" },
     { "path": "layers/supabase" },
-    { "path": "layers/logging" },
 
     // Shared Libraries
     { "path": "libs/logger" },

@@ -107,7 +107,7 @@ export default defineEventHandler(async (event) => {
       ],
       error: null,
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching astronomy events:', error)
     return {
       data: [],

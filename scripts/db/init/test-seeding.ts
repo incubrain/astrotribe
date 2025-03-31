@@ -1,7 +1,10 @@
 import chalk from 'chalk'
 import client from '../client'
 
-async function getTableRowCounts(): Promise<{ nonEmptyTables: { name: string; count: number }[]; emptyTables: string[] }> {
+async function getTableRowCounts(): Promise<{
+  nonEmptyTables: { name: string; count: number }[]
+  emptyTables: string[]
+}> {
   try {
     // Get all tables in the public schema
     const tablesQuery = `
@@ -34,7 +37,7 @@ async function getTableRowCounts(): Promise<{ nonEmptyTables: { name: string; co
         } else {
           nonEmptyTables.push({ name: tableName, count })
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error(chalk.red(`Error counting rows in table ${tableName}:`), error)
       }
     }
@@ -53,7 +56,7 @@ async function getTableRowCounts(): Promise<{ nonEmptyTables: { name: string; co
     })
 
     return { nonEmptyTables, emptyTables }
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red('Error getting table row counts:'), error)
     return { nonEmptyTables: [], emptyTables: [] }
   }
@@ -97,7 +100,7 @@ async function main(): Promise<void> {
     }
 
     console.log(chalk.blue('\n🔍 Seeding validation completed!'))
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red('Error during seeding validation:'), error)
   } finally {
     await client.end()

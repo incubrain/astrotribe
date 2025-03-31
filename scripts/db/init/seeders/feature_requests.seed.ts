@@ -17,7 +17,7 @@ export async function seedFeatureRequests(pool: Pool) {
     `)
 
     console.log('Feature requests status constraint:', rows[0]?.constraint_definition)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error querying status constraint:', error)
   }
 

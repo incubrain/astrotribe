@@ -229,7 +229,7 @@ const handleLoadMore = async () => {
   isLoadingMore.value = true
   try {
     await loadMore()
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error loading more jobs:', error)
   } finally {
     isLoadingMore.value = false

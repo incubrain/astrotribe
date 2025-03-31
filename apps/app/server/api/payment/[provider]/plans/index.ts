@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
     }
 
     return data
-  } catch (error) {
+  } catch (error: any) {
     console.error('Get Plans', error)
     return error
   }

@@ -13,7 +13,7 @@ export async function seedCompanies(pool: Pool, count: number) {
     } else {
       console.warn('No social media entries found, creating companies without social_media_id')
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching social media IDs:', error)
   }
 
@@ -26,7 +26,7 @@ export async function seedCompanies(pool: Pool, count: number) {
     } else {
       console.warn('No categories found, using random UUIDs for category_id')
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching category IDs:', error)
   }
 
@@ -66,9 +66,8 @@ export async function seedCompanies(pool: Pool, count: number) {
     }
 
     // Add category_id using a valid ID if available, otherwise generate a random UUID
-    company.category_id = categoryIds.length > 0 ?
-      faker.helpers.arrayElement(categoryIds) :
-      generateUUID()
+    company.category_id =
+      categoryIds.length > 0 ? faker.helpers.arrayElement(categoryIds) : generateUUID()
 
     return company
   })
