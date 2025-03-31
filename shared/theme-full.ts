@@ -533,9 +533,6 @@ export default {
   options: {
     prefix: 'Prime',
     darkModeSelector: '.dark', // Force dark mode
-    cssLayer: {
-      name: 'primevue',
-      order: 'tailwind-base, primevue, tailwind-utilities',
-    },
+    cssLayer: 'tailwind-base primevue tailwind-utilities',
   },
 }
