@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss'
 import typography from '@tailwindcss/typography'
-import tailwindcssPrimeUI from 'tailwindcss-primeui'
+import PrimeUI from 'tailwindcss-primeui'
 
 export default {
   darkMode: 'selector',
@@ -94,5 +94,5 @@ export default {
       },
     },
   },
-  plugins: [typography, tailwindcssPrimeUI],
+  plugins: [typography, PrimeUI],
 } as Partial<Config>
