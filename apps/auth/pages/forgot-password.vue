@@ -1,7 +1,13 @@
-<!-- /forgot-password -->
-
 <script setup lang="ts">
-// If you use PKCE (default), this link only works on the device or browser where the original reset request was made. Display a message to the user to make sure they don't change devices or browsers.
+const form = reactive({
+  email: '',
+})
+
+const auth = useAuth()
+const isLoading = ref(false)
+const isSuccess = ref(false)
+const errorMessage = ref('')
+
 const turnstile = ref()
 const turnstileValid = ref(false)
 const turnstileToken = ref<string | null>(null)
@@ -11,17 +17,31 @@ const onValidTurnstile = (token: string) => {
   turnstileToken.value = token
 }
 
-const form = reactive({
-  email: '',
+// Auto-focus the email input when component mounts
+const emailInput = ref<HTMLElement | null>(null)
+onMounted(() => {
+  emailInput.value?.focus()
 })
 
-const auth = useAuth()
+async function handleForgotPassword() {
+  if (!turnstileValid.value) return
 
-const handleForgotPassword = () =>
-  auth.password.forgot(form.email, turnstileToken.value, turnstile.value.reset)
+  isLoading.value = true
+  errorMessage.value = ''
+  isSuccess.value = false
+
+  try {
+    await auth.password.forgot(form.email, turnstileToken.value, turnstile.value?.reset)
+    isSuccess.value = true
+  } catch (error: any) {
+    errorMessage.value = error.message || 'Failed to send reset link'
+  } finally {
+    isLoading.value = false
+  }
+}
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if (turnstileValid.value && event.key === 'Enter' && turnstileValid.value) {
+  if (turnstileValid.value && event.key === 'Enter') {
     handleForgotPassword()
   }
 }
@@ -33,39 +53,88 @@ definePageMeta({
 
 <template>
   <AuthCard
-    :show-title="false"
     :title="{
-      main: 'Request Magic Link',
-      subtitle: 'Enter your email to get a reset link.',
+      main: 'Reset Password',
+      subtitle: 'Remember your password?',
+      label: 'Sign in',
     }"
+    help-url="/login"
   >
     <template #content>
-      <div
-        class="flex flex-col gap-4 xl:gap-6"
+      <form
+        class="flex flex-col gap-4 w-full"
+        @submit.prevent="handleForgotPassword"
         @keydown="handleKeydown"
       >
-        <PrimeFloatLabel class="flex flex-col w-full">
+        <div class="flex flex-col gap-2">
+          <label
+            for="email"
+            class="text-sm"
+            >Email</label
+          >
           <PrimeInputText
-            id="username"
+            id="email"
+            ref="emailInput"
             v-model="form.email"
+            :disabled="isLoading || isSuccess"
+            autocomplete="email"
+            class="w-full"
+            placeholder="Enter your registered email"
           />
-          <label for="username">Your Registered Email</label>
-        </PrimeFloatLabel>
-      </div>
-      <TurnstileChallenge
-        ref="turnstile"
-        class="mb-4"
-        :on-valid-token="onValidTurnstile"
-      />
+        </div>
+
+        <TurnstileChallenge
+          ref="turnstile"
+          class="mb-4"
+          :on-valid-token="onValidTurnstile"
+        />
+
+        <PrimeButton
+          type="submit"
+          class="justify-center"
+          :disabled="!turnstileValid || isLoading || isSuccess"
+          :loading="isLoading"
+        >
+          <template v-if="!isLoading">Send Reset Link</template>
+          <template v-else>Sending...</template>
+        </PrimeButton>
+
+        <div
+          v-if="isSuccess"
+          class="mt-2"
+        >
+          <PrimeMessage
+            severity="success"
+            class="w-full"
+          >
+            <div class="flex flex-col gap-1">
+              <p>Password reset link sent!</p>
+              <p class="text-sm">Check your email inbox and spam folder.</p>
+            </div>
+          </PrimeMessage>
+        </div>
+
+        <PrimeMessage
+          v-if="errorMessage"
+          severity="error"
+          class="w-full"
+        >
+          {{ errorMessage }}
+        </PrimeMessage>
+      </form>
     </template>
+
     <template #footer>
-      <PrimeButton
-        class="w-full flex justify-center"
-        :disabled="!turnstileValid"
-        @click="handleForgotPassword"
-      >
-        Request Reset Email
-      </PrimeButton>
+      <div class="flex flex-col items-center gap-4 mt-4">
+        <p class="text-sm text-gray-400">
+          Can't access your email? Please contact
+          <a
+            href="mailto:support@astronera.org"
+            class="text-primary hover:underline"
+            >support@astronera.org</a
+          >
+        </p>
+      </div>
     </template>
   </AuthCard>
 </template>

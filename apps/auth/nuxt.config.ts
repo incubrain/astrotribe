@@ -3,7 +3,7 @@ import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
 import { config } from 'dotenv'
 import { devPortMap } from '../../shared/paths.config'
-import AuraTheme from '../../shared/theme'
+import AstroTheme from '../../shared/theme'
 import { getSharedEnv, pick } from '../../shared/env'
 
 const env = getSharedEnv()
@@ -27,7 +27,6 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
   extends: [
-    '../../layers/logging',
     '../../layers/base',
     '../../layers/supabase',
     '../../layers/crud',
@@ -113,8 +112,7 @@ export default defineNuxtConfig({
     },
     options: {
       ripple: true,
-      inputVariant: 'filled',
-      theme: AuraTheme,
+      theme: AstroTheme,
     },
   },
 
