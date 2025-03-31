@@ -79,6 +79,12 @@
         "isDefault": true
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Start Windsurf Debug Session",
+      "type": "shell",
+      "command": "echo 'Starting debug session with Playwright' && code --open-url 'vscode://rooveterinaryinc.roo-cline/open?debug=true'",
+      "problemMatcher": []
     }
   ]
 }
