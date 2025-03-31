@@ -31,7 +31,7 @@ onMounted(async () => {
 <template>
   <div
     v-if="isLoading && !route.path.includes('settings') && !route.path.includes('password')"
-    class="text-white w-screen flex justify-center items-center absolute h-screen z-50 bg-black bg-opacity-50"
+    class="text-white w-screen flex justify-center items-center absolute h-screen z-50 bg-black bg-opacity-50 dark"
   >
     <Icon
       :name="isLoading ? 'mdi:loading' : 'mdi:send'"
@@ -52,16 +52,7 @@ onMounted(async () => {
       </ClientOnly>
     </div>
     <div class="absolute left-0 top-0 flex h-full w-full">
-      <div class="absolute left-0 top-0 h-full w-full bg-black/40" />
       <IBBackground class="left-0 top-0 z-0 hidden lg:fixed lg:block" />
-
-      <IBImage
-        :img="{
-          src: '/astron-era-hero.jpg',
-          alt: '',
-        }"
-        class="min-h-full w-full object-cover object-center"
-      />
     </div>
   </div>
 </template>

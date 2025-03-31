@@ -13,11 +13,27 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   try {
     const user = useSupabaseUser()
+    console.debug('Protected route access', {
+      path: to.path,
+      isAuthenticated: !!user.value,
+    })
+
     if (!user.value) {
-      return navigateTo(String(`${authURL}${loginURL}`), { external: true })
+      // Preserve the original URL the user was trying to access
+      let targetUrl = to.fullPath
+      if (to.fullPath !== '/') {
+        // Encode the target URL to be used as a redirect parameter
+        targetUrl = encodeURIComponent(to.fullPath)
+      }
+
+      // Redirect to login with the redirect parameter
+      return navigateTo(String(`${authURL}${loginURL}?redirect_to=${targetUrl}`), {
+        external: true,
+      })
     }
   } catch (error: any) {
-    console.error('middleware error', `${authURL}${loginURL}`)
-    // return navigateTo(String(`${authURL}${loginURL}`), { external: true })
+    console.error('Protected middleware error', { error, path: to.path })
+    // Fallback to login if there's an error
+    return navigateTo(String(`${authURL}${loginURL}`), { external: true })
   }
 })
