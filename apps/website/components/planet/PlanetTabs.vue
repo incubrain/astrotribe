@@ -1,7 +1,14 @@
 <script setup lang="ts">
 // 1. Imports
 import { ref } from 'vue'
-import type { Planet } from '~/types/solarsystem'
+import type { Planet } from '../../types/solarsystem'
+
+// Define a simplified planet type for the tabs
+interface SimplePlanet {
+  id: string
+  name: string
+  image: string
+}
 
 // 2. Component Options
 defineOptions({
@@ -10,7 +17,7 @@ defineOptions({
 
 // 3. Props and Emits
 const props = defineProps<{
-  planets: Planet[]
+  planets: SimplePlanet[]
   selectedPlanet: string
 }>()
 

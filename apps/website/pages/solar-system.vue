@@ -1,8 +1,7 @@
 <script setup lang="ts">
 // 1. Imports
 import { ref, computed, onMounted } from 'vue'
-import type { Planet } from '~/types/solarsystem'
-// import PlanetModel from '~/components/PlanetModel.vue' // Uncomment when ready to use ThreeJS
+import type { Planet } from '../types/solarsystem'
 
 // 2. Component Options
 defineOptions({
@@ -13,9 +12,14 @@ defineOptions({
 const selectedPlanet = ref('jupiter')
 const isChanging = ref(false)
 
-// 4. Planets Data (imported from a store or API in a real application)
-// Abbreviated version for this example - in a real app, this would likely be fetched from an API
-const planets = [
+// 4. Planets Data (simplified version with just the required properties for navigation)
+interface SimplePlanet {
+  id: string
+  name: string
+  image: string
+}
+
+const planets: SimplePlanet[] = [
   { id: 'mercury', name: 'Mercury', image: '/images/planets/mercury.jpg' },
   { id: 'venus', name: 'Venus', image: '/images/planets/venus.jpg' },
   { id: 'earth', name: 'Earth', image: '/images/planets/earth.jpg' },
@@ -27,7 +31,7 @@ const planets = [
 ]
 
 // 5. Computed Properties
-const currentPlanet = computed(() => {
+const currentPlanet = computed<Planet>(() => {
   // In a real application, this would fetch the full planet data based on selectedPlanet.value
   // For this example, we're just returning a placeholder with the essential properties
   return {
@@ -138,8 +142,9 @@ const changePlanet = (planetId) => {
 
     <!-- Planet Navigation Tabs -->
     <PlanetTabs
-      v-model:selected-planet="selectedPlanet"
       :planets="planets"
+      :selected-planet="selectedPlanet"
+      @update:selected-planet="selectedPlanet = $event"
     />
 
     <!-- Main Content -->
@@ -153,38 +158,36 @@ const changePlanet = (planetId) => {
           {{ currentPlanet.name }}
         </h1>
         <div
-          class="mx-auto max-w-2xl bg-black rounded-full overflow-hidden shadow-[0_0_40px_rgba(99,102,241,0.2)] transition-all duration-500"
+          class="mx-auto max-w-2xl overflow-visible transition-all duration-500"
           :class="isChanging ? 'opacity-0 scale-90' : 'opacity-100 scale-100'"
         >
-          <!-- Using PlanetModel component (uncomment when ready to use ThreeJS) -->
-          <!-- <PlanetModel
-            :planet-id="currentPlanet.id"
+          <!-- Using PlanetModel component -->
+          <LazyPlanetModel
+            :key="selectedPlanet"
+            hydrate-on-visible
+            :planet-id="selectedPlanet"
             :auto-rotate="true"
-          /> -->
-
-          <!-- Placeholder image until ThreeJS implementation is complete -->
-          <img
-            :src="currentPlanet.image"
-            :alt="currentPlanet.name"
-            class="w-full h-auto"
           />
         </div>
       </div>
 
       <!-- Size Comparison Component -->
-      <PlanetSizeComparison
+      <LazyPlanetSizeComparison
+        hydrate-on-visible
         :planet-id="currentPlanet.id"
         :planet-name="currentPlanet.name"
       />
 
-      <!-- Gravity Comparison Component -->
-      <PlanetGravityComparison
+      <!-- Gravity Comparison Component - Lazy loaded -->
+      <LazyPlanetGravityComparison
+        hydrate-on-visible
         :planet-id="currentPlanet.id"
         :planet-name="currentPlanet.name"
       />
 
-      <!-- Did You Know Facts Carousel Component -->
-      <PlanetDidYouKnow
+      <!-- Lazy load less important components -->
+      <LazyPlanetDidYouKnow
+        hydrate-on-visible
         :facts="currentPlanet.didYouKnow"
         :auto-rotate="true"
         :rotation-interval="8000"
@@ -269,7 +272,7 @@ const changePlanet = (planetId) => {
       </div>
 
       <!-- Missions Timeline Component -->
-      <MissionsTimeline
+      <PlanetMissionsTimeline
         :previous-missions="currentPlanet.missions.previous"
         :upcoming-missions="currentPlanet.missions.upcoming"
       />

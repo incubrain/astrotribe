@@ -4,7 +4,7 @@ import type { MythologyInfo } from '~/types/solarsystem'
 
 // 2. Component Options
 defineOptions({
-  name: 'MythologySection',
+  name: 'PlanetMythologySection',
 })
 
 // 3. Props and Emits

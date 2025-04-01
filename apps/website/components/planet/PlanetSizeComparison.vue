@@ -100,4 +100,3 @@ const earthSizePercent = computed(() => {
     </div>
   </div>
 </template>
-
