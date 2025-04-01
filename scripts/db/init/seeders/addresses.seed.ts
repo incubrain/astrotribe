@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
 import { bulkInsert, generateUUID } from '../utils'
-import type { AddressType } from '../utils/types.js'
 
 export async function seedAddresses(
   pool: Pool,
@@ -55,7 +54,72 @@ export async function seedAddresses(
     return []
   }
 
-  const addresses = Array.from({ length: faker.number.int({ min: 10, max: 50 }) }, () => {
+  // Query for valid address_type enum values
+  let validAddressTypes = [
+    'residential',
+    'headquarters',
+    'office',
+    'factory',
+    'lab',
+    'warehouse',
+    'research',
+    'retail',
+    'showroom',
+    'branch',
+  ]
+  try {
+    const { rows: enumValues } = await pool.query(
+      'SELECT unnest(enum_range(NULL::address_type)) as enum_value',
+    )
+    if (enumValues.length > 0) {
+      validAddressTypes = enumValues.map((row) => row.enum_value)
+      console.log('Valid address_type values:', validAddressTypes)
+    }
+  } catch (err) {
+    console.warn('Could not get address_type enum values, using defaults')
+  }
+
+  // Get the next sequential id_old values from the sequence
+  let nextIdOld = 1
+  try {
+    const { rows: maxId } = await pool.query(
+      'SELECT COALESCE(MAX(id_old), 0) + 1 as next_id FROM addresses',
+    )
+    nextIdOld = parseInt(maxId[0].next_id, 10) || 1 // Default to 1 if NaN
+    console.log(`Starting id_old value: ${nextIdOld}`)
+  } catch (err) {
+    console.warn('Could not get max id_old, starting from 1')
+  }
+
+  // Convert all array values to proper types
+  const validCityIds = cityIds.map((id) => {
+    const numId = typeof id === 'string' ? parseInt(id, 10) : id
+    return isNaN(numId) ? 1 : numId // Default to 1 if NaN
+  })
+
+  const validCountryIds = countryIds.map((id) => {
+    const numId = typeof id === 'string' ? parseInt(id, 10) : id
+    return isNaN(numId) ? 1 : numId // Default to 1 if NaN
+  })
+
+  const numberOfAddresses = faker.number.int({ min: 10, max: 30 })
+  const addresses = [] as {
+    id: string
+    id_old: number
+    street1: string
+    street2?: string
+    city_id: number
+    country_id: number
+    name?: string
+    is_primary: boolean
+    address_type: string
+    created_at: Date
+    updated_at: Date
+    user_id?: string
+    company_id?: string
+  }[]
+
+  for (let i = 0; i < numberOfAddresses; i++) {
     // Only include user_id if userIds array is not empty
     const userIdField =
       userIds.length > 0
@@ -76,36 +140,29 @@ export async function seedAddresses(
           }
         : {}
 
-    // Ensure city_id and country_id are numbers
-    const cityId = faker.helpers.arrayElement(cityIds)
-    const countryId = faker.helpers.arrayElement(countryIds)
+    // Ensure city_id and country_id are valid numbers
+    const cityId = faker.helpers.arrayElement(validCityIds)
+    const countryId = faker.helpers.arrayElement(validCountryIds)
 
-    return {
+    // Generate a sequential id_old for each address
+    const idOld = nextIdOld + i
+
+    addresses.push({
       id: generateUUID(),
+      id_old: idOld, // Use a sequential integer ID for id_old
       street1: faker.location.streetAddress(),
       street2: faker.helpers.maybe(() => faker.location.secondaryAddress(), { probability: 0.3 }),
-      city_id: typeof cityId === 'string' ? parseInt(cityId, 10) : cityId,
-      country_id: typeof countryId === 'string' ? parseInt(countryId, 10) : countryId,
+      city_id: cityId,
+      country_id: countryId,
       name: faker.helpers.maybe(() => faker.company.name(), { probability: 0.5 }),
       is_primary: faker.datatype.boolean(),
-      address_type: faker.helpers.arrayElement([
-        'residential',
-        'headquarters',
-        'office',
-        'factory',
-        'lab',
-        'warehouse',
-        'research',
-        'retail',
-        'showroom',
-        'branch',
-      ] as AddressType[]),
+      address_type: faker.helpers.arrayElement(validAddressTypes),
       created_at: faker.date.past(),
       updated_at: faker.date.recent(),
       ...userIdField,
       ...companyIdField,
-    }
-  })
+    })
+  }
 
   await bulkInsert(pool, 'addresses', addresses)
   return addresses

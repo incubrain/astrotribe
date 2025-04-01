@@ -1,6 +1,10 @@
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
-import { bulkInsert } from '../utils'
+import { bulkInsert, generateUUID } from '../utils'
+
+BigInt.prototype.toJSON = function (): string {
+  return this.toString()
+}
 
 export async function seedCompanyMetrics(
   pool: Pool,
@@ -76,7 +80,7 @@ export async function seedCompanyMetrics(
       }
 
       return {
-        id: BigInt(index + 1), // Using index for id as schema uses bigint
+        id: generateUUID(), // Use UUID instead of BigInt
         crawl_id: faker.string.uuid(),
         company_id: companyId,
         metric_id: metricId,
@@ -87,7 +91,7 @@ export async function seedCompanyMetrics(
 
     console.log(`Generated ${metrics.length} company metrics`)
 
-    // Log a sample metric for debugging
+    // Using the toJSON method added to BigInt prototype, so no more serialization errors
     if (metrics.length > 0) {
       console.log('Sample company metric:', JSON.stringify(metrics[0], null, 2))
     }

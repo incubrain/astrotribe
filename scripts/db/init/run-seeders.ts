@@ -26,27 +26,27 @@ export async function runSeeders() {
   const config = {
     batchSize: 100,
     counts: {
-      contents: 1115,
-      companies: 400,
-      news: 400,
-      jobs: 100,
-      research: 200,
-      socialMedia: 100,
+      contents: 50, // Reduced to minimize database load
+      companies: 100, // Reduced to minimize database load
+      news: 50,
+      jobs: 50,
+      research: 50,
+      socialMedia: 50,
       categories: 20,
       newsletters: 15,
       referrers: 10,
-      referralsPerReferrer: { min: 10, max: 50 },
-      blockedIPs: { min: 5, max: 15 },
-      astronomyEvents: 50,
-      businessDomains: 30,
+      referralsPerReferrer: { min: 5, max: 20 },
+      blockedIPs: { min: 5, max: 10 },
+      astronomyEvents: 30,
+      businessDomains: 20,
       contentTypes: 7, // Fixed number of content types
-      blacklistedDomains: 30,
-      blacklistedURLs: 50,
-      categorizedURLs: 100,
-      companyContacts: 50,
-      companyExtras: 100,
-      companyMetrics: 200,
-      contentInteractions: 200,
+      blacklistedDomains: 20,
+      blacklistedURLs: 30,
+      categorizedURLs: 50,
+      companyContacts: 30,
+      companyExtras: 50,
+      companyMetrics: 100,
+      contentInteractions: 100,
     },
   }
 
@@ -79,7 +79,7 @@ export async function runSeeders() {
       seed.seedCategories(client, config.counts.categories),
     )
 
-    const tags = await checkAndSeed(client, 'tags', () => seed.seedTags(client, 100))
+    const tags = await checkAndSeed(client, 'tags', () => seed.seedTags(client, 50))
 
     const categoryIds = categories.map((c) => c.id)
 
@@ -135,7 +135,7 @@ export async function runSeeders() {
     )
 
     const contentSources = await checkAndSeed(client, 'content_sources', () =>
-      seed.seedContentSources(client, 100),
+      seed.seedContentSources(client, 50),
     )
     const contentSourceIds = contentSources.map((cs) => cs.id)
 
@@ -145,7 +145,7 @@ export async function runSeeders() {
     )
 
     const contacts = await checkAndSeed(client, 'contacts', () =>
-      seed.seedContacts(client, companyIds),
+      seed.seedContacts(client, userIds),
     )
 
     const contactIds = contacts.map((c) => c.id)
@@ -179,26 +179,34 @@ export async function runSeeders() {
 
     // 8. Seed ads and related data
     const adPackages = await checkAndSeed(client, 'ad_packages', () =>
-      seed.seedAdPackages(client, 100),
+      seed.seedAdPackages(client, 20),
     )
 
     // Make sure we have the ads seeded before ad variants
     const ads = await checkAndSeed(client, 'ads', () =>
-      seed.seedAds(client, companyIds, adPackages.map((p) => p.id)),
+      seed.seedAds(
+        client,
+        companyIds,
+        adPackages.map((p) => p.id),
+      ),
     )
 
     // Seed ad-related tables
     const adVariants = await checkAndSeed(client, 'ad_variants', () =>
-      seed.seedAdVariants(client, ads.map((a) => a.id)),
+      seed.seedAdVariants(
+        client,
+        ads.map((a) => a.id),
+      ),
     )
 
     await checkAndSeed(client, 'ad_daily_metrics', () =>
-      seed.seedAdDailyMetrics(client, adVariants.map((v) => v.id)),
+      seed.seedAdDailyMetrics(
+        client,
+        adVariants.map((v) => v.id),
+      ),
     )
 
-    await checkAndSeed(client, 'jobs', () =>
-      seed.seedJobs(client, companyIds, 100),
-    )
+    await checkAndSeed(client, 'jobs', () => seed.seedJobs(client, companyIds, config.counts.jobs))
 
     await checkAndSeed(client, 'follows', () => seed.seedFollows(client, userIds, companyIds))
 
@@ -258,42 +266,6 @@ export async function runSeeders() {
       seed.seedFeatureVotes(client, userIds, featureRequestIds),
     )
 
-    // Seed company-related tables
-    await checkAndSeed(client, 'company_employees', () =>
-      seed.seedCompanyEmployees(client, companyIds, userIds),
-    )
-
-    await checkAndSeed(client, 'company_extras', () =>
-      seed.seedCompanyExtras(client, companyIds, 50),
-    )
-
-    await checkAndSeed(client, 'company_metrics', () =>
-      seed.seedCompanyMetrics(client, companyIds),
-    )
-
-    await checkAndSeed(client, 'company_contacts', () =>
-      seed.seedCompanyContacts(client, companyIds, userIds),
-    )
-
-    // Seed contact-related tables
-    await checkAndSeed(client, 'contacts', () =>
-      seed.seedContacts(client, userIds),
-    )
-
-    // Seed newsletter-related tables
-    await checkAndSeed(client, 'newsletters', () =>
-      seed.seedNewsletters(client),
-    )
-
-    // Seed ad-related tables
-    await checkAndSeed(client, 'ad_variants', () =>
-      seed.seedAdVariants(client, ads.map((a) => a.id)),
-    )
-
-    await checkAndSeed(client, 'ad_daily_metrics', () =>
-      seed.seedAdDailyMetrics(client, adVariants.map((v) => v.id)),
-    )
-
     // 14. Seed feeds and feed categories
     const feeds = await checkAndSeed(client, 'feeds', () => seed.seedFeeds(client, userIds))
 
@@ -307,24 +279,55 @@ export async function runSeeders() {
       seed.seedFeedSources(client, feedIds, contentSourceIds),
     )
 
-    await checkAndSeed(client, 'error_logs', () => seed.seedErrorLogs(client, 100))
+    await checkAndSeed(client, 'error_logs', () => seed.seedErrorLogs(client, 50))
 
-    await client.query('ALTER TABLE referrals DISABLE TRIGGER refresh_referral_stats_trigger')
-    await client.query('ALTER TABLE referrals DISABLE TRIGGER refresh_risk_metrics_trigger')
+    // Try to disable triggers - use standard syntax without IF EXISTS (not supported in older PG versions)
+    try {
+      await client.query('ALTER TABLE referrals DISABLE TRIGGER ALL')
+    } catch (triggerError) {
+      console.warn(
+        chalk.yellow('Could not disable triggers on referrals table (table might not exist)'),
+      )
+    }
 
     // Seed blocked IPs
     const blockedIPs = await checkAndSeed(client, 'blocked_ips', () =>
-      seed.seedBlockedIPs(client, 10),
+      seed.seedBlockedIPs(client, config.counts.blockedIPs.min),
     )
 
-    // Re-enable triggers
-    await client.query('ALTER TABLE referrals ENABLE TRIGGER refresh_referral_stats_trigger')
-    await client.query('ALTER TABLE referrals ENABLE TRIGGER refresh_risk_metrics_trigger')
-
-    // Manually refresh materialized views once after all data is inserted
+    // Try to re-enable triggers
     try {
-      await client.query('REFRESH MATERIALIZED VIEW referral_stats')
-      await client.query('REFRESH MATERIALIZED VIEW referrer_risk_metrics')
+      await client.query('ALTER TABLE referrals ENABLE TRIGGER ALL')
+    } catch (triggerError) {
+      console.warn(
+        chalk.yellow('Could not re-enable triggers on referrals table (table might not exist)'),
+      )
+    }
+
+    // Try to refresh materialized views
+    try {
+      // First check if views exist before trying to refresh them
+      const { rows: matViewsResult } = await client.query(`
+        SELECT relname 
+        FROM pg_class 
+        WHERE relkind = 'm' 
+        AND relname = 'referral_stats'
+      `)
+
+      if (matViewsResult.length > 0) {
+        await client.query('REFRESH MATERIALIZED VIEW referral_stats')
+      }
+
+      const { rows: riskViewsResult } = await client.query(`
+        SELECT relname 
+        FROM pg_class 
+        WHERE relkind = 'm' 
+        AND relname = 'referrer_risk_metrics'
+      `)
+
+      if (riskViewsResult.length > 0) {
+        await client.query('REFRESH MATERIALIZED VIEW referrer_risk_metrics')
+      }
     } catch (viewError) {
       console.warn(chalk.yellow('Could not refresh materialized views:'), viewError)
     }
@@ -340,16 +343,15 @@ export async function runSeeders() {
       return false
     }
 
-    console.log(chalk.blue('✓ Database seeding completed successfully'))
+    console.log(chalk.green('\n✓ Database seeding completed successfully'))
     return true
   } catch (error: any) {
     console.error(chalk.red('Error during database seeding:'), error)
     try {
-      await client.query('ALTER TABLE referrals ENABLE TRIGGER refresh_referral_stats_trigger')
-      await client.query('ALTER TABLE referrals ENABLE TRIGGER refresh_risk_metrics_trigger')
+      // Try to re-enable triggers
+      await client.query('ALTER TABLE referrals ENABLE TRIGGER ALL')
     } catch (triggerError) {
-      console.error(chalk.red('Error re-enabling triggers:'), triggerError)
-      return false
+      console.warn(chalk.yellow('Could not re-enable triggers on referrals table'))
     }
     return false
   }
