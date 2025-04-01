@@ -1,205 +1,174 @@
-import chalk from 'chalk'
-import type { Pool, QueryResult } from 'pg'
+import type { Pool } from 'pg'
 import { v4 as uuidv4 } from 'uuid'
+import chalk from 'chalk'
 
-interface SeedingError {
-  table: string
-  error: Error
-  timestamp: Date
-  details?: string
-}
+// Store seeding errors
+const seedingErrors: Array<{ table: string; error: Error; stack?: string }> = []
 
-// Store seeding errors for reporting
-const seedingErrors: SeedingError[] = []
-
-/**
- * Generate a UUID
- */
+// Utility to generate UUIDs
 export function generateUUID(): string {
   return uuidv4()
 }
 
-/**
- * Bulk insert records into a table
- * @param pool Database connection pool
- * @param tableName Table to insert into
- * @param records Records to insert
- * @param batchSize Number of records to insert in a single query
- */
+// Fix for BigInt serialization
+BigInt.prototype.toJSON = function () {
+  return this.toString()
+}
+
+// Utility to bulk insert data into a table
 export async function bulkInsert(
   pool: Pool,
-  tableName: string,
-  records: Record<string, any>[],
-  batchSize = 100,
+  table: string,
+  data: any[],
+  batchSize: number = 500,
 ): Promise<void> {
-  if (records.length === 0) {
-    console.log(chalk.yellow(`No records to insert into ${tableName}`))
+  if (data.length === 0) {
     return
   }
 
   try {
-    // Process in batches to avoid query size limits
-    for (let i = 0; i < records.length; i += batchSize) {
-      const batch = records.slice(i, i + batchSize)
-      
-      if (batch.length === 0) continue
-      
-      // Get column names from the first record
+    // Process in batches to avoid overwhelming the database
+    for (let i = 0; i < data.length; i += batchSize) {
+      const batch = data.slice(i, i + batchSize)
+
+      // Extract column names from the first object
       const columns = Object.keys(batch[0])
-      
-      // Build the query
-      const placeholders = batch.map((_record, recordIndex) => 
-        `(${columns.map((_col, colIndex) => `$${recordIndex * columns.length + colIndex + 1}`).join(', ')})`,
-      ).join(', ')
-      
+
+      // Prepare placeholders for values and parameters array
+      const placeholders = batch
+        .map(
+          (_, rowIndex) =>
+            `(${columns.map((_, colIndex) => `$${rowIndex * columns.length + colIndex + 1}`).join(', ')})`,
+        )
+        .join(', ')
+
+      // Flatten all values for the batch
+      const values = batch.flatMap((obj) =>
+        columns.map((col) => {
+          // Special handling for JSON data
+          if (obj[col] && typeof obj[col] === 'object' && !(obj[col] instanceof Date)) {
+            return JSON.stringify(obj[col])
+          }
+          return obj[col]
+        }),
+      )
+
+      // Construct the query
       const query = `
-        INSERT INTO "${tableName}" (${columns.map((c) => `"${c}"`).join(', ')})
+        INSERT INTO "${table}" (${columns.map((c) => `"${c}"`).join(', ')})
         VALUES ${placeholders}
       `
-      
-      // Flatten values for the query
-      const values = batch.flatMap((record) => columns.map((col) => record[col]))
-      
+
+      // Execute the query
       await pool.query(query, values)
     }
-    
-    console.log(chalk.green(`✓ Inserted ${records.length} records into ${tableName}`))
+
+    console.log(chalk.green(`✓ Inserted ${data.length} records into ${table}`))
   } catch (error: any) {
-    console.error(chalk.red(`Error bulk inserting into ${tableName}:`), error.message)
-    
-    // Add detailed error information
-    if (error.detail) {
-      console.error(chalk.yellow('Detail:'), error.detail)
-    }
-    
-    // Store the error for reporting
-    seedingErrors.push({
-      table: tableName,
-      error,
-      timestamp: new Date(),
-      details: error.detail || error.hint || undefined,
-    })
-    
+    console.error(chalk.red(`Error bulk inserting into ${table}:`), error.message)
     throw error
   }
 }
 
-/**
- * Clear all seeding errors
- */
+// Check if a table needs seeding and seed it if necessary
+export async function checkAndSeed(
+  pool: Pool,
+  tableName: string,
+  seederFunction: () => Promise<any[]>,
+): Promise<any[]> {
+  console.log(chalk.blue(`Checking table ${tableName}...`))
+
+  try {
+    // Check if the table already has data
+    const { rows } = await pool.query(`SELECT COUNT(*) as count FROM "${tableName}"`)
+    const rowCount = parseInt(rows[0].count, 10)
+
+    if (rowCount > 0) {
+      console.log(chalk.blue(`Table ${tableName} already has ${rowCount} rows. Skipping.`))
+      return []
+    }
+
+    console.log(chalk.blue(`Seeding table ${tableName}...`))
+
+    // Call the seeder function
+    const result = await seederFunction()
+
+    console.log(chalk.green(`✓ Successfully seeded ${result.length} rows into ${tableName}`))
+    return result
+  } catch (error: any) {
+    console.error(chalk.red(`Error seeding table ${tableName}:`))
+    console.error(chalk.red(error.message))
+    if (error.stack) {
+      console.error(chalk.red(`Stack trace: ${error.stack}`))
+    }
+
+    // Record the error
+    seedingErrors.push({
+      table: tableName,
+      error: new Error(error.message),
+      stack: error.stack,
+    })
+
+    return []
+  }
+}
+
+// Get seeding errors
+export function getSeedingErrors(): Array<{ table: string; error: Error; stack?: string }> {
+  return seedingErrors
+}
+
+// Clear seeding errors
 export function clearSeedingErrors(): void {
   seedingErrors.length = 0
 }
 
-/**
- * Get all seeding errors
- */
-export function getSeedingErrors(): SeedingError[] {
-  return seedingErrors
+// Helper to check if a table exists
+export async function tableExists(pool: Pool, tableName: string): Promise<boolean> {
+  const query = `
+    SELECT EXISTS (
+      SELECT 1 
+      FROM information_schema.tables 
+      WHERE table_schema = 'public' 
+      AND table_name = $1
+    ) AS exists
+  `
+
+  const { rows } = await pool.query(query, [tableName])
+  return rows[0].exists
 }
 
-/**
- * Check if a table exists and has data, then seed it if needed
- * Enhanced with better error logging and dependency validation
- */
-export async function checkAndSeed<T>(
-  client: Pool,
-  tableName: string,
-  seeder: () => Promise<T[]>,
-  options: {
-    forceReseed?: boolean
-    dependencies?: { table: string; minCount?: number }[]
-    isCritical?: boolean
-  } = {},
-): Promise<T[]> {
-  const { forceReseed = false, dependencies = [], isCritical = false } = options
-  
+// Helper to get enum values
+export async function getEnumValues(pool: Pool, enumType: string): Promise<string[]> {
   try {
-    console.log(chalk.blue(`Checking table ${tableName}...`))
-    
-    // Check if dependencies are met
-    for (const dep of dependencies) {
-      const { table, minCount = 1 } = dep
-      const { rows } = await client.query(`SELECT COUNT(*) FROM "${table}"`)
-      const count = parseInt(rows[0].count)
-      
-      if (count < minCount) {
-        const errorMsg = `Dependency check failed: Table "${table}" has ${count} rows, but at least ${minCount} are required.`
-        console.error(chalk.red(errorMsg))
-        
-        seedingErrors.push({
-          table: tableName,
-          error: new Error(errorMsg),
-          timestamp: new Date(),
-          details: `Dependency failure: ${table} (${count}/${minCount})`,
-        })
-        
-        return []
-      }
-    }
-    
-    // Check if table already has data
-    const { rows } = await client.query(`SELECT COUNT(*) FROM "${tableName}"`)
-    const count = parseInt(rows[0].count)
-    
-    if (count > 0 && !forceReseed) {
-      console.log(chalk.green(`Table ${tableName} already has ${count} rows. Skipping.`))
-      
-      // Return existing data if needed
-      const result = await client.query(`SELECT * FROM "${tableName}" LIMIT 1000`)
-      return result.rows
-    }
-    
-    // Seed the table
-    console.log(chalk.yellow(`Seeding table ${tableName}...`))
-    
-    // Use a transaction for the seeding operation
-    await client.query('BEGIN')
-    
-    const result = await seeder()
-    
-    await client.query('COMMIT')
-    
-    console.log(chalk.green(`✓ Successfully seeded ${result.length} rows into ${tableName}`))
-    return result
-  } catch (error: any) {
-    // Roll back the transaction if it was started
-    try {
-      await client.query('ROLLBACK')
-    } catch (rollbackError) {
-      console.error(chalk.red(`Error rolling back transaction for ${tableName}:`), rollbackError)
-    }
-    
-    // Log the error with detailed information
-    console.error(chalk.red(`Error seeding table ${tableName}:`))
-    console.error(chalk.red(error.message))
-    
-    if (error.detail) {
-      console.error(chalk.yellow('Detail:'), error.detail)
-    }
-    
-    if (error.hint) {
-      console.error(chalk.yellow('Hint:'), error.hint)
-    }
-    
-    if (error.stack) {
-      console.error(chalk.gray('Stack trace:'), error.stack.split('\n').slice(0, 3).join('\n'))
-    }
-    
-    // Store the error for reporting
-    seedingErrors.push({
-      table: tableName,
-      error,
-      timestamp: new Date(),
-      details: error.detail || error.hint || undefined,
-    })
-    
-    // If this is a critical table, rethrow the error to stop the seeding process
-    if (isCritical) {
-      throw new Error(`Critical table ${tableName} failed to seed: ${error.message}`)
-    }
-    
+    const query = `SELECT unnest(enum_range(NULL::${enumType})) AS enum_value`
+    const { rows } = await pool.query(query)
+    return rows.map((row) => row.enum_value)
+  } catch (error) {
+    console.warn(`Could not get enum values for ${enumType}:`)
     return []
+  }
+}
+
+// Helper to check for existing record
+export async function recordExists(
+  pool: Pool,
+  tableName: string,
+  conditions: Record<string, any>,
+): Promise<boolean> {
+  if (Object.keys(conditions).length === 0) {
+    return false
+  }
+
+  const whereClauses = Object.keys(conditions).map((key, index) => `"${key}" = $${index + 1}`)
+  const query = `SELECT 1 FROM "${tableName}" WHERE ${whereClauses.join(' AND ')} LIMIT 1`
+
+  try {
+    const { rows } = await pool.query(query, Object.values(conditions))
+    return rows.length > 0
+  } catch (error) {
+    console.warn(`Error checking if record exists in ${tableName}:`)
+    return false
   }
 }
 
@@ -215,56 +184,57 @@ export async function generateSeedingReport(client: Pool): Promise<string> {
       WHERE table_schema = 'public' 
       AND table_type = 'BASE TABLE'
     `)
-    
+
     const tableNames = tables.map((t: any) => t.table_name)
     const totalTables = tableNames.length
-    
+
     // Get row counts for each table
     const tableCounts: Record<string, number> = {}
     const emptyTables: string[] = []
     const nonEmptyTables: string[] = []
-    
+
     for (const tableName of tableNames) {
       const { rows } = await client.query(`SELECT COUNT(*) FROM "${tableName}"`)
       const count = parseInt(rows[0].count)
-      
+
       tableCounts[tableName] = count
-      
+
       if (count === 0) {
         emptyTables.push(tableName)
       } else {
         nonEmptyTables.push(tableName)
       }
     }
-    
+
     // Sort tables by row count (descending)
-    const sortedTables = Object.entries(tableCounts)
-      .sort(([, countA], [, countB]) => countB - countA)
-    
+    const sortedTables = Object.entries(tableCounts).sort(
+      ([, countA], [, countB]) => countB - countA,
+    )
+
     // Generate the report
     let report = '# Database Seeding Report\n\n'
-    
-    report += `## Summary\n`
+
+    report += '## Summary\n'
     report += `- Total Tables: ${totalTables}\n`
     report += `- Tables with Data: ${nonEmptyTables.length} (${((nonEmptyTables.length / totalTables) * 100).toFixed(2)}%)\n`
     report += `- Empty Tables: ${emptyTables.length}\n`
-    
+
     if (seedingErrors.length > 0) {
       report += `- Tables with Errors: ${seedingErrors.length}\n`
     }
-    
+
     report += '\n## Tables with Data (Row Counts)\n'
     sortedTables.forEach(([table, count], index) => {
       if (count > 0) {
         report += `${index + 1}. ${table}: ${count} rows\n`
       }
     })
-    
+
     report += '\n## Empty Tables\n'
     emptyTables.sort().forEach((table, index) => {
       report += `${index + 1}. ${table}\n`
     })
-    
+
     if (seedingErrors.length > 0) {
       report += '\n## Seeding Errors\n'
       seedingErrors.forEach((error, index) => {
@@ -276,7 +246,7 @@ export async function generateSeedingReport(client: Pool): Promise<string> {
         report += `- Timestamp: ${error.timestamp.toISOString()}\n\n`
       })
     }
-    
+
     return report
   } catch (error: any) {
     console.error(chalk.red('Error generating seeding report:'), error)

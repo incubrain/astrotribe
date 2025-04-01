@@ -13,7 +13,7 @@ export async function seedCompanyEmployees(pool: Pool, companyIds: string[], use
   )
 
   try {
-    const accessLevels = ['read', 'write', 'admin', 'owner']
+    const accessLevels = ['viewer', 'editor', 'admin', 'super_admin']
 
     const employees = companyIds.flatMap((companyId) =>
       Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => ({
