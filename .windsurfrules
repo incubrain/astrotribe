@@ -1,0 +1,22 @@
+# Playwright MCP Testing Configuration
+
+<test_environment>
+
+- auth is always http://localhost:3009
+- app/website/admin are always http://localhost:3000
+
+<test_user> email: test.user@example.com password: password123 role: user plan: basic id:
+22222222-2222-2222-2222-222222222222 DO NOT ATTEMPT TO SOLVE THE CLOUDFLARE TURNSTILE </test_user>
+
+<application_pages> Main pages in our application:
+
+- Home (/)
+- Companies (/companies)
+- Opportunities (/opportunities)
+- Astronomy Events (/astronomy-events)
+- News Feed (/news)
+- Bookmarks (/profile/bookmarks)
+- Settings (/settings) </application_pages>
+
+Use Playwright to log in as our test user (test.user@example.com with password password123) at
+http://localhost:3009/login and take screenshots of all main pages in our application.

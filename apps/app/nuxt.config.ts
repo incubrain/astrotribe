@@ -2,7 +2,7 @@ import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
 import { config } from 'dotenv'
-import AuraTheme from '../../shared/theme'
+import AstroTheme from '../../shared/theme'
 import { devPortMap } from '../../shared/paths.config'
 import { getSharedEnv, pick } from '../../shared/env'
 
@@ -156,8 +156,7 @@ export default defineNuxtConfig({
     },
     options: {
       ripple: true,
-      inputVariant: 'filled',
-      theme: AuraTheme,
+      theme: AstroTheme,
     },
   },
 

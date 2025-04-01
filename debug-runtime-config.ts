@@ -17,7 +17,7 @@ try {
   const { sharedRuntimeConfig } = require('./shared/runtime.config')
   console.log('Shared runtime config loaded successfully')
   console.log('Runtime config content:', JSON.stringify(sharedRuntimeConfig, null, 2))
-} catch (error) {
+} catch (error: any) {
   console.error('Error loading shared runtime config:', error)
 }
 
@@ -26,6 +26,6 @@ try {
   console.log('Checking if defineNuxtConfig is available...')
   // This will fail because defineNuxtConfig is only available in Nuxt context
   // Just checking to see the error
-} catch (error) {
+} catch (error: any) {
   console.error('Error with defineNuxtConfig:', error)
 }

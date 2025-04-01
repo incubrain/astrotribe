@@ -178,7 +178,7 @@ const submitForm = async () => {
     setTimeout(() => {
       showSuccessMessage.value = false
     }, 3000)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error submitting form:', error)
   } finally {
     isSubmitting.value = false
