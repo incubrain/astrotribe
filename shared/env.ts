@@ -54,6 +54,7 @@ export const getSharedEnv = () => ({
     openaiOrg: process.env.NUXT_OPENAI_ORG,
     redisFlushKey: process.env.NUXT_REDIS_FLUSH_KEY,
     scraperKey: process.env.NUXT_SCRAPER_KEY,
+    backupUrl: process.env.DATABASE_BACKUP_URL,
     razorpayKey:
       process.env.NODE_ENV === 'production'
         ? process.env.NUXT_RAZORPAY_KEY

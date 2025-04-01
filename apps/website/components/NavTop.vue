@@ -40,12 +40,10 @@ const { y } = useWindowScroll()
 const isMobileMenuOpen = ref(false)
 const isMobile = ref(false)
 const isScrolled = ref(false)
-
-// These track which menu items are expanded in mobile view
 const expandedItems = ref<Record<number, boolean>>({})
 const expandedSubItems = ref<Record<string, boolean>>({})
 
-// Static data - including the nested structure for conferences and symposiums
+// Static data
 const websiteLinks: NavItem[] = [
   {
     key: 'about-us',
@@ -170,7 +168,7 @@ const websiteLinks: NavItem[] = [
         disabled: false,
       },
       {
-        key: 'darksky-conferences',
+        key: 'conferences',
         label: 'Conferences',
         icon: 'i-mdi-presentation',
         url: '/conferences',
@@ -188,7 +186,7 @@ const websiteLinks: NavItem[] = [
         ],
       },
       {
-        key: 'darksky-symposiums',
+        key: 'symposiums',
         label: 'Symposiums',
         icon: 'i-mdi-school-outline',
         url: '/symposiums',
@@ -269,7 +267,6 @@ function checkMobile() {
   isMobile.value = window.innerWidth < 1024
 }
 
-// Toggle mobile submenu visibility
 function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
   if (level === 'main') {
     expandedItems.value = {
@@ -351,7 +348,7 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
               </div>
             </button>
 
-            <!-- Dropdown for desktop (Level 1) -->
+            <!-- Dropdown for desktop -->
             <div
               v-if="item.items && item.items.length"
               class="dropdown-menu absolute top-full left-0 mt-1 w-48 rounded-md shadow-lg border border-primary-100/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible z-50"

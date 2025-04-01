@@ -4,7 +4,6 @@ import path, { dirname } from 'path'
 import fs from 'fs/promises'
 import Pool from 'pg-pool'
 import dotenv from 'dotenv'
-import { SchemaAnalyzer } from '../../schema-analyzer'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -140,9 +139,6 @@ async function generatePermissions() {
     await pool.query('SELECT NOW()')
     console.log('Database connection successful')
 
-    const analyzer = new SchemaAnalyzer(pool)
-    const schemas = await analyzer.analyzeDatabase()
-
     // Initialize table groups
     const tableGroups: TableGroups = {
       reference_tables: {
@@ -191,101 +187,9 @@ async function generatePermissions() {
       },
     }
 
-    // Categorize tables
-    schemas.forEach((schema) => {
-      const groupKey = categorizeTable(schema.name, schemas)
-      if (tableGroups[groupKey]) {
-        tableGroups[groupKey].tables.push(schema.name)
-      }
-    })
-
-    // Generate role permissions configuration
-    const config = {
-      table_groups: tableGroups,
-      roles: {
-        super_admin: {
-          inherit_from: ['admin'],
-          all_tables: {
-            permissions: ['select', 'insert', 'update', 'delete'],
-          },
-        },
-        admin: {
-          inherit_from: ['moderator'],
-          security_tables: {
-            permissions: ['select', 'insert', 'update'],
-          },
-        },
-        moderator: {
-          inherit_from: ['user'],
-          operational_tables: {
-            permissions: ['select', 'update'],
-            conditions: {
-              select: {
-                sql: 'is_active = true',
-              },
-              update: {
-                sql: "is_active = true AND status = 'pending_review'",
-              },
-            },
-          },
-        },
-        user: {
-          inherit_from: ['guest'],
-          user_content_tables: {
-            permissions: ['select', 'insert', 'update', 'delete'],
-            conditions: {
-              select: {
-                sql: 'auth.uid() = user_id OR is_public = true',
-              },
-              insert: {
-                sql: 'auth.uid() = user_id',
-              },
-              update: {
-                sql: 'auth.uid() = user_id',
-              },
-              delete: {
-                sql: 'auth.uid() = user_id',
-              },
-            },
-          },
-          user_data_tables: {
-            permissions: ['select', 'insert', 'update', 'delete'],
-            conditions: {
-              select: {
-                sql: 'auth.uid() = user_id',
-              },
-              insert: {
-                sql: 'auth.uid() = user_id',
-              },
-              update: {
-                sql: 'auth.uid() = user_id',
-              },
-              delete: {
-                sql: 'auth.uid() = user_id',
-              },
-            },
-          },
-        },
-        guest: {
-          reference_tables: {
-            permissions: ['select'],
-          },
-          public_content_tables: {
-            permissions: ['select'],
-          },
-        },
-      },
-    }
-
     // Ensure output directory exists
     const outputDir = path.join(__dirname, '../generated')
     await fs.mkdir(outputDir, { recursive: true })
-
-    // Write configuration
-    await fs.writeFile(
-      path.join(outputDir, 'role-permissions.json'),
-      JSON.stringify(config, null, 2),
-    )
 
     console.log('Successfully generated role permissions configuration!')
   } catch (error: any) {
