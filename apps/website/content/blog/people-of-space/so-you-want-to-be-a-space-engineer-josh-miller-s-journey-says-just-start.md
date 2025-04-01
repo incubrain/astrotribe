@@ -7,12 +7,7 @@ date: '2024-10-28T22:59:38.791Z'
 updatedAt: '2024-10-28T22:59:38.673Z'
 author: ruchira-huchgol
 category: people-of-space
-cover:
-  url: >-
-    https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/1_20_people_who_influenced_the_space_industry_02c4133806.webp
-  alternativeText: null
-  width: 1792
-  height: 1024
+image: '/images/blog/posts/yana-yakushina-people-of-space-ep9'
 draft: false
 ---
 

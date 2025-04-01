@@ -1,19 +1,13 @@
 ---
 title: Astronomy for Sustainable Development - Uniting Humanity for a Brighter Future
 description: >-
-  Explore how the power of astronomy can drive sustainable development,
-  connecting our understanding of the cosmos to the well-being of Earth and its
-  inhabitants.
+  Explore how the power of astronomy can drive sustainable development, connecting our understanding
+  of the cosmos to the well-being of Earth and its inhabitants.
 date: '2024-10-28T22:58:18.715Z'
 updatedAt: '2024-10-28T22:58:18.650Z'
 author: ruchira-huchgol
 category: sustainable-development
-cover:
-  url: >-
-    https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/1_sustainable_global_space_development_97af989710.webp
-  alternativeText: null
-  width: 1792
-  height: 1024
+image: '/images/blog/posts/yana-yakushina-people-of-space-ep9'
 draft: false
 ---
 
@@ -120,5 +114,3 @@ where the wonders of the cosmos inspire us to create a more sustainable and equi
 generations to come.
 
 **Join the movement today and be part of the solution!**
-
-

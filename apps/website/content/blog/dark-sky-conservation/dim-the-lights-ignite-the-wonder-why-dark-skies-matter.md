@@ -8,12 +8,7 @@ date: '2024-10-28T22:58:45.541Z'
 updatedAt: '2024-10-28T22:58:45.450Z'
 author: ruchira-huchgol
 category: dark-sky-conservation
-cover:
-  url: >-
-    https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20.webp
-  alternativeText: null
-  width: 1792
-  height: 1024
+image: '/images/blog/posts/yana-yakushina-people-of-space-ep9'
 tags:
   - name: Stargazing
 draft: false

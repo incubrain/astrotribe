@@ -19,14 +19,7 @@ export default defineContentConfig({
         updatedAt: z.string().optional(),
         author: z.string(), // Reference to author ID
         category: z.string(), // Reference to category slug
-        cover: z
-          .object({
-            url: z.string(),
-            alternativeText: z.string().optional(),
-            width: z.number().optional(),
-            height: z.number().optional(),
-          })
-          .optional(),
+        image: z.string(), // Reference to category slug
         tags: z.array(z.string()).optional(), // Array of tag IDs
         draft: z.boolean().default(false),
         featured: z.boolean().default(false),

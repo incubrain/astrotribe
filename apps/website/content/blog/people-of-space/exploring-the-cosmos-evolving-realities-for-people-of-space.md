@@ -7,12 +7,7 @@ date: '2024-12-19T10:12:20.251Z'
 updatedAt: '2024-12-19T10:12:20.208Z'
 author: ruchira-huchgol
 category: people-of-space
-cover:
-  url: >-
-    https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/People_of_Space_Desktop_Wallpaper_5_5910c6011d.webp
-  alternativeText: null
-  width: 1920
-  height: 1080
+image: '/images/blog/posts/yana-yakushina-people-of-space-ep9'
 draft: false
 ---
 
