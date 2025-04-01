@@ -4,7 +4,7 @@ import type { Mission } from '~/types/solarsystem'
 
 // 2. Component Options
 defineOptions({
-  name: 'MissionsTimeline',
+  name: 'PlanetMissionsTimeline',
 })
 
 // 3. Props and Emits

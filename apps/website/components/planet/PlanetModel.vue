@@ -2,11 +2,9 @@
 // 1. Imports
 import { ref, onMounted, onBeforeUnmount, watchEffect } from 'vue'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-
-// Note: For simplicity, this component is using a placeholder implementation since
-// Three.js requires additional setup and actual model files. In production,
-// you'd want to use proper 3D models, textures, and lighting effects.
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { PLANETS, type PlanetConfig, DEFAULT_SIZE } from '../../data/planets'
+import { applyOverrides } from '../../utils/planetConfig'
 
 // 2. Component Options
 defineOptions({
@@ -17,147 +15,274 @@ defineOptions({
 const props = defineProps<{
   planetId: string
   autoRotate?: boolean
+  scientificMode?: boolean
 }>()
 
 // 4. Reactive Variables
 const containerRef = ref<HTMLDivElement | null>(null)
+const isLoading = ref(true)
+const hasError = ref(false)
+
+// 5. Three.js Variables
 let scene: THREE.Scene | null = null
 let camera: THREE.PerspectiveCamera | null = null
 let renderer: THREE.WebGLRenderer | null = null
 let controls: OrbitControls | null = null
 let planet: THREE.Mesh | null = null
+let rings: THREE.Mesh | null = null
 let animationFrameId: number | null = null
+let clock: THREE.Clock | null = null
+let textureLoader: THREE.TextureLoader | null = null
+const texturesLoaded = false
 
-// 5. Lifecycle Hooks
+// 6. Lifecycle Hooks
 onMounted(() => {
   initThreeJs()
 })
 
 onBeforeUnmount(() => {
-  if (animationFrameId !== null) {
-    cancelAnimationFrame(animationFrameId)
-  }
-
-  if (renderer) {
-    renderer.dispose()
-  }
-
-  // Remove any event listeners
-  window.removeEventListener('resize', handleResize)
+  cleanup()
 })
 
-// 6. Methods
+// 7. Watchers
+watchEffect(() => {
+  if (scene && props.planetId) {
+    updatePlanet()
+  }
+
+  if (controls && props.autoRotate !== undefined) {
+    controls.autoRotate = props.autoRotate
+  }
+})
+
+// 8. Methods
 function initThreeJs() {
   if (!containerRef.value) return
 
-  // Create scene
-  scene = new THREE.Scene()
-  scene.background = new THREE.Color(0x000000)
+  try {
+    // Create clock for animation
+    clock = new THREE.Clock()
+    // Create texture loader
+    textureLoader = new THREE.TextureLoader()
 
-  // Create camera
-  const aspect = containerRef.value.clientWidth / containerRef.value.clientHeight
-  camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
-  camera.position.z = 5
+    // Create scene
+    scene = new THREE.Scene()
+    // Set transparent background (THREE.Color only accepts RGB values, not alpha)
+    scene.background = null
 
-  // Create renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight)
-  renderer.setPixelRatio(window.devicePixelRatio)
-  containerRef.value.appendChild(renderer.domElement)
+    // Create camera
+    const aspect = containerRef.value.clientWidth / containerRef.value.clientHeight
+    camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000)
+    camera.position.z = 0.75 // Move camera farther away to make planet appear smaller
 
-  // Add orbit controls
-  if (camera && renderer) {
-    controls = new OrbitControls(camera, renderer.domElement)
-    controls.enableDamping = true
-    controls.dampingFactor = 0.05
-    controls.autoRotate = props.autoRotate || false
-    controls.autoRotateSpeed = 1.0
+    // Create renderer
+    renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      preserveDrawingBuffer: true,
+    }) // Enable alpha for transparency
+    renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight, false)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.outputColorSpace = THREE.SRGBColorSpace
+    containerRef.value.appendChild(renderer.domElement)
+
+    // Add orbit controls
+    if (camera && renderer) {
+      controls = new OrbitControls(camera, renderer.domElement)
+      controls.enableDamping = true
+      controls.dampingFactor = 0.15
+      controls.autoRotate = props.autoRotate ?? false
+      controls.autoRotateSpeed = 0.4
+      controls.enableZoom = false
+      controls.enablePan = false
+      controls.enableRotate = false
+    }
+
+    // Setup lighting
+    setupLighting()
+
+    // Create the planet
+    createPlanet()
+
+    // Add window resize listener
+    window.addEventListener('resize', handleResize)
+
+    // Start animation loop
+    animate()
+    isLoading.value = false
+  } catch (error) {
+    console.error('Error initializing Three.js:', error)
+    hasError.value = true
+    isLoading.value = false
   }
+}
 
-  // Add ambient light
-  const ambientLight = new THREE.AmbientLight(0x404040, 2)
+function setupLighting() {
+  if (!scene) return
+
+  // Use only ambient light for completely even illumination
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1.5)
   scene.add(ambientLight)
 
-  // Add directional light (like the sun)
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
-  directionalLight.position.set(5, 3, 5)
-  scene.add(directionalLight)
-
-  // Create the planet (placeholder sphere)
-  createPlanet()
-
-  // Add window resize listener
-  window.addEventListener('resize', handleResize)
-
-  // Start animation loop
-  animate()
+  // If we're rendering the Sun, add a special glow effect
+  const planetConfig = PLANETS[props.planetId]
+  if (planetConfig?.isStar) {
+    const sunLight = new THREE.PointLight(planetConfig.color, 1.5, 3, 1)
+    sunLight.position.set(0, 0, 0)
+    scene.add(sunLight)
+  }
 }
 
 function createPlanet() {
-  if (!scene) return
+  if (!scene || !textureLoader) return
 
-  // Remove existing planet if any
+  const planetConfig = PLANETS[props.planetId]
+  if (!planetConfig) {
+    console.error(`Planet configuration for "${props.planetId}" not found`)
+    hasError.value = true
+    return
+  }
+
+  let config = planetConfig
+  if (props.scientificMode) {
+    config = applyOverrides(planetConfig, {
+      // Add scientific mode overrides here
+    })
+  }
+
   if (planet) {
     scene.remove(planet)
+    if (planet.geometry) planet.geometry.dispose()
+    if (planet.material) {
+      const material = planet.material as THREE.MeshStandardMaterial
+      if (material.map) material.map.dispose()
+      material.dispose()
+    }
+    planet = null
   }
 
-  // Load texture based on planetId
-  const textureLoader = new THREE.TextureLoader()
-  const texture = textureLoader.load(
-    `/images/planets/${props.planetId}_texture.jpg`,
-    undefined,
-    undefined,
-    (error) => {
-      console.error('Error loading planet texture:', error)
-      // Load a default texture if the planet texture fails
-      return textureLoader.load('/images/planets/default_texture.jpg')
-    },
-  )
+  if (rings) {
+    scene.remove(rings)
+    if (rings.geometry) rings.geometry.dispose()
+    if (rings.material) {
+      const material = rings.material as THREE.MeshStandardMaterial
+      if (material.map) material.map.dispose()
+      material.dispose()
+    }
+    rings = null
+  }
 
-  // Create geometry and material
-  const geometry = new THREE.SphereGeometry(2, 64, 64)
-  const material = new THREE.MeshStandardMaterial({
-    map: texture,
-    roughness: 0.7,
-    metalness: 0.0,
+  // Calculate planet size to be 90% of the canvas height
+  const containerHeight = containerRef.value?.clientHeight || 480
+  const planetSize = 0.25 // Reduced size to fit within canvas
+
+  const geometry = new THREE.SphereGeometry(planetSize, 64, 32)
+
+  const material = new THREE.MeshBasicMaterial({
+    color: config.color,
   })
 
-  // Create mesh
-  planet = new THREE.Mesh(geometry, material)
-  scene?.add(planet)
-
-  // Add planet-specific features (rings for Saturn, etc.)
-  addPlanetFeatures()
-}
-
-function addPlanetFeatures() {
-  if (!scene || !planet) return
-
-  // Add planet-specific features
-  if (props.planetId === 'saturn') {
-    // Add rings for Saturn
-    const ringGeometry = new THREE.RingGeometry(2.5, 4, 64)
-    const ringTexture = new THREE.TextureLoader().load('/images/planets/saturn_rings.jpg')
-    const ringMaterial = new THREE.MeshStandardMaterial({
-      map: ringTexture,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.8,
+  if (config.emissive) {
+    // For emissive objects like the sun, keep using MeshStandardMaterial
+    const emissiveMaterial = new THREE.MeshStandardMaterial({
+      roughness: 0.3,
+      metalness: 0.0,
+      color: config.color,
+      emissive: new THREE.Color(config.color),
+      emissiveIntensity: config.emissiveIntensity ?? 0.5,
     })
-    const rings = new THREE.Mesh(ringGeometry, ringMaterial)
-    rings.rotation.x = Math.PI / 2
-    planet.add(rings)
+    planet = new THREE.Mesh(geometry, emissiveMaterial)
+    loadPlanetTexture(emissiveMaterial, config.texturePath)
+  } else {
+    // For regular planets, use MeshBasicMaterial for even lighting
+    planet = new THREE.Mesh(geometry, material)
+    loadPlanetTexture(material, config.texturePath)
   }
 
-  if (props.planetId === 'jupiter') {
-    // Add Great Red Spot effect
-    // This is a simplified approach - in a real implementation,
-    // this would be better handled with a custom shader
-    const spotGeometry = new THREE.SphereGeometry(0.3, 32, 32)
-    const spotMaterial = new THREE.MeshStandardMaterial({ color: 0xcc3311 })
-    const redSpot = new THREE.Mesh(spotGeometry, spotMaterial)
-    redSpot.position.set(1.9, 0.3, 0.5)
-    planet.add(redSpot)
+  planet.rotation.z = THREE.MathUtils.degToRad(config.axialTilt)
+  scene.add(planet)
+
+  if (config.hasRings && config.ringsTexturePath) {
+    createRings(config)
+  }
+}
+
+// In PlanetModel.vue
+const textureCache = {} as Record<string, THREE.Texture>
+
+function loadPlanetTexture(material: THREE.Material, texturePath: string) {
+  if (textureCache[texturePath]) {
+    // Use cached texture
+    if (
+      material instanceof THREE.MeshStandardMaterial ||
+      material instanceof THREE.MeshBasicMaterial
+    ) {
+      material.map = textureCache[texturePath]
+      material.needsUpdate = true
+    }
+    return
+  }
+
+  // Load new texture
+  textureLoader?.load(texturePath, (texture) => {
+    // Setup texture
+    texture.colorSpace = THREE.SRGBColorSpace
+    // Cache texture
+    textureCache[texturePath] = texture
+
+    // Apply to material
+    if (
+      material instanceof THREE.MeshStandardMaterial ||
+      material instanceof THREE.MeshBasicMaterial
+    ) {
+      material.map = texture
+      material.needsUpdate = true
+    }
+  })
+}
+
+function createRings(config: PlanetConfig) {
+  if (!scene || !textureLoader || !renderer) return
+
+  // Scale rings to match the planet size
+  const innerRadius = 0.3
+  const outerRadius = 0.5
+  const segments = 64
+  const geometry = new THREE.RingGeometry(innerRadius, outerRadius, segments)
+
+  const material = new THREE.MeshStandardMaterial({
+    side: THREE.DoubleSide,
+    transparent: true,
+    roughness: 0.8,
+    metalness: 0.1,
+    color: 0xffffff,
+  })
+
+  rings = new THREE.Mesh(geometry, material)
+  rings.rotation.z = THREE.MathUtils.degToRad(config.axialTilt)
+  rings.rotation.x = Math.PI / 2
+  scene.add(rings)
+
+  if (config.ringsTexturePath) {
+    textureLoader.load(
+      config.ringsTexturePath,
+      (texture) => {
+        texture.colorSpace = THREE.SRGBColorSpace
+        texture.generateMipmaps = true
+        texture.minFilter = THREE.LinearMipmapLinearFilter
+        texture.magFilter = THREE.LinearFilter
+        if (renderer) {
+          texture.anisotropy = renderer.capabilities.getMaxAnisotropy()
+        }
+
+        material.map = texture
+        material.needsUpdate = true
+      },
+      undefined,
+      (error) => {
+        console.error('Error loading rings texture:', error)
+      },
+    )
   }
 }
 
@@ -170,56 +295,141 @@ function handleResize() {
   camera.aspect = width / height
   camera.updateProjectionMatrix()
 
-  renderer.setSize(width, height)
+  renderer.setSize(width, height, false)
 }
 
+// In PlanetModel.vue
 function animate() {
+  if (!scene || !camera || !renderer || !clock || !planet) return
+
   animationFrameId = requestAnimationFrame(animate)
+
+  // Skip frames if tab is inactive
+  if (document.hidden) return
+
+  const delta = clock.getDelta()
+
+  // Only rotate if autoRotate is enabled
+  if (props.autoRotate && planet) {
+    const planetConfig = PLANETS[props.planetId]
+    if (planetConfig) {
+      const rotationSpeed = (Math.PI * 2) / planetConfig.rotationPeriod
+      planet.rotation.y += rotationSpeed * delta
+    }
+  }
 
   if (controls) {
     controls.update()
   }
 
-  if (renderer && scene && camera) {
-    renderer.render(scene, camera)
-  }
+  // Only render when needed
+  renderer.render(scene, camera)
 }
 
-// 7. Watch for prop changes
-watchEffect(() => {
-  if (scene && props.planetId) {
-    createPlanet()
+function updatePlanet() {
+  createPlanet()
+}
+
+watch(
+  () => props.planetId,
+  (newPlanetId, oldPlanetId) => {
+    console.log(`Planet changing from ${oldPlanetId} to ${newPlanetId}`)
+    if (scene) {
+      // Force a complete recreation of the planet
+      cleanup(false) // Don't remove renderer/scene, just planet objects
+      createPlanet()
+    }
+  },
+  { immediate: false },
+)
+
+// Add a partial cleanup function that preserves the scene/renderer
+function cleanup(full = true) {
+  // Clear animation frame
+  if (animationFrameId !== null) {
+    cancelAnimationFrame(animationFrameId)
+    animationFrameId = null
   }
 
-  if (controls && props.autoRotate !== undefined) {
-    controls.autoRotate = props.autoRotate
+  // Cleanup planet objects
+  if (planet) {
+    scene?.remove(planet)
+    if (planet.geometry) planet.geometry.dispose()
+    if (planet.material) {
+      const material = planet.material as THREE.MeshStandardMaterial | THREE.MeshBasicMaterial
+      if (material.map) material.map.dispose()
+      material.dispose()
+    }
+    planet = null
   }
-})
+
+  // Cleanup rings
+  if (rings) {
+    scene?.remove(rings)
+    if (rings.geometry) rings.geometry.dispose()
+    if (rings.material) {
+      const material = rings.material as THREE.MeshStandardMaterial
+      if (material.map) material.map.dispose()
+      material.dispose()
+    }
+    rings = null
+  }
+
+  // Only perform full cleanup when component is unmounting
+  if (full && scene) {
+    // Remove event listeners
+    window.removeEventListener('resize', handleResize)
+
+    // Remove all scene objects
+    while (scene.children.length > 0) {
+      const object = scene.children[0]
+      scene.remove(object)
+    }
+
+    // Dispose controls
+    if (controls) {
+      controls.dispose()
+      controls = null
+    }
+
+    // Dispose renderer
+    if (renderer) {
+      renderer.renderLists.dispose()
+      renderer.dispose()
+      if (containerRef.value) {
+        const canvas = containerRef.value.querySelector('canvas')
+        if (canvas) {
+          containerRef.value.removeChild(canvas)
+        }
+      }
+      renderer = null
+    }
+
+    // Clear references
+    scene = null
+    camera = null
+    clock = null
+    textureLoader = null
+  }
+}
 </script>
 
 <template>
   <div
     ref="containerRef"
-    class="planet-model-container w-full h-full min-h-[400px] rounded-full overflow-hidden"
+    class="w-full h-full min-h-[480px] relative z-[1000] overflow-visible"
   >
-    <!-- Three.js will render in this container -->
-    <!-- Fallback display if Three.js initialization fails -->
-    <div
-      v-if="!scene"
-      class="flex items-center justify-center h-full w-full bg-black"
-    >
-      <p class="text-gray-400">Loading {{ planetId }} model...</p>
-    </div>
   </div>
 </template>
 
 <style scoped>
-.planet-model-container {
-  position: relative;
-  box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
-}
-
-.planet-model-container canvas {
+/* Add styling to ensure the canvas takes up the full container */
+:deep(canvas) {
+  width: 100% !important;
+  height: 100% !important;
   display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>
