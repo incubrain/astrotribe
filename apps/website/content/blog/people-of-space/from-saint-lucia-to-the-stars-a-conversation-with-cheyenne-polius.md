@@ -7,12 +7,7 @@ date: '2024-12-03T08:24:44.452Z'
 updatedAt: '2024-12-03T08:24:44.402Z'
 author: ruchira-huchgol
 category: people-of-space
-cover:
-  url: >-
-    https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/people_of_space_CAROUSEL_POSTS_2_d65e1d1674.png
-  alternativeText: null
-  width: 1080
-  height: 1080
+image: '/images/blog/posts/cheyenne-polius'
 draft: false
 ---
 

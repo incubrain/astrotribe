@@ -1,18 +1,13 @@
 ---
 title: Unveiling the Mysteries of the Cosmos - A Journey Through Space Exploration
 description: >-
-  Since the dawn of humanity, the stars have beckoned us with their enigmatic
-  allure, igniting a primal curiosity to explore the vast expanse of the cosmos.
+  Since the dawn of humanity, the stars have beckoned us with their enigmatic allure, igniting a
+  primal curiosity to explore the vast expanse of the cosmos.
 date: '2024-10-28T22:59:55.761Z'
 updatedAt: '2024-10-28T22:59:55.714Z'
 author: ruchira-huchgol
 category: space-exploration
-cover:
-  url: >-
-    https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/1_starship_lands_on_mars_3ee52cd10d.webp
-  alternativeText: null
-  width: 1792
-  height: 1024
+image: '/images/blog/posts/yana-yakushina-people-of-space-ep9'
 draft: false
 ---
 
@@ -130,5 +125,3 @@ charting a course towards a brighter, more enlightened future for all of humanit
 The following blogs under this particular theme will share with you the recent visions, planned and
 future mission concepts as well as the advancements, goals, policy and law framework necessary to
 make space exploration more convenient and affordable in coming years.
-
-

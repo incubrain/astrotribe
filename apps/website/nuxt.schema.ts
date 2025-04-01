@@ -55,6 +55,11 @@ export default defineNuxtSchema({
           title: 'Category',
           description: 'Category slug',
         }),
+        image: field({
+          type: 'string',
+          title: 'Image',
+          description: 'Image Path',
+        }),
         tags: field({
           type: 'array',
           title: 'Tags',
