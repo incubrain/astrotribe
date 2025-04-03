@@ -7,41 +7,8 @@ import { getMcpServerUrl } from '../vscode_integration'
  * @returns {DebuggerConfig} Configuration object
  */
 export function loadConfig(routes?: Route[]): DebuggerConfig {
-  // Process command line arguments first
-  const args = process.argv.slice(2)
-  const useVsCodeArg = args.find(arg => arg.startsWith('--use-vscode='))
-  const useInsidersArg = args.find(arg => arg.startsWith('--use-insiders='))
-  const mcpServerUrlArg = args.find(arg => arg.startsWith('--mcp-server-url='))
-  
-  // Set environment variables based on command line arguments
-  if (useVsCodeArg) {
-    const useVsCode = useVsCodeArg.split('=')[1] === 'true'
-    process.env.USE_VSCODE_INTEGRATION = useVsCode ? 'true' : 'false'
-    console.log(`Setting USE_VSCODE_INTEGRATION=${useVsCode} from command line arg`)
-  }
-  
-  if (useInsidersArg) {
-    const useInsiders = useInsidersArg.split('=')[1] === 'true'
-    process.env.USE_VSCODE_INSIDERS = useInsiders ? 'true' : 'false'
-    console.log(`Setting USE_VSCODE_INSIDERS=${useInsiders} from command line arg`)
-  }
-  
-  if (mcpServerUrlArg) {
-    process.env.MCP_SERVER_URL = mcpServerUrlArg.split('=')[1]
-    console.log(`Setting MCP_SERVER_URL=${process.env.MCP_SERVER_URL} from command line arg`)
-  }
-  
   // Check if we're running inside VS Code
-  const isVSCodeRunning = process.env.VSCODE_PID !== undefined || 
-                         process.env.VSCODE_CWD !== undefined || 
-                         process.env.VSCODE_RUNNING === 'true'
-  
-  if (isVSCodeRunning) {
-    console.log('Detected running inside VS Code')
-  }
-  
-  // Determine if we should use VS Code integration
-  const useVsCodeIntegration = isVSCodeRunning || process.env.USE_VSCODE_INTEGRATION === 'true'
+  const isVSCodeRunning = process.env.VSCODE_RUNNING === 'true'
   
   // Determine if we should use VS Code Insiders
   const useInsiders = process.env.USE_VSCODE_INSIDERS !== 'false'
@@ -57,7 +24,7 @@ export function loadConfig(routes?: Route[]): DebuggerConfig {
     disableSimulation: process.env.DISABLE_SIMULATION === 'true',
     mcpServerUrl,
     vscodeIntegration: {
-      enabled: useVsCodeIntegration, // Use the value we parsed earlier
+      enabled: isVSCodeRunning || process.env.USE_VSCODE_INTEGRATION === 'true',
       useInsiders,
       extensionId: process.env.VSCODE_EXTENSION_ID || 'ms-playwright.playwright-mcp'
     },
@@ -70,20 +37,8 @@ export function loadConfig(routes?: Route[]): DebuggerConfig {
     pages: routes ? routes : (testRoutes as Route[]),
   }
   
-  // Log relevant configuration settings
-  console.log('Configuration summary:')
-  console.log(`- VS Code Integration: ${config.vscodeIntegration.enabled ? 'Enabled' : 'Disabled'}`)
-  if (config.vscodeIntegration.enabled) {
-    console.log(`- Using VS Code ${config.vscodeIntegration.useInsiders ? 'Insiders' : 'Regular'}`)
-  }
-  console.log(`- MCP Server URL: ${config.mcpServerUrl}`)
-  console.log(`- Simulation mode: ${config.disableSimulation ? 'Disabled' : 'Enabled as fallback'}`)
-  console.log(`- Application URL: ${config.appUrl}`)
-  console.log(`- Authentication URL: ${config.authUrl}`)
-  console.log(`- Output path: ${config.outputPath}`)
-  
   // Update MCP server URL based on VS Code integration
-  if (config.vscodeIntegration.enabled) {
+  if (config.vscodeIntegration && config.vscodeIntegration.enabled) {
     config.mcpServerUrl = getMcpServerUrl(config)
   }
   
