@@ -102,5 +102,7 @@ ai-docs
 .DS_Store
 **/.DS_Store
 
+output
+**/output/**
 backups
 **/backups/**

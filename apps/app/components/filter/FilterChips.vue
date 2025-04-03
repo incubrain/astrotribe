@@ -13,19 +13,21 @@
       @scroll="handleScroll"
     >
       <!-- Clear all filter chip - shown when at least one filter is active -->
-      <button
-        v-if="hasActiveFilters"
-        class="flex-shrink-0 px-3 py-2 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-sm font-medium mr-2 focus:outline-none hover:bg-red-500/20 transition-colors"
-        @click="$emit('clear')"
-      >
-        <div class="flex items-center gap-1">
-          <Icon
-            name="mdi:close"
-            class="w-4 h-4"
-          />
-          <span>Clear All</span>
-        </div>
-      </button>
+      <ClientOnly>
+        <button
+          v-if="clientSideOnly && hasActiveFilters"
+          class="flex-shrink-0 px-3 py-2 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-sm font-medium mr-2 focus:outline-none hover:bg-red-500/20 transition-colors"
+          @click="$emit('clear')"
+        >
+          <div class="flex items-center gap-1">
+            <Icon
+              name="mdi:close"
+              class="w-4 h-4"
+            />
+            <span>Clear All</span>
+          </div>
+        </button>
+      </ClientOnly>
 
       <!-- Filter chips -->
       <button
@@ -65,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, onBeforeUnmount, nextTick } from 'vue'
 
 interface FilterChip {
   id: string
@@ -92,6 +94,7 @@ const emit = defineEmits<{
 const containerRef = ref<HTMLElement | null>(null)
 const canScrollLeft = ref(false)
 const canScrollRight = ref(false)
+const clientSideOnly = ref(false)
 
 // Compute if any filter is active to show clear button
 const hasActiveFilters = computed(() => props.chips.some((chip) => chip.active))
@@ -128,6 +131,7 @@ const handleChipClick = (clickedChip: FilterChip) => {
 
 // Check scroll state on mount and when chips change
 onMounted(() => {
+  clientSideOnly.value = true
   if (containerRef.value) {
     // Initial check
     handleScroll()

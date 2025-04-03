@@ -147,7 +147,7 @@ const handleSubmit = async () => {
           </div>
           <div>
             <label class="block text-sm text-gray-400 mb-2">Desired Start Date</label>
-            <PrimeCalendar
+            <PrimeDatePicker
               v-model="form.startDate"
               class="w-full bg-[#030711]"
               :min-date="new Date()"

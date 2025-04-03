@@ -82,7 +82,7 @@
                   class="block text-sm font-medium text-primary-200"
                   >Reason for Contact</label
                 >
-                <PrimeDropdown
+                <PrimeSelect
                   id="inquiryType"
                   v-model="formData.inquiryType"
                   :options="inquiryOptions"

@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted, type Ref } from 'vue'
 import type { JobFilter } from '~/types/jobs'
 
 interface Option {
+  label: string
+  isAscending: boolean
+  icon: string
   value: string
   key: string
 }
@@ -78,17 +82,24 @@ const sortOptions = ref([
     isAscending: true,
     icon: 'mdi:sort-alphabetical-ascending',
   },
-])
+] as Option[])
 
 // View mode (grid or list)
 const viewMode = ref<'grid' | 'list'>('grid')
 
 // Active sort option
-const activeSortOption = ref(sortOptions.value[0])
+const activeSortOption = ref(sortOptions.value[0]) as Ref<Option>
 
 // Create filter chips for location, company, and type
 const filterChips = computed(() => {
-  const chips = []
+  const chips = [] as {
+    id: string
+    label: string
+    value: string
+    type: string
+    active: boolean
+    icon: string
+  }[]
 
   // Add location chips based on available options
   if (filters.value.location.options.length > 0) {
@@ -223,7 +234,7 @@ onUnmounted(() => {
 <template>
   <div class="space-y-4">
     <!-- Card with improved filter UI -->
-    <div class="bg-primary-900/40 backdrop-blur-sm rounded-xl border border-primary-800/30 p-4">
+    <div class="bg-primary-900/40 backdrop-blur-sm rounded-xl border border-primary-800/30 p-4 overflow-hidden">
       <div class="flex flex-col lg:flex-row gap-4">
         <!-- Quick filters -->
         <div class="flex-grow">
@@ -272,7 +283,7 @@ onUnmounted(() => {
               class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"
             />
             <input
-              v-model="filters.location.value.value"
+              v-model="filters.location.value"
               type="text"
               class="pl-10 w-full py-2 bg-primary-900/50 text-white rounded-lg border-none focus:ring-primary-500 transition-all hover:bg-primary-800/50"
               placeholder="Search location..."
@@ -323,7 +334,7 @@ onUnmounted(() => {
               class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"
             />
             <input
-              v-model="filters.company.value.value"
+              v-model="filters.company.value"
               type="text"
               class="pl-10 w-full py-2 bg-primary-900/50 text-white rounded-lg border-none focus:ring-primary-500 transition-all hover:bg-primary-800/50"
               placeholder="Search company..."
@@ -374,7 +385,7 @@ onUnmounted(() => {
               class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"
             />
             <input
-              v-model="filters.type.value.value"
+              v-model="filters.type.value"
               type="text"
               class="pl-10 w-full py-2 bg-primary-900/50 text-white rounded-lg border-none focus:ring-primary-500 transition-all hover:bg-primary-800/50"
               placeholder="Select type..."

@@ -16,7 +16,6 @@
     "@astronera/base": "workspace:*",
     "@astronera/crud": "workspace:*",
     "@astronera/db": "workspace:*",
-    "@astronera/logging": "workspace:*",
     "@astronera/referral": "workspace:*",
     "@astronera/supabase": "workspace:*",
     "@faker-js/faker": "^9.2.0",

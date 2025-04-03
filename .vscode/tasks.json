@@ -81,10 +81,25 @@
       "problemMatcher": []
     },
     {
-      "label": "Start Windsurf Debug Session",
+      "label": "Start Playwright MCP Server",
       "type": "shell",
-      "command": "echo 'Starting debug session with Playwright' && code --open-url 'vscode://rooveterinaryinc.roo-cline/open?debug=true'",
-      "problemMatcher": []
+      "command": "npx @playwright/mcp@latest",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^Listening on (http://[^\\s]+)",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^Starting Playwright MCP server",
+          "endsPattern": "^Listening on http://"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
     }
   ]
 }

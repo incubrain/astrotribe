@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
       .from('content_sources')
       .select('id, name, url, content_type')
       .eq('content_type', 'news')
-      .eq('is_active', true)
+      // Removed the is_active filter as this column doesn't exist
       .order('name')
 
     if (error) {
@@ -30,19 +30,17 @@ export default defineEventHandler(async (event) => {
     console.error('Error fetching news sources:', error)
     return {
       data: [],
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error.message || 'Failed to fetch news sources',
     }
   }
 })
 
 // Helper function to extract domain name from URL
-function extractDomainName(url?: string): string {
-  if (!url) return 'Unknown Source'
-
+function extractDomainName(url: string): string {
   try {
-    const urlObj = new URL(url)
-    return urlObj.hostname.replace('www.', '')
-  } catch {
-    return 'Unknown Source'
+    const domain = new URL(url).hostname
+    return domain.replace(/^www\./, '')
+  } catch (e) {
+    return url
   }
 }

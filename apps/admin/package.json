@@ -14,7 +14,6 @@
     "@astronera/base": "workspace:*",
     "@astronera/crud": "workspace:*",
     "@astronera/db": "workspace:*",
-    "@astronera/logging": "workspace:*",
     "@astronera/referral": "workspace:*",
     "@astronera/supabase": "workspace:*",
     "@nuxt/image": "^1.10.0",

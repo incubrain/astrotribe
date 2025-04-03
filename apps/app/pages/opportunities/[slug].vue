@@ -282,7 +282,7 @@ onMounted(() => {
                 </span>
 
                 <!-- Deadline indicator for application -->
-                <DeadlineIndicator
+                <SharedDeadlineIndicator
                   v-if="job.expires_at"
                   :deadline="job.expires_at"
                   size="md"
@@ -329,7 +329,7 @@ onMounted(() => {
                   name="heroicons:calendar"
                   class="w-4 h-4"
                 />
-                <span>Posted <TimeAgo :date="job.published_at" /></span>
+                <span>Posted <SharedTimeAgo :date="job.published_at" /></span>
               </div>
             </div>
 

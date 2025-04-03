@@ -32,6 +32,14 @@ onMounted(async () => {
   isLoading.value = true
   try {
     const response = await fetch('/api/onboard/features')
+    // Check if the response is valid JSON before parsing
+    const contentType = response.headers.get('content-type')
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Server returned non-JSON response. Please check the API endpoint.')
+    }
+    if (!response.ok) {
+      throw new Error(`Server returned ${response.status}: ${response.statusText}`)
+    }
     const data = await response.json()
     features.value = data
   } catch (err) {
@@ -95,19 +103,6 @@ const upcomingFeatures = computed(() => {
       class="flex justify-center my-8"
     >
       <PrimeProgressSpinner />
-    </div>
-
-    <!-- Error state -->
-    <div
-      v-else-if="error"
-      class="text-red-500 my-4"
-    >
-      <p>Error loading features: {{ error }}</p>
-      <PrimeButton
-        label="Try Again"
-        class="mt-2"
-        @click="loadFeatures"
-      />
     </div>
 
     <!-- Features grid -->

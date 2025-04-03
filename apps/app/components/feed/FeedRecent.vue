@@ -1,4 +1,12 @@
 <script setup lang="ts">
+interface Ad {
+  id: string
+  title: string
+  description?: string
+  imageUrl?: string
+  url: string
+}
+
 interface SponsoredAd {
   id: string
   type: 'sponsored'
@@ -11,7 +19,7 @@ interface SponsoredAd {
 const { store, loadMore } = useSelectData<any>('contents', {
   // Updated query for the unified contents table with joined content_sources
   orderBy: { column: 'published_at', ascending: false },
-  filters: { content_type: { eq: 'news' }, is_active: { eq: true }, deleted_at: { is: null } },
+  filters: { content_type: { eq: 'news' }, deleted_at: { is: null } },
   columns: `
     id, 
     content_type,
@@ -89,7 +97,11 @@ watch(newsItems, (newVal) => {
 })
 
 // Handle loading states
-const showSkeletonGrid = computed(() => loading.isLoading('recentFeed') || adsLoading.value)
+const showSkeletonGrid = computed(() => {
+  // Use type assertion to handle the DomainKey type issue
+  const isLoading = (loading.isLoading('recentFeed' as any) ?? false) as boolean
+  return isLoading || adsLoading.value
+})
 
 // Debug logs
 onMounted(() => {

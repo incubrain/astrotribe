@@ -66,33 +66,38 @@ const containerClass = computed(() => {
       </div>
     </div>
 
-    <div
-      v-else
-      :id="'job-list'"
-      :class="[containerClass, { 'opacity-50': loading }]"
-    >
+    <ClientOnly>
+      <!-- Remove the outer div with containerClass and just keep the TransitionGroup -->
       <TransitionGroup
+        v-if="!emptyStateMessage || jobs.length"
+        :id="'job-list'"
         name="job-cards"
         tag="div"
-        :class="containerClass"
+        :class="[containerClass, { 'opacity-50': loading }]"
       >
-        <template v-if="loading">
+        <JobCardSkeleton
+          v-for="index in 6"
+          v-if="loading"
+          :key="`skeleton-${index}`"
+        />
+        <JobCard
+          v-for="job in sortedJobs"
+          v-else
+          :key="job.id"
+          :job="job"
+          class="job-card-item"
+          @filter-tag="emit('filterTag', $event)"
+        />
+      </TransitionGroup>
+      <template #fallback>
+        <div :class="containerClass">
           <JobCardSkeleton
             v-for="index in 6"
             :key="`skeleton-${index}`"
           />
-        </template>
-        <template v-else>
-          <JobCard
-            v-for="job in sortedJobs"
-            :key="job.id"
-            :job="job"
-            class="job-card-item"
-            @filter-tag="emit('filterTag', $event)"
-          />
-        </template>
-      </TransitionGroup>
-    </div>
+        </div>
+      </template>
+    </ClientOnly>
   </div>
 </template>
 

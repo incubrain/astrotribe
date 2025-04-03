@@ -3,7 +3,7 @@
 const { store, loadMore } = useSelectData<any>('contents', {
   // Updated to query the contents table with news content_type and join content_sources
   orderBy: { column: 'hot_score', ascending: false },
-  filters: { content_type: { eq: 'news' }, is_active: { eq: true }, deleted_at: { is: null } },
+  filters: { content_type: { eq: 'news' }, deleted_at: { is: null } },
   columns: `
     id, 
     content_type,
@@ -80,7 +80,11 @@ watch(newsItems, (newVal) => {
   }
 })
 
-const showSkeletonGrid = computed(() => loading.isLoading('hotFeed') || adsLoading.value)
+const showSkeletonGrid = computed(() => {
+  // Use type assertion to handle the DomainKey type issue
+  const isLoading = (loading.isLoading('hotFeed' as any) ?? false) as boolean
+  return isLoading || adsLoading.value
+})
 </script>
 
 <template>

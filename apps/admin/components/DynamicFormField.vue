@@ -38,7 +38,7 @@
 
     <!-- Date/Time Fields -->
     <template v-else-if="['timestamp', 'date', 'time'].some((t) => field.data_type.includes(t))">
-      <PrimeCalendar
+      <PrimeDatePicker
         v-model="modelValue[field.column_name]"
         :show-time="field.data_type.includes('time')"
         :show-icon="true"

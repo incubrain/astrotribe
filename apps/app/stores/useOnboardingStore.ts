@@ -168,13 +168,19 @@ export const useOnboardingStore = defineStore('onboarding', () => {
       isLoading.value = true
       error.value = null
 
-      // Call API to save all onboarding data
-      await $fetch('/api/onboard/complete', {
+      // Add timeout and retry logic
+      const response = await $fetch('/api/onboard/complete', {
         method: 'POST',
         body: {
           ...stepData,
           completed: true,
         },
+        retry: 3,
+        retryDelay: 1000,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000, // 10 second timeout
       })
 
       isComplete.value = true
@@ -185,6 +191,12 @@ export const useOnboardingStore = defineStore('onboarding', () => {
       return true
     } catch (err: any) {
       console.error('Failed to complete onboarding', err)
+
+      // Add more detailed error information
+      if (err.response) {
+        console.error('Response status:', err.response.status)
+        console.error('Response data:', err.response.data)
+      }
       error.value = err.message || 'Failed to complete onboarding'
       return false
     } finally {

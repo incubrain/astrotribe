@@ -85,7 +85,7 @@ onMounted(() => {
         <div class="space-y-1">
           <div class="flex items-center gap-2">
             <!-- Add deadline indicator -->
-            <DeadlineIndicator
+            <SharedDeadlineIndicator
               v-if="job.expires_at"
               :deadline="job.expires_at"
               size="sm"
@@ -93,7 +93,7 @@ onMounted(() => {
             />
 
             <!-- Add TimeAgo for publication date -->
-            <TimeAgo
+            <SharedTimeAgo
               v-if="job.published_at"
               :date="job.published_at"
               prefix="Posted"
@@ -171,7 +171,7 @@ onMounted(() => {
         <!-- Expiration date with countdown -->
         <template v-if="job.expiresAt">
           <span class="text-gray-400 mx-1">•</span>
-          <DeadlineIndicator
+          <SharedDeadlineIndicator
             :deadline="job.expires_at"
             size="sm"
             :show-icon="false"
