@@ -104,21 +104,61 @@ const AstroPreset = definePreset(Aura, {
         dark: {
           root: {
             background: '{surface.200}',
-            color: '{surface.50}',
-            borderRadius: '0.375rem',
+            disabledBackground: '{surface.300}',
             borderColor: '{surface.700}',
+            hoverBorderColor: '{primary.500}',
+            focusBorderColor: '{primary.500}',
+            color: '{surface.50}',
+            placeholderColor: '{surface.500}',
             paddingX: '0.75rem',
             paddingY: '0.625rem',
-            transitionDuration: '0.2s',
-            hoverBorderColor: '{primary.color}',
-            focusBorderColor: '{primary.color}',
+            borderRadius: '0.375rem',
             focusRing: {
-              shadow: '0 0 0 0.2rem rgba(44, 120, 181, 0.25)',
-              color: 'rgba(44, 120, 181, 0.25)',
               width: '0.2rem',
               style: 'solid',
-              offset: '0',
+              color: 'rgba(44, 120, 181, 0.25)',
             },
+          },
+        },
+      },
+    },
+
+    textarea: {
+      colorScheme: {
+        dark: {
+          root: {
+            background: '{surface.200}',
+            borderColor: '{surface.700}',
+            color: '{surface.50}',
+            placeholderColor: '{surface.500}',
+            borderRadius: '0.375rem',
+            focusBorderColor: '{primary.500}',
+          },
+        },
+      },
+    },
+
+    select: {
+      colorScheme: {
+        dark: {
+          root: {
+            background: '{surface.200}',
+            borderColor: '{surface.700}',
+            color: '{surface.50}',
+            borderRadius: '0.375rem',
+            focusBorderColor: '{primary.500}',
+          },
+          overlay: {
+            background: '{surface.100}',
+            borderColor: '{surface.300}',
+            color: '{surface.50}',
+            shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
+          },
+          option: {
+            focusBackground: '{primary.800}',
+            selectedBackground: '{primary.700}',
+            color: '{surface.50}',
+            focusColor: '{surface.50}',
           },
         },
       },
@@ -225,6 +265,42 @@ const AstroPreset = definePreset(Aura, {
             color: '{surface.600}',
             hoverColor: '{primary.400}',
             shadow: 'none',
+          },
+        },
+      },
+    },
+
+    dialog: {
+      colorScheme: {
+        dark: {
+          root: {
+            background: '{surface.900}', // Dark background
+            borderColor: '{surface.300}',
+            color: '{surface.50}', // Light text
+            borderRadius: '0.5rem',
+            shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.4)',
+          },
+          header: {
+            padding: '1.25rem',
+            gap: '0.5rem',
+            background: '{surface.200}', // Slightly lighter than the body
+            borderColor: '{surface.300}',
+          },
+          title: {
+            fontSize: '1.25rem',
+            fontWeight: '600',
+            color: '{surface.50}', // Light text
+          },
+          content: {
+            padding: '1.25rem',
+            background: '{surface.100}', // Main dialog background
+            color: '{surface.50}', // Light text
+          },
+          footer: {
+            padding: '1.25rem',
+            gap: '0.75rem',
+            background: '{surface.200}', // Slightly lighter than the body
+            borderColor: '{surface.300}',
           },
         },
       },

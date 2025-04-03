@@ -234,7 +234,7 @@ onBeforeUnmount(() => {
           <PrimeButton
             size="large"
           >
-            Register Now
+            Register Interest
             <Icon
               name="mdi:arrow-right"
               class="ml-2"
@@ -333,7 +333,6 @@ onBeforeUnmount(() => {
             ></iframe>
           </div>
 
-          <h3 class="text-xl font-bold text-primary-400 mb-4">Workshop Schedule</h3>
           <WorkshopSchedule :schedule="beginnerSchedule" />
         </div>
 
@@ -406,7 +405,6 @@ onBeforeUnmount(() => {
             ></iframe>
           </div>
 
-          <h3 class="text-xl font-bold text-primary-400 mb-4">Workshop Schedule</h3>
           <WorkshopSchedule :schedule="intermediateSchedule" />
         </div>
 
@@ -513,7 +511,7 @@ onBeforeUnmount(() => {
             size="large"
             class="bg-primary-600 hover:bg-primary-500 font-semibold px-8 py-3"
           >
-            Register Now
+            Register Interest
             <Icon
               name="mdi:arrow-right"
               class="ml-2"

@@ -39,7 +39,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="h-full w-full">
+  <div class="h-full w-full dark">
     <NuxtLoadingIndicator />
     <Head>
       <link

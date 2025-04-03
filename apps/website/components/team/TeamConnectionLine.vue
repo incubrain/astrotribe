@@ -12,7 +12,7 @@ const props = defineProps({
 // References to store connection point positions
 const connectionPoints = ref([] as { x: number; y: number }[])
 const canvasRef = ref<HTMLCanvasElement | null>(null)
-const animationFrameId = ref(null as number | null)
+const animationFrameId = ref<number | null>(null)
 const isVisible = ref(false)
 
 // Calculate positions based on team member cards
@@ -25,8 +25,8 @@ const calculatePositions = () => {
   points.forEach((point) => {
     // Get position relative to the document
     const rect = point.getBoundingClientRect()
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft
+    const scrollTop = window.scrollY || document.documentElement.scrollTop
+    const scrollLeft = window.scrollX || document.documentElement.scrollLeft
 
     newPoints.push({
       x: rect.left + scrollLeft + rect.width / 2,
@@ -55,11 +55,11 @@ const drawConnections = () => {
   // Don't draw if not enough points
   if (connectionPoints.value.length < 2) return
 
-  // Draw lines between points
+  // Draw lines between nearby points
   for (let i = 0; i < connectionPoints.value.length; i++) {
     const current = connectionPoints.value[i]
 
-    // Connect to the next 2 points if they exist
+    // Connect to the next 2-3 points if they exist
     for (let j = i + 1; j < Math.min(i + 3, connectionPoints.value.length); j++) {
       const next = connectionPoints.value[j]
 
@@ -68,12 +68,12 @@ const drawConnections = () => {
       const dy = next.y - current.y
       const distance = Math.sqrt(dx * dx + dy * dy)
 
-      // Skip if too far
+      // Skip if too far away
       if (distance > 500) continue
 
-      // Set line style based on distance
-      const opacity = 0.5 - distance / 1000
-      ctx.strokeStyle = `rgba(99, 102, 241, ${Math.max(0.05, opacity)})`
+      // Set line style with opacity based on distance
+      const opacity = Math.max(0.05, 0.5 - distance / 1000)
+      ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`
       ctx.lineWidth = 1
 
       // Draw the line with animated dash
@@ -123,6 +123,8 @@ watch(isVisible, (newValue) => {
 
 // Lifecycle hooks
 onMounted(() => {
+  if (!import.meta.client) return
+
   // Initial setup
   window.addEventListener('resize', handleResize)
   window.addEventListener('scroll', checkVisibility)
@@ -135,6 +137,8 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  if (!import.meta.client) return
+
   // Clean up
   window.removeEventListener('resize', handleResize)
   window.removeEventListener('scroll', checkVisibility)
@@ -148,18 +152,6 @@ onBeforeUnmount(() => {
 <template>
   <canvas
     ref="canvasRef"
-    class="connection-canvas"
+    class="connection-canvas absolute top-0 left-0 w-full h-full pointer-events-none z-10"
   ></canvas>
 </template>
-
-<style scoped>
-.connection-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 10;
-}
-</style>
