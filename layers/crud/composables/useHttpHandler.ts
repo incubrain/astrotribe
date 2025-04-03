@@ -116,9 +116,10 @@ export function useHttpHandler() {
   async function handleDatabaseOperation<T>(
     operation: () => Promise<PostgrestResponse<T>>,
     context: string,
-    maxRetries: number = 3,
+    maxRetries: number = 5,
   ): Promise<T> {
     let retries = 0
+    const baseDelay = 1000 // 1 second base delay
     while (retries < maxRetries) {
       try {
         const response = await operation()
@@ -134,28 +135,17 @@ export function useHttpHandler() {
 
         const pgError = error as PostgrestError
 
-        // if (
-        //   retries >= maxRetries ||
-        //   !Object.keys(retryableStatusCodes).includes(pgError.code?.toString() || '')
-        // ) {
-        //   const appError = new AppError({
-        //     type: errorType,
-        //     message:
-        //       pgError.message ||
-        //       retryableStatusCodes[pgError.code as keyof typeof retryableStatusCodes] ||
-        //       'Database operation failed',
-        //     severity: errorSeverity,
-        //     code: pgError.code,
-        //     context: context,
-        //     pgError: pgError.details || pgError.hint || pgError.message,
-        //     operation: context,
-        //   })
-        //   throw logger.error(appError)
-        // }
+        // Check if we've reached max retries
+        if (retries >= maxRetries) {
+          logger.error(`Max retries (${maxRetries}) reached for operation: ${context}`)
+          throw new Error('Max retries reached')
+        }
 
         // Exponential backoff with jitter
-        const backoffTime = Math.min(1000 * 2 ** retries + Math.random() * 1000, 10000)
-        await new Promise((resolve) => setTimeout(resolve, backoffTime))
+        // Formula: baseDelay * 2^retries + random jitter (up to 1 second)
+        const delay = Math.min(baseDelay * Math.pow(2, retries) + Math.random() * 1000, 30000)
+        logger.info(`Retrying in ${Math.round(delay)}ms (attempt ${retries}/${maxRetries})`)
+        await new Promise((resolve) => setTimeout(resolve, delay))
       }
     }
     throw new Error('Max retries reached')

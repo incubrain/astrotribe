@@ -1,3 +1,7 @@
+import { createError } from 'h3'
+import { useLogger } from '#imports'
+import { useRuntimeConfig } from '#app'
+
 interface ErrorMessage {
   userMessage: string // User-friendly error message if needed
   devMessage: string // Make bugfixing easy!
@@ -77,6 +81,18 @@ export function useBaseError() {
   }
 
   function handleServerError({ response, devMessage, devOnly, userMessage }: ErrorServer) {
+    if (!response) {
+      logger.error(`${devMessage}: Response is undefined`)
+      handleError({
+        error: new Error('Response is undefined'),
+        devOnly,
+        userMessage: userMessage || 'Server response is missing',
+        isServer: true,
+        devMessage,
+      })
+      return null
+    }
+
     if (response.error) {
       console.log('FeatError', response.error)
       handleError({
@@ -86,8 +102,9 @@ export function useBaseError() {
         isServer: true,
         devMessage,
       })
+      return null
     } else if (response.data) {
-      logger.info(`Successfully fetched ${response.data.length} items`)
+      logger.info(`Successfully fetched ${Array.isArray(response.data) ? response.data.length : 'data'}`)
       return response.data
     }
     logger.info('Nothing returned from database')

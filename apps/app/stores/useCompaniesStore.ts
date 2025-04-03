@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import Fuse from 'fuse.js'
-import { applyFilters, getUniqueCategories, getUniqueLocations } from '~/utils/companyFilters'
+import { useLogger } from '../composables/useLogger'
+
+const logger = useLogger('CompaniesStore')
 
 interface FilterOption {
   key: string
@@ -32,9 +34,41 @@ interface CompanyStorage {
   recentlyViewedCompanies: string[]
 }
 
+// Define company interface based on database schema
+interface Company {
+  id: string
+  name: string
+  description?: string
+  logo_url?: string
+  founding_year?: number
+  url: string
+  is_government?: boolean
+  category?: string
+  keywords?: any
+  job_url?: string
+  created_at?: string
+  updated_at?: string
+  city?: string
+  country?: string
+  addresses?: Array<{
+    id: string
+    cities?: { name: string }
+    countries?: { name: string }
+  }>
+  categories?: { id: string; name: string }
+  social_media?: {
+    id: string
+    facebook_url?: string
+    linkedin_url?: string
+    twitter_url?: string
+    instagram_url?: string
+    youtube_url?: string
+  }
+}
+
 export const useCompaniesStore = defineStore('companies', () => {
   // State
-  const companies = ref<any[]>([])
+  const companies = ref<Company[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -59,10 +93,10 @@ export const useCompaniesStore = defineStore('companies', () => {
 
   // Search state
   const searchQuery = ref('')
-  const searchResults = ref<any[]>([])
+  const searchResults = ref<Company[]>([])
 
   // Detail view state
-  const selectedCompany = ref<any | null>(null)
+  const selectedCompany = ref<Company | null>(null)
   const showDetailModal = ref(false)
 
   // Computed properties
@@ -122,67 +156,118 @@ export const useCompaniesStore = defineStore('companies', () => {
 
   // Actions
   const fetchCompanies = async () => {
+    logger.info('Fetching companies data')
     loading.value = true
     error.value = null
 
-    try {
-      // In a real application, this would be an API call
-      // For now, we'll use the existing store mechanism
-      const { store } = useSelectData('companies', {
-        orderBy: { column: 'name', ascending: true },
-        columns: `id, name, description, logo_url, founding_year, url, is_government, category, keywords, job_url,
-          categories(id, name),
-          social_media(id, facebook_url, linkedin_url, twitter_url, instagram_url, youtube_url),
-          addresses(id, countries(name), cities(name))`,
-        pagination: {
-          page: 1,
-          limit: 50, // Increased limit
-        },
-        initialFetch: true,
-      })
+    // Add retry logic
+    const maxRetries = 3
+    let retryCount = 0
+    let success = false
 
-      // When data is loaded, process it
-      watch(
-        () => store.items,
-        (newItems) => {
-          if (newItems.length > 0) {
-            // Format the companies data
-            companies.value = newItems.map((company: any) => ({
-              ...company,
-              city: company.addresses?.[0]?.cities?.name,
-              country: company.addresses?.[0]?.countries?.name,
-              category: company.categories?.name,
-            }))
+    while (retryCount < maxRetries && !success) {
+      try {
+        logger.debug(`Fetching companies attempt ${retryCount + 1}/${maxRetries}`)
+        // In a real application, this would be an API call
+        // For now, we'll use the existing store mechanism
+        const { store } = useSelectData('companies', {
+          orderBy: { column: 'name', ascending: true },
+          columns: `
+            id,
+            name,
+            description,
+            logo_url,
+            founding_year,
+            url,
+            is_government,
+            category,
+            keywords,
+            job_url,
+            created_at,
+            updated_at,
+            social_media(id, facebook_url, linkedin_url, twitter_url, instagram_url, youtube_url)
+          `,
+          pagination: {
+            page: 1,
+            limit: 50,
+          },
+          initialFetch: true,
+        })
 
-            // Initialize filter options
-            initializeFilterOptions()
+        // When data is loaded, process it
+        watch(
+          () => store.items,
+          (newItems) => {
+            if (newItems && newItems.length > 0) {
+              logger.info(`Received ${newItems.length} companies`)
 
-            // Load saved preferences
-            loadSavedPreferences()
+              // Format the companies data
+              companies.value = newItems.map((company: any) => ({
+                ...company,
+                city: company.addresses?.[0]?.cities?.name,
+                country: company.addresses?.[0]?.countries?.name,
+                category: company.categories?.name,
+              }))
 
-            loading.value = false
-          }
-        },
-        { immediate: true },
-      )
-    } catch (e: any) {
-      console.error('Failed to fetch companies:', e)
-      error.value = e.message || 'Failed to fetch companies'
-      loading.value = false
+              // Initialize filter options
+              initializeFilterOptions()
+
+              // Load saved preferences
+              loadSavedPreferences()
+
+              loading.value = false
+              success = true
+            } else if (newItems && newItems.length === 0) {
+              logger.warn('No companies data received')
+              companies.value = []
+              loading.value = false
+              success = true
+            }
+          },
+          { immediate: true },
+        )
+
+        // If we reach here without error, break the retry loop
+        if (!success) {
+          logger.debug('Waiting for data to load...')
+          // Add a timeout to prevent hanging if watch doesn't trigger
+          setTimeout(() => {
+            if (!success) {
+              logger.warn('Data loading timeout, considering as success to prevent hanging')
+              loading.value = false
+              success = true
+            }
+          }, 10000) // 10 second timeout
+        }
+      } catch (e: any) {
+        retryCount++
+        logger.error(`Failed to fetch companies (attempt ${retryCount}/${maxRetries}):`, e)
+
+        if (retryCount >= maxRetries) {
+          error.value = e.message || 'Failed to fetch companies after multiple attempts'
+          loading.value = false
+          logger.error('Max retries reached, giving up', { error: error.value })
+        } else {
+          // Wait before retrying (exponential backoff)
+          const delay = Math.min(1000 * Math.pow(2, retryCount), 8000)
+          logger.debug(`Retrying in ${delay}ms...`)
+          await new Promise((resolve) => setTimeout(resolve, delay))
+        }
+      }
     }
   }
 
   const initializeFilterOptions = () => {
     // Locations
     const locations = getUniqueLocations(companies.value)
-    filters.value.location.options = locations.map((location) => ({
+    filters.value.location.options = locations.map((location: string) => ({
       key: location,
       value: location,
     }))
 
     // Categories
     const categories = getUniqueCategories(companies.value)
-    filters.value.category.options = categories.map((category) => ({
+    filters.value.category.options = categories.map((category: string) => ({
       key: category,
       value: category,
     }))
@@ -295,7 +380,7 @@ export const useCompaniesStore = defineStore('companies', () => {
   }
 
   // Track company view
-  const viewCompanyDetails = (company: any) => {
+  const viewCompanyDetails = (company: Company) => {
     selectedCompany.value = company
     showDetailModal.value = true
 

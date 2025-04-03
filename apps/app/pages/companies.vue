@@ -150,7 +150,7 @@ const showSkeletonGrid = computed(() => loading.value)
         <div class="flex items-center gap-4">
           <!-- Sort dropdown -->
           <div class="relative">
-            <PrimeDropdown
+            <PrimeSelect
               v-model="companiesStore.sortPreference"
               :options="sortOptions"
               option-label="label"

@@ -119,7 +119,7 @@ function handleSubmit(e) {
           class="block text-sm font-medium mb-2"
           >Industry</label
         >
-        <PrimeDropdown
+        <PrimeSelect
           id="industry"
           name="industry"
           :options="industries"

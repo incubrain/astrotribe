@@ -12,6 +12,7 @@ declare module 'vue' {
     PrimeAccordionContent: typeof import('primevue/accordioncontent')['default']
     PrimeAccordionHeader: typeof import('primevue/accordionheader')['default']
     PrimeAccordionPanel: typeof import('primevue/accordionpanel')['default']
+    PrimeAccordionTab: typeof import('primevue/accordiontab')['default']
     PrimeBadge: typeof import('primevue/badge')['default']
     PrimeBreadcrumb: typeof import('primevue/breadcrumb')['default']
     PrimeButton: typeof import('primevue/button')['default']

@@ -477,7 +477,7 @@ onBeforeUnmount(() => {
               class="block text-sm font-medium"
               >Area of Interest</label
             >
-            <PrimeDropdown
+            <PrimeSelect
               id="interest"
               v-model="formData.interest"
               :options="[

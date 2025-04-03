@@ -207,13 +207,10 @@ const handleSortChange = (payload: { sort: string; order: boolean }) => {
   sortAscending.value = payload.order
 
   // Update sorting in the store
-  changeFilters(
-    {},
-    {
-      column: sortBy.value,
-      ascending: sortAscending.value,
-    },
-  )
+  changeFilters({
+    column: sortBy.value,
+    ascending: sortAscending.value,
+  })
 
   // Save sort preference
   jobStorage.sortPreference.value = {
@@ -235,6 +232,8 @@ const handleLoadMore = async () => {
     isLoadingMore.value = false
   }
 }
+
+const selectedRecentJob = ref(null)
 
 // Track initial component load
 onMounted(() => {
@@ -353,9 +352,9 @@ onMounted(() => {
           v-if="jobStorage.recentlyViewedJobs.value.length"
           class="relative"
         >
-          <PrimeDropdown
+          <PrimeSelect
             v-model="selectedRecentJob"
-            :options="recentlyViewedJobs"
+            :options="jobStorage.recentlyViewedJobs.value"
             option-label="title"
             placeholder="Recently viewed jobs"
             class="w-56"

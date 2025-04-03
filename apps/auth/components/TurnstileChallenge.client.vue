@@ -1,9 +1,3 @@
-<template>
-  <div>
-    <div class="cf-turnstile"></div>
-  </div>
-</template>
-
 <script setup lang="ts">
 const props = defineProps({
   onValidToken: {
@@ -98,3 +92,9 @@ onMounted(() => {
 // Expose reset method to parent components
 defineExpose({ reset })
 </script>
+
+<template>
+  <div>
+    <div class="cf-turnstile"></div>
+  </div>
+</template>

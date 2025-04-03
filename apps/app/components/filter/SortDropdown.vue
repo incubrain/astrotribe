@@ -1,86 +1,3 @@
-<template>
-  <div class="relative">
-    <button
-      ref="triggerRef"
-      class="flex items-center gap-2 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-300 hover:bg-gray-700 transition-colors focus:outline-none"
-      @click="isOpen = !isOpen"
-    >
-      <Icon
-        :name="sortOptions.find((option) => option.value === modelValue)?.icon || 'mdi:sort'"
-        class="w-5 h-5"
-      />
-      <span class="text-sm">{{ labelText }}</span>
-      <Icon
-        name="mdi:chevron-down"
-        class="w-4 h-4 transition-transform"
-        :class="{ 'rotate-180': isOpen }"
-      />
-    </button>
-
-    <Transition
-      enter-active-class="transition ease-out duration-100"
-      enter-from-class="transform opacity-0 scale-95"
-      enter-to-class="transform opacity-100 scale-100"
-      leave-active-class="transition ease-in duration-75"
-      leave-from-class="transform opacity-100 scale-100"
-      leave-to-class="transform opacity-0 scale-95"
-    >
-      <div
-        v-if="isOpen"
-        ref="menuRef"
-        class="absolute right-0 mt-2 w-56 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-20 overflow-hidden"
-      >
-        <!-- Dropdown header -->
-        <div class="px-4 py-2 border-b border-gray-700 text-xs font-medium text-gray-400">
-          Sort By
-        </div>
-
-        <!-- Options list -->
-        <div class="py-1">
-          <button
-            v-for="option in sortOptions"
-            :key="option.value"
-            class="w-full text-left px-4 py-2 flex items-center gap-2 text-sm transition-colors"
-            :class="[
-              modelValue === option.value
-                ? 'bg-primary-900/50 text-primary-400'
-                : 'text-gray-300 hover:bg-gray-700',
-            ]"
-            @click="selectOption(option.value)"
-          >
-            <Icon
-              :name="option.icon"
-              class="w-5 h-5"
-            />
-            <span>{{ option.label }}</span>
-
-            <!-- Show checkmark for selected option -->
-            <Icon
-              v-if="modelValue === option.value"
-              name="mdi:check"
-              class="w-4 h-4 ml-auto text-primary-400"
-            />
-          </button>
-        </div>
-
-        <!-- Order toggle (ascending/descending) -->
-        <div class="border-t border-gray-700">
-          <button
-            class="w-full text-left px-4 py-2 flex items-center justify-between text-sm text-gray-300 hover:bg-gray-700 transition-colors"
-            @click="toggleOrder"
-          >
-            <span>{{ isAscending ? 'Ascending' : 'Descending' }}</span>
-            <Icon
-              :name="isAscending ? 'mdi:sort-ascending' : 'mdi:sort-descending'"
-              class="w-5 h-5"
-            />
-          </button>
-        </div>
-      </div>
-    </Transition>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 
@@ -198,3 +115,86 @@ const persistPreferences = () => {
 // Call persistPreferences when changes happen
 watch([() => props.modelValue, () => props.isAscending], () => persistPreferences(), { deep: true })
 </script>
+
+<template>
+  <div class="relative">
+    <button
+      ref="triggerRef"
+      class="flex items-center gap-2 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-300 hover:bg-gray-700 transition-colors focus:outline-none"
+      @click="isOpen = !isOpen"
+    >
+      <Icon
+        :name="sortOptions.find((option) => option.value === modelValue)?.icon || 'mdi:sort'"
+        class="w-5 h-5"
+      />
+      <span class="text-sm">{{ labelText }}</span>
+      <Icon
+        name="mdi:chevron-down"
+        class="w-4 h-4 transition-transform"
+        :class="{ 'rotate-180': isOpen }"
+      />
+    </button>
+
+    <Transition
+      enter-active-class="transition ease-out duration-100"
+      enter-from-class="transform opacity-0 scale-95"
+      enter-to-class="transform opacity-100 scale-100"
+      leave-active-class="transition ease-in duration-75"
+      leave-from-class="transform opacity-100 scale-100"
+      leave-to-class="transform opacity-0 scale-95"
+    >
+      <div
+        v-if="isOpen"
+        ref="menuRef"
+        class="absolute right-0 mt-2 w-56 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-20 overflow-hidden"
+      >
+        <!-- Dropdown header -->
+        <div class="px-4 py-2 border-b border-gray-700 text-xs font-medium text-gray-400">
+          Sort By
+        </div>
+
+        <!-- Options list -->
+        <div class="py-1">
+          <button
+            v-for="option in sortOptions"
+            :key="option.value"
+            class="w-full text-left px-4 py-2 flex items-center gap-2 text-sm transition-colors"
+            :class="[
+              modelValue === option.value
+                ? 'bg-primary-900/50 text-primary-400'
+                : 'text-gray-300 hover:bg-gray-700',
+            ]"
+            @click="selectOption(option.value)"
+          >
+            <Icon
+              :name="option.icon"
+              class="w-5 h-5"
+            />
+            <span>{{ option.label }}</span>
+
+            <!-- Show checkmark for selected option -->
+            <Icon
+              v-if="modelValue === option.value"
+              name="mdi:check"
+              class="w-4 h-4 ml-auto text-primary-400"
+            />
+          </button>
+        </div>
+
+        <!-- Order toggle (ascending/descending) -->
+        <div class="border-t border-gray-700">
+          <button
+            class="w-full text-left px-4 py-2 flex items-center justify-between text-sm text-gray-300 hover:bg-gray-700 transition-colors"
+            @click="toggleOrder"
+          >
+            <span>{{ isAscending ? 'Ascending' : 'Descending' }}</span>
+            <Icon
+              :name="isAscending ? 'mdi:sort-ascending' : 'mdi:sort-descending'"
+              class="w-5 h-5"
+            />
+          </button>
+        </div>
+      </div>
+    </Transition>
+  </div>
+</template>

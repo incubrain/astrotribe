@@ -118,7 +118,7 @@ const applyDateRange = () => {
             <div class="space-y-3">
               <div>
                 <label class="text-xs text-gray-400 mb-1 block">From</label>
-                <PrimeCalendar
+                <PrimeDatePicker
                   v-model="dateRange.start"
                   class="w-full"
                   date-format="dd/mm/yy"
@@ -127,7 +127,7 @@ const applyDateRange = () => {
               </div>
               <div>
                 <label class="text-xs text-gray-400 mb-1 block">To</label>
-                <PrimeCalendar
+                <PrimeDatePicker
                   v-model="dateRange.end"
                   class="w-full"
                   date-format="dd/mm/yy"

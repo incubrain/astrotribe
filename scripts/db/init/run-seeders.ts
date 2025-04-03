@@ -1,6 +1,11 @@
 import chalk from 'chalk'
 import client from '../client'
-import { checkAndSeed, getSeedingErrors, clearSeedingErrors } from './utils'
+import {
+  checkAndSeed,
+  checkAndSeedByContentType,
+  getSeedingErrors,
+  clearSeedingErrors,
+} from './utils'
 import * as seed from './seeders'
 
 interface SeedConfig {
@@ -26,7 +31,7 @@ export async function runSeeders() {
   const config = {
     batchSize: 100,
     counts: {
-      contents: 50, // Reduced to minimize database load
+      contents: 100, // Reduced to minimize database load
       companies: 100, // Reduced to minimize database load
       news: 50,
       jobs: 50,
@@ -90,18 +95,6 @@ export async function runSeeders() {
 
     const businessDomainIds = businessDomains.map((d) => d.id)
 
-    // 3. Seed content and related tables
-    const contents = await checkAndSeed(client, 'contents', () =>
-      seed.seedContents(client, config.counts.contents),
-    )
-
-    const allContentIds = contents.map((c) => c.id)
-
-    // Filter contents by type
-    const newsletterContentIds = contents
-      .filter((c) => c.content_type === 'newsletters')
-      .map((c) => c.id)
-
     // 4. Seed security-related tables with no dependencies
     const blacklistedDomains = await checkAndSeed(client, 'blacklisted_domains', () =>
       seed.seedBlacklistedDomains(client, config.counts.blacklistedDomains),
@@ -137,7 +130,29 @@ export async function runSeeders() {
     const contentSources = await checkAndSeed(client, 'content_sources', () =>
       seed.seedContentSources(client, 50),
     )
+
     const contentSourceIds = contentSources.map((cs) => cs.id)
+
+    // 3. Seed content and related tables - general content first
+    const contents = await checkAndSeed(client, 'contents', () =>
+      seed.seedContents(client, config.counts.contents),
+    )
+
+    // Then specifically seed news content if needed
+    const newsContents = await checkAndSeedByContentType(
+      client,
+      'news',
+      config.counts.news,
+      (count) => seed.seedNewsContent(client, count),
+    )
+
+    // Combine all content IDs for later use
+    const allContentIds = [...contents.map((c) => c.id), ...newsContents.map((c) => c.id)]
+
+    // Filter contents by type
+    const newsletterContentIds = contents
+      .filter((c) => c.content_type === 'newsletters')
+      .map((c) => c.id)
 
     // 6. Seed company related details
     await checkAndSeed(client, 'company_employees', () =>

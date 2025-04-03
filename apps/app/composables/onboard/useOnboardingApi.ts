@@ -12,16 +12,12 @@ export function useOnboardingApi() {
     error.value = null
 
     try {
-      const { data, error: fetchError } = await useFetch('/api/onboard/status')
-
-      if (fetchError.value) {
-        throw new Error(fetchError.value.message || 'Failed to check onboarding status')
-      }
+      const data = await $fetch('/api/onboard/status')
 
       return {
-        completed: data.value?.completed || false,
-        currentStep: data.value?.currentStep || 1,
-        userType: data.value?.userType || null,
+        completed: data?.completed || false,
+        currentStep: data?.currentStep || 1,
+        userType: data?.userType || null,
       }
     } catch (err: any) {
       console.error('Error checking onboarding status:', err)
@@ -40,17 +36,13 @@ export function useOnboardingApi() {
     error.value = null
 
     try {
-      const { error: fetchError } = await useFetch('/api/onboard/step', {
+      await $fetch('/api/onboard/step', {
         method: 'POST',
         body: {
           step,
           data,
         },
       })
-
-      if (fetchError.value) {
-        throw new Error(fetchError.value.message || 'Failed to save step data')
-      }
 
       return true
     } catch (err: any) {
@@ -70,17 +62,13 @@ export function useOnboardingApi() {
     error.value = null
 
     try {
-      const { error: fetchError } = await useFetch('/api/onboard/complete', {
+      await $fetch('/api/onboard/complete', {
         method: 'POST',
         body: {
           ...allData,
           completed: true,
         },
       })
-
-      if (fetchError.value) {
-        throw new Error(fetchError.value.message || 'Failed to complete onboarding')
-      }
 
       return true
     } catch (err: any) {
@@ -100,13 +88,9 @@ export function useOnboardingApi() {
     error.value = null
 
     try {
-      const { data, error: fetchError } = await useFetch('/api/onboard/data')
+      const data = await $fetch('/api/onboard/data')
 
-      if (fetchError.value) {
-        throw new Error(fetchError.value.message || 'Failed to fetch onboarding data')
-      }
-
-      return data.value || {}
+      return data || {}
     } catch (err: any) {
       console.error('Error fetching onboarding data:', err)
       error.value = err.message || 'Failed to fetch onboarding data'
@@ -124,16 +108,12 @@ export function useOnboardingApi() {
     error.value = null
 
     try {
-      const { error: fetchError } = await useFetch('/api/user/profile', {
+      await $fetch('/api/user/profile', {
         method: 'PATCH',
         body: {
           [field]: value,
         },
       })
-
-      if (fetchError.value) {
-        throw new Error(fetchError.value.message || 'Failed to update user profile')
-      }
 
       return true
     } catch (err: any) {
