@@ -43,7 +43,7 @@ const sectionTitle = {
     ></div>
 
     <!-- Main Content -->
-    <div class="wrapper container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+    <div class="wrapper max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
       <div class="grid grid-cols-1 lg:grid-cols-5 gap-x-12 gap-y-16 items-center">
         <!-- Hero content - left side -->
         <div class="lg:col-span-3">

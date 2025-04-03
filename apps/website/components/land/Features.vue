@@ -90,7 +90,7 @@ const selectedFeature = ref(features.value[0])
     <div class="absolute -left-40 bottom-20 w-80 h-80 bg-primary-600/5 rounded-full blur-3xl"></div>
     <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-indigo-600/5 rounded-full blur-3xl"></div>
 
-    <div class="wrapper container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="wrapper relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section header -->
       <div
         v-motion

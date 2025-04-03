@@ -1,5 +1,6 @@
 <script setup lang="ts">
-defineProps({
+// Props
+const props = defineProps({
   currentPage: {
     type: Number,
     required: true,
@@ -12,69 +13,144 @@ defineProps({
     type: String,
     required: true,
   },
+  maxVisible: {
+    type: Number,
+    default: 5,
+  },
 })
+
+// Calculate visible page numbers
+const visiblePages = computed(() => {
+  const halfMax = Math.floor(props.maxVisible / 2)
+  let start = Math.max(1, props.currentPage - halfMax)
+  const end = Math.min(props.totalPages, start + props.maxVisible - 1)
+
+  // Adjust start if we're near the end
+  if (end - start + 1 < props.maxVisible) {
+    start = Math.max(1, end - props.maxVisible + 1)
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+})
+
+// Generate URL for a specific page
+const getPageUrl = (page: number) => {
+  if (page === 1) {
+    // Remove the page path for page 1, to go back to the index
+    return props.baseUrl.replace(/\/page\/\d+$/, '')
+  }
+  return `${props.baseUrl}/${page}`
+}
+
+// Check if we should show the first page shortcut
+const showFirstPage = computed(() => visiblePages.value.length > 0 && visiblePages.value[0] > 1)
+
+// Check if we should show the last page shortcut
+const showLastPage = computed(
+  () =>
+    visiblePages.value.length > 0 &&
+    visiblePages.value[visiblePages.value.length - 1] < props.totalPages,
+)
 </script>
 
 <template>
   <div
     v-if="totalPages > 1"
-    class="flex justify-center my-8"
+    class="wrapper flex items-center justify-center py-12"
   >
-    <div class="flex gap-2">
-      <!-- Previous page -->
+    <nav
+      aria-label="Pagination"
+      class="inline-flex items-center gap-2"
+    >
+      <!-- Previous page button -->
       <NuxtLink
         v-if="currentPage > 1"
-        :to="
-          currentPage === 2 && baseUrl.includes('/page')
-            ? baseUrl.replace('/page', '')
-            : `${baseUrl}/${currentPage - 1}`
-        "
-        class="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700"
+        :to="getPageUrl(currentPage - 1)"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-950 text-white transition hover:bg-primary-900"
+        aria-label="Previous page"
       >
         <Icon
           name="i-lucide-chevron-left"
-          class="w-5 h-5"
+          class="h-5 w-5"
         />
       </NuxtLink>
-
-      <!-- Page numbers -->
-      <template
-        v-for="page in totalPages"
-        :key="page"
+      <span
+        v-else
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-950/50 text-gray-500 cursor-not-allowed"
       >
+        <Icon
+          name="i-lucide-chevron-left"
+          class="h-5 w-5"
+        />
+      </span>
+
+      <!-- First page + ellipsis -->
+      <template v-if="showFirstPage">
         <NuxtLink
-          v-if="page === 1 && baseUrl.includes('/page')"
-          :to="baseUrl.replace('/page', '')"
-          :class="[
-            'px-4 py-2 rounded',
-            currentPage === 1 ? 'bg-primary-600' : 'bg-primary-800 hover:bg-primary-700',
-          ]"
+          :to="getPageUrl(1)"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-950 text-white transition hover:bg-primary-900"
+          :class="{ 'bg-primary-600': currentPage === 1 }"
         >
-          {{ page }}
+          1
         </NuxtLink>
-        <NuxtLink
-          v-else
-          :to="page === 1 ? baseUrl : `${baseUrl}/${page}`"
-          :class="[
-            'px-4 py-2 rounded',
-            currentPage === page ? 'bg-primary-600' : 'bg-primary-800 hover:bg-primary-700',
-          ]"
+        <span
+          v-if="visiblePages[0] > 2"
+          class="inline-flex h-10 items-center justify-center text-gray-400"
         >
-          {{ page }}
+          ...
+        </span>
+      </template>
+
+      <!-- Visible page numbers -->
+      <NuxtLink
+        v-for="page in visiblePages"
+        :key="`page-${page}`"
+        :to="getPageUrl(page)"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-950 text-white transition hover:bg-primary-900"
+        :class="{ 'bg-primary-600': currentPage === page }"
+        :aria-current="currentPage === page ? 'page' : undefined"
+      >
+        {{ page }}
+      </NuxtLink>
+
+      <!-- Last page + ellipsis -->
+      <template v-if="showLastPage">
+        <span
+          v-if="visiblePages[visiblePages.length - 1] < totalPages - 1"
+          class="inline-flex h-10 items-center justify-center text-gray-400"
+        >
+          ...
+        </span>
+        <NuxtLink
+          :to="getPageUrl(totalPages)"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-950 text-white transition hover:bg-primary-900"
+          :class="{ 'bg-primary-600': currentPage === totalPages }"
+        >
+          {{ totalPages }}
         </NuxtLink>
       </template>
 
-      <!-- Next page -->
+      <!-- Next page button -->
       <NuxtLink
         v-if="currentPage < totalPages"
-        :to="`${baseUrl}/${currentPage + 1}`"
-        class="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700"
+        :to="getPageUrl(currentPage + 1)"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-950 text-white transition hover:bg-primary-900"
+        aria-label="Next page"
       >
         <Icon
           name="i-lucide-chevron-right"
-          class="w-5 h-5"
+          class="h-5 w-5"
         />
       </NuxtLink>
-    </div>
+      <span
+        v-else
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-950/50 text-gray-500 cursor-not-allowed"
+      >
+        <Icon
+          name="i-lucide-chevron-right"
+          class="h-5 w-5"
+        />
+      </span>
+    </nav>
   </div>
 </template>

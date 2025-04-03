@@ -101,7 +101,7 @@ onMounted(() => {
     <!-- Background with subtle gradient -->
     <div class="absolute inset-0 bg-gradient-to-b from-slate-950 to-slate-900 z-0"></div>
 
-    <div class="wrapper container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="wrapper relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section header with gradient text -->
       <div
         v-motion

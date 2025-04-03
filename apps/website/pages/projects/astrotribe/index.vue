@@ -76,8 +76,9 @@ const toc = [
           <p class="text-base mb-6">{{ astrotribe.overview.description }}</p>
           <div class="flex mb-6">
             <div
-              class="flex gap-2 items-center text-center flex-col justify-center flex-wrap"
               v-for="sdg in astrotribe.overview.sdgs"
+              :key="sdg.title"
+              class="flex gap-2 items-center text-center flex-col justify-center flex-wrap"
             >
               <IBImage :img="{ src: sdg.image }" />
               <h4>{{ sdg.title }}</h4>
@@ -87,7 +88,8 @@ const toc = [
         </LandingGlass>
         <div class="flex flex-2">
           <IBImage
-            v-for="image in astrotribe.overview.logos"
+            v-for="(image, index) in astrotribe.overview.logos"
+            :key="index"
             :img="{ src: image }"
             layout="intrinsic"
             width="300"
@@ -104,13 +106,14 @@ const toc = [
         <h1 class="text-2xl">About</h1>
         <p>{{ astrotribe.about.text }}</p>
         <LandingGlass
+          v-for="(section, index) in astrotribe.about.sections"
+          :key="index"
           hover-effect="glow"
           glow-color="blue"
           gradient="blue"
           intensity="low"
           interactive
           class="flex flex-1"
-          v-for="section in astrotribe.about.sections"
         >
           <h2>{{ section.name }}</h2>
           {{ section.text }}
@@ -118,6 +121,7 @@ const toc = [
         <div class="flex gap-2 justify-self-center m-6">
           <NuxtLink
             v-for="project in astrotribe.about.projects"
+            :key="project.title"
             :to="project.link"
           >
             <PrimeButton
@@ -132,11 +136,12 @@ const toc = [
         <div class="flex gap-2 flex-col justify-self-center m-6">
           <h2 class="text-center text-2xl">Resources</h2>
           <NuxtLink
+            v-for="social in astrotribe.about.socials"
+            :key="social.text"
             :to="social.link"
             target="_blank"
             rel="noopener"
             class="flex items-center gap-2"
-            v-for="social in astrotribe.about.socials"
           >
             <Icon
               :name="social.icon"
@@ -153,7 +158,8 @@ const toc = [
         class="pt-4 lg:pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8"
       >
         <ProjectAstroguideCard
-          v-for="astroguide in astrotribe.astroguides"
+          v-for="(astroguide, index) in astrotribe.astroguides"
+          :key="`astroguide-${index}-${astroguide.given_name}`"
           :astroguide="astroguide"
         />
       </div>
