@@ -2,7 +2,7 @@
 export { seedCountries } from './countries.seed'
 export { seedCities } from './cities.seed'
 export { seedJobs } from './jobs.seed'
-export { seedContents } from './contents.seed'
+export { seedContents, seedNewsContent } from './contents.seed'
 export { seedBookmarkFolders } from './bookmark_folders.seed'
 export { seedBookmarks } from './bookmarks.seed'
 export { seedComments } from './comments.seed'

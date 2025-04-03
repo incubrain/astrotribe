@@ -2354,15 +2354,9 @@ INSERT INTO "public"."social_media" ("id", "facebook_url", "twitter_url", "linke
 -- 
 
 
--- 2. Regular user on basic plan
-INSERT INTO "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") 
-VALUES
-  ('00000000-0000-0000-0000-000000000000', '22222222-2222-2222-2222-222222222222', 'authenticated', 'authenticated', 'test.user@example.com', '$2a$10$RBdmwFTYYKOPvqPFReu07uWivZXhB1e7qoBaflwbuyQBuLT4cfbSC', '2023-08-11 16:03:31.921592+00', NULL, '', '2023-08-11 16:03:09.837194+00', '', NULL, '', '', NULL, NULL, '{"provider": "email", "providers": ["email"]}', '{}', NULL, '2023-08-11 16:03:09.831684+00', '2023-08-11 16:03:31.921811+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
-
 -- 2. Regular user profile
-INSERT INTO "public"."user_profiles" ("id", "email", "given_name", "surname", "username", "dob", "gender_id", "created_at", "updated_at", "last_seen", "avatar", "introduction", "followed_count", "followers_count", "plan", "role") 
-VALUES
-  ('22222222-2222-2222-2222-222222222222', 'test.user@example.com', 'Test', 'User', 'testuser', '2000-01-01', 1, '2023-08-11 16:49:09.163+00', '2023-08-11 16:49:09.163+00', '2023-08-11 16:49:09.163+00', 'default-avatar.jpg', 'Test regular user account for Playwright debugging', 0, 0, 'basic', 'user');
+INSERT INTO "public"."user_profiles" ("id", "email", "given_name", "surname", "username", "dob", "gender_id", "created_at", "updated_at", "last_seen", "avatar", "introduction", "followed_count", "followers_count", "plan", "role", "is_active", "newsletter_opt_in", "onboarding_completed", "primary_address_id", "user_type") VALUES 
+('17455329-8894-46a0-a1ab-42744ec41493', 'basic@testing.com', 'Basic', 'Tester', '_', null, null, '2025-04-01 16:05:53.954122+00', '2025-04-02 04:35:41.97692+00', '2025-04-01 16:05:53.954122+00', null, null, '0', '0', 'basic', 'user', 'false', 'false', 'true', null, 'hobbyist');
 
 --
 -- Data for Name: user_profiles; Type: TABLE DATA; Schema: public; Owner: postgres
