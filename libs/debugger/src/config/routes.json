@@ -1,0 +1,9 @@
+[
+  { "critical": true, "path": "/" },
+  { "critical": true, "path": "/companies" },
+  { "critical": true, "path": "/opportunities" },
+  { "critical": true, "path": "/astronomy-events" },
+  { "critical": true, "path": "/news" },
+  { "critical": true, "path": "/profile/bookmarks" },
+  { "critical": true, "path": "/settings" }
+]
