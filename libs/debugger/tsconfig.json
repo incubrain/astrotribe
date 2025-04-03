@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "strict": true,
+    "outDir": "dist",
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts"]
+}
