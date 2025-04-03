@@ -41,12 +41,18 @@ const setActiveValue = (index: number) => {
 }
 
 const { stars, isClient } = useStarfield(30, 3)
+const { conf } = useAnimation()
 </script>
 
 <template>
-  <section class="team-values-section py-20 relative overflow-hidden">
-    <div class="wrapper relative z-10">
-      <div class="text-center mb-16">
+  <section class="py-20 relative overflow-hidden rounded-xl">
+    <div class="relative z-10">
+      <div
+        v-motion
+        class="text-center mb-16"
+        :initial="conf.sectionTitle.initial"
+        :visible="conf.sectionTitle.enter"
+      >
         <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Our Guiding Stars</h2>
         <p class="text-xl text-primary-200 max-w-2xl mx-auto">
           The core values that drive our mission and shape our approach to astronomy education
@@ -58,63 +64,59 @@ const { stars, isClient } = useStarfield(30, 3)
         <div
           v-for="(value, index) in values"
           :key="index"
+          v-motion
           class="value-card"
+          :initial="conf.fadeUp.initial"
+          :visible="{
+            ...conf.fadeUp.enter,
+            transition: { ...conf.fadeUp.enter.transition, delay: index * 0.15 },
+          }"
         >
-          <LandingGlass
-            hover-effect="glow"
-            glow-color="purple"
-            gradient="mixed"
-            intensity="medium"
-            interactive
-            class="h-full"
-          >
-            <div class="flex flex-col md:flex-row items-center gap-6 p-6">
-              <!-- Illustration -->
-              <div class="md:w-1/3 flex justify-center">
-                <div class="w-32 h-32 relative">
-                  <!-- Fallback image if SVG not available -->
-                  <div
-                    class="absolute inset-0 rounded-full bg-primary-800/50 flex items-center justify-center"
-                  >
-                    <Icon
-                      :name="value.icon"
-                      size="48"
-                      class="text-primary-400"
-                    />
-                  </div>
-
-                  <!-- SVG Illustration would go here -->
-                  <!-- <img :src="value.illustration" :alt="value.title" class="w-full h-full object-contain" /> -->
-
-                  <!-- Orbit decoration -->
-                  <div
-                    class="absolute inset-0 border border-primary-500/20 rounded-full animate-slow-spin"
-                  ></div>
-                  <div
-                    class="absolute inset-2 border border-primary-500/10 rounded-full animate-reverse-spin"
-                  ></div>
-
-                  <!-- Small star decorations -->
-                  <div
-                    v-for="i in 3"
-                    :key="i"
-                    class="absolute w-2 h-2 bg-primary-400 rounded-full"
-                    :style="{
-                      top: `${Math.random() * 100}%`,
-                      left: `${Math.random() * 100}%`,
-                      animation: `pulse ${1 + Math.random()}s infinite alternate`,
-                    }"
-                  ></div>
+          <div class="flex flex-col md:flex-row items-center gap-6 p-6">
+            <!-- Value Icon/Illustration -->
+            <div class="md:w-1/3 flex justify-center">
+              <div class="w-32 h-32 relative">
+                <!-- Icon Background -->
+                <div
+                  class="absolute inset-0 rounded-full bg-primary-800/50 flex items-center justify-center"
+                >
+                  <Icon
+                    :name="value.icon"
+                    size="48"
+                    class="text-primary-400"
+                  />
                 </div>
-              </div>
 
-              <!-- Text content -->
-              <div class="md:w-2/3 text-center md:text-left">
-                <h3 class="text-xl font-bold mb-3 text-white">{{ value.title }}</h3>
-                <p class="text-primary-200">{{ value.description }}</p>
+                <!-- Orbit decoration -->
+                <div
+                  class="absolute inset-0 border border-primary-500/20 rounded-full animate-spin"
+                  style="animation-duration: 20s"
+                ></div>
+                <div
+                  class="absolute inset-2 border border-primary-500/10 rounded-full animate-spin"
+                  style="animation-duration: 15s; animation-direction: reverse"
+                ></div>
+
+                <!-- Small star decorations -->
+                <div
+                  v-for="i in 3"
+                  :key="i"
+                  class="absolute w-2 h-2 bg-primary-400 rounded-full animate-pulse"
+                  :style="{
+                    top: `${Math.random() * 100}%`,
+                    left: `${Math.random() * 100}%`,
+                    animationDuration: `${1 + Math.random()}s`,
+                  }"
+                ></div>
               </div>
             </div>
-          </LandingGlass>
+
+            <!-- Text content -->
+            <div class="md:w-2/3 text-center md:text-left">
+              <h3 class="text-xl font-bold mb-3 text-white">{{ value.title }}</h3>
+              <p class="text-primary-200">{{ value.description }}</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -144,13 +146,7 @@ const { stars, isClient } = useStarfield(30, 3)
         </div>
 
         <!-- Active value card -->
-        <LandingGlass
-          hover-effect="glow"
-          glow-color="purple"
-          gradient="mixed"
-          intensity="medium"
-          class="p-6"
-        >
+        <div class="p-6 border border-primary-700/30 rounded-lg bg-primary-900/30 backdrop-blur-sm">
           <div class="flex flex-col items-center text-center">
             <div class="w-28 h-28 relative mb-6">
               <div
@@ -165,31 +161,33 @@ const { stars, isClient } = useStarfield(30, 3)
 
               <!-- Orbit decoration -->
               <div
-                class="absolute inset-0 border border-primary-500/20 rounded-full animate-slow-spin"
+                class="absolute inset-0 border border-primary-500/20 rounded-full animate-spin"
+                style="animation-duration: 20s"
               ></div>
               <div
-                class="absolute inset-2 border border-primary-500/10 rounded-full animate-reverse-spin"
+                class="absolute inset-2 border border-primary-500/10 rounded-full animate-spin"
+                style="animation-duration: 15s; animation-direction: reverse"
               ></div>
             </div>
 
             <h3 class="text-xl font-bold mb-3 text-white">{{ values[activeValueIndex].title }}</h3>
             <p class="text-primary-200">{{ values[activeValueIndex].description }}</p>
           </div>
-        </LandingGlass>
+        </div>
       </div>
+
+      <!-- Background elements -->
+
+      <!-- Subtle parallax stars -->
     </div>
-
-    <!-- Background stars -->
-    <div class="absolute inset-0 bg-primary-950 opacity-30"></div>
-    <div
-      class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900/20 via-primary-950/10 to-primary-950/0"
-    ></div>
-
-    <!-- Subtle parallax stars -->
     <div
       v-if="isClient"
       class="absolute inset-0"
     >
+      <div class="absolute inset-0 bg-primary-950/30"></div>
+      <div
+        class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900/20 via-primary-950/10 to-primary-950/0"
+      ></div>
       <div
         v-for="star in stars"
         :key="star.id"
@@ -201,55 +199,22 @@ const { stars, isClient } = useStarfield(30, 3)
 </template>
 
 <style scoped>
-.animate-slow-spin {
-  animation: spin 20s linear infinite;
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.animate-reverse-spin {
-  animation: spin 15s linear infinite reverse;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.3;
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.value-card {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeIn 0.6s forwards cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-
-.value-card:nth-child(1) {
-  animation-delay: 0ms;
-}
-
-.value-card:nth-child(2) {
-  animation-delay: 150ms;
-}
-
-.value-card:nth-child(3) {
-  animation-delay: 300ms;
-}
-
-.value-card:nth-child(4) {
-  animation-delay: 450ms;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
+  50% {
     opacity: 1;
-    transform: translateY(0);
   }
 }
-
-
 </style>

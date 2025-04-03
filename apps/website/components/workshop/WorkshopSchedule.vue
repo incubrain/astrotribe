@@ -64,7 +64,7 @@ function getOrdinalIndicator(day: number) {
         <PrimeTab
           v-for="(day, i) in schedule"
           :key="`tab-${i}`"
-          :value="`${i}`"
+          :value="i"
           class="px-4 py-2 font-medium text-sm transition-all duration-200"
           :class="[
             { 'text-primary-400 border-b-2 border-primary-400': i === 0 },

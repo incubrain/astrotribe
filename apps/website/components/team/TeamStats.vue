@@ -1,71 +1,82 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-// Stats data with more astronomy-themed icons
+// Stats data with astronomy-themed icons
 const stats = [
   {
     value: '30+',
+    dataValue: 30,
     label: 'Years Combined Experience',
     icon: 'mdi:telescope',
     description: 'Our team brings decades of astronomy expertise',
   },
   {
     value: '50+',
+    dataValue: 50,
     label: 'Countries Reached',
     icon: 'mdi:globe-model',
     description: 'Serving astronomy enthusiasts worldwide',
   },
   {
     value: '10K+',
+    dataValue: 10000,
     label: 'Students Educated',
     icon: 'mdi:human-capacity-increase',
     description: 'Inspiring the next generation of astronomers',
   },
   {
     value: '25+',
+    dataValue: 25,
     label: 'Major Events Organized',
     icon: 'mdi:star-shooting',
     description: 'Creating memorable astronomy experiences',
   },
 ]
 
-// Animation states
-const isVisible = ref(false)
-const hasAnimated = ref(false)
+// Intersection observer for animations
+const statsSection = ref(null)
+const isIntersecting = ref(false)
 
 const { stars, isClient } = useStarfield(30, 3)
+const { animateCounter } = useAnimation()
 
-// Intersection observer to trigger animations when section comes into view
 onMounted(() => {
+  if (!import.meta.client) return
+
+  // Create intersection observer
   const observer = new IntersectionObserver(
     (entries) => {
-      if (entries[0].isIntersecting && !hasAnimated.value) {
-        isVisible.value = true
-        hasAnimated.value = true
+      const [entry] = entries
+      isIntersecting.value = entry.isIntersecting
+
+      if (entry.isIntersecting) {
+        // Animate counter when in view
+        animateCounter('.counter-value', {
+          duration: 2000,
+          stagger: 0.2,
+        })
+
+        // Unobserve after animation starts
+        observer.unobserve(entry.target)
       }
     },
-    { threshold: 0.2 },
+    { threshold: 0.1 },
   )
 
-  const element = document.querySelector('.team-stats-section')
-  if (element) {
-    observer.observe(element)
-  }
-
-  // Cleanup
-  return () => {
-    if (element) {
-      observer.unobserve(element)
-    }
+  // Start observing
+  if (statsSection.value) {
+    observer.observe(statsSection.value)
   }
 })
 </script>
 
 <template>
-  <section class="team-stats-section py-16 relative overflow-hidden">
+  <section
+    ref="statsSection"
+    class="team-stats-section py-16 relative overflow-hidden"
+  >
     <!-- Background elements -->
-    <div class="absolute inset-0 bg-primary-950 opacity-60"></div>
-    <div class="absolute inset-0 bg-noise opacity-20"></div>
+    <div class="absolute inset-0 bg-primary-950/60"></div>
 
     <!-- Subtle star background -->
     <div
@@ -81,7 +92,12 @@ onMounted(() => {
     </div>
 
     <div class="wrapper relative z-10">
-      <div class="text-center mb-12">
+      <div
+        v-motion
+        class="text-center mb-12"
+        :initial="{ opacity: 0, y: 20 }"
+        :visible="{ opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 25 } }"
+      >
         <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Our Cosmic Impact</h2>
         <p class="text-xl text-primary-200 max-w-2xl mx-auto">
           Together, our team is making astronomy education accessible worldwide
@@ -92,30 +108,36 @@ onMounted(() => {
         <div
           v-for="(stat, index) in stats"
           :key="index"
+          v-motion
           class="stats-card"
-          :class="[isVisible ? 'stats-visible' : 'stats-hidden']"
-          :style="{ 'animation-delay': `${index * 150}ms` }"
+          :initial="{ opacity: 0, y: 30 }"
+          :visible="{
+            opacity: 1,
+            y: 0,
+            transition: { type: 'spring', stiffness: 200, damping: 20, delay: index * 0.1 },
+          }"
         >
-          <LandingGlass
-            hover-effect="glow"
-            glow-color="blue"
-            gradient="mixed"
-            intensity="low"
-            interactive
-            class="text-center p-6 h-full"
+          <div
+            class="text-center p-6 h-full border border-primary-700/30 rounded-lg bg-primary-900/30 backdrop-blur-sm transition-all duration-300 hover:border-primary-600/30 hover:shadow-[0_0_15px_rgba(102,126,234,0.05)]"
           >
-            <div class="stats-icon-container mx-auto mb-4 flex items-center justify-center">
+            <div
+              class="stats-icon-container mx-auto mb-4 flex items-center justify-center w-16 h-16 rounded-full bg-primary-800/50 border border-primary-600/30"
+            >
               <Icon
                 :name="stat.icon"
                 size="32"
-                class="stats-icon"
+                class="text-primary-300"
               />
             </div>
 
-            <div class="stat-value text-4xl font-bold text-white mb-2">{{ stat.value }}</div>
-            <div class="stat-label text-primary-300 mb-2">{{ stat.label }}</div>
+            <div
+              class="counter-value text-4xl font-bold text-white mb-2"
+              :data-value="stat.dataValue"
+              >0</div
+            >
+            <div class="stat-label text-primary-300 font-semibold mb-2">{{ stat.label }}</div>
             <div class="stat-description text-sm text-primary-400">{{ stat.description }}</div>
-          </LandingGlass>
+          </div>
         </div>
       </div>
     </div>
@@ -123,54 +145,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
-@keyframes twinkle {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-}
-
-.bg-noise {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-.stats-card {
-  transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-
-.stats-hidden {
-  opacity: 0;
-  transform: translateY(40px);
-}
-
-.stats-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .stats-icon-container {
-  width: 70px;
-  height: 70px;
-  background-color: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 9999px;
   box-shadow: 0 0 15px rgba(99, 102, 241, 0.1);
   transition: all 0.3s ease;
 }
 
-.stats-icon {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-LandingGlass:hover .stats-icon-container {
-  background-color: rgba(59, 130, 246, 0.15);
-  transform: translateY(-5px);
-}
-
-.stat-value {
+.counter-value {
   background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
