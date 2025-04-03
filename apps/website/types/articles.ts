@@ -20,6 +20,7 @@ export const articleCategorySchema = z.enum([
   'space-exploration',
   'dark-sky-conservation',
   'sustainable-development',
+  'research',
 ])
 export type ArticleCategoriesT = z.infer<typeof articleCategorySchema>
 export const CATEGORIES: ArticleCategoriesT[] = [
@@ -28,6 +29,7 @@ export const CATEGORIES: ArticleCategoriesT[] = [
   'space-exploration',
   'dark-sky-conservation',
   'sustainable-development',
+  'research',
 ]
 
 // ARTICLE TAGS

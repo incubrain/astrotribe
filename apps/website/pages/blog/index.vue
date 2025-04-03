@@ -16,10 +16,10 @@ const { data: latestPosts, pending: loadingLatest } = await useAsyncData('latest
 // SEO
 useSeoMeta({
   title: 'AstronEra Blog',
-  description: 'Discover articles on space exploration, astronomy, and sustainable development',
+  description: 'Discover articles on space exploration, astronomy, research, and sustainable development',
   ogTitle: 'AstronEra Blog | Space Exploration & Astronomy',
   ogDescription:
-    'Read the latest articles about space exploration, astronomy, and sustainable development.',
+    'Read the latest articles about space exploration, astronomy, research, and sustainable development.',
 })
 </script>
 

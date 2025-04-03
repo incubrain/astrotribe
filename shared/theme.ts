@@ -142,6 +142,62 @@ const AstroPreset = definePreset(Aura, {
       },
     },
 
+    accordion: {
+      colorScheme: {
+        dark: {
+          root: {
+            transitionDuration: '0.3s',
+          },
+          panel: {
+            borderWidth: '0 0 1px 0',
+            borderColor: '{surface.700}',
+          },
+          header: {
+            color: '{surface.600}',
+            hoverColor: '{surface.50}',
+            activeColor: '{primary.400}',
+            padding: '1.125rem',
+            fontWeight: '600',
+            borderRadius: '0.375rem',
+            borderWidth: '1px',
+            borderColor: '{surface.700}',
+            background: '{surface.100}',
+            hoverBackground: '{surface.200}',
+            activeBackground: '{surface.200}',
+            activeHoverBackground: '{surface.300}',
+            focusRing: {
+              width: '2px',
+              style: 'solid',
+              color: '{primary.600}',
+              offset: '2px',
+              shadow: '0 0 0 2px rgba(44, 120, 181, 0.4)',
+            },
+            toggleIcon: {
+              color: '{surface.500}',
+              hoverColor: '{primary.400}',
+              activeColor: '{primary.400}',
+              activeHoverColor: '{primary.300}',
+            },
+            first: {
+              topBorderRadius: '0.375rem',
+              borderWidth: '1px',
+            },
+            last: {
+              bottomBorderRadius: '0.375rem',
+              activeBottomBorderRadius: '0',
+            },
+          },
+          content: {
+            borderWidth: '0 1px 1px 1px',
+            borderColor: '{surface.700}',
+            background: '{surface.100}',
+            color: '{surface.50}',
+            padding: '1.25rem',
+          },
+        },
+      },
+    },
+
     // TabView styling
     tabview: {
       colorScheme: {
@@ -182,12 +238,17 @@ const AstroPreset = definePreset(Aura, {
             borderRadius: '0.375rem',
             transitionDuration: '0.2s',
 
-            // Primary button styling
+            // Primary button styling (used when severity="primary" or no severity specified)
             primary: {
               background: '{primary.600}',
               hoverBackground: '{primary.500}',
               activeBackground: '{primary.700}',
+              borderColor: '{primary.600}',
+              hoverBorderColor: '{primary.500}',
+              activeBorderColor: '{primary.700}',
               color: '#ffffff',
+              hoverColor: '#ffffff',
+              activeColor: '#ffffff',
               focusRing: {
                 color: 'rgba(44, 120, 181, 0.4)',
                 shadow: '0 0 0 0.2rem rgba(44, 120, 181, 0.4)',
@@ -199,7 +260,58 @@ const AstroPreset = definePreset(Aura, {
               background: '{surface.200}',
               hoverBackground: '{surface.300}',
               activeBackground: '{surface.400}',
+              borderColor: '{surface.300}',
+              hoverBorderColor: '{surface.400}',
+              activeBorderColor: '{surface.500}',
               color: '{surface.900}',
+              hoverColor: '{surface.900}',
+              activeColor: '{surface.900}',
+            },
+          },
+
+          // Add explicit outlined variant to ensure consistency
+          outlined: {
+            primary: {
+              background: 'transparent',
+              hoverBackground: 'rgba(44, 120, 181, 0.1)',
+              activeBackground: 'rgba(44, 120, 181, 0.2)',
+              borderColor: '{primary.600}',
+              hoverBorderColor: '{primary.500}',
+              activeBorderColor: '{primary.700}',
+              color: '{primary.500}',
+              hoverColor: '{primary.500}',
+              activeColor: '{primary.600}',
+            },
+            secondary: {
+              background: 'transparent',
+              hoverBackground: '{surface.200}',
+              activeBackground: '{surface.300}',
+              borderColor: '{surface.300}',
+              hoverBorderColor: '{surface.400}',
+              activeBorderColor: '{surface.500}',
+              color: '{surface.400}',
+              hoverColor: '{surface.300}',
+              activeColor: '{surface.200}',
+            },
+          },
+
+          // Text variant
+          text: {
+            primary: {
+              background: 'transparent',
+              hoverBackground: 'rgba(44, 120, 181, 0.1)',
+              activeBackground: 'rgba(44, 120, 181, 0.2)',
+              color: '{primary.500}',
+              hoverColor: '{primary.500}',
+              activeColor: '{primary.600}',
+            },
+            secondary: {
+              background: 'transparent',
+              hoverBackground: '{surface.200}',
+              activeBackground: '{surface.300}',
+              color: '{surface.400}',
+              hoverColor: '{surface.300}',
+              activeColor: '{surface.200}',
             },
           },
         },

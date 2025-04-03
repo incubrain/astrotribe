@@ -88,7 +88,7 @@ const toc = [
       </div>
       <div id="Achievements">
         <h2 class="text-2xl">{{ project.achievements.title }}</h2>
-        <p v-for="text in project.achievements.text">{{ text }}</p>
+        <p v-for="(text, index) in project.achievements.text" :key="index">{{ text }}</p>
       </div>
       <div id="Stargazing">
         <h2 class="text-2xl">{{ project.stargazingEvents.title }}</h2>
@@ -98,7 +98,7 @@ const toc = [
       </div>
       <div id="Resorts">
         <h2 class="text-2xl">{{ project.resortCollabs.title }}</h2>
-        <p v-for="resort in project.resortCollabs.resorts">{{ resort }}</p>
+        <p v-for="(resort, index) in project.resortCollabs.resorts" :key="index">{{ resort }}</p>
       </div>
     </div>
   </div>

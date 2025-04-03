@@ -109,7 +109,7 @@ const searchTerms = ref([
     <div class="absolute -left-20 bottom-0 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl"></div>
     <div class="absolute top-1/4 left-1/3 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl"></div>
 
-    <div class="wrapper container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="wrapper relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section header -->
       <div
         v-motion
@@ -532,8 +532,6 @@ const searchTerms = ref([
 </template>
 
 <style scoped>
-
-
 .animate-pulse {
   animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

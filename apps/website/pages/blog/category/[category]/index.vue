@@ -3,15 +3,11 @@ import { useBlogCategories } from '~/composables/useBlogCategories'
 
 const route = useRoute()
 const categorySlug = route.params.category as string
-
-console.log('Category page - slug:', categorySlug)
-
+const pageNumber = parseInt(route.params.page as string) || 1
 const { getCategoryInfo, getCategoryImage, validCategories, fetchCategories } = useBlogCategories()
 
 // Fetch categories first
 await fetchCategories()
-
-console.log('Valid categories:', validCategories.value)
 
 // Normalize the category slug from the database for comparison
 const normalizedValidCategories = computed(() => {
@@ -22,8 +18,6 @@ const normalizedValidCategories = computed(() => {
       .map((slug) => slug.replace('categories/', '')),
   ]
 })
-
-console.log('Normalized valid categories:', normalizedValidCategories.value)
 
 // Validate category against normalized slugs
 if (!normalizedValidCategories.value.includes(categorySlug)) {
@@ -37,73 +31,62 @@ if (!normalizedValidCategories.value.includes(categorySlug)) {
 // When getting the category info, we need to add the prefix back
 const dbCategorySlug = categorySlug === 'all' ? 'all' : `categories/${categorySlug}`
 const categoryInfo = getCategoryInfo(dbCategorySlug)
-console.log('Category info:', categoryInfo)
 
-// Get articles for this category, first page
-const { data: articlesData, pending } = await useAsyncData(`articles-${categorySlug}`, async () => {
-  console.log(`Fetching articles for category: ${categorySlug}`)
+// Get articles for this category with pagination
+const { data: articlesData, pending } = await useAsyncData(
+  `articles-${categorySlug}-page-${pageNumber}`,
+  async () => {
+    // Base query
+    let query = queryCollection('blog').where('draft', '=', false).order('date', 'DESC')
 
-  // Base query
-  let query = queryCollection('blog').where('draft', '=', false).order('date', 'DESC')
+    // Filter by category - use the plain category slug (without prefix)
+    if (categorySlug !== 'all') {
+      query = query.where('category', '=', categorySlug)
+    }
 
-  // Filter by category - use the plain category slug (without prefix)
-  // This assumes your blog posts use the non-prefixed category slugs
-  if (categorySlug !== 'all') {
-    console.log(`Adding category filter: category = ${categorySlug}`)
-    query = query.where('category', '=', categorySlug)
-  }
+    // Pagination with 21 posts per page
+    const postsPerPage = 21
+    const skip = (pageNumber - 1) * postsPerPage
+    query = query.skip(skip).limit(postsPerPage)
 
-  // Pagination (first page)
-  const postsPerPage = 9
-  query = query.limit(postsPerPage)
+    // Execute query
+    const articles = await query.all()
 
-  // Execute query
-  const articles = await query.all()
-  console.log(`Found ${articles.length} articles for category ${categorySlug}`)
+    // Get total count for pagination
+    let countQuery = queryCollection('blog').where('draft', '=', false)
 
-  if (articles.length === 0) {
-    // Try to get any articles to see what's available
-    const sampleArticles = await queryCollection('blog').limit(5).all()
-    console.log(
-      'Sample articles:',
-      sampleArticles.map((a) => ({
-        title: a.title,
-        category: a.category,
-        stem: a.stem,
-      })),
-    )
-  }
+    if (categorySlug !== 'all') {
+      countQuery = countQuery.where('category', '=', categorySlug)
+    }
 
-  // Get total count for pagination
-  let countQuery = queryCollection('blog').where('draft', '=', false)
+    const totalArticles = await countQuery.count()
+    const totalPages = Math.ceil(totalArticles / postsPerPage)
 
-  if (categorySlug !== 'all') {
-    countQuery = countQuery.where('category', '=', categorySlug)
-  }
+    // Validate page number
+    if (pageNumber > totalPages && totalPages > 0) {
+      navigateTo(`/blog/category/${categorySlug}${totalPages > 1 ? `/page/${totalPages}` : ''}`)
+    }
 
-  const totalArticles = await countQuery.count()
-  console.log(`Total articles for category ${categorySlug}: ${totalArticles}`)
-
-  const totalPages = Math.ceil(totalArticles / postsPerPage)
-
-  return {
-    articles,
-    totalPages,
-    totalArticles,
-  }
-})
+    return {
+      articles,
+      totalPages,
+      totalArticles,
+    }
+  },
+)
 
 // SEO
 useSeoMeta({
-  title: categoryInfo.title,
+  title: `${categoryInfo.title}${pageNumber > 1 ? ` - Page ${pageNumber}` : ''}`,
   description: categoryInfo.description,
-  ogTitle: `${categoryInfo.title} - AstronEra Blog`,
+  ogTitle: `${categoryInfo.title}${pageNumber > 1 ? ` - Page ${pageNumber}` : ''} - AstronEra Blog`,
   ogDescription: categoryInfo.description,
 })
 </script>
 
 <template>
   <div>
+    <!-- Hero banner -->
     <CommonHero
       :img="{
         src: getCategoryImage(categorySlug),
@@ -119,18 +102,24 @@ useSeoMeta({
       invert
     />
 
-    <BlogActions />
+    <!-- Filter bar -->
+    <div class="wrapper py-4 lg:pt-12">
+      <BlogFilter />
+    </div>
 
-    <!-- Using our new component -->
+    <!-- Blog banner (replaces sidebar) -->
+    <BlogBanner />
+
+    <!-- Articles list with 3-column layout -->
     <BlogArticleList
       :articles="articlesData?.articles || []"
       :is-loading="pending"
     />
 
-    <!-- Pagination -->
+    <!-- Pagination - now showing 21 per page -->
     <Pagination
       v-if="articlesData"
-      :current-page="1"
+      :current-page="pageNumber"
       :total-pages="articlesData.totalPages"
       :base-url="`/blog/category/${categorySlug}/page`"
     />
