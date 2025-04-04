@@ -52,7 +52,11 @@ const og = {
   description:
     'Connect, learn, and unravel the cosmos with astronomers and space enthusiasts from around the globe',
   image: '/astronera-logo-with-text.jpg',
-  url: 'https://www.astronera.org',
+  url:
+    process.env.SITE_URL ||
+    (process.env.NODE_ENV === 'production'
+      ? 'https://www.astronera.org'
+      : `http://localhost:${process.env.PORT || 3000}`),
 }
 
 export default defineNuxtConfig({

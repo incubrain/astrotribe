@@ -1,6 +1,6 @@
 import type { DebuggerConfig, Route } from '../types'
-import testRoutes from './routes.json'
 import { getMcpServerUrl } from '../vscode_integration'
+import testRoutes from './routes.json'
 
 /**
  * Load configuration from environment variables or use defaults
@@ -9,13 +9,13 @@ import { getMcpServerUrl } from '../vscode_integration'
 export function loadConfig(routes?: Route[]): DebuggerConfig {
   // Check if we're running inside VS Code
   const isVSCodeRunning = process.env.VSCODE_RUNNING === 'true'
-  
+
   // Determine if we should use VS Code Insiders
   const useInsiders = process.env.USE_VSCODE_INSIDERS !== 'false'
-  
+
   // Set up initial MCP server URL
-  let mcpServerUrl = process.env.MCP_SERVER_URL || 'http://localhost:9222/mcp'
-  
+  const mcpServerUrl = process.env.MCP_SERVER_URL || 'http://localhost:9222/mcp'
+
   // Create config object
   const config: DebuggerConfig = {
     authUrl: process.env.AUTH_URL || 'http://localhost:3009',
@@ -26,7 +26,7 @@ export function loadConfig(routes?: Route[]): DebuggerConfig {
     vscodeIntegration: {
       enabled: isVSCodeRunning || process.env.USE_VSCODE_INTEGRATION === 'true',
       useInsiders,
-      extensionId: process.env.VSCODE_EXTENSION_ID || 'ms-playwright.playwright-mcp'
+      extensionId: process.env.VSCODE_EXTENSION_ID || 'ms-playwright.playwright-mcp',
     },
     credentials: {
       email: process.env.TEST_EMAIL || 'basic@testing.com',
@@ -36,12 +36,12 @@ export function loadConfig(routes?: Route[]): DebuggerConfig {
     },
     pages: routes ? routes : (testRoutes as Route[]),
   }
-  
+
   // Update MCP server URL based on VS Code integration
   if (config.vscodeIntegration && config.vscodeIntegration.enabled) {
     config.mcpServerUrl = getMcpServerUrl(config)
   }
-  
+
   return config
 }
 

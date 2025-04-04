@@ -19,7 +19,7 @@
     "clean": "scripts/speed/clean.sh",
     "prisma:update": "pnpx tsx libs/db/src/prisma/update-prisma.ts",
     "prisma:gen": "pnpx prisma generate --schema libs/db/src/prisma/schema.prisma",
-    "debug:test": "echo \"Running from $npm_package_name\"",
+    "debug": "./scripts/debug-build.sh",
     "install:all": "pnpm install --workspaces",
     "mig:fix": "pnpx tsx scripts/db/migrate/3.fix-migration.ts",
     "gen:api": "pnpx tsx scripts/api/create-api",

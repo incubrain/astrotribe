@@ -1,0 +1,44 @@
+{
+  "name": "@astronera/bugger",
+  "version": "0.1.0",
+  "description": "Tool for crawling websites and capturing DevTools logs and screenshots",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx src/index.ts",
+    "crawl": "tsx src/index.ts",
+    "crawl:debug": "DEBUG=true tsx src/index.ts",
+    "debug:playwright": "tsx src/debug.ts",
+    "test": "jest"
+  },
+  "bin": {
+    "@astronera/bugger": "./dist/bin/bugger.js"
+  },
+  "keywords": [
+    "devtools",
+    "logs",
+    "crawler",
+    "screenshot",
+    "debugging",
+    "bugger"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@playwright/test": "^1.51.1",
+    "playwright": "^1.51.1",
+    "winston": "^3.11.0",
+    "xml2js": "^0.6.2",
+    "commander": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.10",
+    "@types/node": "^20.10.0",
+    "@types/xml2js": "^0.4.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.3.2"
+  }
+}
