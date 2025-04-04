@@ -241,16 +241,34 @@ export default defineNuxtConfig({
     '/sitemap.xml': {
       headers: { 'Content-Type': 'application/xml', 'Cache-Control': 'max-age=3600' },
     },
+    '/sitemap_main.xml': {
+      headers: { 'Content-Type': 'application/xml', 'Cache-Control': 'max-age=3600' },
+    },
+    '/sitemap_blog.xml': {
+      headers: { 'Content-Type': 'application/xml', 'Cache-Control': 'max-age=3600' },
+    },
+    '/sitemap_policies.xml': {
+      headers: { 'Content-Type': 'application/xml', 'Cache-Control': 'max-age=3600' },
+    },
     '/api/__sitemap__/**': { cors: true, headers: { 'Cache-Control': 'max-age=3600' } },
   },
 
   devServer: { host: 'localhost', port: process.env.NUXT_MULTI_APP ? devPortMap.website : 3000 },
+  future: {
+    compatibilityVersion: 4,
+  },
 
   experimental: { inlineRouteRules: true, asyncContext: true },
 
-  compatibilityDate: '2024-09-22',
+  compatibilityDate: '2025-03-30',
 
-  nitro: { prerender: { routes: ['/sitemap.xml'], crawlLinks: true, failOnError: false } },
+  nitro: {
+    prerender: {
+      routes: ['/sitemap.xml', '/sitemap_main.xml', '/sitemap_blog.xml', '/sitemap_policies.xml'],
+      crawlLinks: true,
+      failOnError: false,
+    },
+  },
 
   fonts: {
     families: [
@@ -449,23 +467,14 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
-    // Exclude default app sources since we're handling routes manually
     excludeAppSources: true,
-
-    // Enable caching for better performance
-    cacheMaxAgeSeconds: 3600, // 1 hour
-
-    // Split into multiple sitemaps for better organization
-    sitemaps: { blog: { sources: ['/api/__sitemap__/blog'] } },
-
-    // Only prerender sitemap in production
-    defaults: {
-      // We don't need these as per best practices
-      // changefreq: 'daily',
-      // priority: 0.8,
+    cacheMaxAgeSeconds: 1000 * 60 * 60, // 1 hour
+    sitemaps: {
+      main: { sources: ['/api/__sitemap__/main'] },
+      blog: { sources: ['/api/__sitemap__/blog'] },
+      policies: { sources: ['/api/__sitemap__/policies'] },
     },
-
-    // Enable experimental features for better performance
+    cacheTTL: 1000 * 60 * 60, // 1 hour
     experimentalCompression: true,
     experimentalWarmUp: true,
   },

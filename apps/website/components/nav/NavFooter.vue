@@ -1,107 +1,9 @@
 <script setup lang="ts">
+import { getFooterNavigation } from '#shared/constants'
+
 const { socials } = useSocialLinks()
 
-const websiteLinks = [
-  {
-    key: 'about-us',
-    label: 'About Us',
-    icon: 'material-symbols:info',
-    visible: true,
-    disabled: false,
-    items: [
-      {
-        key: 'about',
-        label: 'About',
-        icon: 'material-symbols:info',
-        url: '/about',
-        visible: true,
-        disabled: false,
-      },
-      {
-        key: 'team',
-        label: 'Team',
-        icon: 'material-symbols:emoji-people',
-        url: '/team',
-        visible: true,
-        disabled: false,
-      },
-      {
-        key: 'contact',
-        label: 'Contact',
-        icon: 'material-symbols:call',
-        url: '/contact',
-        visible: true,
-        disabled: false,
-      },
-    ],
-  },
-  {
-    key: 'dark-skies',
-    label: 'Dark Skies',
-    icon: 'material-symbols:nightlight',
-    visible: true,
-    disabled: false,
-    items: [
-      {
-        key: 'dark-sky-conference-2023',
-        label: 'Conference',
-        icon: 'material-symbols:nightlight',
-        url: '/conferences/dark-sky-conference-2023',
-        visible: true,
-        disabled: false,
-      },
-    ],
-  },
-  {
-    key: 'blog',
-    label: 'Blog',
-    icon: 'material-symbols:menu-book-outline',
-    visible: true,
-    disabled: false,
-    items: [
-      {
-        key: 'blog-home',
-        label: 'All',
-        icon: 'material-symbols:menu-book-outline',
-        url: '/blog/category/all',
-        visible: true,
-        disabled: false,
-      },
-      {
-        key: 'blog-dark-sky-conservation',
-        label: 'Conservation',
-        icon: 'material-symbols:menu-book-outline',
-        url: '/blog/category/dark-sky-conservation',
-        visible: true,
-        disabled: false,
-      },
-      {
-        key: 'blog-people-of-space',
-        label: 'People',
-        icon: 'material-symbols:menu-book-outline',
-        url: '/blog/category/people-of-space',
-        visible: true,
-        disabled: false,
-      },
-      {
-        key: 'blog-space-exploration',
-        label: 'Exploration',
-        icon: 'material-symbols:menu-book-outline',
-        url: '/blog/category/space-exploration',
-        visible: true,
-        disabled: false,
-      },
-      {
-        key: 'blog-sustainable-development',
-        label: 'Sustainability',
-        icon: 'material-symbols:menu-book-outline',
-        url: '/blog/category/sustainable-development',
-        visible: true,
-        disabled: false,
-      },
-    ],
-  },
-]
+const websiteLinks = getFooterNavigation()
 </script>
 
 <template>
@@ -187,7 +89,7 @@ const websiteLinks = [
         </div>
       </div>
     </LandingGlass>
-    <FooterBottomBar class="relative z-10" />
+    <NavFooterBottomBar class="relative z-10" />
   </footer>
 </template>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const { breadcrumbs } = usePages()
+// const { breadcrumbs } = useBreadcrumbs()
+// need to fix usage
 </script>
 
 <template>
