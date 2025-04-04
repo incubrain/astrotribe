@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const policies = ['privacy-policy', 'terms-of-use', 'cookies-policy', 'refund-policy']
+import { getPolicyPageKeys } from '#shared/constants'
+
+const policies = getPolicyPageKeys()
 const currentYear = new Date().getFullYear()
 </script>
 

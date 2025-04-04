@@ -16,7 +16,7 @@ const route = useRoute()
     </div>
 
     <div class="relative w-full">
-      <FooterWebsite />
+      <NavFooter />
     </div>
   </div>
 </template>
