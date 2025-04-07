@@ -88,6 +88,7 @@ export default defineNuxtConfig({
 
   experimental: {
     asyncContext: true,
+    debugModuleMutation: false,
   },
 
   compatibilityDate: '2025-01-09',
@@ -124,19 +125,20 @@ export default defineNuxtConfig({
       exclude: ['fsevents'],
     },
   },
-  debug: {
-    // Enable specific debugging features
-    templates: true,
-    modules: true,
-    watchers: true,
-    hooks: {
-      client: true,
-      server: true,
-    },
-    nitro: true,
-    router: true,
-    hydration: true,
-  },
+
+  // debug: {
+  //   // Enable specific debugging features
+  //   templates: true,
+  //   modules: true,
+  //   watchers: true,
+  //   hooks: {
+  //     client: true,
+  //     server: true,
+  //   },
+  //   nitro: true,
+  //   router: true,
+  //   hydration: true,
+  // },
 
   image: {
     format: ['webp', 'jpg'],
