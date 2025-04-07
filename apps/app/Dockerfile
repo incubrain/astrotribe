@@ -1,7 +1,7 @@
 FROM node:20.19-bookworm
 
 # Enable corepack for PNPM
-RUN corepack enable && corepack prepare pnpm@8.7.6 --activate
+RUN corepack enable && corepack prepare pnpm@9.15.2 --activate
 
 WORKDIR /app
 
