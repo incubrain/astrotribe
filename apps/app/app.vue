@@ -41,12 +41,6 @@ onMounted(async () => {
 <template>
   <div class="h-full w-full dark">
     <NuxtLoadingIndicator />
-    <Head>
-      <link
-        rel="manifest"
-        href="/manifest.webmanifest"
-      />
-    </Head>
     <NuxtPwaAssets />
     <NuxtLayout>
       <NuxtPage />
