@@ -1,6 +1,0 @@
-- [ ] add multi-sitemap support
-- [ ] create a single LLM file, add metadata for each page etc
-- [x] debug.sh script is saving to the root & debug directory, just do debug dir
-- [ ] 
-- [ ] 
-- [ ] 
