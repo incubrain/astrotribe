@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import useEmblaCarousel from 'embla-carousel-vue'
-import AutoPlay from 'embla-carousel-autoplay'
+import AutoScroll from 'embla-carousel-auto-scroll'
 
 interface ComicPanel {
   image: string
@@ -20,60 +20,32 @@ const props = defineProps({
     type: Array as PropType<ComicStrip[]>,
     required: true,
   },
-  autoplaySpeed: {
+  scrollSpeed: {
     type: Number,
-    default: 10000,
-  },
-  loop: {
-    type: Boolean,
-    default: true,
+    default: 2, // pixels per frame
   },
 })
 
-// Initialize Embla Carousel with AutoPlay
-const [emblaRef] = useEmblaCarousel(
+const [emblaRef, emblaApi] = useEmblaCarousel(
   {
-    loop: props.loop,
-    align: 'start',
-    containScroll: 'trimSnaps',
-    dragFree: true,
+    loop: true,
+    dragFree: true, // required for continuous scroll
   },
-  [AutoPlay({ delay: props.autoplaySpeed, stopOnInteraction: true, stopOnMouseEnter: true })],
+  [
+    AutoScroll({
+      speed: props.scrollSpeed,
+      startDelay: 1000,
+      direction: 'forward',
+      playOnInit: true,
+      stopOnInteraction: false,
+      stopOnMouseEnter: false,
+    }),
+  ],
 )
-
-const isPaused = ref(false)
-
-// Toggle autoplay
-const togglePause = () => {
-  const emblaApi = emblaRef.value?.emblaApi
-  if (!emblaApi) return
-
-  if (isPaused.value) {
-    emblaApi.plugins().autoplay?.play()
-  } else {
-    emblaApi.plugins().autoplay?.stop()
-  }
-
-  isPaused.value = !isPaused.value
-}
 </script>
 
 <template>
   <div class="comic-scroller-container">
-    <div class="controls mb-4 flex justify-end space-x-4">
-      <PrimeButton
-        severity="primary"
-        size="small"
-        @click="togglePause"
-      >
-        <Icon
-          :name="isPaused ? 'i-lucide-play' : 'i-lucide-pause'"
-          class="mr-2 h-4 w-4"
-        />
-        {{ isPaused ? 'Resume' : 'Pause' }}
-      </PrimeButton>
-    </div>
-
     <div class="relative">
       <!-- Gradient masks for fade effect -->
       <div
@@ -88,7 +60,7 @@ const togglePause = () => {
         ref="emblaRef"
         class="overflow-hidden"
       >
-        <div class="flex">
+        <div class="embla__container flex">
           <div
             v-for="comic in comics"
             :key="`comic-${comic.id}`"

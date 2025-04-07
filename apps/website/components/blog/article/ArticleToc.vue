@@ -58,7 +58,7 @@ onUnmounted(() => {
 <template>
   <div
     v-if="tocLinks.length"
-    class="relative text-base"
+    class="relative text-base lg:pb-8"
   >
     <div class="flex gap-2 pb-2">
       <PrimeTag

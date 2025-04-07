@@ -445,10 +445,10 @@ const ctaText =
       <DarkskyFAQ :faqs="faqs" />
 
       <!-- Events Section -->
-      <DarkskyEvents
+      <!-- <DarkskyEvents
         :conference-text="conferencesText"
         :symposium-text="symposiumsText"
-      />
+      /> -->
 
       <!-- Social Sharing Section -->
       <DarkskyShare

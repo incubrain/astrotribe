@@ -7,7 +7,7 @@ const websiteLinks = getNavigation()
 
 // 3. Component Options
 defineOptions({
-  name: 'SiteNavbar',
+  name: 'NavTop',
 })
 
 // 4. Props and Emits
@@ -235,7 +235,7 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
         <div class="flex items-center gap-2">
           <!-- Search Button -->
           <BlogSearch
-            :collection="['blog', 'docs']"
+            :collection="['blog']"
             button-class="text-white"
             button-label=""
             auto-navigate
@@ -246,7 +246,7 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
             <NuxtLink
               to="https://github.com/incubrain/astrotribe"
               target="_blank"
-              class="p-2 text-white"
+              class="p-2 text-white flex"
             >
               <Icon
                 name="i-mdi-github"

@@ -108,14 +108,10 @@ export default defineNuxtConfig({
 
   site: { url: og.url, name: 'AstronEra', description: 'Astronomy Hub', defaultLocale: 'en' },
 
-  // Enhanced Nuxt Content configuration section
   content: {
     // Studio preview configuration - enhanced for better performance
     preview: {
       api: 'https://api.nuxt.studio',
-      // dev: true,
-      // dev: true, // Enable in development for testing
-      // Explicitly define git info to avoid repository detection issues
       gitInfo: {
         name: 'astrotribe',
         owner: 'incubrain',
@@ -159,11 +155,10 @@ export default defineNuxtConfig({
     sources: {
       content: {
         driver: 'fs',
-        base: 'content', // Make sure this points to the right directory
+        base: 'content',
       },
     },
 
-    // Build-time optimization
     build: {
       // Optimize markdown processing
       markdown: {
@@ -287,11 +282,7 @@ export default defineNuxtConfig({
     dir: 'public',
     domains: ['astronera.org', 'cms.astronera.org', 'staging.cms.astronera.org', 'localhost'],
     fallback: '/defaults/fallback.jpg',
-
-    // cms provider configuration
     cms: { baseURL: `${process.env.NUXT_PUBLIC_CMS_URL}/uploads/` },
-
-    // You can keep the ipx provider as a fallback or for local development
     ipx: {
       maxAge: 60 * 60 * 24 * 365, // 1 year (in seconds)
     },

@@ -238,6 +238,61 @@ const AstroPreset = definePreset(Aura, {
       },
     },
 
+    tabs: {
+      colorScheme: {
+        dark: {
+          root: {
+            transitionDuration: '0.2s',
+          },
+          tablist: {
+            borderWidth: '0 0 1px 0',
+            background: 'transparent',
+            borderColor: '{surface.700}',
+          },
+          tab: {
+            background: 'transparent',
+            hoverBackground: 'transparent',
+            activeBackground: 'transparent',
+            borderWidth: '0 0 2px 0',
+            borderColor: 'transparent',
+            hoverBorderColor: '{primary.300}',
+            activeBorderColor: '{primary.400}',
+            color: '{surface.500}',
+            hoverColor: '{primary.300}',
+            activeColor: '{primary.400}',
+            padding: '0.75rem 1.5rem',
+            fontWeight: '500',
+            margin: '0 0 -1px 0',
+            gap: '0.5rem',
+            focusRing: {
+              width: '2px',
+              style: 'solid',
+              color: '{primary.400}',
+              offset: '-1px',
+              shadow: 'none',
+            },
+          },
+          tabpanel: {
+            background: 'transparent',
+            color: '{surface.50}',
+            padding: '1rem 0',
+          },
+          navButton: {
+            background: '{surface.800}',
+            color: '{surface.400}',
+            hoverColor: '{primary.400}',
+            width: '2.5rem',
+            shadow: 'none',
+          },
+          activeBar: {
+            height: '2px',
+            bottom: '-1px',
+            background: '{primary.400}',
+          },
+        },
+      },
+    },
+
     // TabView styling
     tabview: {
       colorScheme: {

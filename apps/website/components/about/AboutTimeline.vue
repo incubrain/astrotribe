@@ -2,7 +2,10 @@
 import type { PropType } from 'vue'
 
 type TimelineObject = {
-  date: string
+  date: {
+    year: number
+    month: string
+  }
   title: string
   body: string
   icon: string
@@ -23,12 +26,7 @@ const getGradient = (index: number) => {
 </script>
 
 <template>
-  <div class="timeline relative grid w-full gap-6">
-    <!-- Timeline connector line with animated gradient -->
-    <div
-      class="timeline-line absolute left-4 top-5 h-[calc(100%-40px)] w-0.5 bg-gradient-to-b from-primary-400 via-primary-600 to-primary-800"
-    ></div>
-
+  <div class="timeline relative grid lg:grid-cols-2 w-full gap-4">
     <!-- Timeline items -->
     <IBGlass
       v-for="(item, index) in timeline"
@@ -36,24 +34,14 @@ const getGradient = (index: number) => {
       :gradient="getGradient(index)"
       intensity="low"
       interactive
-      class="relative ml-8"
+      class="relative"
     >
-      <!-- Timeline dot -->
-      <div
-        class="timeline-dot absolute -left-12 top-5 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-primary-700"
-      >
-        <Icon
-          :name="item.icon || 'i-lucide-milestone'"
-          class="h-4 w-4 text-white"
-        />
-      </div>
-
       <div class="flex w-full flex-col justify-center">
         <div class="flex items-baseline justify-between">
-          <h2 class="text-lg font-semibold leading-7 xl:leading-9">
+          <h2 class="font-bold pr-2">
             {{ item.title }}
           </h2>
-          <span class="text-sm text-primary-400">{{ item.date }}</span>
+          <span class="text-sm text-primary-400">{{ item.date.year }}</span>
         </div>
 
         <p class="mt-4 text-sm font-normal leading-6">

@@ -3,99 +3,67 @@ const route = useRoute()
 const slug = route.params.slug as string
 const category = route.params.category as string
 
-console.log('Route params:', { category, slug })
+const { categories, validCategories, fetchCategories } = useBlogCategories()
 
 const { width } = useWindowSize()
 
-// First, check if the category exists
-const categoryExists = await useAsyncData(`check-category-${category}`, async () => {
-  console.log('Checking if category exists:', category)
-  try {
-    const result = await queryCollection('categories').where('stem', '=', category).first()
-    console.log('Category query result:', result)
-    return !!result
-  } catch (e) {
-    console.error('Error checking category:', e)
-    return false
-  }
-})
-
-console.log('Category exists?', categoryExists.value)
-
-// Query article with detailed logging
 const {
   data: article,
   status,
   error,
-} = await useAsyncData(`article-${slug}`, async () => {
-  console.log(`Fetching article with stem: blog/${category}/${slug}`)
+} = await useAsyncData(
+  `article-${category}-${slug}`,
+  async () => {
+    // Include category in key
 
-  try {
-    // First, try to get all blog articles to see what exists
-    const allArticles = await queryCollection('blog').limit(10).all()
-    console.log(
-      'First 10 articles in collection:',
-      allArticles.map((a) => ({
-        stem: a.stem,
-        path: a.path,
-        title: a.title,
-      })),
-    )
-
-    // Now query for the specific article
-    const post = await queryCollection('blog')
-      .where('stem', '=', `blog/${category}/${slug}`)
-      .first()
-
-    console.log(
-      'Article query result:',
-      post
-        ? {
-            found: true,
-            stem: post.stem,
-            path: post.path,
-            author: post.author,
-            category: post.category,
-          }
-        : 'Not found',
-    )
-
-    // If found, fetch the associated author and category data
-    if (post) {
-      // Get author data
-      if (post.author) {
-        console.log('Fetching author data for:', post.author)
-        const author = await queryCollection('authors').where('stem', '=', post.author).first()
-        console.log(
-          'Author data result:',
-          author ? { found: true, name: author.name } : 'Not found',
-        )
-        post.authorData = author || null
-      }
-
-      // Get category data
-      if (post.category) {
-        console.log('Fetching category data for:', post.category)
-        const categoryData = await queryCollection('categories')
-          .where('stem', '=', post.category)
-          .first()
-        console.log(
-          'Category data result:',
-          categoryData ? { found: true, name: categoryData.name } : 'Not found',
-        )
-        post.categoryData = categoryData || null
-      }
+    try {
+      const post = await queryCollection('blog')
+        .where('stem', '=', `blog/${category}/${slug}`)
+        .first()
+      console.log('Article query result:', post ? { found: true, stem: post.stem } : 'Not found')
+      // DO NOT fetch author/category here yet
+      return post
+    } catch (e) {
+      console.error('Error fetching core article:', e)
+      // Ensure errors are thrown so status becomes 'error'
+      throw createError({ statusCode: 404, statusMessage: 'Article not found', fatal: true }) // Or handle differently
     }
+  },
+  {
+    // Ensure it runs server-side and payload is transferred
+  },
+)
 
-    return post
-  } catch (e) {
-    console.error('Error fetching article:', e)
-    throw e
+const { data: authorData } = await useAsyncData(
+  `author-${article.value?.author}`, // Key depends on article having loaded
+  async () => {
+    if (!article.value?.author) return null
+    console.log('Fetching author data for:', article.value.author)
+    return queryCollection('authors').where('stem', '=', `authors/${article.value.author}`).first()
+  },
+  { watch: [() => article.value?.author] }, // Re-run if author changes
+)
+
+const { data: categoryData } = await useAsyncData(
+  `category-${article.value?.category}`, // Key depends on article having loaded
+  async () => {
+    if (!article.value?.category) return null
+    return queryCollection('categories')
+      .where('stem', '=', `categories/${article.value.category}`)
+      .first()
+  },
+  { watch: [() => article.value?.category] }, // Re-run if category changes
+)
+
+// Combine data for the template, perhaps using computed properties
+const articleWithRelations = computed(() => {
+  if (!article.value) return null
+  return {
+    ...article.value,
+    authorData: authorData.value || null,
+    categoryData: categoryData.value || null,
   }
 })
-
-// Check useBlogCategories to see what's available
-const { categories, validCategories, fetchCategories } = useBlogCategories()
 
 onMounted(async () => {
   await fetchCategories()
@@ -103,21 +71,9 @@ onMounted(async () => {
   console.log('Valid category slugs:', validCategories.value)
 })
 
-// Wait until we have the article before setting SEO metadata
 watch(
   () => article.value,
   (newArticle) => {
-    console.log(
-      'Article value changed:',
-      newArticle
-        ? {
-            title: newArticle.title,
-            hasAuthorData: !!newArticle.authorData,
-            hasCategoryData: !!newArticle.categoryData,
-          }
-        : 'No article',
-    )
-
     if (newArticle) {
       useSeoMeta({
         title: newArticle.title,
@@ -130,6 +86,8 @@ watch(
   },
   { immediate: true },
 )
+
+console.log('Article with relations:', articleWithRelations.value)
 </script>
 
 <template>
@@ -159,11 +117,11 @@ watch(
     </div>
 
     <div
-      v-else-if="status === 'success' && article"
+      v-else-if="status === 'success' && articleWithRelations"
       class="background"
     >
       <!-- Blog Header with Hero -->
-      <BlogArticleHero :article="article" />
+      <BlogArticleHero :article="articleWithRelations" />
 
       <div
         class="padded-x grid grid-cols-[minmax(300px,700px)] justify-center pt-8 xl:grid-cols-[minmax(240px,1fr)_minmax(660px,740px)_minmax(240px,1fr)] xl:gap-8"
@@ -171,46 +129,41 @@ watch(
         <!-- Left Sidebar -->
         <div class="w-full xl:col-start-1">
           <BlogArticleToc
-            :article="article"
+            :article="articleWithRelations"
             :expanded="width < 1280"
+            class="sticky top-24"
           />
         </div>
 
         <!-- Main Content -->
         <div class="xl:padded-x xl:col-start-2">
           <div class="pb-12">
-            <!-- Article Metadata -->
             <BlogArticleMeta
-              :article="article"
+              :article="articleWithRelations"
               class="mb-6"
             />
-
-            <!-- Article Content -->
             <div class="mx-auto space-y-8">
               <ContentRenderer
                 v-if="article"
                 :value="article"
-                class="nuxt-content"
+                class="nuxt-content prose prose-invert max-w-none"
               />
             </div>
-
-            <!-- Article Footer -->
             <BlogArticleShare
               :link="article.path"
               :summary="article.description"
             />
-
-            <!-- Author Card - now passing authorData -->
-            <BlogArticleAuthorCard :authors="[article.authorData]" />
-
-            <!-- Previous/Next Navigation -->
-            <BlogArticleNavigation :article="article" />
+            <BlogArticleAuthorCard :authors="[articleWithRelations.authorData]" />
+            <BlogArticleNavigation :article="articleWithRelations" />
           </div>
         </div>
       </div>
     </div>
     <!-- Related Articles -->
-    <div class="wrapper mx-auto">
+    <div
+      v-if="article"
+      class="wrapper mx-auto"
+    >
       <BlogRelatedPosts :article="article" />
     </div>
   </div>

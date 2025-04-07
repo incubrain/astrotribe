@@ -187,17 +187,18 @@ const provided = [
 ]
 
 // 5. Methods
-const setActiveTab = (tabId) => {
-  activeTab.value = tabId
-  history.replaceState(null, '', `#${tabId}`)
-}
-
 const updateTabFromHash = () => {
   const hash = window.location.hash.replace('#', '')
   if (hash) {
     const tab = tabs.find((t) => t.id === hash)
     if (tab) activeTab.value = tab.id
   }
+}
+
+// Handle tab change and update URL hash
+const onTabChange = (tabId) => {
+  activeTab.value = tabId
+  window.history.replaceState(null, '', `#${tabId}`)
 }
 
 // 6. Lifecycle Hooks
@@ -226,52 +227,50 @@ onBeforeUnmount(() => {
       }"
       position="center"
     >
-      <div class="flex justify-center mt-4">
-        <NuxtLink
-          :to="registrationLink"
-          target="_blank"
-        >
-          <PrimeButton
-            size="large"
-          >
-            Register Interest
-            <Icon
-              name="mdi:arrow-right"
-              class="ml-2"
-            />
-          </PrimeButton>
-        </NuxtLink>
-      </div>
     </CommonHero>
 
     <!-- Main Content -->
     <div class="wrapper pt-8">
-      <!-- Horizontal Tabs Navigation -->
-      <div class="mb-6 border-b border-primary-700/30">
-        <div class="flex overflow-x-auto no-scrollbar">
-          <button
+      <!-- PrimeTabs Component -->
+      <PrimeTabs
+        v-model:value="activeTab"
+        scrollable
+        :pt="{
+          root: 'w-full',
+        }"
+        @update:value="onTabChange"
+      >
+        <PrimeTabList
+          :pt="{
+            root: 'border-b border-primary-700/30 mb-6',
+          }"
+        >
+          <PrimeTab
             v-for="tab in tabs"
             :key="tab.id"
-            class="tab-button px-6 py-3 font-medium text-sm sm:text-base transition-all duration-200"
-            :class="[
-              activeTab === tab.id
-                ? 'text-primary-400 border-b-2 border-primary-400'
-                : 'text-gray-400 hover:text-primary-300 hover:border-b-2 hover:border-primary-300/50',
-            ]"
-            @click="setActiveTab(tab.id)"
+            :value="tab.id"
+            :pt="{
+              root: ({ context }) => ({
+                class: [
+                  'px-6 py-3 font-medium text-sm sm:text-base transition-all duration-200',
+                  {
+                    'text-primary-400 border-b-2 border-primary-400': context.active,
+                    'text-gray-400 hover:text-primary-300 hover:border-b-2 hover:border-primary-300/50':
+                      !context.active,
+                  },
+                ],
+              }),
+            }"
           >
             {{ tab.label }}
-          </button>
-        </div>
-      </div>
+          </PrimeTab>
+        </PrimeTabList>
 
-      <!-- Tab Content -->
-      <div class="tab-content mb-12">
-        <!-- Beginner Level Tab -->
-        <div
-          v-show="activeTab === 'beginnerLevel'"
-          id="beginnerLevel"
-          class="animate-fadeIn"
+        <PrimeTabPanel
+          value="beginnerLevel"
+          :pt="{
+            root: 'animate-fadeIn',
+          }"
         >
           <div
             class="bg-primary-800/30 rounded-lg p-6 mb-8 backdrop-blur-sm border border-primary-700/30"
@@ -334,13 +333,13 @@ onBeforeUnmount(() => {
           </div>
 
           <WorkshopSchedule :schedule="beginnerSchedule" />
-        </div>
+        </PrimeTabPanel>
 
-        <!-- Intermediate Level Tab -->
-        <div
-          v-show="activeTab === 'intermediateLevel'"
-          id="intermediateLevel"
-          class="animate-fadeIn"
+        <PrimeTabPanel
+          value="intermediateLevel"
+          :pt="{
+            root: 'animate-fadeIn',
+          }"
         >
           <div
             class="bg-primary-800/30 rounded-lg p-6 mb-8 backdrop-blur-sm border border-primary-700/30"
@@ -406,13 +405,13 @@ onBeforeUnmount(() => {
           </div>
 
           <WorkshopSchedule :schedule="intermediateSchedule" />
-        </div>
+        </PrimeTabPanel>
 
-        <!-- What to Bring Tab -->
-        <div
-          v-show="activeTab === 'whatToBring'"
-          id="whatToBring"
-          class="animate-fadeIn"
+        <PrimeTabPanel
+          value="whatToBring"
+          :pt="{
+            root: 'animate-fadeIn',
+          }"
         >
           <div
             class="bg-primary-800/30 rounded-lg p-6 mb-8 backdrop-blur-sm border border-primary-700/30"
@@ -436,13 +435,13 @@ onBeforeUnmount(() => {
               </li>
             </ul>
           </div>
-        </div>
+        </PrimeTabPanel>
 
-        <!-- Pre-Workshop Preparation Tab -->
-        <div
-          v-show="activeTab === 'preWorkshop'"
-          id="preWorkshop"
-          class="animate-fadeIn"
+        <PrimeTabPanel
+          value="preWorkshop"
+          :pt="{
+            root: 'animate-fadeIn',
+          }"
         >
           <div
             class="bg-primary-800/30 rounded-lg p-6 mb-8 backdrop-blur-sm border border-primary-700/30"
@@ -466,13 +465,13 @@ onBeforeUnmount(() => {
               </li>
             </ul>
           </div>
-        </div>
+        </PrimeTabPanel>
 
-        <!-- What's Provided Tab -->
-        <div
-          v-show="activeTab === 'provided'"
-          id="provided"
-          class="animate-fadeIn"
+        <PrimeTabPanel
+          value="provided"
+          :pt="{
+            root: 'animate-fadeIn',
+          }"
         >
           <div
             class="bg-primary-800/30 rounded-lg p-6 mb-8 backdrop-blur-sm border border-primary-700/30"
@@ -498,8 +497,8 @@ onBeforeUnmount(() => {
               </li>
             </ul>
           </div>
-        </div>
-      </div>
+        </PrimeTabPanel>
+      </PrimeTabs>
 
       <!-- Register CTA -->
       <div class="flex justify-center my-12">

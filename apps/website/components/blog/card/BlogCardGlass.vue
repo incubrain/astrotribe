@@ -83,92 +83,89 @@ const { data: authorData } = await useAsyncData(`author-${props.article.id}`, as
     interactive
     glow-color="primary"
   >
-    <!-- Card header with image and tags -->
-    <div class="relative h-48 w-full overflow-hidden rounded-t-xl">
-      <BlogMedia
-        v-if="article.cover?.url"
-        :url="article.cover.url"
-        :alt="article.cover.alternativeText || article.title"
-        :width="400"
-        :height="250"
-        class="h-full w-full object-cover"
-      />
-      <div
-        v-else
-        class="h-full w-full bg-primary-950"
-      />
-      <div class="absolute bottom-0 left-0 w-full p-2">
-        <BlogCatTag
-          v-if="displayTags.length > 0 || categoryData"
-          :tags="displayTags"
-          :category="categoryData"
+    <div class="h-full flex flex-col">
+      <div class="h-48 w-full overflow-hidden rounded-t-xl relative z-0">
+        <BlogMedia
+          v-if="article.cover?.url"
+          :url="article.cover.url"
+          :alt="article.cover.alternativeText || article.title"
+          :width="400"
+          :height="250"
+          class="h-full w-full object-cover"
         />
-      </div>
-    </div>
-
-    <!-- Card content -->
-    <div class="flex flex-col gap-4 p-4 justify-between grow">
-      <!-- Title -->
-      <NuxtLink :to="getArticleUrl(article)">
-        <h3 class="text-xl font-bold hover:text-primary-400 transition">
-          {{ article.title }}
-        </h3>
-      </NuxtLink>
-
-      <!-- Metadata -->
-      <div class="flex flex-row justify-between items-center text-sm text-gray-400">
-        <div class="flex items-center gap-1">
-          <Icon
-            name="i-lucide-calendar"
-            class="w-4 h-4"
-          />
-          <span>{{ formattedDate }}</span>
-        </div>
-        <div class="flex items-center gap-1">
-          <Icon
-            name="i-lucide-clock"
-            class="w-4 h-4"
-          />
-          <span>{{ readingTime }}</span>
-        </div>
-      </div>
-
-      <!-- Author -->
-      <div class="flex flex-col gap-2">
         <div
-          v-if="authorData"
-          class="flex items-center gap-2 p-4"
-        >
-          <IBImage
-            v-if="authorData.avatar?.url"
-            :img="{
-              src: authorData.avatar.url,
-              alt: `${authorData.name} avatar`,
-              width: '32',
-              height: '32',
-            }"
-            class="rounded-full border border-primary-800"
+          v-else
+          class="h-full w-full bg-primary-950"
+        />
+        <div class="absolute bottom-0 left-0 w-full p-2">
+          <BlogCatTag
+            v-if="displayTags.length > 0 || categoryData"
+            :tags="displayTags"
+            :category="categoryData"
           />
-          <span class="text-sm">{{ authorData.name }}</span>
         </div>
-        <p class="text-sm text-gray-300 line-clamp-3">
-          {{ article.description }}
-        </p>
       </div>
 
-      <!-- Description -->
-
-      <!-- Read more button -->
-      <div class="mt-auto pt-2">
+      <div class="relative flex flex-col gap-4 p-4 flex-auto z-20">
         <NuxtLink :to="getArticleUrl(article)">
-          <PrimeButton
-            outlined
-            size="small"
-            class="w-full"
-          >
-            Read More
-          </PrimeButton>
+          <h3 class="text-xl font-bold hover:text-primary-400 transition">
+            {{ article.title }}
+          </h3>
         </NuxtLink>
+
+        <!-- Metadata -->
+        <div class="flex flex-row justify-between items-center text-sm text-gray-400">
+          <div class="flex items-center gap-1">
+            <Icon
+              name="i-lucide-calendar"
+              class="w-4 h-4"
+            />
+            <span>{{ formattedDate }}</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <Icon
+              name="i-lucide-clock"
+              class="w-4 h-4"
+            />
+            <span>{{ readingTime }}</span>
+          </div>
+        </div>
+
+        <!-- Author -->
+        <div class="flex flex-col gap-2">
+          <div
+            v-if="authorData"
+            class="flex items-center gap-2 p-4"
+          >
+            <IBImage
+              v-if="authorData.avatar?.url"
+              :img="{
+                src: authorData.avatar.url,
+                alt: `${authorData.name} avatar`,
+                width: '32',
+                height: '32',
+              }"
+              class="rounded-full border border-primary-800"
+            />
+            <span class="text-sm">{{ authorData.name }}</span>
+          </div>
+          <p class="text-sm text-gray-300 line-clamp-3">
+            {{ article.description }}
+          </p>
+        </div>
+
+        <!-- Read more button -->
+        <div class="mt-auto pt-2">
+          <NuxtLink :to="getArticleUrl(article)">
+            <PrimeButton
+              outlined
+              size="small"
+              class="w-full"
+            >
+              Read More
+            </PrimeButton>
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </BlogGlass>

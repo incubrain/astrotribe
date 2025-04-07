@@ -8,12 +8,13 @@ const props = defineProps({
 
 const { data: surroundings } = await useAsyncData(`surroundings-${props.article.path}`, () =>
   queryCollectionItemSurroundings('blog', props.article.path, {
-    fields: ['title', 'description', 'path', 'cover'],
+    fields: ['title', 'description', 'path', 'image'],
   }),
 )
 
 const prevArticle = computed(() => surroundings.value?.[0] || null)
 const nextArticle = computed(() => surroundings.value?.[1] || null)
+
 </script>
 
 <template>

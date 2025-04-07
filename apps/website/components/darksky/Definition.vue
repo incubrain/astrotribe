@@ -72,42 +72,14 @@ const defaultDescription = [
           >
             <div class="relative w-full aspect-video overflow-hidden rounded-lg">
               <!-- Before/After Comparison -->
-              <div class="relative w-full h-full">
-                <!-- Good Sky - Natural Night -->
-                <div class="absolute inset-0">
-                  <IBImage
-                    :img="{
-                      src: '/images/darksky/natural-night-sky.jpg',
-                      alt: 'Natural night sky with stars',
-                      width: 600,
-                      height: 400,
-                    }"
-                    class="object-cover w-full h-full"
-                  />
-                </div>
-
-                <!-- Bad Sky - Light Polluted -->
-                <div
-                  class="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-primary-950/80"
-                ></div>
-                <div class="absolute right-0 inset-y-0 w-1/2">
-                  <IBImage
-                    :img="{
-                      src: '/images/darksky/light-polluted-sky.jpg',
-                      alt: 'Light polluted night sky',
-                      width: 600,
-                      height: 400,
-                    }"
-                    class="object-cover w-full h-full"
-                  />
-                </div>
-
-                <!-- Slider Divider Line -->
-                <div
-                  class="absolute inset-y-0 right-1/2 w-1 bg-primary-400 shadow-lg shadow-primary-400/50 z-10"
-                ></div>
-
-                <!-- Labels -->
+              <div class="relative w-full aspect-video overflow-hidden rounded-lg bg-black">
+                <IBImage
+                  :img="{
+                    src: '/darksky/dark-sky-comparrison.jpg',
+                    alt: 'Natural night sky with stars',
+                  }"
+                  class="w-full h-full object-cover"
+                />
                 <div
                   class="absolute bottom-4 left-4 bg-black/60 px-3 py-1 rounded text-white text-sm font-medium"
                 >
@@ -127,23 +99,6 @@ const defaultDescription = [
           </LandingGlass>
         </div>
       </div>
-    </div>
-
-    <!-- Background Stars -->
-    <div class="absolute inset-0 overflow-hidden z-0 opacity-20 pointer-events-none">
-      <div
-        v-for="i in 30"
-        :key="i"
-        class="absolute rounded-full bg-white"
-        :style="{
-          width: `${Math.random() * 2 + 1}px`,
-          height: `${Math.random() * 2 + 1}px`,
-          top: `${Math.random() * 100}%`,
-          left: `${Math.random() * 100}%`,
-          opacity: Math.random() * 0.8 + 0.2,
-          animation: `twinkle ${Math.random() * 4 + 2}s ease-in-out infinite`,
-        }"
-      ></div>
     </div>
   </section>
 </template>

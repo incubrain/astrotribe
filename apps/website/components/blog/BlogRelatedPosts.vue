@@ -59,7 +59,7 @@ const { data: relatedPosts } = await useAsyncData(`related-${props.article.id}`,
     <h2 class="text-2xl font-bold py-6 text-center">You Might Also Like</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <BlogCard
+      <BlogCardGlass
         v-for="post in relatedPosts"
         :key="post.id"
         :article="post"

@@ -8,7 +8,7 @@ const stats = [
     dataValue: 30,
     label: 'Years Combined Experience',
     icon: 'mdi:telescope',
-    description: 'Our team brings decades of astronomy expertise',
+    description: 'Our team brings decades of astronomy and business expertise',
   },
   {
     value: '50+',
@@ -18,18 +18,18 @@ const stats = [
     description: 'Serving astronomy enthusiasts worldwide',
   },
   {
-    value: '10K+',
-    dataValue: 10000,
+    value: '7K+',
+    dataValue: 7000,
     label: 'Students Educated',
     icon: 'mdi:human-capacity-increase',
     description: 'Inspiring the next generation of astronomers',
   },
   {
     value: '25+',
-    dataValue: 25,
-    label: 'Major Events Organized',
+    dataValue: 10000,
+    label: 'Minds Inspired',
     icon: 'mdi:star-shooting',
-    description: 'Creating memorable astronomy experiences',
+    description: 'We\'ve taken our telescopes all around India and beyond',
   },
 ]
 
@@ -133,7 +133,7 @@ onMounted(() => {
             <div
               class="counter-value text-4xl font-bold text-white mb-2"
               :data-value="stat.dataValue"
-              >0</div
+              >{{ stat.value }}</div
             >
             <div class="stat-label text-primary-300 font-semibold mb-2">{{ stat.label }}</div>
             <div class="stat-description text-sm text-primary-400">{{ stat.description }}</div>

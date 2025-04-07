@@ -74,6 +74,7 @@ export default defineNuxtSchema({
         }),
       },
     }),
+
     authors: group({
       title: 'Author',
       description: 'Author information',
@@ -91,6 +92,7 @@ export default defineNuxtSchema({
         }),
       },
     }),
+
     categories: group({
       title: 'Category',
       description: 'Category information',
@@ -113,6 +115,7 @@ export default defineNuxtSchema({
         }),
       },
     }),
+
     tags: group({
       title: 'Tag',
       description: 'Tag information',

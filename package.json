@@ -137,7 +137,7 @@
     "cosmiconfig": "^9.0.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
-    "embla-carousel-auto-scroll": "^8.3.0",
+    "embla-carousel-auto-scroll": "^8.5.2",
     "embla-carousel-autoplay": "^8.3.0",
     "embla-carousel-vue": "^8.3.0",
     "envalid": "^8.0.0",

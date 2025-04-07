@@ -27,10 +27,12 @@ export default defineContentConfig({
     }),
 
     // Authors collection
+    // Authors collection
     authors: defineCollection({
       type: 'data',
       source: 'authors/**/*.{yml,json}',
       schema: z.object({
+        id: z.string(), // Explicitly define the ID field
         name: z.string(),
         bio: z.string().optional(),
         avatar: z.string().optional(),
@@ -45,9 +47,10 @@ export default defineContentConfig({
       type: 'data',
       source: 'categories/**/*.{yml,json}',
       schema: z.object({
+        slug: z.string(), // Explicitly define the slug field
         name: z.string(),
         description: z.string().optional(),
-        color: z.string().optional(), // Tailwind color class (without bg- prefix)
+        color: z.string().optional(),
       }),
     }),
 
@@ -56,9 +59,10 @@ export default defineContentConfig({
       type: 'data',
       source: 'tags/**/*.{yml,json}',
       schema: z.object({
+        id: z.string(), // Explicitly define the ID field
         name: z.string(),
         description: z.string().optional(),
-        color: z.string().optional(), // Tailwind color class (without bg- prefix)
+        color: z.string().optional(),
       }),
     }),
   },
