@@ -5,7 +5,7 @@ FROM node:20.19-bookworm AS builder
 ENV NODE_ENV=development
 
 # Enable corepack for PNPM
-RUN corepack enable && corepack prepare pnpm@8.7.6 --activate
+RUN corepack enable && corepack prepare pnpm@9.15.2 --activate
 
 # Set the working directory
 WORKDIR /app
@@ -40,7 +40,7 @@ COPY --from=builder /app/apps/website/.output ./.output
 COPY --from=builder /app/apps/website/package.json ./package.json
 
 # Enable corepack for PNPM (for any runtime dependency installation)
-RUN corepack enable && corepack prepare pnpm@8.7.6 --activate
+RUN corepack enable && corepack prepare pnpm@9.15.2 --activate
 
 # Install only production dependencies if needed
 RUN pnpm install --prod
