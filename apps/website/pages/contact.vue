@@ -1,37 +1,27 @@
 <template>
   <div class="mx-auto w-full">
-    <!-- Page Header Section -->
-    <div class="bg-primary-900 py-12 md:py-16 relative overflow-hidden">
-      <div class="wrapper relative z-10">
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">LET'S TALK</h1>
-        <p class="text-lg text-primary-200"
-          >We'll happily answer any questions you have about AstronEra</p
-        >
-      </div>
-      <!-- Background stars effect -->
-      <div class="absolute inset-0 opacity-20">
-        <div
-          v-for="i in 20"
-          :key="i"
-          class="absolute rounded-full bg-white"
-          :style="{
-            width: `${Math.random() * 2 + 1}px`,
-            height: `${Math.random() * 2 + 1}px`,
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            opacity: Math.random() * 0.8 + 0.2,
-            animation: `twinkle ${Math.random() * 4 + 2}s ease-in-out infinite`,
-          }"
-        >
-        </div>
-      </div>
-    </div>
+    <!-- Hero section with space-themed background -->
+    <IBImageHero
+      :img="{
+        src: '/images/contact/contact-hero.jpg',
+        alt: 'AstronEra contact page hero image showing a telescope pointed at a starry night sky',
+        width: 1920,
+        height: 1080,
+      }"
+      :title="{
+        main: 'LET\'S TALK',
+        subtitle: 'We\'ll happily answer any questions you have about AstronEra',
+        centered: true,
+      }"
+      fit="cover"
+      object-position="object-center"
+    />
 
     <div class="wrapper py-8">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <!-- Contact Form Column -->
-        <div class="lg:col-span-7 space-y-6">
-          <LandingGlass
+        <div class="lg:col-span-5 space-y-6">
+          <IBGlass
             hover-effect="glow"
             glow-color="blue"
             gradient="blue"
@@ -125,10 +115,10 @@
                 </PrimeButton>
               </div>
             </form>
-          </LandingGlass>
+          </IBGlass>
 
           <!-- FAQ Section -->
-          <LandingGlass
+          <IBGlass
             hover-effect="glow"
             glow-color="purple"
             gradient="purple"
@@ -161,13 +151,13 @@
                 >
               </PrimeAccordionTab>
             </PrimeAccordion>
-          </LandingGlass>
+          </IBGlass>
         </div>
 
         <!-- Contact Information Column -->
-        <div class="lg:col-span-5 space-y-6">
+        <div class="lg:col-span-7 space-y-6">
           <!-- Contact Info Card -->
-          <LandingGlass
+          <IBGlass
             hover-effect="glow"
             glow-color="blue"
             gradient="mixed"
@@ -180,7 +170,9 @@
             <div class="space-y-6">
               <!-- Email -->
               <div class="flex items-start">
-                <div class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4">
+                <div
+                  class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4 flex items-center justify-center"
+                >
                   <Icon
                     name="mdi:email"
                     class="text-primary-400"
@@ -201,7 +193,9 @@
 
               <!-- Phone -->
               <div class="flex items-start">
-                <div class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4">
+                <div
+                  class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4 flex items-center justify-center"
+                >
                   <Icon
                     name="mdi:phone"
                     class="text-primary-400"
@@ -224,7 +218,9 @@
 
               <!-- Address -->
               <div class="flex items-start">
-                <div class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4">
+                <div
+                  class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4 flex items-center justify-center"
+                >
                   <Icon
                     name="mdi:map-marker"
                     class="text-primary-400"
@@ -259,7 +255,7 @@
                 <a
                   href="#"
                   target="_blank"
-                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors"
+                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                 >
                   <Icon
                     name="mdi:twitter"
@@ -269,7 +265,7 @@
                 <a
                   href="#"
                   target="_blank"
-                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors"
+                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                 >
                   <Icon
                     name="mdi:linkedin"
@@ -279,7 +275,7 @@
                 <a
                   href="#"
                   target="_blank"
-                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors"
+                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                 >
                   <Icon
                     name="mdi:youtube"
@@ -289,7 +285,7 @@
                 <a
                   href="#"
                   target="_blank"
-                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors"
+                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                 >
                   <Icon
                     name="mdi:facebook"
@@ -299,7 +295,7 @@
                 <a
                   href="#"
                   target="_blank"
-                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors"
+                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                 >
                   <Icon
                     name="mdi:instagram"
@@ -308,10 +304,10 @@
                 </a>
               </div>
             </div>
-          </LandingGlass>
+          </IBGlass>
 
-          <!-- Map Card -->
-          <LandingGlass
+          <!-- Map Card - Now spans full width on this column -->
+          <IBGlass
             hover-effect="glow"
             glow-color="blue"
             gradient="blue"
@@ -350,10 +346,10 @@
                 </a>
               </div>
             </div>
-          </LandingGlass>
+          </IBGlass>
 
           <!-- Schedule a Call Card -->
-          <LandingGlass
+          <IBGlass
             hover-effect="glow"
             glow-color="purple"
             gradient="mixed"
@@ -363,17 +359,14 @@
           >
             <h3 class="text-xl font-semibold text-white mb-3">Need a Personal Consultation?</h3>
             <p class="text-primary-200 mb-4">Schedule a video call with our astronomy experts</p>
-            <PrimeButton
-              severity="secondary"
-              class="bg-primary-600 hover:bg-primary-500"
-            >
+            <PrimeButton severity="secondary">
               <Icon
                 name="mdi:calendar-clock"
                 class="mr-2"
               />
               Book a Call
             </PrimeButton>
-          </LandingGlass>
+          </IBGlass>
         </div>
       </div>
     </div>
@@ -385,14 +378,26 @@
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 
-// 2. Component Options
+// 2. Page/Layout Metadata
+definePageMeta({
+  name: 'Contact',
+})
+
+// 3. Component Options
 defineOptions({
   name: 'ContactPage',
 })
 
-// 3. Page Metadata
-definePageMeta({
-  name: 'Contact',
+// Set page title and metadata
+useHead({
+  title: 'Contact Us - AstronEra',
+  meta: [
+    {
+      name: 'description',
+      content:
+        'Get in touch with the AstronEra team for inquiries about astronomy education, workshops, or collaborations.',
+    },
+  ],
 })
 
 // 7. Reactive Variables
@@ -420,15 +425,13 @@ const submitForm = () => {
   // Simulate API call
   setTimeout(() => {
     isSubmitting.value = false
-    // Here you would normally make an API call to submit the form
 
-    // Display success message
-    // PrimeToast?.add({
-    //   severity: 'success',
-    //   summary: 'Success',
-    //   detail: "Your message has been sent! We'll get back to you soon.",
-    //   life: 5000,
-    // })
+    // Show success message
+    const toast = useNotification()
+    toast.success({
+      summary: 'Message Sent',
+      message: "Your message has been sent! We'll get back to you soon.",
+    })
 
     // Reset form
     formData.value = {

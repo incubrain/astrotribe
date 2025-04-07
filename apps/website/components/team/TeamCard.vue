@@ -51,8 +51,6 @@ const connectionPosition = computed(() => {
 const navigateToProfile = () => {
   navigateTo(`/team/${props.member.name.toLowerCase().replaceAll(' ', '-')}`)
 }
-
-
 </script>
 
 <template>
@@ -147,14 +145,15 @@ const navigateToProfile = () => {
         <div class="member-footer w-full">
           <!-- Social links -->
           <div class="flex justify-center mb-4">
-            <IBSocialBlock
+            <AppSocialBlock
               :socials="member.socials"
+              :has-title="false"
               size="24px"
             />
           </div>
 
           <!-- View Profile button -->
-          <div class="profile-button-container">
+          <!-- <div class="profile-button-container">
             <NuxtLink
               v-slot="{ navigate }"
               :to="`/team/${member.name.toLowerCase().replaceAll(' ', '-')}`"
@@ -171,7 +170,7 @@ const navigateToProfile = () => {
                 />
               </PrimeButton>
             </NuxtLink>
-          </div>
+          </div> -->
         </div>
       </div>
     </IBGlass>

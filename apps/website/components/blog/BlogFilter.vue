@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
-import { CATEGORIES } from '~/types/articles'
-import type { ArticleCategoriesT } from '~/types/articles'
+import { BLOG_CATEGORIES, type ArticleCategoryT } from '#shared/constants'
 
-const selectedCategory = ref<ArticleCategoriesT>(
-  String(useRoute().params.category) as ArticleCategoriesT,
+const selectedCategory = ref<ArticleCategoryT>(
+  String(useRoute().params.category) as ArticleCategoryT,
 )
 const formatCategory = (cat: string) => useChangeCase(cat, 'capitalCase').value
 </script>
@@ -12,7 +11,7 @@ const formatCategory = (cat: string) => useChangeCase(cat, 'capitalCase').value
 <template>
   <div class="flex gap-2">
     <NuxtLink
-      v-for="cat in CATEGORIES"
+      v-for="cat in BLOG_CATEGORIES"
       :key="`astronera-blog-${cat}`"
       :to="`/blog/category/${cat}`"
     >

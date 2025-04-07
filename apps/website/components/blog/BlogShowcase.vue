@@ -1,21 +1,18 @@
 <script setup lang="ts">
 import { ref, computed, watchEffect } from 'vue'
 import type { PropType } from 'vue'
-import type { ArticleCategoriesT, ArticleCardT } from '~/types/articles'
+import type { ArticleCategoryT } from '#shared/constants'
 
 const message = ref('')
 
 const props = defineProps({
-  articleCategory: { type: String as PropType<ArticleCategoriesT>, required: true },
+  articleCategory: { type: String as PropType<ArticleCategoryT>, required: true },
 })
 
-const articlesShowcase = ref<ArticleCardT[]>([])
+const articlesShowcase = ref([])
 const category = computed(() => props.articleCategory)
 const haveArticles = computed(() => articlesShowcase.value.length > 0)
 const cmsURL = String(useRuntimeConfig().public.cmsURL ?? 'http://localhost:1337')
-
-// !todo: update with new blog system
-// const strapi = useStrapi(cmsURL)
 
 // Fetch articles on server and client
 const { data, error, status } = await useAsyncData(`blog-showcase-${category.value}`, async () => {
@@ -33,16 +30,6 @@ const { data, error, status } = await useAsyncData(`blog-showcase-${category.val
   if (category.value !== 'all') {
     params.filters['category'] = { slug: { $eq: category.value } }
   }
-
-  // !todo: update with new blog system
-  // const response = await strapi.find<any>('articles', params)
-
-  // if (response && response.data && response.data.length > 0) {
-  //   return response.data
-  // } else {
-  //   message.value = 'No articles loaded...'
-  //   return []
-  // }
 })
 
 if (error.value) {
@@ -70,7 +57,7 @@ watchEffect(() => {
         v-if="haveArticles"
         class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-8"
       >
-        <BlogCard
+        <BlogCardClass
           v-for="article in articlesShowcase"
           :key="`blog-showcase-${article.id}`"
           :article="article"

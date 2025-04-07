@@ -102,7 +102,7 @@ const { conf } = useAnimation()
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <div class="relative inline-block">
+              <!-- <div class="relative inline-block">
                 <PrimeButton
                   severity="primary"
                   @click="isModalOpen = true"
@@ -110,13 +110,10 @@ const { conf } = useAnimation()
                   <Icon name="mdi:rocket-launch" />
                   <span>Apply Now</span>
                 </PrimeButton>
-              </div>
+              </div> -->
 
               <NuxtLink to="/contact">
-                <PrimeButton
-                  outlined
-                  severity="secondary"
-                >
+                <PrimeButton severity="primary">
                   <Icon name="mdi:email-outline" />
                   <span>Contact Us</span>
                 </PrimeButton>

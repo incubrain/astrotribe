@@ -1,7 +1,7 @@
 // server/api/contact.post.ts
 import { defineEventHandler, readBody } from 'h3'
 import { Resend } from 'resend'
-
+// [nitro 11:45:07 AM]  ERROR  Error: Could not load /Users/mac/Development/astronera/astrotribe/apps/website/shared/constants (imported by server/api/__sitemap__/main.ts): ENOENT: no such file or directory, open '/Users/mac/Development/astronera/astrotribe/apps/website/shared/constants'
 // Define the DTO for form data
 interface ContactFormDTO {
   name: string

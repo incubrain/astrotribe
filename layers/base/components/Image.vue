@@ -40,7 +40,6 @@ function loadFallbackImage(error: Error) {
     :quality="img.quality"
     :loading="img.loading"
     crossorigin="anonymous"
-    :class="{ 'flex shrink-0': !noShrink }"
     @error="loadFallbackImage"
   />
 </template>

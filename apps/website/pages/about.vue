@@ -120,51 +120,51 @@ const about = {
   ],
   timeline: [
     {
-      date: 'December 2011',
+      date: { month: 'December', year: 2011 },
       title: 'First Stargazing Event',
       body: 'Shweta held a public event for a Total Lunar Eclipse, beginning her science communication journey.',
       icon: 'i-lucide-moon',
     },
     {
-      date: 'November 2013',
+      date: { month: 'November', year: 2013 },
       title: 'Astron-STEM Trust',
       body: 'Our non-profit under STEM Trust was registered. Shweta, its founder, became CEO.',
       icon: 'i-lucide-award',
     },
     {
-      date: 'June 2018',
-      title: 'DOST, GOI Funded',
-      body: 'Guided by Dr. Mathirajan and Prof. Srinivas, we received DOST, GOI grant, launching our online presence.',
+      date: { month: 'June', year: 2018 },
+      title: 'DST, GOI Funded',
+      body: 'Guided by Dr. Mathirajan and Prof. Srinivas, we received DST, GOI grant, launching our online presence.',
       icon: 'i-lucide-rocket',
     },
     {
-      date: 'March 2019',
+      date: { month: 'March', year: 2019 },
       title: 'IIMB Incubated',
       body: 'Shweta, among top 100 women entrepreneurs in India, helped shape AstronEra, registered as AEI Pvt. Ltd.',
       icon: 'i-lucide-graduation-cap',
     },
     {
-      date: 'November 2019',
+      date: { month: 'November', year: 2019 },
       title: 'AstronEra Founded',
       body: 'AstronEra, the first astronomy elearning platform, was launched at Pune Chandrashekhar Auditorium.',
       icon: 'i-lucide-star',
     },
     {
-      date: 'March 2020',
+      date: { month: 'March', year: 2020 },
       title: 'IAU Award',
       body: 'Our efforts to popularize astronomy among children recognized by the International Astronomical Union.',
       icon: 'i-lucide-medal',
     },
     {
-      date: 'January 2022',
+      date: { month: 'January', year: 2022 },
       title: 'OAD, IAU Funded',
       body: 'AstronEra received an IAU OAD grant to train tribal students as AstroGuides through AstroTribe project.',
       icon: 'i-lucide-landmark',
     },
     {
-      date: 'March 2023',
+      date: { month: 'March', year: 2023 },
       title: 'Astrotourism',
-      body: "DOST, GOI granted funds for AstronEra's Astrotourism and light pollution awareness in Himachal Pradesh and Leh Ladakh.",
+      body: "DST, GOI granted funds for AstronEra's Astrotourism and light pollution awareness in Himachal Pradesh and Leh Ladakh.",
       icon: 'i-lucide-map',
     },
   ],
@@ -194,9 +194,11 @@ onMounted(() => {
     />
 
     <!-- Comic Strip Scroller -->
-    <div class="wrapper mx-auto py-16">
-      <h2 class="mb-4 text-3xl font-bold">Our Story in Pictures</h2>
-      <p class="mb-8 text-lg">Follow our journey through these comic strips</p>
+    <div class="mx-auto py-16">
+      <div class="wrapper">
+        <h2 class="mb-4 text-3xl font-bold">Our Story in Pictures</h2>
+        <p class="mb-8 text-lg">Follow our journey through these comic strips</p>
+      </div>
 
       <AboutComic
         :comics="comicStrips"
@@ -237,7 +239,7 @@ onMounted(() => {
     </div>
 
     <!-- Main Content Sections -->
-    <div class="wrapper mx-auto my-16 grid grid-cols-1 gap-16 lg:grid-cols-3 lg:gap-8">
+    <div class="wrapper mx-auto my-16 grid grid-cols-1 gap-16 lg:grid-cols-4 lg:gap-8">
       <!-- Left Column: About Content -->
       <div
         v-motion
@@ -275,7 +277,7 @@ onMounted(() => {
       <!-- Right Column: Timeline -->
       <div
         v-motion
-        class="h-auto"
+        class="h-auto lg:col-span-2"
         :initial="conf.fadeUp.initial"
         :enter="{ ...conf.fadeUp.enter, transition: { delay: 0.4 } }"
       >
@@ -287,41 +289,6 @@ onMounted(() => {
           <AboutTimeline :timeline="about.timeline" />
         </IBGlass>
       </div>
-    </div>
-
-    <!-- Stats Section -->
-    <div class="wrapper mx-auto my-16">
-      <IBGlass
-        gradient="mixed"
-        intensity="medium"
-      >
-        <div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3 md:gap-4">
-          <div class="text-center">
-            <h3
-              class="text-5xl font-bold text-primary-400"
-              data-value="15"
-              >0</h3
-            >
-            <p class="mt-2">Courses Available</p>
-          </div>
-          <div class="text-center">
-            <h3
-              class="text-5xl font-bold text-primary-400"
-              data-value="1000"
-              >0</h3
-            >
-            <p class="mt-2">Students Worldwide</p>
-          </div>
-          <div class="text-center">
-            <h3
-              class="text-5xl font-bold text-primary-400"
-              data-value="8"
-              >0</h3
-            >
-            <p class="mt-2">Countries Reached</p>
-          </div>
-        </div>
-      </IBGlass>
     </div>
   </div>
 </template>

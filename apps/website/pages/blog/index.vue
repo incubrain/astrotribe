@@ -16,7 +16,8 @@ const { data: latestPosts, pending: loadingLatest } = await useAsyncData('latest
 // SEO
 useSeoMeta({
   title: 'AstronEra Blog',
-  description: 'Discover articles on space exploration, astronomy, research, and sustainable development',
+  description:
+    'Discover articles on space exploration, astronomy, research, and sustainable development',
   ogTitle: 'AstronEra Blog | Space Exploration & Astronomy',
   ogDescription:
     'Read the latest articles about space exploration, astronomy, research, and sustainable development.',
@@ -55,7 +56,7 @@ useSeoMeta({
           }"
         />
         <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <BlogCard
+          <BlogCardGlass
             v-for="article in featuredPosts"
             :key="`blog-featured-${article.id}`"
             :article="article"
@@ -75,7 +76,7 @@ useSeoMeta({
           v-if="latestPosts && latestPosts.length"
           class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-8"
         >
-          <BlogCard
+          <BlogCardGlass
             v-for="article in latestPosts"
             :key="`blog-latest-${article.id}`"
             :article="article"

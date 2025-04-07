@@ -71,7 +71,7 @@ async function main() {
   const migrationFilePath = process.argv[2]
 
   if (!migrationFilePath) {
-    console.error('Usage: pnpx ts-node fix-migration.ts <migration_file.sql>')
+    console.error('Usage: pnpx tsx fix-migration.ts <migration_file.sql>')
     process.exit(1)
   }
 
