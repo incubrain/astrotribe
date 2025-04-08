@@ -342,9 +342,37 @@ const sharePlatforms: SharePlatform[] = [
 const shareTags = [
   '#DarkSkyPreservation',
   '#FightLightPollution',
-  '#AstronEra',
   '#SaveTheNightSky',
   '#StargazingForAll',
+  '#DarkSkyIndia',
+  '#BringBackTheStars',
+  '#RightToNight',
+  '#UniteForTheNight',
+  '#ProtectTheNight',
+  '#DimTheLights',
+  '#SwitchOffForStars',
+  '#LostInLight',
+
+  // 🌠 Community & Action
+  '#TaraForAll',
+  '#UniteForTara',
+  '#StandWithTara',
+  '#ShineWithTara',
+  '#AwaazForTara',
+  '#DesiSkyDefenders',
+  '#NightSkySatyagraha',
+  '#BharatKeTara',
+
+  // 🇮🇳 India-centric & Cultural
+  '#IndiaUnderStars',
+  '#SkyHeritageIndia',
+  '#TaareAurTara',
+
+  // 💡 Brand + Movement
+  '#AstronEra',
+  '#AstronEraForTara',
+  '#TeamTara',
+  '#FollowTara',
 ]
 
 // Practical steps for fighting light pollution

@@ -4,7 +4,7 @@ import { ref, computed } from 'vue'
 // Define the profile types and active tab
 const profileTypes = [
   { id: 'space-tech', label: 'Space-Tech Companies' },
-  { id: 'stargazing', label: 'Stargazing Clubs' },
+  { id: 'institution', label: 'Institutions' },
   { id: 'events', label: 'Events/Workshops' },
   { id: 'researchers', label: 'Researchers' },
 ]
@@ -34,7 +34,7 @@ const profilePackages = {
       title: 'Standard Visibility',
       price: '₹10,000',
       description:
-        'Perfect for space technology startups looking to reach astronomy enthusiasts and early adopters.',
+        'Perfect for space technology startups looking to reach space, astronomy enthusiasts, and early adopters.',
       features: [
         {
           icon: 'i-lucide-users',
@@ -298,13 +298,6 @@ const scrollToContact = () => {
       subtitle="Let's help each other grow!"
     />
 
-    <div class="max-w-4xl mx-auto mt-8 mb-12 text-center">
-      <p class="text-lg">
-        Collaborate with AstronEra to reach a highly engaged, space-loving community. We don't limit
-        your promotion by time - we guarantee results, no matter how long it takes.
-      </p>
-    </div>
-
     <!-- Profile selection tabs -->
     <div class="flex flex-wrap justify-center gap-4 mb-12">
       <PrimeButton
@@ -374,25 +367,6 @@ const scrollToContact = () => {
           </PrimeButton>
         </div>
       </IBGlass>
-    </div>
-
-    <div class="text-center mt-12">
-      <p class="text-lg mb-4"
-        >Let's collaborate and make space for your brand in the minds of the right audience!</p
-      >
-      <p class="text-primary-400 mb-2"
-        >We guarantee the impressions - no matter how long it takes.</p
-      >
-      <PrimeButton
-        class="bg-primary-600 hover:bg-primary-700 px-6 py-3"
-        @click="scrollToContact"
-      >
-        Advertise With Us
-        <Icon
-          name="i-lucide-rocket"
-          class="ml-2"
-        />
-      </PrimeButton>
     </div>
   </div>
 </template>

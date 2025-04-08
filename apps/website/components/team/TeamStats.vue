@@ -11,25 +11,18 @@ const stats = [
     description: 'Our team brings decades of astronomy and business expertise',
   },
   {
-    value: '50+',
-    dataValue: 50,
+    value: '120+',
+    dataValue: 120,
     label: 'Countries Reached',
     icon: 'mdi:globe-model',
     description: 'Serving astronomy enthusiasts worldwide',
-  },
-  {
-    value: '7K+',
-    dataValue: 7000,
-    label: 'Students Educated',
-    icon: 'mdi:human-capacity-increase',
-    description: 'Inspiring the next generation of astronomers',
   },
   {
     value: '25+',
     dataValue: 10000,
     label: 'Minds Inspired',
     icon: 'mdi:star-shooting',
-    description: 'We\'ve taken our telescopes all around India and beyond',
+    description: "We've taken our telescopes all around India and beyond",
   },
 ]
 
@@ -100,11 +93,11 @@ onMounted(() => {
       >
         <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Our Cosmic Impact</h2>
         <p class="text-xl text-primary-200 max-w-2xl mx-auto">
-          Together, our team is making astronomy education accessible worldwide
+          Together, our team is making astronomy accessible worldwide
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div
           v-for="(stat, index) in stats"
           :key="index"

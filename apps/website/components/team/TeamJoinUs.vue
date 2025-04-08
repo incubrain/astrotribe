@@ -97,7 +97,7 @@ const { conf } = useAnimation()
           <div class="md:w-2/3 text-center md:text-left">
             <h2 class="text-2xl md:text-3xl font-bold mb-4 text-white">Join Our Celestial Team</h2>
             <p class="text-primary-200 text-lg mb-6">
-              Are you passionate about astronomy, education, or technology? Become part of our
+              Are you passionate about astronomy, space-tech, and technology? Become part of our
               cosmic journey and help us bring the wonders of the universe to people worldwide.
             </p>
 

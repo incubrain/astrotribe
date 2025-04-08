@@ -22,7 +22,7 @@ const isDialogVisible = ref(false)
 // Customer types
 const customerTypes = [
   { name: 'Space-Tech Company', value: 'space-tech' },
-  { name: 'Stargazing Club', value: 'stargazing' },
+  { name: 'Institution', value: 'institution' },
   { name: 'Event Organizer', value: 'events' },
   { name: 'Researcher', value: 'researcher' },
   { name: 'Other', value: 'other' },
@@ -247,7 +247,7 @@ const openDialog = () => {
           >
             {{
               errorMessage ||
-              'There was an error submitting your request. Please try again or contact us directly at info@astronera.org.'
+              'There was an error submitting your request. Please try again or contact us directly at connectus@astronera.org.'
             }}
           </div>
 

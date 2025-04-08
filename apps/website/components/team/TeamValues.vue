@@ -30,6 +30,20 @@ const values = [
     icon: 'mdi:sprout',
     illustration: '/images/illustrations/sustainable-innovation.svg',
   },
+  {
+    title: 'Scientific Temper',
+    description:
+      'Astronomy helps dispel superstition by encouraging inquiry, observation, and a rational understanding of the universe.',
+    icon: 'mdi:head-lightbulb',
+    illustration: '/images/illustrations/scientific-temper.svg',
+  },
+  {
+    title: 'Constitutional Duty',
+    description:
+      'Under Article 51A(h), it is every Indian citizen’s duty to develop a scientific temper, humanism, and the spirit of inquiry—values deeply rooted in the pursuit of astronomy.',
+    icon: 'mdi:scale-balance',
+    illustration: '/images/illustrations/constitutional-duty.svg',
+  },
 ]
 
 // Active value for mobile view

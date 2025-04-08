@@ -92,7 +92,7 @@ const defaultDescription = [
                 </div>
               </div>
             </div>
-            <div class="p-4 text-sm text-gray-300 text-center">
+            <div class="p-4 text-gray-300">
               Over 80% of the world's population lives under light-polluted skies, limiting their
               view of stars and disconnecting them from the natural night environment.
             </div>

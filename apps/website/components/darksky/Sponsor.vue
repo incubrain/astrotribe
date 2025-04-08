@@ -239,7 +239,7 @@ const { conf } = useAnimation()
               <div class="md:w-1/3 mb-8 md:mb-0">
                 <h3 class="text-2xl font-bold text-white mb-4">Become a Sponsor</h3>
                 <p class="text-gray-300 mb-6">
-                  Join our mission to preserve dark skies and promote astronomy education worldwide.
+                  Join our mission to preserve dark skies and promote astronomy worldwide.
                   Your support makes a direct impact on our conservation efforts.
                 </p>
 

@@ -22,7 +22,7 @@ defineProps<{
         intensity="low"
         interactive
       >
-        <h3 class="text-2xl font-bold mb-4 text-white">Astronomy Education For All</h3>
+        <h3 class="text-2xl font-bold mb-4 text-white">Conserving the night sky</h3>
         <p class="text-base mb-6">{{ astronomyEducation }}</p>
 
         <div class="flex justify-end">
@@ -48,7 +48,7 @@ defineProps<{
         intensity="low"
         interactive
       >
-        <h3 class="text-2xl font-bold mb-4 text-white">Dark Sky Preservation & Sustainability</h3>
+        <h3 class="text-2xl font-bold mb-4 text-white">Reducing light pollution</h3>
         <p class="text-base mb-6">{{ darkSkyPreservation }}</p>
 
         <div class="flex justify-end">
