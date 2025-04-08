@@ -25,8 +25,8 @@ const { conf } = useAnimation()
 // Generate a quote for each team member based on their role
 const memberQuote = computed(() => {
   const quotes = {
-    'CEO': "The universe is not just something to observe; it's something to share.",
-    'CTO': 'Technology is our telescope to bringing astronomy closer to everyone.',
+    'CEO': 'Dark skies and bright minds go hand in hand, together we can preserve both.',
+    'CTO': 'Exploration fuels discovery; discovery fuels innovation.',
     'Operations Manager': 'In the vastness of space, teamwork is our guiding star.',
   }
 

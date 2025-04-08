@@ -21,14 +21,14 @@ const customerProfiles: CustomerProfile[] = [
     ],
   },
   {
-    id: 'stargazing',
-    title: 'Stargazing Clubs',
-    icon: 'i-lucide-telescope',
+    id: 'institutions',
+    title: 'Institutions',
+    icon: 'i-lucide-building',
     benefits: [
-      'Grow your membership base effectively',
-      'Promote upcoming stargazing sessions',
-      'Connect with astronomy equipment suppliers',
-      'Network with other astronomy organizations',
+      'Enhance astronomy and STEM curriculum',
+      'Collaborate on educational initiatives and research',
+      'Host expert-led sessions and skywatching nights',
+      'Access teaching resources and outreach tools',
     ],
   },
   {
@@ -60,8 +60,8 @@ const customerProfiles: CustomerProfile[] = [
   <div class="bg-primary-950 py-20">
     <div class="wrapper">
       <LandingTitle
-        title="We Want You"
-        subtitle="Perfect for these organizations and businesses"
+        title="Let's Grow Together"
+        subtitle="Are we a perfect match?"
       />
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">

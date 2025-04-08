@@ -61,15 +61,6 @@ const { isMobile } = useNavigation()
       <div class="hero-content flex items-center justify-center gap-6">
         <IBImage
           :img="{
-            width: '160px',
-            height: '160px',
-            src: 'conference/conference-logo.png',
-            alt: 'Conference logo',
-          }"
-          class="overflow-hidden rounded-full shadow-lg border-2 border-white/20"
-        />
-        <IBImage
-          :img="{
             src: 'images/trusted/dst.png',
           }"
           class="mx-auto h-16 lg:h-20"

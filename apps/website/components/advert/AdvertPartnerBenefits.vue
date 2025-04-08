@@ -28,7 +28,7 @@ const benefits: BenefitItem[] = [
     icon: 'i-lucide-map-pin',
     title: 'Strong Indian Presence',
     description:
-      'Access our established network across major Indian cities including Pune, Mumbai, Bangalore, and Delhi with growing international reach.',
+      'Access our established network across major Indian states, including Marharashtra and Ladakh with growing international reach.',
   },
   {
     id: 'growth-partnership',

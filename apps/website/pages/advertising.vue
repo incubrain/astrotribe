@@ -11,7 +11,7 @@ useHead({
     {
       name: 'description',
       content:
-        'Promote your space-tech company, stargazing club, event, or research to our engaged community of astronomy enthusiasts across India and beyond.',
+        'Promote your space-tech company, institutions, event, or research to our engaged community of astronomy enthusiasts across India and beyond.',
     },
   ],
 })
@@ -47,7 +47,7 @@ useHead({
 
       <div class="mt-12 text-center text-primary-300">
         <p>You can also reach us directly at:</p>
-        <p class="text-primary-400 mt-2 text-lg">info@astronera.org</p>
+        <p class="text-primary-400 mt-2 text-lg">connectus@astronera.org</p>
       </div>
     </div>
   </div>

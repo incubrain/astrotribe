@@ -129,26 +129,12 @@
             <h2 class="text-2xl font-bold mb-6 text-white">Frequently Asked Questions</h2>
 
             <PrimeAccordion class="faq-accordion">
-              <PrimeAccordionTab header="What services does AstronEra offer?">
-                <p
-                  >AstronEra offers astronomy education, dark sky conservation initiatives, and
-                  specialized astro-tourism experiences. We also organize conferences, workshops,
-                  and training programs for students and professionals.</p
-                >
-              </PrimeAccordionTab>
-
-              <PrimeAccordionTab header="How can I join one of your workshops?">
-                <p
-                  >You can register for our workshops through the Events section of our website.
-                  Upcoming workshops are listed with registration details and requirements.</p
-                >
-              </PrimeAccordionTab>
-
-              <PrimeAccordionTab header="Do you offer telescope training?">
-                <p
-                  >Yes, we regularly conduct telescope handling and stargazing workshops. Check our
-                  Events page for upcoming telescope training sessions.</p
-                >
+              <PrimeAccordionTab
+                v-for="faq in faqs"
+                :key="faq.header"
+                :header="faq.header"
+              >
+                <p>{{ faq.content }}</p>
               </PrimeAccordionTab>
             </PrimeAccordion>
           </IBGlass>
@@ -347,29 +333,37 @@
               </div>
             </div>
           </IBGlass>
-
-          <!-- Schedule a Call Card -->
-          <IBGlass
-            hover-effect="glow"
-            glow-color="purple"
-            gradient="mixed"
-            intensity="low"
-            interactive
-            class="p-6 text-center"
-          >
-            <h3 class="text-xl font-semibold text-white mb-3">Need a Personal Consultation?</h3>
-            <p class="text-primary-200 mb-4">Schedule a video call with our astronomy experts</p>
-            <PrimeButton severity="secondary">
-              <Icon
-                name="mdi:calendar-clock"
-                class="mr-2"
-              />
-              Book a Call
-            </PrimeButton>
-          </IBGlass>
         </div>
       </div>
     </div>
+
+    <!-- Full-Width Call to Action Section -->
+    <section class="w-full px-4 sm:px-8 lg:px-16 my-12">
+      <IBGlass
+        hover-effect="glow"
+        glow-color="purple"
+        gradient="mixed"
+        intensity="medium"
+        interactive
+        class="w-full rounded-xl py-10 px-6 sm:px-10 text-center"
+      >
+        <h3 class="text-2xl sm:text-3xl font-bold text-white mb-4">
+          Need a Personal Consultation?
+        </h3>
+        <p class="text-primary-200 mb-6 text-base sm:text-lg">
+          Schedule a 1:1 video session with our astronomy experts to get tailored guidance on your
+          journey.
+        </p>
+        <PrimeButton
+          severity="secondary"
+          size="large"
+          class="inline-flex items-center gap-2"
+        >
+          <Icon name="mdi:calendar-clock" />
+          Book a Call
+        </PrimeButton>
+      </IBGlass>
+    </section>
   </div>
 </template>
 
@@ -395,7 +389,7 @@ useHead({
     {
       name: 'description',
       content:
-        'Get in touch with the AstronEra team for inquiries about astronomy education, workshops, or collaborations.',
+        'Get in touch with the AstronEra team for inquiries about astronomy outreach, workshops, or collaborations.',
     },
   ],
 })
@@ -417,6 +411,34 @@ const inquiryOptions = ref([
   { label: 'Press/Media', value: 'media' },
   { label: 'Feedback', value: 'feedback' },
 ])
+
+const faqs = [
+  {
+    header: 'What services does AstronEra offer?',
+    content:
+      'AstronEra offers astronomy outreach, dark sky conservation initiatives, and specialized astro-tourism experiences. We also organize conferences, workshops, and training programs for students and professionals.',
+  },
+  {
+    header: 'How can I join one of your workshops?',
+    content:
+      'You can register for our workshops through the Events section of our website. Upcoming workshops are listed with registration details and requirements.',
+  },
+  {
+    header: 'Do you offer telescope training?',
+    content:
+      'Yes, we regularly conduct telescope handling and stargazing workshops. Check our Events page for upcoming telescope training sessions.',
+  },
+  {
+    header: 'Do you offer career or educational guidance?',
+    content:
+      'Yes, we offer personalized career and educational consulting services in the fields of astronomy, space science, and related technologies. Book a one-on-one consulting call with our experts through the “Consult” section of our website.',
+  },
+  {
+    header: 'Do you host stargazing events?',
+    content:
+      'Yes, we specialize in hosting curated stargazing events tailored to schools, corporates, travel groups, and private individuals. Our events combine expert guidance, premium equipment, and awe-inspiring sky experiences.',
+  },
+]
 
 // 11. Methods
 const submitForm = () => {
