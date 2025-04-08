@@ -21,6 +21,7 @@
     "prisma:gen": "pnpx prisma generate --schema libs/db/src/prisma/schema.prisma",
     "debug": "./scripts/debug-build.sh",
     "install:all": "pnpm install --workspaces",
+    "page-repomix": "pnpx tsx ./scripts/bundler/bin/exec.ts",
     "mig:fix": "pnpx tsx scripts/db/migrate/3.fix-migration.ts",
     "gen:api": "pnpx tsx scripts/api/create-api",
     "dev:cron": "turbo run dev --filter=@astronera/cron-jobs",
