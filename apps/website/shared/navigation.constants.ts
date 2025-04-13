@@ -193,6 +193,28 @@ export const PAGES: PageInfo[] = [
     parentKey: 'blog',
     lastModified: new Date().toISOString(),
   },
+  {
+    key: 'blog-research',
+    title: 'Research Articles',
+    description: 'Articles on research in astronomy and space science',
+    path: '/blog/category/research',
+    sitemap: 'blog',
+    priority: 0.8,
+    icon: 'i-mdi-book-open-outline',
+    parentKey: 'blog',
+    lastModified: new Date().toISOString(),
+  },
+  {
+    key: 'blog-organisations',
+    title: 'Organisations Articles',
+    description: 'Articles on organisations in space science',
+    path: '/blog/category/organisations',
+    sitemap: 'blog',
+    priority: 0.8,
+    icon: 'i-mdi-account-multiple-outline',
+    parentKey: 'blog',
+    lastModified: new Date().toISOString(),
+  },
 
   // Policy pages
   {

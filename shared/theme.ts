@@ -2,6 +2,7 @@ import { definePreset } from '@primevue/themes'
 import Aura from '@primevue/themes/aura'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import type { Config } from 'tailwindcss'
+import colors from 'tailwindcss/colors'
 import tailwindConfig from './tailwind.config.base'
 
 // Fully resolve the Tailwind config
@@ -71,18 +72,18 @@ const AstroPreset = definePreset(Aura, {
 
         // Surface colors for backgrounds, panels, cards
         surface: {
-          0: '#09090b', // Cosmic Black for main background
-          50: '#e2e2e2', // Celestial Light for text
-          100: '#18181b', // Nebula Dark for card backgrounds
-          200: '#1e1e2f', // Very dark blue-purple for panels
-          300: '#252542', // Dark blue-purple for inputs
-          400: '#52525b', // Cosmic Dust for secondary text
-          500: '#71717a', // Muted text
-          600: '#a1a1aa', // High contrast text
-          700: '#27272a', // Star Field for borders
-          800: '#4338ca', // Astral Highlight for focus
-          900: '#3730a3', // Deeper highlight
-          950: '#d0d0ea', // Nearly white with purple tint
+          0: colors.slate[950], // Base background
+          50: colors.slate[100], // Light text
+          100: colors.slate[900], // Card background
+          200: colors.slate[800], // Elevated sections
+          300: colors.blue[900], // Inputs / borders
+          400: colors.indigo[800], // Highlights / outlines
+          500: colors.slate[500], // Secondary text
+          600: colors.slate[400], // Tertiary text / hint text
+          700: colors.zinc[600], // Muted elements
+          800: colors.violet[500], // Subtle accents (optional)
+          900: colors.sky[400], // Hover / link
+          950: colors.slate[50], // Very light text (edge cases)
         },
 
         // Highlight for selected items, focus
@@ -164,16 +165,18 @@ const AstroPreset = definePreset(Aura, {
       },
     },
 
-    // Popover styling for dropdowns and tooltips
+    // Popover styling
     popover: {
       colorScheme: {
         dark: {
           root: {
             background: '{surface.100}',
-            color: '{surface.900}',
-            borderColor: '{surface.300}',
+            color: '{surface.50}',
+            borderColor: '{surface.700}',
             borderRadius: '0.5rem',
             shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.4)',
+            gutter: '10px',
+            arrowOffset: '1.25rem',
           },
           content: {
             padding: '0.75rem',
@@ -329,8 +332,8 @@ const AstroPreset = definePreset(Aura, {
       colorScheme: {
         dark: {
           root: {
-            background: '{surface.900}', // Dark background
-            borderColor: '{surface.300}',
+            background: '{surface.100}', // Dark background matching your theme
+            borderColor: '{surface.700}',
             color: '{surface.50}', // Light text
             borderRadius: '0.5rem',
             shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.4)',
@@ -391,7 +394,7 @@ const AstroPreset = definePreset(Aura, {
               background: '{surface.200}',
               hoverBackground: '{surface.300}',
               activeBackground: '{surface.400}',
-              borderColor: '{surface.300}',
+              borderColor: '{surface.800}',
               hoverBorderColor: '{surface.400}',
               activeBorderColor: '{surface.500}',
               color: '{surface.900}',
@@ -415,12 +418,12 @@ const AstroPreset = definePreset(Aura, {
             },
             secondary: {
               background: 'transparent',
-              hoverBackground: '{surface.200}',
+              hoverBackground: '{surface.100}',
               activeBackground: '{surface.300}',
-              borderColor: '{surface.300}',
+              borderColor: '{surface.700}',
               hoverBorderColor: '{surface.400}',
               activeBorderColor: '{surface.500}',
-              color: '{surface.400}',
+              color: '{surface.50}',
               hoverColor: '{surface.300}',
               activeColor: '{surface.200}',
             },
@@ -474,6 +477,132 @@ const AstroPreset = definePreset(Aura, {
       },
     },
 
+    // DatePicker styling
+    datepicker: {
+      colorScheme: {
+        dark: {
+          root: {
+            transitionDuration: '0.3s',
+          },
+          panel: {
+            background: '{surface.100}', // Dark background matching your theme
+            borderColor: '{surface.700}',
+            color: '{surface.50}', // Light text
+            borderRadius: '0.5rem',
+            shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.4)',
+            padding: '1rem',
+          },
+          header: {
+            background: '{surface.100}',
+            borderColor: '{surface.700}',
+            color: '{surface.50}',
+            padding: '0 0 0.5rem 0',
+          },
+          title: {
+            gap: '0.5rem',
+            fontWeight: '500',
+          },
+          dropdown: {
+            width: '2.5rem',
+            background: '{surface.200}',
+            hoverBackground: '{surface.300}',
+            activeBackground: '{surface.400}',
+            color: '{surface.50}',
+            hoverColor: '{surface.50}',
+            activeColor: '{surface.50}',
+            borderColor: '{surface.600}',
+            hoverBorderColor: '{surface.500}',
+            activeBorderColor: '{surface.400}',
+            borderRadius: '0.375rem',
+            focusRing: {
+              width: '2px',
+              style: 'solid',
+              color: 'rgba(44, 120, 181, 0.4)',
+              offset: '2px',
+              shadow: '0 0 0 2px rgba(44, 120, 181, 0.4)',
+            },
+          },
+          inputIcon: {
+            color: '{surface.400}',
+          },
+          selectMonth: {
+            hoverBackground: '{surface.300}',
+            color: '{surface.50}',
+            hoverColor: '{surface.50}',
+            padding: '0.25rem 0.5rem',
+            borderRadius: '0.375rem',
+          },
+          selectYear: {
+            hoverBackground: '{surface.300}',
+            color: '{surface.50}',
+            hoverColor: '{surface.50}',
+            padding: '0.25rem 0.5rem',
+            borderRadius: '0.375rem',
+          },
+          group: {
+            borderColor: '{surface.600}',
+            gap: '1rem',
+          },
+          dayView: {
+            margin: '0.5rem 0 0 0',
+          },
+          weekDay: {
+            padding: '0.25rem',
+            fontWeight: '500',
+            color: '{surface.400}', // Slightly muted color for headers
+          },
+          date: {
+            hoverBackground: '{surface.300}',
+            selectedBackground: '{primary.600}',
+            rangeSelectedBackground: '{primary.800}',
+            color: '{surface.50}',
+            hoverColor: '{surface.50}',
+            selectedColor: '#ffffff',
+            rangeSelectedColor: '{surface.50}',
+            width: '2rem',
+            height: '2rem',
+            borderRadius: '50%',
+            padding: '0.25rem',
+            focusRing: {
+              width: '2px',
+              style: 'solid',
+              color: 'rgba(44, 120, 181, 0.4)',
+              offset: '2px',
+              shadow: '0 0 0 2px rgba(44, 120, 181, 0.4)',
+            },
+          },
+          monthView: {
+            margin: '0.5rem 0 0 0',
+          },
+          month: {
+            padding: '0.375rem',
+            borderRadius: '0.375rem',
+          },
+          yearView: {
+            margin: '0.5rem 0 0 0',
+          },
+          year: {
+            padding: '0.375rem',
+            borderRadius: '0.375rem',
+          },
+          buttonbar: {
+            padding: '0.5rem 0 0 0',
+            borderColor: '{surface.600}',
+          },
+          timePicker: {
+            padding: '0.5rem 0 0 0',
+            borderColor: '{surface.600}',
+            gap: '0.5rem',
+            buttonGap: '0.25rem',
+          },
+          today: {
+            background: '{primary.800}',
+            color: '{surface.50}',
+          },
+        },
+      },
+    },
+
     // DataTable styling
     datatable: {
       colorScheme: {
@@ -513,46 +642,168 @@ const AstroPreset = definePreset(Aura, {
         dark: {
           root: {
             borderRadius: '0.375rem',
+            borderWidth: '1px',
             transitionDuration: '0.2s',
           },
           content: {
             padding: '0.75rem 1rem',
             gap: '0.5rem',
           },
-          icon: {
-            size: '1.25rem',
-          },
           text: {
             fontSize: '0.875rem',
             fontWeight: '500',
           },
-          // Success styling
-          success: {
-            background: '#059669', // emerald-600
-            borderColor: '#047857', // emerald-700
-            color: '#ffffff',
-            shadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+          icon: {
+            size: '1.25rem',
           },
-          // Error styling
-          error: {
-            background: '#dc2626', // red-600
-            borderColor: '#b91c1c', // red-700
-            color: '#ffffff',
-            shadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+          closeButton: {
+            width: '1.75rem',
+            height: '1.75rem',
+            borderRadius: '50%',
+            focusRing: {
+              width: '2px',
+              style: 'solid',
+              offset: '1px',
+            },
+          },
+          closeIcon: {
+            size: '1rem',
+          },
+          outlined: {
+            root: {
+              borderWidth: '1px',
+            },
+          },
+          simple: {
+            content: {
+              padding: '0',
+            },
           },
           // Info styling
           info: {
-            background: '#2563eb', // blue-600
-            borderColor: '#1d4ed8', // blue-700
-            color: '#ffffff',
-            shadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            background: 'color-mix(in srgb, {primary.600}, transparent 84%)',
+            borderColor: 'color-mix(in srgb, {primary.700}, transparent 64%)',
+            color: '{primary.300}',
+            shadow: '0px 4px 8px 0px rgba(44, 120, 181, 0.25)',
+            closeButton: {
+              hoverBackground: 'rgba(255, 255, 255, 0.05)',
+              focusRing: {
+                color: '{primary.500}',
+                shadow: '0 0 0 2px rgba(44, 120, 181, 0.4)',
+              },
+            },
+            outlined: {
+              color: '{primary.400}',
+              borderColor: '{primary.500}',
+            },
+            simple: {
+              color: '{primary.400}',
+            },
+          },
+          // Success styling
+          success: {
+            background: 'color-mix(in srgb, {emerald.700}, transparent 84%)',
+            borderColor: 'color-mix(in srgb, {emerald.600}, transparent 64%)',
+            color: '{emerald.300}',
+            shadow: '0px 4px 8px 0px rgba(16, 185, 129, 0.25)',
+            closeButton: {
+              hoverBackground: 'rgba(255, 255, 255, 0.05)',
+              focusRing: {
+                color: '{emerald.500}',
+                shadow: '0 0 0 2px rgba(16, 185, 129, 0.4)',
+              },
+            },
+            outlined: {
+              color: '{emerald.400}',
+              borderColor: '{emerald.500}',
+            },
+            simple: {
+              color: '{emerald.400}',
+            },
           },
           // Warning styling
           warn: {
-            background: '#d97706', // amber-600
-            borderColor: '#b45309', // amber-700
-            color: '#ffffff',
-            shadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            background: 'color-mix(in srgb, {amber.800}, transparent 84%)',
+            borderColor: 'color-mix(in srgb, {amber.600}, transparent 64%)',
+            color: '{amber.300}',
+            shadow: '0px 4px 8px 0px rgba(217, 119, 6, 0.25)',
+            closeButton: {
+              hoverBackground: 'rgba(255, 255, 255, 0.05)',
+              focusRing: {
+                color: '{amber.500}',
+                shadow: '0 0 0 2px rgba(217, 119, 6, 0.4)',
+              },
+            },
+            outlined: {
+              color: '{amber.400}',
+              borderColor: '{amber.500}',
+            },
+            simple: {
+              color: '{amber.400}',
+            },
+          },
+          // Error styling
+          error: {
+            background: 'color-mix(in srgb, {red.900}, transparent 84%)',
+            borderColor: 'color-mix(in srgb, {red.600}, transparent 64%)',
+            color: '{red.300}',
+            shadow: '0px 4px 8px 0px rgba(220, 38, 38, 0.3)',
+            closeButton: {
+              hoverBackground: 'rgba(255, 255, 255, 0.05)',
+              focusRing: {
+                color: '{red.500}',
+                shadow: '0 0 0 2px rgba(220, 38, 38, 0.4)',
+              },
+            },
+            outlined: {
+              color: '{red.400}',
+              borderColor: '{red.500}',
+            },
+            simple: {
+              color: '{red.400}',
+            },
+          },
+          // Secondary styling
+          secondary: {
+            background: '{surface.800}',
+            borderColor: '{surface.700}',
+            color: '{surface.300}',
+            shadow: '0px 4px 8px 0px rgba(0, 0, 0, 0.2)',
+            closeButton: {
+              hoverBackground: '{surface.700}',
+              focusRing: {
+                color: '{surface.300}',
+                shadow: 'none',
+              },
+            },
+            outlined: {
+              color: '{surface.400}',
+              borderColor: '{surface.400}',
+            },
+            simple: {
+              color: '{surface.400}',
+            },
+          },
+          // Contrast styling
+          contrast: {
+            background: '{surface.100}',
+            borderColor: '{surface.200}',
+            color: '{surface.950}',
+            shadow: '0px 4px 8px 0px rgba(0, 0, 0, 0.3)',
+            closeButton: {
+              hoverBackground: '{surface.200}',
+              focusRing: {
+                color: '{surface.950}',
+                shadow: 'none',
+              },
+            },
+            outlined: {
+              color: '{surface.50}',
+              borderColor: '{surface.50}',
+            },
+            simple: {
+              color: '{surface.50}',
+            },
           },
         },
       },
@@ -775,7 +1026,7 @@ export default {
   preset: AstroPreset,
   options: {
     prefix: 'Prime',
-    darkModeSelector: '.dark', // Force dark mode
+    darkModeSelector: '.dark',
     cssLayer: {
       name: 'primevue',
       order: 'tailwind-base, primevue, tailwind-utilities',

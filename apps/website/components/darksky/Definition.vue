@@ -7,10 +7,9 @@ defineProps<{
 
 // Default description if none provided
 const defaultDescription = [
-  'Light pollution is excessive, misdirected, or obtrusive artificial light produced by human activities.',
-  'This phenomenon disrupts ecosystems, affects human health by interfering with circadian rhythms, wastes energy, and obscures our view of the stars.',
-  'As urbanization expands, the glow of unshielded lights creates a sky glow that hides celestial objects and natural darkness, disconnecting us from the night sky.',
-  'Unlike other forms of pollution, light pollution is immediately reversible by implementing proper lighting practices and reducing unnecessary illumination.',
+  'Light pollution is the overuse of artificial light that disrupts ecosystems, harms human health, wastes energy, and hides the stars.',
+  'As cities grow, unshielded lights create a sky glow that erases the night sky and our connection to it.',
+  'Unlike other pollution, light pollution is instantly reversible—just by changing how we light our world.',
 ]
 </script>
 
@@ -37,7 +36,7 @@ const defaultDescription = [
               <p
                 v-for="(paragraph, index) in description || defaultDescription"
                 :key="index"
-                class="text-base"
+                class="text-xl"
               >
                 {{ paragraph }}
               </p>
@@ -61,42 +60,24 @@ const defaultDescription = [
 
         <!-- Right Column: Visual Representation -->
         <div class="h-full">
-          <LandingGlass
-            hover-effect="glow"
-            glow-color="purple"
-            gradient="mixed"
-            intensity="low"
-            class="h-full"
-            interactive
-            :padded="false"
-          >
-            <div class="relative w-full aspect-video overflow-hidden rounded-lg">
-              <!-- Before/After Comparison -->
-              <div class="relative w-full aspect-video overflow-hidden rounded-lg bg-black">
-                <IBImage
-                  :img="{
-                    src: '/darksky/dark-sky-comparrison.jpg',
-                    alt: 'Natural night sky with stars',
-                  }"
-                  class="w-full h-full object-cover"
-                />
-                <div
-                  class="absolute bottom-4 left-4 bg-black/60 px-3 py-1 rounded text-white text-sm font-medium"
-                >
-                  Natural Night Sky
-                </div>
-                <div
-                  class="absolute bottom-4 right-4 bg-black/60 px-3 py-1 rounded text-white text-sm font-medium"
-                >
-                  Light Polluted Sky
-                </div>
-              </div>
+          <div>
+            <div class="aspect-video relative p-2 rounded-xl overflow-hidden border border-color">
+              <iframe
+                src="https://player.vimeo.com/video/178841667?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
+                title="Lost in Light"
+              ></iframe>
             </div>
-            <div class="p-4 text-gray-300">
+            <PrimeMessage
+              class="mt-8"
+              severity="warn"
+            >
               Over 80% of the world's population lives under light-polluted skies, limiting their
               view of stars and disconnecting them from the natural night environment.
-            </div>
-          </LandingGlass>
+            </PrimeMessage>
+          </div>
         </div>
       </div>
     </div>

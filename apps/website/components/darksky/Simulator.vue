@@ -94,7 +94,7 @@ onMounted(() => {
 <template>
   <section class="py-16 my-8">
     <LandingTitle
-      title="Light Pollution Simulator"
+      title="The Vanishing Sky"
       subtitle="See how light pollution affects our view of the night sky"
       class="mb-12"
     />

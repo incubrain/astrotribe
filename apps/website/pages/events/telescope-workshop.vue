@@ -16,7 +16,6 @@ const tabs = [
   // { id: 'intermediateLevel', label: 'Intermediate Level Workshop' },
   { id: 'equipment', label: 'Our Equipment' },
   { id: 'whatToBring', label: 'What to Bring?' },
-  { id: 'preWorkshop', label: 'Pre-Workshop Preparation' },
 ]
 
 // Equipment data
@@ -24,7 +23,7 @@ const telescopeInfo = {
   name: 'Celestron NexStar 6SE Computerized Telescope',
   itemNumber: '11068',
   warranty: '2 Years',
-  image: 'images/nexstar-6se-telescope.jpg', // This assumes you have this image, replace with actual path
+  image: 'workshop/celestron-nexstar-6se-telescope.png',
   mainFeatures: [
     '6-inch aperture with excellent light-gathering ability',
     'Fully automated GoTo mount with database of 40,000+ celestial objects',
@@ -51,8 +50,6 @@ const title = {
   img: 'images/telescope-workshop-2025.jpeg',
 }
 
-const registrationLink = 'https://forms.gle/DZhUN6d5AeH3qmch8'
-
 // Workshop descriptions without specific dates or times
 const beginnerWorkshop = {
   title: 'Beginner Level Workshop',
@@ -65,9 +62,9 @@ const beginnerWorkshop = {
       activity: 'Welcome & Introduction',
       duration: '10 minutes',
       description: [
-        '- Introduction to the workshop',
-        '- Discussion on experience with telescopes',
-        '- Recap',
+        'Introduction to the workshop',
+        'Discussion on experience with telescopes',
+        'Recap',
       ],
       class: 'bg-primary-950',
     },
@@ -75,9 +72,9 @@ const beginnerWorkshop = {
       activity: 'Understanding Telescopes',
       duration: '20 minutes',
       description: [
-        '- Different types of telescopes',
-        '- Discuss parts of a telescope',
-        '- How to choose the right telescope based on budget & interest',
+        'Different types of telescopes',
+        'Discuss parts of a telescope',
+        'How to choose the right telescope based on budget & interest',
       ],
       class: 'bg-primary-950',
     },
@@ -85,24 +82,24 @@ const beginnerWorkshop = {
       activity: 'Telescope Assembly & Balancing',
       duration: '20 minutes',
       description: [
-        '- Hands-on: Unbox and assemble a simple telescope',
-        '- Balance the telescope for stable viewing',
+        'Hands-on: Unbox and assemble a simple telescope',
+        'Balance the telescope for stable viewing',
       ],
       class: 'bg-primary-950',
     },
     {
       activity: 'Break & Q&A',
       duration: '10 minutes',
-      description: ['- Short break for networking & questions'],
+      description: ['Short break for networking & questions'],
       class: 'bg-primary-950',
     },
     {
       activity: 'Basic Sky Navigation',
       duration: '10 minutes',
       description: [
-        '- How to use Sky Maps & Stellarium to find celestial objects',
-        '- Locating the Moon, planets & bright stars',
-        '- Constellation Mapping',
+        'How to use Sky Maps & Stellarium to find celestial objects',
+        'Locating the Moon, planets & bright stars',
+        'Constellation Mapping',
       ],
       class: 'bg-primary-950',
     },
@@ -110,15 +107,15 @@ const beginnerWorkshop = {
       activity: 'Hands-On Observation Session',
       duration: '40 minutes',
       description: [
-        '- Participants take turns using the telescope to view the Moon (or bright objects)',
-        '- Adjusting focus, understanding eyepieces',
+        'Participants take turns using the telescope to view the Moon (or bright objects)',
+        'Adjusting focus, understanding eyepieces',
       ],
       class: 'bg-primary-950',
     },
     {
       activity: 'Wrap-Up',
       duration: '10 minutes',
-      description: ['- Quick recap & feedback session.'],
+      description: ['Quick recap & feedback session.'],
       class: 'bg-primary-950',
     },
   ],
@@ -136,38 +133,38 @@ const intermediateWorkshop = {
       activity: 'Welcome & Overview',
       duration: '10 minutes',
       description: [
-        '- Introduction to the session',
-        '- Discuss participant experience with telescopes',
+        'Introduction to the session',
+        'Discuss participant experience with telescopes',
       ],
       class: 'bg-primary-950',
     },
     {
       activity: 'Sky Navigation',
       duration: '10 minutes',
-      description: ['- Constellation Mapping'],
+      description: ['Constellation Mapping'],
       class: 'bg-primary-950',
     },
     {
       activity: 'Deep Sky Object Tracking',
       duration: '30 minutes',
       description: [
-        '- How to locate and track Nebulae, Star Clusters, and Galaxies',
-        '- Practice pointing telescopes manually & with slow-motion controls',
+        'How to locate and track Nebulae, Star Clusters, and Galaxies',
+        'Practice pointing telescopes manually & with slow-motion controls',
       ],
       class: 'bg-primary-950',
     },
     {
       activity: 'Break & Q&A',
       duration: '10 minutes',
-      description: ['- Open discussion for doubts'],
+      description: ['Open discussion for doubts'],
       class: 'bg-primary-950',
     },
     {
       activity: 'Filters & Accessories',
       duration: '10 minutes',
       description: [
-        '- Introduction to Barlow lenses, Moon & Nebula filters',
-        '- How different filters enhance observation',
+        'Introduction to Barlow lenses, Moon & Nebula filters',
+        'How different filters enhance observation',
       ],
       class: 'bg-primary-950',
     },
@@ -175,32 +172,26 @@ const intermediateWorkshop = {
       activity: 'Hands-On Tracking Activity',
       duration: '40 minutes',
       description: [
-        '- Practice tracking Orion Nebula, or Andromeda Galaxy',
-        '- Use laser pointers to learn constellation mapping',
+        'Practice tracking Orion Nebula, or Andromeda Galaxy',
+        'Use laser pointers to learn constellation mapping',
       ],
       class: 'bg-primary-950',
     },
     {
       activity: 'Wrap-Up',
       duration: '10 minutes',
-      description: ['- Recap of learning.'],
+      description: ['Recap of learning.'],
       class: 'bg-primary-950',
     },
   ],
 }
 
 const whatToBring = [
-  '✔ Notebook & Pen – For taking notes on telescope setup & sky maps.',
-  '✔ Red Flashlight – Helps maintain night vision while reading maps.',
-  '✔ Smartphone or Tablet – Download Stellarium / SkySafari / Star Walk for sky navigation.',
-  '✔ Water Bottle -Stay hydrated & refreshed.',
-  '✔ Personal Telescope (Optional) – If you own one, bring it for hands-on practice!',
-]
-
-const preWorkshop = [
-  '🔹 Download a Sky Map App: Stellarium',
-  '🔹 Charge Your Phone & Power Bank – You might need it for apps & taking pictures',
-  '🔹 Read Up on Basic Astronomy Terms – Understand terms like "focal length," "magnification," and "alt-azimuth"',
+  'Notebook & Pen – For taking notes on telescope setup & sky maps.',
+  'Red Flashlight – Helps maintain night vision while reading maps.',
+  'Smartphone or Tablet – Download Stellarium / SkySafari / Star Walk for sky navigation.',
+  'Water Bottle -Stay hydrated & refreshed.',
+  'Personal Telescope (Optional) – If you own one, bring it for hands-on practice!',
 ]
 
 // 5. Methods
@@ -216,6 +207,13 @@ const updateTabFromHash = () => {
 const onTabChange = (tabId) => {
   activeTab.value = tabId
   window.history.replaceState(null, '', `#${tabId}`)
+}
+
+const contactFormRef = ref(null)
+
+// Replace your existing registerLink method with this
+const openRegistrationForm = () => {
+  contactFormRef.value?.openDialog()
 }
 
 // 6. Lifecycle Hooks
@@ -246,6 +244,11 @@ onBeforeUnmount(() => {
     >
     </CommonHero>
 
+    <WorkshopForm
+      ref="contactFormRef"
+      :workshop-title="title.main"
+    />
+
     <!-- Workshop Information Banner -->
     <div class="wrapper">
       <div
@@ -259,21 +262,18 @@ onBeforeUnmount(() => {
               participants (15 per workshop), we'll contact you with available dates and times.</p
             >
           </div>
-          <NuxtLink
-            :to="registrationLink"
-            target="_blank"
+          <!-- Replace this NuxtLink with a button that opens the form -->
+          <PrimeButton
+            size="large"
+            class="bg-white text-primary-700 hover:bg-primary-100 font-semibold px-8 py-3 whitespace-nowrap"
+            @click="openRegistrationForm"
           >
-            <PrimeButton
-              size="large"
-              class="bg-white text-primary-700 hover:bg-primary-100 font-semibold px-8 py-3 whitespace-nowrap"
-            >
-              Register Now
-              <Icon
-                name="mdi:arrow-right"
-                class="ml-2"
-              />
-            </PrimeButton>
-          </NuxtLink>
+            Register Now
+            <Icon
+              name="mdi:arrow-right"
+              class="ml-2"
+            />
+          </PrimeButton>
         </div>
       </div>
     </div>
@@ -379,17 +379,6 @@ onBeforeUnmount(() => {
             </div>
           </div>
 
-          <div class="overflow-hidden rounded-lg mb-8">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
-              height="400"
-              style="border: 0; width: 100%"
-              allowfullscreen
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-
           <!-- Workshop Schedule -->
           <div
             class="bg-primary-800/30 rounded-lg overflow-hidden mb-8 border border-primary-700/30"
@@ -425,6 +414,18 @@ onBeforeUnmount(() => {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="overflow-hidden rounded-lg mb-8">
+            <iframe
+              class="w-full h-[400px] filter grayscale contrast-125 brightness-75"
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
+              height="400"
+              style="border: 0; width: 100%"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
         </PrimeTabPanel>
 
@@ -560,39 +561,9 @@ onBeforeUnmount(() => {
                 :key="`bring-${index}`"
                 class="flex items-start gap-4"
               >
-                <div class="bg-primary-900/50 p-2 rounded-lg">
+                <div class="bg-primary-900/50 p-2 rounded-lg flex">
                   <Icon
                     name="mdi:check-circle"
-                    class="text-primary-400"
-                    size="24px"
-                  />
-                </div>
-                <div class="flex-1 pt-1">{{ item }}</div>
-              </li>
-            </ul>
-          </div>
-        </PrimeTabPanel>
-
-        <PrimeTabPanel
-          value="preWorkshop"
-          :pt="{
-            root: 'animate-fadeIn',
-          }"
-        >
-          <div
-            class="bg-primary-800/30 rounded-lg p-6 mb-8 backdrop-blur-sm border border-primary-700/30"
-          >
-            <h2 class="text-2xl font-bold text-primary-400 mb-6">Pre-Workshop Preparation</h2>
-
-            <ul class="space-y-6">
-              <li
-                v-for="(item, index) in preWorkshop"
-                :key="`prep-${index}`"
-                class="flex items-start gap-4"
-              >
-                <div class="bg-primary-900/50 p-2 rounded-lg">
-                  <Icon
-                    name="mdi:arrow-right-circle"
                     class="text-primary-400"
                     size="24px"
                   />
@@ -613,12 +584,11 @@ onBeforeUnmount(() => {
             class="bg-primary-800/30 rounded-lg overflow-hidden mb-8 backdrop-blur-sm border border-primary-700/30"
           >
             <div class="md:flex">
-              <div class="md:w-1/3 p-6 flex items-center justify-center bg-primary-900/50">
-                <img
+              <div class="md:w-1/3 flex items-center justify-center bg-primary-900/50">
+                <NuxtImg
                   :src="telescopeInfo.image"
                   :alt="telescopeInfo.name"
-                  class="max-w-full h-auto max-h-80"
-                  @error="$event.target.src = '/api/placeholder/350/350'"
+                  class="max-w-full w-full object-cover h-full -mb-12"
                 />
               </div>
               <div class="md:w-2/3 p-6">
@@ -721,30 +691,25 @@ onBeforeUnmount(() => {
       </PrimeTabs>
 
       <!-- Register CTA -->
-      <div
-        class="bg-primary-800/30 rounded-lg p-6 my-12 backdrop-blur-sm border border-primary-700/30"
-      >
+      <div class="bg-primary-800/30 rounded-lg p-6 backdrop-blur-sm border border-primary-700/30">
         <div class="flex flex-col items-center text-center">
           <h2 class="text-2xl font-bold text-primary-400 mb-3">Ready to Explore the Universe?</h2>
           <p class="text-gray-300 mb-6 max-w-2xl"
             >Register your interest today! We'll contact you with workshop dates once we have enough
             participants (15 per session).</p
           >
-          <NuxtLink
-            :to="registrationLink"
-            target="_blank"
+          <!-- Replace this NuxtLink with a button that opens the form -->
+          <PrimeButton
+            size="large"
+            class="bg-primary-600 hover:bg-primary-500 font-semibold px-8 py-3"
+            @click="openRegistrationForm"
           >
-            <PrimeButton
-              size="large"
-              class="bg-primary-600 hover:bg-primary-500 font-semibold px-8 py-3"
-            >
-              Register Interest
-              <Icon
-                name="mdi:arrow-right"
-                class="ml-2"
-              />
-            </PrimeButton>
-          </NuxtLink>
+            Register Interest
+            <Icon
+              name="mdi:arrow-right"
+              class="ml-2"
+            />
+          </PrimeButton>
         </div>
       </div>
     </div>

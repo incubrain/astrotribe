@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
-  astronomyEducation: string
-  darkSkyPreservation: string
+  astronomyMission: string
+  darkSkyObjectives: string[]
 }>()
 </script>
 
@@ -15,56 +15,78 @@ defineProps<{
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Education Panel -->
-      <LandingGlass
-        hover-effect="glow"
-        glow-color="blue"
-        gradient="blue"
-        intensity="low"
-        interactive
-      >
-        <h3 class="text-2xl font-bold mb-4 text-white">Conserving the night sky</h3>
-        <p class="text-base mb-6">{{ astronomyEducation }}</p>
-
-        <div class="flex justify-end">
-          <PrimeButton
-            size="small"
-            severity="secondary"
-            outlined
-          >
-            Learn more
-            <Icon
-              name="mdi:arrow-right"
-              class="ml-2"
-            />
-          </PrimeButton>
-        </div>
-      </LandingGlass>
-
-      <!-- Dark Sky Preservation Panel -->
-      <LandingGlass
+      <IBGlass
         hover-effect="glow"
         glow-color="purple"
-        gradient="purple"
+        gradient="mixed"
         intensity="low"
         interactive
+        padding
       >
-        <h3 class="text-2xl font-bold mb-4 text-white">Reducing light pollution</h3>
-        <p class="text-base mb-6">{{ darkSkyPreservation }}</p>
+        <div class="flex flex-col h-full justify-between gap-4">
+          <div class="h-auto">
+            <h3 class="text-2xl font-bold mb-4 text-white">Conserving the night sky</h3>
+            <p class="text-base mb-6">{{ astronomyMission }}</p>
+          </div>
 
-        <div class="flex justify-end">
-          <PrimeButton
-            size="small"
-            severity="secondary"
-            outlined
-          >
-            Learn more
-            <Icon
-              name="mdi:arrow-right"
-              class="ml-2"
-            />
-          </PrimeButton>
+          <div class="flex justify-end">
+            <PrimeButton
+              size="small"
+              severity="secondary"
+              outlined
+            >
+              Learn more
+              <Icon
+                name="mdi:arrow-right"
+                class="ml-2"
+              />
+            </PrimeButton>
+          </div>
         </div>
-      </LandingGlass>
+      </IBGlass>
+
+      <!-- Dark Sky Preservation Panel -->
+      <IBGlass
+        hover-effect="glow"
+        glow-color="purple"
+        gradient="mixed"
+        intensity="low"
+        interactive
+        padding
+      >
+        <div class="flex flex-col h-full justify-between gap-4">
+          <div>
+            <h3 class="text-2xl font-bold mb-4 text-white">Reducing light pollution</h3>
+            <ul>
+              <li
+                v-for="(item, index) in darkSkyObjectives"
+                :key="index"
+                class="text-base mb-2"
+              >
+                <Icon
+                  name="mdi:check"
+                  class="text-green-400 mr-2"
+                />
+                {{ item }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="flex justify-end mt-4">
+            <PrimeButton
+              size="small"
+              severity="secondary"
+              outlined
+            >
+              Learn more
+              <Icon
+                name="mdi:arrow-right"
+                class="ml-2"
+              />
+            </PrimeButton>
+          </div>
+        </div>
+      </IBGlass>
     </div>
   </section>
 </template>

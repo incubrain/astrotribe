@@ -1,12 +1,16 @@
 <script setup lang="ts">
+onMounted(() => {
+  document.documentElement.classList.add('dark')
+})
+
 </script>
 
 <template>
-  <div class="h-full w-full dark">
+  <div class="h-full w-full relative dark">
     <NuxtLoadingIndicator />
     <!-- <AdsPopupTrigger /> -->
     <NuxtLayout>
-      <NuxtPage />
+      <NuxtPage class="dark" />
     </NuxtLayout>
     <!-- <ReferralCapture /> -->
     <!-- <PrimeToast position="bottom-right" /> -->

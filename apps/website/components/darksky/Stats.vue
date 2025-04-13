@@ -40,10 +40,7 @@ defineProps<{
       </div>
 
       <div class="mt-8 text-center">
-        <NuxtLink
-          to="https://www.darksky.org/light-pollution/light-pollution-statistics/"
-          target="_blank"
-        >
+        <NuxtLink to="blog/research/global-research-on-light-polluton">
           <PrimeButton
             size="small"
             severity="secondary"
