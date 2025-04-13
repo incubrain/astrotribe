@@ -120,12 +120,14 @@ const impactStats: ImpactStatistic[] = [
 ]
 
 // Mission section text
-const missionAstronomyEducation =
-  'Making astronomy accessible to everyone through digital learning, diverse educational resources, and a global community of space enthusiasts.'
+const missionAstronomy =
+  'To safeguard the night sky by reducing light pollution in urban areas, conserving dark skies in pristine regions, and promoting sustainable lighting practices that support biodiversity, human well-being, and energy efficiency, advancing sustainable development goals through dark sky preservation.'
 
-const missionDarkSkyPreservation =
-  'Pioneering dark sky conservation in India by combating light pollution, promoting sustainable lighting practices, and uniting experts and policymakers to protect our natural nightscapes.'
-
+const darkSkyObjectives = [
+  'Educate communities on light pollution’s effects on ecosystems, health, and celestial visibility.',
+  'Push for policies that integrate dark sky-friendly lighting into sustainable development frameworks.',
+  'Reconnect people with the starry sky, fostering appreciation for nature’s role in achieving global sustainability targets.',
+]
 // Mascot section text
 const mascotStory = [
   "Hi, I'm Tara the Firefly—your quirky little mascot for saving the dark skies! As a firefly, I shine brightest when the night is dark and calm.",
@@ -133,20 +135,199 @@ const mascotStory = [
   "Protecting the night sky isn't just for stargazing—it's about keeping our planet in balance. I'm thrilled to see experts and policymakers joining forces to bring back the beauty of the night for everyone!",
 ]
 
-// Action Steps
-const actionSteps: ActionStep[] = [
+const lightPollutionActions = [
+  {
+    title: 'Shield Your Lights',
+    description: 'Direct light downward to prevent sky glow while maintaining safety',
+    icon: 'i-lucide-shield',
+    impactLevel: 5, // Highest impact
+    timeCategory: 'moderate', // 5-minute action
+    primaryAction: {
+      text: 'Find Shielded Fixtures',
+      url: '/resources/shielded-fixtures',
+    },
+    benefits: ['Reduce light pollution by up to 70%', 'Lower your energy bills by ₹2,000/year'],
+    details: [
+      'Use fully-shielded fixtures that direct light downward',
+      'Cover bare bulbs to prevent light from shining upward',
+      'Install motion sensors for security lighting',
+    ],
+    resources: [
+      {
+        title: 'Shielded Fixture Guide',
+        url: '/guides/shielded-fixtures',
+      },
+      {
+        title: 'Energy Saving Calculator',
+        url: '/tools/energy-calculator',
+      },
+    ],
+  },
+  {
+    title: 'Use Warm-Colored Bulbs',
+    description: 'Switch to bulbs under 3000K to reduce harmful blue light',
+    icon: 'i-lucide-lightbulb',
+    impactLevel: 4,
+    timeCategory: 'quick', // 1-minute action
+    primaryAction: {
+      text: 'Find Recommended Bulbs',
+      url: '/resources/warm-bulbs',
+    },
+    benefits: [
+      'Improve sleep quality by reducing blue light',
+      'Better for wildlife and ecosystem health',
+    ],
+    details: [
+      'Choose warm-colored bulbs (under 3000K)',
+      'Replace cool white LEDs with warm alternatives',
+      "Look for bulbs labeled 'warm white' or 'soft white'",
+    ],
+    resources: [
+      {
+        title: 'Bulb Color Temperature Guide',
+        url: '/guides/color-temperature',
+      },
+      {
+        title: 'Health Effects of Blue Light',
+        url: '/research/blue-light',
+      },
+    ],
+  },
+  {
+    title: 'Install Timers & Sensors',
+    description: 'Automate lights to run only when needed',
+    icon: 'i-lucide-timer',
+    impactLevel: 4,
+    timeCategory: 'project', // Weekend project
+    primaryAction: {
+      text: 'Shop Smart Controls',
+      url: '/resources/smart-controls',
+    },
+    benefits: ['Cut energy costs by up to 40%', 'Reduce carbon emissions by 250kg/year'],
+    details: [
+      'Install timers to turn off lights when not needed',
+      'Use motion sensors for walkways and security',
+      'Set up smart controls to manage outdoor lighting',
+    ],
+    resources: [
+      {
+        title: 'DIY Timer Installation Guide',
+        url: '/guides/timer-installation',
+      },
+      {
+        title: 'Smart Home Integration',
+        url: '/guides/smart-lighting',
+      },
+    ],
+  },
+  {
+    title: 'Reduce Brightness',
+    description: 'Use only as much light as actually needed',
+    icon: 'i-lucide-sun-dim',
+    impactLevel: 3,
+    timeCategory: 'quick', // 1-minute action
+    primaryAction: {
+      text: 'Brightness Guidelines',
+      url: '/resources/brightness',
+    },
+    benefits: [
+      'Save up to ₹1,200 annually on energy bills',
+      'Improve visibility by reducing glare',
+    ],
+    details: [
+      "Use dimmers to lower brightness when full power isn't needed",
+      'Choose lower-wattage bulbs for ambient lighting',
+      'Layer lighting instead of using single bright sources',
+    ],
+    resources: [
+      {
+        title: 'Proper Lighting Levels Guide',
+        url: '/guides/lighting-levels',
+      },
+      {
+        title: 'Energy-Efficient Lighting Tips',
+        url: '/guides/efficiency',
+      },
+    ],
+  },
+  {
+    title: 'Advocate Locally',
+    description: 'Support dark-sky friendly lighting policies in your community',
+    icon: 'i-lucide-megaphone',
+    impactLevel: 5, // Highest impact
+    timeCategory: 'project', // Weekend project
+    primaryAction: {
+      text: 'Get Advocacy Toolkit',
+      url: '/resources/advocacy',
+    },
+    benefits: [
+      'Multiply your impact across entire neighborhoods',
+      'Create sustainable change in your community',
+    ],
+    details: [
+      'Attend city council meetings to advocate for better lighting',
+      'Share educational materials with neighbors',
+      'Support ordinances that require shielded fixtures',
+    ],
+    resources: [
+      {
+        title: 'Sample Lighting Ordinance',
+        url: '/guides/ordinance-template',
+      },
+      {
+        title: 'Community Organizing Guide',
+        url: '/guides/community-action',
+      },
+    ],
+  },
+  {
+    title: 'Audit Your Property',
+    description: 'Identify problem fixtures and create an improvement plan',
+    icon: 'i-lucide-clipboard-check',
+    impactLevel: 3,
+    timeCategory: 'moderate', // 5-minute action
+    primaryAction: {
+      text: 'Download Audit Checklist',
+      url: '/resources/audit-checklist',
+    },
+    benefits: ['Target improvements for maximum impact', 'Create a budget-friendly lighting plan'],
+    details: [
+      'Document all outdoor lighting fixtures on your property',
+      'Check for light trespass onto neighboring properties',
+      'Identify fixtures that shine light upward or cause glare',
+    ],
+    resources: [
+      {
+        title: 'DIY Light Audit App',
+        url: '/tools/light-audit',
+      },
+      {
+        title: 'Prioritizing Lighting Improvements',
+        url: '/guides/improvement-priority',
+      },
+    ],
+  },
+]
+
+const actionSteps = [
   {
     title: 'Assess Your Home',
     description:
       'Audit your outdoor lighting to identify unnecessary brightness, upward-pointing fixtures, and light spillover, especially in urban areas like Mumbai where light pollution is rising rapidly.',
+    icon: 'mdi:clipboard-check',
+    tips: [
+      'Document all outdoor lighting fixtures around your property',
+      'Check for light trespass onto neighboring properties',
+      'Identify fixtures that shine light upward or outward',
+      'Note any lights that remain on all night unnecessarily',
+    ],
     actionText: 'Download Audit Checklist',
     actionUrl: 'https://darksky.org/get-involved/home-lighting-assessment/',
-    icon: 'mdi:clipboard-check',
-    primaryResource: {
-      title: 'DarkSky International Home Lighting Assessment',
-      url: 'https://darksky.org/get-involved/home-lighting-assessment/',
-    },
-    moreResources: [
+    resources: [
+      {
+        title: 'DarkSky International Home Lighting Assessment',
+        url: 'https://darksky.org/get-involved/home-lighting-assessment/',
+      },
       {
         title: 'LED Lighting Supply Checklist',
         url: 'https://www.ledlightingsupply.com/blog/lighting-audit-checklist',
@@ -158,52 +339,120 @@ const actionSteps: ActionStep[] = [
     ],
   },
   {
-    title: 'Make Simple Changes',
+    title: 'Shield Your Lights',
+    description:
+      'Direct light downward to prevent unnecessary sky glow and light trespass while still maintaining safety and visibility.',
+    icon: 'mdi:shield',
+    tips: [
+      'Use fully-shielded fixtures that direct light downward',
+      'Cover bare bulbs to prevent light from shining upward',
+      'Install motion sensors for security lighting',
+      'Adjust existing fixtures with shields or hoods',
+    ],
+    actionText: 'Find Shielded Fixtures',
+    actionUrl:
+      'https://darksky.org/what-we-do/darksky-approved/darksky-approved-luminaires-program/luminaires/',
+    resources: [
+      {
+        title: 'DarkSky Approved Fixtures',
+        url: 'https://darksky.org/what-we-do/darksky-approved/darksky-approved-luminaires-program/luminaires/',
+      },
+    ],
+  },
+  {
+    title: 'Use the Right Lights',
     description:
       'Shield your lights, use warm-colored bulbs under 3000K, and install motion sensors or timers to cut down on light pollution, saving up to $800 million annually in India.',
+    icon: 'mdi:lightbulb',
+    tips: [
+      'Choose warm-colored bulbs (under 3000K)',
+      'Use the minimum brightness necessary',
+      'Replace cool white LEDs with warm alternatives',
+      'Select dark-sky friendly fixtures for outdoor lighting',
+    ],
     actionText: 'View Lighting Guide',
     actionUrl: 'https://darksky.org/resources/guides-and-how-tos/lighting-principles/',
-    icon: 'mdi:lightbulb',
-    primaryResource: {
-      title: 'DarkSky Lighting Principles',
-      url: 'https://darksky.org/resources/guides-and-how-tos/lighting-principles/',
-    },
-    moreResources: [
+    resources: [
+      {
+        title: 'DarkSky Lighting Principles',
+        url: 'https://darksky.org/resources/guides-and-how-tos/lighting-principles/',
+      },
       {
         title: 'DarkSky Approved Lighting Products',
         url: 'https://darksky.org/what-we-do/darksky-approved/darksky-approved-luminaires-program/luminaires/',
       },
-      { title: 'Bureau of Energy Efficiency India', url: 'https://beeindia.gov.in/' },
+      {
+        title: 'Bureau of Energy Efficiency India',
+        url: 'https://beeindia.gov.in/',
+      },
+    ],
+  },
+  {
+    title: 'Control When Lights Are On',
+    description:
+      "Use automation to ensure lights are only on when and where they're needed, reducing energy costs and light pollution.",
+    icon: 'mdi:clock',
+    tips: [
+      'Install timers to turn off lights when not needed',
+      'Use motion sensors for security and walkway lighting',
+      'Turn off decorative lighting after business hours',
+      'Advocate for smart lighting systems in your community',
+    ],
+    actionText: 'Timing Solutions',
+    actionUrl: 'https://darksky.org/our-work/lighting/lighting-for-citizens/lighting-basics/',
+    resources: [
+      {
+        title: 'Energy Saving Calculator',
+        url: 'https://www.energystar.gov/products/lighting_fans/light_bulbs/led_lighting',
+      },
     ],
   },
   {
     title: 'Spread Awareness',
     description:
-      'Educate your community about light pollution’s impact—80% of India’s population can’t see the stars—using films and events like Earth Hour India.',
+      "Educate your community about light pollution's impact—80% of India's population can't see the stars—using films and events like Earth Hour India.",
+    icon: 'mdi:share-variant',
+    tips: [
+      'Share educational content on social media',
+      'Organize community stargazing events',
+      'Talk to neighbors about light pollution impacts',
+      'Participate in International Dark Sky Week events',
+    ],
     actionText: 'Get Sharing Tools',
     actionUrl: 'https://vimeo.com/178841667',
-    icon: 'mdi:share-variant',
-    primaryResource: {
-      title: 'Sriram Murali’s "Lost in Light" Film',
-      url: 'https://vimeo.com/178841667',
-    },
-    moreResources: [
-      { title: 'Earth Hour India', url: 'https://www.earthhour.org/india' },
-      { title: 'DarkSky Social Media', url: 'https://www.facebook.com/DarkSkyInternational' },
+    resources: [
+      {
+        title: 'Sriram Murali\'s "Lost in Light" Film',
+        url: 'https://vimeo.com/178841667',
+      },
+      {
+        title: 'Earth Hour India',
+        url: 'https://www.earthhour.org/india',
+      },
+      {
+        title: 'DarkSky Social Media',
+        url: 'https://www.facebook.com/DarkSkyInternational',
+      },
     ],
   },
   {
     title: 'Contact Officials',
     description:
-      'Push for dark sky-friendly ordinances in your city, inspired by Mumbai’s public interest litigation, to reduce the 7-10% annual increase in light pollution.',
+      "Push for dark sky-friendly ordinances in your city, inspired by Mumbai's public interest litigation, to reduce the 7-10% annual increase in light pollution.",
+    icon: 'mdi:gavel',
+    tips: [
+      'Write to your local representatives about light pollution',
+      'Attend city council meetings to advocate for better lighting',
+      'Share model lighting ordinances with officials',
+      'Form a community group to strengthen your advocacy',
+    ],
     actionText: 'Advocacy Resources',
     actionUrl: 'https://darksky.org/what-we-do/advocacy/',
-    icon: 'mdi:gavel',
-    primaryResource: {
-      title: 'DarkSky Advocacy Guide',
-      url: 'https://darksky.org/what-we-do/advocacy/',
-    },
-    moreResources: [
+    resources: [
+      {
+        title: 'DarkSky Advocacy Guide',
+        url: 'https://darksky.org/what-we-do/advocacy/',
+      },
       {
         title: 'Model Lighting Ordinances',
         url: 'https://darksky.org/resources/model-lighting-ordinances/',
@@ -214,25 +463,34 @@ const actionSteps: ActionStep[] = [
       },
     ],
   },
-  {
-    title: 'Join the Movement',
-    description:
-      'Get involved in events like Hanle Dark Sky Reserve star parties or citizen science projects to protect nocturnal animals facing a 70% activity reduction.',
-    actionText: 'Find Local Events',
-    actionUrl: 'https://ladakh.gov.in/hanle-dark-sky-reserve-celebrates-its-first-star-party/',
-    icon: 'mdi:account-group',
-    primaryResource: {
-      title: 'Hanle Dark Sky Reserve Star Parties',
-      url: 'https://ladakh.gov.in/hanle-dark-sky-reserve-celebrates-its-first-star-party/',
-    },
-    moreResources: [
-      { title: 'Globe at Night Citizen Science', url: 'https://www.globeatnight.org/' },
-      {
-        title: 'Astronomy Clubs in India',
-        url: 'https://www.go-astronomy.com/astronomy-clubs-global.php?Country=India',
-      },
-    ],
-  },
+  // {
+  //   title: 'Join the Movement',
+  //   description:
+  //     'Get involved in events like Hanle Dark Sky Reserve star parties or citizen science projects to protect nocturnal animals facing a 70% activity reduction.',
+  //   icon: 'mdi:account-group',
+  //   tips: [
+  //     'Participate in citizen science light pollution monitoring',
+  //     'Attend dark sky reserve events and star parties',
+  //     'Join or start a local astronomy club',
+  //     'Volunteer for dark sky conservation projects',
+  //   ],
+  //   actionText: 'Find Local Events',
+  //   actionUrl: 'https://ladakh.gov.in/hanle-dark-sky-reserve-celebrates-its-first-star-party/',
+  //   resources: [
+  //     {
+  //       title: 'Hanle Dark Sky Reserve Star Parties',
+  //       url: 'https://ladakh.gov.in/hanle-dark-sky-reserve-celebrates-its-first-star-party/',
+  //     },
+  //     {
+  //       title: 'Globe at Night Citizen Science',
+  //       url: 'https://www.globeatnight.org/',
+  //     },
+  //     {
+  //       title: 'Astronomy Clubs in India',
+  //       url: 'https://www.go-astronomy.com/astronomy-clubs-global.php?Country=India',
+  //     },
+  //   ],
+  // },
 ]
 
 // Helpful Resources
@@ -282,38 +540,34 @@ const helpfulResources: Resource[] = [
 ]
 
 // FAQs
-const faqs: FAQ[] = [
+const darkSkyInfoCards = [
   {
-    question: 'What exactly is light pollution?',
-    answer:
-      'Light pollution is the excessive or inappropriate use of artificial light that disrupts natural darkness. It includes skyglow (brightening of the night sky), glare, light trespass, and clutter.',
-    expandedAnswer:
-      "These different types of light pollution have varying impacts. Skyglow washes out stars and affects astronomers and nocturnal wildlife. Glare creates safety hazards by reducing visibility. Light trespass occurs when unwanted light enters properties where it's not intended, and clutter involves excessive groupings of light sources.",
-    isExpanded: false,
+    title: 'What exactly is light pollution?',
+    content:
+      'Light pollution is excessive, misdirected, or obtrusive artificial light produced by human activities. This includes sky glow, light trespass, glare, and clutter that disrupt ecosystems and obscure our view of the stars.',
+    blogSlug: 'understanding-light-pollution',
+    icon: 'mdi:lightbulb-question-outline',
   },
   {
-    question: 'Why should I care about dark skies?',
-    answer:
-      'Dark skies are important for human health, wildlife wellbeing, energy conservation, cultural heritage, and scientific research. Excess artificial light disrupts sleep patterns, endangers nocturnal species, wastes energy, and prevents us from experiencing the night sky.',
-    expandedAnswer:
-      'Throughout human history, the night sky has inspired art, science, religion, and philosophy. When we lose access to truly dark skies, we lose touch with this fundamental part of our heritage and the sense of wonder it provides.',
-    isExpanded: false,
+    title: 'How does light pollution affect wildlife?',
+    content:
+      'Artificial light at night disrupts natural behaviors and biological processes for many species. Nocturnal animals may reduce their activity, while diurnal animals might remain active during nighttime hours when they should be resting.',
+    blogSlug: 'wildlife-impacts-of-light-pollution',
+    icon: 'mdi:nature-people',
   },
   {
-    question: 'How does light pollution affect wildlife?',
-    answer:
-      'Artificial light at night disrupts natural behaviors of nocturnal animals. It affects predator-prey relationships, migratory patterns, reproduction cycles, and feeding behaviors. For example, sea turtle hatchlings can become disoriented by coastal lighting instead of following moonlight to the ocean.',
-    expandedAnswer:
-      'Light pollution also affects insects, which are attracted to artificial lights and often die from exhaustion or predation. This disrupts ecosystems as insects are a crucial food source for many animals and important pollinators for plants.',
-    isExpanded: false,
+    title: 'What are dark sky friendly lighting practices?',
+    content:
+      'Dark sky friendly lighting uses fixtures that direct light downward, shields that prevent light from shining upward, warm-colored bulbs (below 3000K), and dimmers or timers to use light only when needed.',
+    blogSlug: 'dark-sky-friendly-lighting-guide',
+    icon: 'mdi:shield-moon',
   },
   {
-    question: 'Does light pollution affect human health?',
-    answer:
-      'Yes, exposure to artificial light at night disrupts our circadian rhythms, which can lead to sleep disorders, increased stress, and potentially more serious health issues. The blue light from LEDs is particularly disruptive to melatonin production, which regulates our sleep cycles.',
-    expandedAnswer:
-      'Research has shown potential links between nighttime light exposure and various health conditions including depression, obesity, diabetes, and even certain types of cancer. While more research is needed, reducing unnecessary light exposure at night is considered a prudent health measure.',
-    isExpanded: false,
+    title: 'What are the benefits of dark sky preservation?',
+    content:
+      'Preserving dark skies supports wildlife, conserves energy, enhances human health by allowing proper circadian rhythms, provides cultural and scientific values through stargazing, and offers economic benefits through astro-tourism.',
+    blogSlug: 'benefits-of-dark-sky-preservation',
+    icon: 'mdi:star-outline',
   },
 ]
 
@@ -375,40 +629,6 @@ const shareTags = [
   '#FollowTara',
 ]
 
-// Practical steps for fighting light pollution
-const practicalSteps = [
-  {
-    title: 'Shield Your Lights',
-    icon: '🛡️',
-    tips: [
-      'Use fully-shielded fixtures that direct light downward',
-      'Cover bare bulbs to prevent light from shining upward',
-      'Install motion sensors for security lighting',
-      'Adjust existing fixtures with shields or hoods',
-    ],
-  },
-  {
-    title: 'Use the Right Lights',
-    icon: '💡',
-    tips: [
-      'Choose warm-colored bulbs (under 3000K)',
-      'Use the minimum brightness necessary',
-      'Replace cool white LEDs with warm alternatives',
-      'Select dark-sky friendly fixtures for outdoor lighting',
-    ],
-  },
-  {
-    title: 'Control When Lights Are On',
-    icon: '⏱️',
-    tips: [
-      'Install timers to turn off lights when not needed',
-      'Use motion sensors for security and walkway lighting',
-      'Turn off decorative lighting after business hours',
-      'Advocate for smart lighting systems in your community',
-    ],
-  },
-]
-
 // Events section text
 const conferencesText =
   'Uniting experts and enthusiasts to reclaim the night—because preserving dark skies means protecting life, science, and wonder. Take a look at our past and upcoming conferences!'
@@ -419,6 +639,33 @@ const symposiumsText =
 // CTA section text
 const ctaText =
   'Join us in the fight against light pollution and help preserve our night skies for future generations.'
+
+useHead({
+  title: 'Dark Sky Preservation',
+  meta: [
+    {
+      name: 'description',
+      content:
+        'Join us in the fight against light pollution and help preserve our night skies for future generations.',
+    },
+    {
+      property: 'og:title',
+      content: 'Dark Sky Preservation',
+    },
+    {
+      property: 'og:description',
+      content:
+        'Join us in the fight against light pollution and help preserve our night skies for future generations.',
+    },
+  ],
+  script: [
+    {
+      src: 'https://player.vimeo.com/api/player.js',
+      async: true,
+      defer: true,
+    },
+  ],
+})
 </script>
 
 <template>
@@ -443,34 +690,33 @@ const ctaText =
     >
       <!-- Mission Section -->
       <DarkskyMission
-        :astronomy-education="missionAstronomyEducation"
-        :dark-sky-preservation="missionDarkSkyPreservation"
+        :astronomy-mission="missionAstronomy"
+        :dark-sky-objectives="darkSkyObjectives"
       />
 
       <!-- Mascot Section -->
       <DarkskyMascot
-        :story-paragraphs="mascotStory"
-        button-text="KNOW MY STORY"
         :title="{
-          main: 'Meet Tara the Firefly',
+          main: 'Tara the Firefly',
           subtitle: 'Your quirky little mascot for saving the dark skies!',
         }"
+        comic-image="images/tara/tara-comic-introduction.jpg"
+        button-text="KNOW MY STORY"
       />
 
-      <!-- Simulator Section -->
-      <DarkskySimulator />
-
-      <!-- Practical Steps Section -->
-      <DarkskyPracticalSteps :steps="practicalSteps" />
+      <!-- <DarkskySimulator /> -->
 
       <!-- Action Steps Section -->
-      <DarkskyActionSteps :steps="actionSteps" />
-
-      <!-- Resources Section -->
-      <DarkskyResources :resources="helpfulResources" />
+      <DarkskyActionSteps
+        title="Fight Light Pollution"
+        subtitle="Simple, high-impact steps to protect our night skies"
+        :autoplay-delay="8000"
+        :steps="lightPollutionActions"
+        :helpful-resources="helpfulResources"
+      />
 
       <!-- FAQ Section -->
-      <DarkskyFAQ :faqs="faqs" />
+      <DarkskyLearnMore :cards="darkSkyInfoCards" />
 
       <!-- Events Section -->
       <!-- <DarkskyEvents
@@ -481,12 +727,11 @@ const ctaText =
       <!-- Social Sharing Section -->
       <DarkskyShare
         :platforms="sharePlatforms"
-        :tags="shareTags"
+        :tags="shareTags.slice(0, 9)"
         page-url="https://astronera.org/darksky"
       />
 
-      <!-- Call to Action -->
-      <DarkskyCTA :text="ctaText" />
+      <DarkskyPledge />
     </div>
   </div>
 </template>

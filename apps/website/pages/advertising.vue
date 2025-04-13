@@ -31,9 +31,6 @@ useHead({
     <!-- Advertising Packages -->
     <AdvertPackages />
 
-    <!-- FAQ Section -->
-    <AdvertFAQ />
-
     <!-- Contact Form -->
     <div class="wrapper py-16 text-center">
       <LandingTitle
@@ -50,5 +47,8 @@ useHead({
         <p class="text-primary-400 mt-2 text-lg">connectus@astronera.org</p>
       </div>
     </div>
+
+    <!-- FAQ Section -->
+    <AdvertFAQ />
   </div>
 </template>

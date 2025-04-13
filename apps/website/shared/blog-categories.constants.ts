@@ -4,6 +4,7 @@ export const BLOG_CATEGORIES = [
   'space-exploration',
   'dark-sky-conservation',
   'sustainable-development',
+  'organisations',
   'research',
 ] as const
 

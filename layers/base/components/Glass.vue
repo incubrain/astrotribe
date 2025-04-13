@@ -61,7 +61,7 @@ const currentGradient = gradientConfig[props.gradient]
 
 <template>
   <div
-    class="relative overflow-hidden transition-all duration-300"
+    class="relative overflow-hidden transition-all duration-300 h-full"
     :class="[
       currentIntensity.backdrop,
       currentIntensity.bgOpacity,
@@ -102,7 +102,7 @@ const currentGradient = gradientConfig[props.gradient]
     />
 
     <!-- Content -->
-    <div class="relative z-10">
+    <div class="relative z-10 h-full flex flex-col justify-between">
       <slot />
     </div>
   </div>

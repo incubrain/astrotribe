@@ -408,6 +408,7 @@ const inquiryOptions = ref([
   { label: 'General Inquiry', value: 'general' },
   { label: 'Workshop Registration', value: 'workshop' },
   { label: 'Collaboration Opportunity', value: 'collaboration' },
+  { label: 'Join Us', value: 'hiring' },
   { label: 'Press/Media', value: 'media' },
   { label: 'Feedback', value: 'feedback' },
 ])

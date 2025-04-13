@@ -377,6 +377,7 @@ export default defineNuxtConfig({
           "'self'",
           "'unsafe-inline'",
           "'wasm-unsafe-eval'",
+          'https://player.vimeo.com',
           'http://localhost:3000',
           'http://localhost:54321',
           'https://www.youtube.com',
@@ -399,6 +400,7 @@ export default defineNuxtConfig({
         'frame-src': [
           "'self'",
           'https://www.youtube.com',
+          'https://player.vimeo.com',
           'https://us.i.posthog.com',
           'https://*.posthog.com',
           'https://www.google.com',

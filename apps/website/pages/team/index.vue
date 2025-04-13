@@ -45,7 +45,7 @@ onMounted(() => {
     <!-- Hero section with space-themed background -->
     <div class="relative flex items-center justify-center">
       <NuxtImg
-        src="/images/team/astronera-team-hero.jpg"
+        src="/images/team/hero.png"
         alt="AstronEra team page hero image"
         width="1920"
         height="1080"

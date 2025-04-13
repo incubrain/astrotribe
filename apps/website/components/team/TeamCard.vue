@@ -47,6 +47,13 @@ const connectionPosition = computed(() => {
   return positions[props.index % positions.length]
 })
 
+// Placeholder URL for missing images
+const getPlaceholderUrl = (width: number, height: number) => {
+  return `https://via.placeholder.com/${width}x${height}?text=No+Image`
+}
+
+const imageUrl = computed(() => props.member.avatar || getPlaceholderUrl(350, 350))
+
 // Handle profile link with view transitions
 const navigateToProfile = () => {
   navigateTo(`/team/${props.member.name.toLowerCase().replaceAll(' ', '-')}`)
@@ -69,6 +76,8 @@ const navigateToProfile = () => {
       intensity="low"
       :interactive="true"
       class="relative team-card h-full"
+      @mouseenter="handleHover(true)"
+      @mouseleave="handleHover(false)"
     >
       <!-- Background elements -->
       <div class="absolute h-full w-full pointer-events-none">
@@ -100,14 +109,12 @@ const navigateToProfile = () => {
           <div
             class="flip-card-inner relative w-full h-full transition-transform duration-700 transform-style-preserve-3d"
             :class="{ 'rotate-y-180': isFlipped }"
-            @mouseenter="handleHover(true)"
-            @mouseleave="handleHover(false)"
           >
             <div
               class="flip-card-front absolute w-full h-full backface-hidden rounded-full overflow-hidden"
             >
               <NuxtImg
-                :src="member.avatar"
+                :src="imageUrl"
                 :alt="member.name"
                 loading="lazy"
                 width="128"
@@ -120,7 +127,7 @@ const navigateToProfile = () => {
               class="flip-card-back absolute w-full h-full backface-hidden rotate-y-180 rounded-full overflow-hidden"
             >
               <NuxtImg
-                :src="member.avatar.replace('.jpg', '-cartoon.jpg')"
+                :src="imageUrl.replace('.jpg', '-cartoon.jpg')"
                 :alt="`Cartoon version of ${member.name}`"
                 loading="lazy"
                 width="128"

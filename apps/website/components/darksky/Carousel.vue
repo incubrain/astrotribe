@@ -23,6 +23,7 @@ const scrollToContent = () => {
 <template>
   <section class="relative w-full">
     <AppCarousel
+      has-navigation
       :items="items"
       type="darksky"
       :interval="interval || 8000"
