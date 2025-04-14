@@ -43,7 +43,7 @@ defineProps({
         <BlogArticleAuthor
           v-if="authors.length > 0"
           :authors="authors"
-          :published-at="article.date || article.publishedAt"
+          :published-at="article.createdAt || article.publishedAt"
         />
       </div>
       <div
