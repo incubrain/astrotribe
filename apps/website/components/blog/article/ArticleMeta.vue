@@ -10,7 +10,7 @@ const props = defineProps({
 
 // Format date
 const formattedDate = computed(() => {
-  const dateStr = props.article.date || props.article.publishedAt
+  const dateStr = props.article.createdAt || props.article.publishedAt
   return dateStr ? useDateFormat(dateStr, 'DD MMM YYYY').value : ''
 })
 

@@ -23,7 +23,8 @@ export default defineEventHandler(async (event) => {
         if (article.path) {
           entries.push({
             loc: article.path,
-            lastmod: article.updatedAt || article.date || new Date().toISOString(),
+            lastmod: article.updatedAt || article.createdAt || new Date().toISOString(),
+            priority: article.priority || 0.5,
             _sitemap: 'blog',
           })
         }
