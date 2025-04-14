@@ -244,17 +244,6 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
           <!-- Authentication buttons -->
           <div class="hidden lg:flex items-center gap-2">
             <NuxtLink
-              to="https://github.com/incubrain/astrotribe"
-              target="_blank"
-              class="p-2 text-white flex"
-            >
-              <Icon
-                name="i-mdi-github"
-                size="20"
-              />
-            </NuxtLink>
-
-            <NuxtLink
               v-ripple
               :to="$config.public.authURL"
             >
