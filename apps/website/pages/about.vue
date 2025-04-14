@@ -281,13 +281,7 @@ onMounted(() => {
         :initial="conf.fadeUp.initial"
         :enter="{ ...conf.fadeUp.enter, transition: { delay: 0.4 } }"
       >
-        <IBGlass
-          gradient="purple"
-          intensity="low"
-        >
-          <h3 class="mb-6 text-2xl font-bold">Timeline</h3>
-          <AboutTimeline :timeline="about.timeline" />
-        </IBGlass>
+        <AboutTimeline :timeline="about.timeline" />
       </div>
     </div>
   </div>

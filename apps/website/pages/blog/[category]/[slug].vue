@@ -124,7 +124,7 @@ console.log('Article with relations:', articleWithRelations.value)
       <BlogArticleHero :article="articleWithRelations" />
 
       <div
-        class="padded-x grid grid-cols-[minmax(300px,700px)] justify-center pt-8 xl:grid-cols-[minmax(240px,1fr)_minmax(660px,740px)_minmax(240px,1fr)] xl:gap-8"
+        class="padded-x grid grid-cols-[minmax(300px,700px)] justify-center pt-8 xl:grid-cols-[minmax(240px,1fr)_minmax(660px,700px)_minmax(240px,1fr)] xl:gap-8"
       >
         <!-- Left Sidebar -->
         <div class="w-full xl:col-start-1">
@@ -146,7 +146,7 @@ console.log('Article with relations:', articleWithRelations.value)
               <ContentRenderer
                 v-if="article"
                 :value="article"
-                class="nuxt-content prose prose-invert max-w-none"
+                class="prose dark:prose-invert max-w-none blog-content animate-fade-in"
               />
             </div>
             <BlogArticleShare

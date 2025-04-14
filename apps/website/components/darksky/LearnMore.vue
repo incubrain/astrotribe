@@ -6,7 +6,7 @@ interface InfoCard {
   icon: string
 }
 
-const props = defineProps<{
+defineProps<{
   cards: InfoCard[]
   title?: string
   subtitle?: string

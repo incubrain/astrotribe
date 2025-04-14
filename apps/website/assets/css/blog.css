@@ -1,0 +1,43 @@
+/* blog-content.css */
+@layer components {
+  .blog-content h2 a {
+    @apply text-primary-700 font-bold mt-12 mb-6 no-underline;
+  }
+
+  .blog-content h3 a {
+    @apply text-primary-700 no-underline;
+  }
+
+  .blog-content a {
+    @apply text-primary-700 underline-offset-2;
+  }
+
+  .dark .blog-content a {
+    @apply text-primary-500;
+  }
+
+  .dark .blog-content h2 a {
+    @apply text-primary-400;
+  }
+
+  .dark .blog-content h3 a {
+    @apply text-primary-400;
+  }
+
+  .blog-content p {
+    @apply my-6 leading-relaxed;
+  }
+
+  .blog-content ul,
+  .blog-content ol {
+    @apply space-y-3;
+  }
+
+  .blog-content img {
+    @apply shadow-md my-8;
+  }
+
+  .blog-content blockquote {
+    @apply bg-primary-50/30 dark:bg-primary-900/30 border-l-4 border-primary-400 pl-4 py-2 my-6 italic;
+  }
+}

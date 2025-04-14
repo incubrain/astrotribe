@@ -545,28 +545,28 @@ const darkSkyInfoCards = [
     title: 'What exactly is light pollution?',
     content:
       'Light pollution is excessive, misdirected, or obtrusive artificial light produced by human activities. This includes sky glow, light trespass, glare, and clutter that disrupt ecosystems and obscure our view of the stars.',
-    blogSlug: 'understanding-light-pollution',
+    blogSlug: 'what-is-light-pollution',
     icon: 'mdi:lightbulb-question-outline',
   },
   {
     title: 'How does light pollution affect wildlife?',
     content:
       'Artificial light at night disrupts natural behaviors and biological processes for many species. Nocturnal animals may reduce their activity, while diurnal animals might remain active during nighttime hours when they should be resting.',
-    blogSlug: 'wildlife-impacts-of-light-pollution',
+    blogSlug: 'light-pollution-and-wildlife',
     icon: 'mdi:nature-people',
   },
   {
-    title: 'What are dark sky friendly lighting practices?',
+    title: 'How does light pollution affect human health?',
     content:
-      'Dark sky friendly lighting uses fixtures that direct light downward, shields that prevent light from shining upward, warm-colored bulbs (below 3000K), and dimmers or timers to use light only when needed.',
-    blogSlug: 'dark-sky-friendly-lighting-guide',
+      'Light pollution disrupts our circadian rhythms, leading to sleep disorders, increased stress, and other health issues. It can also affect mental health and well-being by reducing our connection to nature.',
+    blogSlug: 'light-pollution-and-human-health',
     icon: 'mdi:shield-moon',
   },
   {
-    title: 'What are the benefits of dark sky preservation?',
+    title: 'How can I reduce light pollution in my area?',
     content:
-      'Preserving dark skies supports wildlife, conserves energy, enhances human health by allowing proper circadian rhythms, provides cultural and scientific values through stargazing, and offers economic benefits through astro-tourism.',
-    blogSlug: 'benefits-of-dark-sky-preservation',
+      'You can reduce light pollution by using shielded fixtures, choosing warm-colored bulbs, installing timers and sensors, and advocating for better lighting policies in your community.',
+    blogSlug: 'why-care-about-dark-skies',
     icon: 'mdi:star-outline',
   },
 ]

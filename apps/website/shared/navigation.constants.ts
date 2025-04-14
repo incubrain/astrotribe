@@ -26,7 +26,7 @@ export const PAGES: PageInfo[] = [
   },
   {
     key: 'about',
-    title: 'About AstronEra',
+    title: 'About',
     description: "Learn about AstronEra's mission and vision",
     path: '/about',
     sitemap: 'main',
@@ -85,7 +85,7 @@ export const PAGES: PageInfo[] = [
   // Dark Sky
   {
     key: 'darksky',
-    title: 'Dark Sky Conservation',
+    title: 'Conservation',
     description: 'Learn about dark sky conservation efforts',
     path: '/darksky',
     sitemap: 'main',
@@ -96,7 +96,7 @@ export const PAGES: PageInfo[] = [
   },
   {
     key: 'conferences',
-    title: 'Dark Sky Conferences',
+    title: 'Conferences',
     description: 'Information about dark sky conservation conferences',
     path: '/conferences',
     sitemap: 'main',
@@ -118,7 +118,7 @@ export const PAGES: PageInfo[] = [
   },
   {
     key: 'symposiums',
-    title: 'Dark Sky Symposiums',
+    title: 'Symposiums',
     description: 'Information about dark sky symposiums',
     path: '/symposiums',
     sitemap: 'main',
@@ -259,7 +259,7 @@ export const PAGES: PageInfo[] = [
 export const NAV_SECTIONS = [
   {
     key: 'about-section',
-    label: 'About Us',
+    label: 'About',
     icon: 'i-mdi-information-outline',
   },
   {
@@ -325,7 +325,7 @@ interface NavItem {
 }
 
 export function getNavigation() {
-  const navItems = []
+  const navItems: NavItem[] = []
 
   // Add each top-level section
   for (const section of NAV_SECTIONS) {

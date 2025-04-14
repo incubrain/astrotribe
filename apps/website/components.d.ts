@@ -27,6 +27,7 @@ declare module 'vue' {
     PrimeFormField: typeof import('@primevue/forms/formfield')['default']
     PrimeInputText: typeof import('primevue/inputtext')['default']
     PrimeMessage: typeof import('primevue/message')['default']
+    PrimePanel: typeof import('primevue/panel')['default']
     PrimePopover: typeof import('primevue/popover')['default']
     PrimeProgressBar: typeof import('primevue/progressbar')['default']
     PrimeProgressSpinner: typeof import('primevue/progressspinner')['default']
