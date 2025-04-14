@@ -1,9 +1,10 @@
 ---
 title: Organizations Tackling Light Pollution
 description: >-
-    A comprehensive survey of organizations, companies, and government initiatives
-    dedicated to conserving the night sky by reducing light pollution.
-date: '2025-03-28T22:58:45.450Z'
+  A comprehensive survey of organizations, companies, and government initiatives dedicated to
+  conserving the night sky by reducing light pollution.
+createdAt: '2025-03-28T22:58:45.450Z'
+publishedAt: '2025-03-28T22:58:45.450Z'
 updatedAt: '2025-03-28T22:58:45.450Z'
 author: drew-macgibbon
 category: research

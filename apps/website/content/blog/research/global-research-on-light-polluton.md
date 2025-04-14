@@ -5,7 +5,8 @@ description: >-
   focusing on light pollution's impacts and mitigation strategies. It encompasses a broad range of
   studies, reflecting global efforts to address this environmental challenge, and includes insights
   into institutional contributions, geographical origins, and key findings.
-date: '2025-03-28T22:58:45.450Z'
+createdAt: '2025-03-28T22:58:45.450Z'
+publishedAt: '2025-03-28T22:58:45.450Z'
 updatedAt: '2025-03-28T22:58:45.450Z'
 author: drew-macgibbon
 category: research

@@ -5,7 +5,8 @@ description: >-
   Imagine asking your mom as a kid if you could become an astronaut and hearing, “If you study hard,
   you can make it.” Fast forward a few decades, and not only are you reaching for the stars, but
   you’re also planting seeds there—literally
-date: '2024-12-13T05:29:01.366Z'
+createdAt: '2024-12-13T05:29:01.366Z'
+publishedAt: '2024-12-13T05:29:01.366Z'
 updatedAt: '2024-12-13T05:29:01.297Z'
 author: ruchira-huchgol
 category: people-of-space

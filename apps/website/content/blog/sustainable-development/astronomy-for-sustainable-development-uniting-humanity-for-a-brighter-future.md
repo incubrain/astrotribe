@@ -3,7 +3,8 @@ title: Astronomy for Sustainable Development - Uniting Humanity for a Brighter F
 description: >-
   Explore how the power of astronomy can drive sustainable development, connecting our understanding
   of the cosmos to the well-being of Earth and its inhabitants.
-date: '2024-10-28T22:58:18.715Z'
+createdAt: '2024-10-28T22:58:18.715Z'
+publishedAt: '2024-10-28T22:58:18.715Z'
 updatedAt: '2024-10-28T22:58:18.650Z'
 author: ruchira-huchgol
 category: sustainable-development

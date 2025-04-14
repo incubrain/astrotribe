@@ -3,7 +3,8 @@ title: So, You Want to Be a Space Engineer? Josh Miller’s Journey Says, 'Just 
 description: >-
   Meet Joshua Miller, senior mechanical design engineer at Airbus Defense and Space. Joshua shares
   what it takes to build satellites and connect humanity to the cosmos.
-date: '2024-10-28T22:59:38.791Z'
+createdAt: '2024-10-28T22:59:38.791Z'
+publishedAt: '2024-10-28T22:59:38.791Z'
 updatedAt: '2024-10-28T22:59:38.673Z'
 author: ruchira-huchgol
 category: people-of-space

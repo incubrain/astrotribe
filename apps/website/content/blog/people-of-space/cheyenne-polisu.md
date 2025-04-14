@@ -3,7 +3,8 @@ title: 'From Saint Lucia to the Stars: A Conversation with Cheyenne Polius'
 description: >-
   How does a curious island girl from Saint Lucia evolve into a multi-hyphenate
   powerhouse—astrophysicist, data analyst, educator, founder, and advocate for women in STEM?
-date: '2024-12-03T08:24:44.452Z'
+createdAt: '2024-12-03T08:24:44.452Z'
+publishedAt: '2024-12-03T08:24:44.452Z'
 updatedAt: '2024-12-03T08:24:44.402Z'
 author: ruchira-huchgol
 category: people-of-space

@@ -4,7 +4,8 @@ description: >-
   Discover how Yana Yakushina, a lawyer and researcher, is fighting light pollution and advocating
   for dark skies through space law, policy, and education. Learn about her journey, her work on
   biodiversity, and how you can help protect the night sky.
-date: '2024-12-03T08:24:44.452Z'
+createdAt: '2024-12-03T08:24:44.452Z'
+publishedAt: '2024-12-03T08:24:44.452Z'
 updatedAt: '2024-12-03T08:24:44.402Z'
 author: ruchira-huchgol
 category: people-of-space
