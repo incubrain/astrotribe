@@ -3,7 +3,8 @@ title: Exploring the Cosmos - Evolving Realities for People of Space
 description: >-
   A journey through the extraordinary narratives of individuals involved in space exploration,
   highlighting the evolution, diversity, and inclusion in the field.
-date: '2024-12-19T10:12:20.251Z'
+createdAt: '2024-12-19T10:12:20.251Z'
+publishedAt: '2024-12-19T10:12:20.251Z'
 updatedAt: '2024-12-19T10:12:20.208Z'
 author: ruchira-huchgol
 category: people-of-space

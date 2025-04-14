@@ -1,5 +1,6 @@
 ---
 title: Dim the Lights, Ignite the Wonder - Why Dark Skies Matter
+slug: why-dark-skies-matter
 description: >-
   Discover the importance of dark sky conservation and its impact on ecosystems, human health, and
     our connection to the cosmos. Join the fight against light pollution and learn how you can help

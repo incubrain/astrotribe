@@ -9,7 +9,8 @@ description: >-
   statistics specific to India, followed by global estimates, to highlight the urgent need for
   change. We’ll also break down our research process, assumptions, and calculations, emphasizing the
   critical need for national-level studies in India to address this understudied issue.
-date: '2025-03-28T22:58:45.450Z'
+createdAt: '2025-03-28T22:58:45.450Z'
+publishedAt: '2025-03-28T22:58:45.450Z'
 updatedAt: '2025-03-28T22:58:45.450Z'
 author: drew-macgibbon
 category: research

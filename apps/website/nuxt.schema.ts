@@ -5,6 +5,7 @@ export default defineNuxtSchema({
   appConfig: {
     blog: group({
       title: 'Blog Configuration',
+      slug: 'blog',
       description: 'Configure blog settings',
       icon: 'i-lucide-file-text',
       fields: {
@@ -35,15 +36,30 @@ export default defineNuxtSchema({
           title: 'Title',
           description: 'Blog post title',
         }),
+        slug: field({
+          type: 'string',
+          title: 'Slug',
+          description: 'URL-friendly version of the title',
+        }),
         description: field({
           type: 'string',
           title: 'Description',
           description: 'Short description of the blog post',
         }),
-        date: field({
+        createdAt: field({
           type: 'string',
           title: 'Date',
           description: 'Publication date (YYYY-MM-DD)',
+        }),
+        publishedAt: field({
+          type: 'string',
+          title: 'Published At',
+          description: 'Publication date (YYYY-MM-DD)',
+        }),
+        updatedAt: field({
+          type: 'string',
+          title: 'Updated At',
+          description: 'Last updated date (YYYY-MM-DD)',
         }),
         author: field({
           type: 'string',
@@ -72,6 +88,12 @@ export default defineNuxtSchema({
           description: 'Is this post a draft?',
           default: false,
         }),
+        featured: field({
+          type: 'boolean',
+          title: 'Featured',
+          description: 'Is this post featured?',
+          default: false,
+        }),
       },
     }),
 
@@ -85,10 +107,35 @@ export default defineNuxtSchema({
           title: 'Name',
           description: 'Author name',
         }),
+        slug: field({
+          type: 'string',
+          title: 'Slug',
+          description: 'URL-friendly version of the author name',
+        }),
         bio: field({
           type: 'string',
           title: 'Bio',
           description: 'Author bio',
+        }),
+        avatar: field({
+          type: 'string',
+          title: 'Avatar',
+          description: 'Path to author avatar image',
+        }),
+        website: field({
+          type: 'string',
+          title: 'Website',
+          description: 'Author website URL',
+        }),
+        twitter: field({
+          type: 'string',
+          title: 'Twitter',
+          description: 'Author Twitter handle',
+        }),
+        linkedin: field({
+          type: 'string',
+          title: 'LinkedIn',
+          description: 'Author LinkedIn profile URL',
         }),
       },
     }),
@@ -102,6 +149,11 @@ export default defineNuxtSchema({
           type: 'string',
           title: 'Name',
           description: 'Category name',
+        }),
+        slug: field({
+          type: 'string',
+          title: 'Slug',
+          description: 'URL-friendly version of the category name',
         }),
         description: field({
           type: 'string',
@@ -125,6 +177,11 @@ export default defineNuxtSchema({
           type: 'string',
           title: 'Name',
           description: 'Tag name',
+        }),
+        slug: field({
+          type: 'string',
+          title: 'Slug',
+          description: 'URL-friendly version of the tag name',
         }),
         description: field({
           type: 'string',

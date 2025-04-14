@@ -3,7 +3,8 @@ title: 'Stardust Dreams and Galactic Journeys: A Chat with the Cosmic Biologist'
 description: >-
   Spoiler alert: his journey from a five-year-old dreamer of spaceships to a leading astrobiologist
   will leave you starry-eyed.
-date: '2024-12-20T06:01:16.296Z'
+createdAt: '2024-12-20T06:01:16.296Z'
+publishedAt: '2024-12-20T06:01:16.296Z'
 updatedAt: '2024-12-20T06:01:16.187Z'
 author: ruchira-huchgol
 category: people-of-space

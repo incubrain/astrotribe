@@ -3,7 +3,8 @@ title: Unveiling the Mysteries of the Cosmos - A Journey Through Space Explorati
 description: >-
   Since the dawn of humanity, the stars have beckoned us with their enigmatic allure, igniting a
   primal curiosity to explore the vast expanse of the cosmos.
-date: '2024-10-28T22:59:55.761Z'
+createdAt: '2024-10-28T22:59:55.761Z'
+publishedAt: '2024-10-28T22:59:55.761Z'
 updatedAt: '2024-10-28T22:59:55.714Z'
 author: ruchira-huchgol
 category: space-exploration
