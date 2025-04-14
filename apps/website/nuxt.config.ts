@@ -38,8 +38,6 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 const rootDir = join(currentDir, '../..')
 
 const baseLayerPath = resolve(rootDir, 'layers/base')
-const crudLayerPath = resolve(rootDir, 'layers/crud')
-const referralLayerPath = resolve(rootDir, 'layers/referral')
 
 function generateLocalUrls(start = 3000, end = 3009) {
   return Array.from({ length: end - start + 1 }, (_, i) => `http://localhost:${start + i}`)
@@ -60,7 +58,7 @@ const og = {
 }
 
 export default defineNuxtConfig({
-  extends: [baseLayerPath, crudLayerPath, referralLayerPath],
+  extends: [baseLayerPath],
   modules: [
     '@nuxtjs/mdc',
     'nuxt-security',
