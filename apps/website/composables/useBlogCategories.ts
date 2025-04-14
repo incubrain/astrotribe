@@ -7,10 +7,15 @@ export function useBlogCategories() {
   const error = ref(null)
 
   // Initialize with an empty array
+  // Modify your category validation logic in useBlogCategories.ts:
   const validCategories = computed(() => {
-    const result = ['all', ...(categories.value?.map((cat) => cat?.stem || '') || [])]
-    console.log('Computed validCategories:', result)
-    return result
+    const normalized =
+      categories.value?.map((cat: any) => {
+        // Strip 'categories/' prefix if it exists
+        return cat?.stem?.replace(/^categories\//, '') || ''
+      }) || []
+
+    return ['all', ...normalized]
   })
 
   // Function to get category info by slug
