@@ -28,7 +28,7 @@ const { data: relatedPosts } = await useAsyncData(`related-${props.article.id}`,
     // Get recent posts
     const recentPosts = await queryCollection('blog')
       .where('path', '<>', props.article.path)
-      .order('date', 'DESC')
+      .order('createdAt', 'DESC')
       .limit(10)
       .all()
 
@@ -48,7 +48,7 @@ const { data: relatedPosts } = await useAsyncData(`related-${props.article.id}`,
   // Fallback to recent posts
   return queryCollection('blog')
     .where('path', '<>', props.article.path)
-    .order('date', 'DESC')
+    .order('createdAt', 'DESC')
     .limit(3)
     .all()
 })

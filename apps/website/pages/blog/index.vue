@@ -10,7 +10,7 @@ const { data: featuredPosts, pending: loadingFeatured } = await useAsyncData(
 
 // Get latest posts
 const { data: latestPosts, pending: loadingLatest } = await useAsyncData('latest-blog-posts', () =>
-  queryCollection('blog').where('draft', '=', false).order('date', 'DESC').limit(6).all(),
+  queryCollection('blog').where('draft', '=', false).order('createdAt', 'DESC').limit(6).all(),
 )
 
 // SEO

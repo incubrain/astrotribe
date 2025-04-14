@@ -18,7 +18,7 @@ const { data: articlesData, pending } = await useAsyncData(
   `articles-${categorySlug}-page-${pageNumber}`,
   async () => {
     // Base query
-    let query = queryCollection('blog').where('draft', '=', false).order('date', 'DESC')
+    let query = queryCollection('blog').where('draft', '=', false).order('createdAt', 'DESC')
 
     // Filter by category
     if (categorySlug !== 'all') {
