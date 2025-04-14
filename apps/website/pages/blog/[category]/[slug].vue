@@ -30,18 +30,23 @@ const {
     }
   },
   {
-    // Ensure it runs server-side and payload is transferred
+    server: true,
+    key: `article-${category}-${slug}`,
+    watch: [() => route.params.slug, () => route.params.category],
   },
 )
 
 const { data: authorData } = await useAsyncData(
-  `author-${article.value?.author}`, // Key depends on article having loaded
+  `author-${article.value?.author}`,
   async () => {
     if (!article.value?.author) return null
     console.log('Fetching author data for:', article.value.author)
     return queryCollection('authors').where('stem', '=', `authors/${article.value.author}`).first()
   },
-  { watch: [() => article.value?.author] }, // Re-run if author changes
+  {
+    immediate: false,
+    watch: [() => article.value?.author, () => route.path],
+  },
 )
 
 const { data: categoryData } = await useAsyncData(
@@ -67,8 +72,6 @@ const articleWithRelations = computed(() => {
 
 onMounted(async () => {
   await fetchCategories()
-  console.log('Available categories:', categories.value)
-  console.log('Valid category slugs:', validCategories.value)
 })
 
 watch(
@@ -87,7 +90,19 @@ watch(
   { immediate: true },
 )
 
-console.log('Article with relations:', articleWithRelations.value)
+console.log('Route changed:', {
+  path: route.path,
+  params: route.params,
+  slug,
+  category,
+})
+
+// After article fetch
+console.log('Article fetch result:', {
+  status: status.value,
+  hasArticle: !!article.value,
+  articleId: article.value?.id,
+})
 </script>
 
 <template>

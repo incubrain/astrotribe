@@ -42,10 +42,13 @@ export default defineNuxtConfig({
     preload: true,
     provider: 'server',
     serverBundle: {
-      collections: ['material-symbols', 'mdi', 'game-icons'],
+      collections: ['material-symbols', 'mdi', 'lucide'], // Limit collections to reduce size
     },
     clientBundle: {
-      scan: true,
+      scan: process.env.NODE_ENV === 'production', // Only in production
+      componentName: {
+        icon: null,
+      },
     },
   },
   image: {
