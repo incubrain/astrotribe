@@ -8,14 +8,24 @@ const isLoading = ref(false)
 const isSuccess = ref(false)
 const errorMessage = ref('')
 
-const turnstile = ref()
-const turnstileValid = ref(false)
-const turnstileToken = ref<string | null>(null)
-
-const onValidTurnstile = (token: string) => {
-  turnstileValid.value = true
-  turnstileToken.value = token
-}
+const props = defineProps({
+  isRegister: {
+    type: Boolean,
+    default: false,
+  },
+  turnstileValid: {
+    type: Boolean,
+    default: false,
+  },
+  turnstileToken: {
+    type: String,
+    default: null,
+  },
+  resetTurnstile: {
+    type: Function,
+    default: null,
+  },
+})
 
 // Get focused input using directive instead of ref
 const vFocus = {
@@ -28,14 +38,14 @@ const vFocus = {
 }
 
 async function handleSendMagicLink() {
-  if (!turnstileValid.value) return
+  if (!props.turnstileValid) return
 
   isLoading.value = true
   errorMessage.value = ''
   isSuccess.value = false
 
   try {
-    await auth.sendMagicLink(form.email, turnstileToken.value, turnstile.value?.reset)
+    await auth.sendMagicLink(form.email, props.turnstileToken)
     isSuccess.value = true
     // Keep the success message visible for a few seconds
     setTimeout(() => {
@@ -45,11 +55,12 @@ async function handleSendMagicLink() {
     errorMessage.value = error.message || 'Failed to send magic link'
   } finally {
     isLoading.value = false
+    setTimeout(() => props.resetTurnstile(), 1000)
   }
 }
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if (turnstileValid.value && event.key === 'Enter') {
+  if (props.turnstileValid && event.key === 'Enter') {
     handleSendMagicLink()
   }
 }
@@ -108,12 +119,6 @@ watch(
         autofocus
       />
     </div>
-
-    <TurnstileChallenge
-      ref="turnstile"
-      class="mb-4"
-      :on-valid-token="onValidTurnstile"
-    />
 
     <PrimeButton
       type="submit"

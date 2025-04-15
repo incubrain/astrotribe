@@ -31,12 +31,13 @@ async function handleForgotPassword() {
   isSuccess.value = false
 
   try {
-    await auth.password.forgot(form.email, turnstileToken.value, turnstile.value?.reset)
+    await auth.password.forgot(form.email, turnstileToken.value)
     isSuccess.value = true
   } catch (error: any) {
     errorMessage.value = error.message || 'Failed to send reset link'
   } finally {
     isLoading.value = false
+    setTimeout(() => turnstile.value.reset?.(), 1000)
   }
 }
 

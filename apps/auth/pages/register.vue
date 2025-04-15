@@ -76,12 +76,12 @@ async function handleRegister() {
       email: form.email,
       password: form.password,
       turnstileToken: turnstileToken.value,
-      resetTurnstile: turnstile.value?.reset,
     })
   } catch (error: any) {
     errorMessage.value = error.message || 'Registration failed'
   } finally {
     isLoading.value = false
+    setTimeout(() => turnstile.value.reset?.(), 1000)
   }
 }
 

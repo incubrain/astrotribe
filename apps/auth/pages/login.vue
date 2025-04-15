@@ -1,6 +1,21 @@
 <script setup lang="ts">
 const activeAuthMethod = ref('magic-link') // 'magic-link' or 'password'
 
+const turnstile = ref()
+const turnstileValid = ref(false)
+const turnstileToken = ref<string | null>(null)
+
+const onValidTurnstile = (token: string) => {
+  turnstileValid.value = true
+  turnstileToken.value = token
+}
+
+const resetTurnstile = () => {
+  turnstile.value?.reset?.()
+  turnstileValid.value = false
+  turnstileToken.value = null
+}
+
 definePageMeta({
   name: 'Login',
 })
@@ -23,14 +38,29 @@ definePageMeta({
         <!-- Auth Method Toggle -->
         <FormToggle v-model:active-method="activeAuthMethod" />
 
+        <TurnstileChallenge
+          ref="turnstile"
+          class="mb-4"
+          :on-valid-token="onValidTurnstile"
+        />
+
         <!-- Magic Link Form (Default) -->
         <div v-if="activeAuthMethod === 'magic-link'">
-          <FormMagicLink />
+          <FormMagicLink
+            :turnstile-valid="turnstileValid"
+            :turnstile-token="turnstileToken"
+            :reset-turnstile="resetTurnstile"
+          />
         </div>
 
         <!-- Password Form (Alternative) -->
         <div v-else>
-          <FormPassword :is-register="false" />
+          <FormPassword
+            :is-register="false"
+            :turnstile-valid="turnstileValid"
+            :turnstile-token="turnstileToken"
+            :reset-turnstile="resetTurnstile"
+          />
         </div>
       </div>
     </template>
