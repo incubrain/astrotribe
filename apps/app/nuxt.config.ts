@@ -22,6 +22,7 @@ const publicKeys = [
   'posthogKey',
   'posthogURL',
 ] as const
+
 const privateKeys = [
   'resendApiKey',
   'supabaseServiceKey',
