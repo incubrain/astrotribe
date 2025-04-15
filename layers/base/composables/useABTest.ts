@@ -1,4 +1,4 @@
-import type { DefineComponent } from 'vue'
+import { computed } from 'vue'
 
 export enum TestGoal {
   SignUp = 'sign_up',
@@ -21,24 +21,37 @@ interface ABTestConfig<T> {
 }
 
 export function useABTest<T>({ experimentName, variants, defaultVariant, goals }: ABTestConfig<T>) {
-  const { $posthog } = useNuxtApp()
-
   const selectedVariant = ref<ABTestVariant<T>>(defaultVariant)
 
-  // Use PostHog's experiment feature to get the variant
+  if (import.meta.server) {
+    return {
+      variant: selectedVariant,
+      value: computed(() => defaultVariant.value),
+      trackGoal: () => {},
+    }
+  }
+
+  const { $posthog } = useNuxtApp()
+  if (!$posthog) {
+    console.warn('PostHog not available – skipping AB test')
+    return {
+      variant: selectedVariant,
+      value: computed(() => defaultVariant.value),
+      trackGoal: () => {},
+    }
+  }
+
   const variantName = $posthog.getFeatureFlag(experimentName)
   selectedVariant.value = variants.find((v) => v.name === variantName) || defaultVariant
 
-  // Capture experiment exposure
   $posthog.capture('$experiment_started', {
     experiment: experimentName,
     variant: selectedVariant.value.name,
-    goals: goals,
+    goals,
   })
 
   const value = computed(() => selectedVariant.value.value)
 
-  // Function to track goal completion
   const trackGoal = (goal: TestGoal, properties: Record<string, any> = {}) => {
     $posthog.capture(goal, {
       ...properties,
@@ -50,24 +63,6 @@ export function useABTest<T>({ experimentName, variants, defaultVariant, goals }
   return {
     variant: selectedVariant,
     value,
-    trackGoal,
-  }
-}
-
-// Helper function for component-based A/B tests
-type ComponentVariant = ABTestVariant<DefineComponent<any, any, any>>
-
-export function useComponentABTest(config: ABTestConfig<DefineComponent<any, any, any>>) {
-  const { variant, trackGoal } = useABTest(config)
-
-  const TestComponent = computed(() => ({
-    render() {
-      return h(variant.value.value.component)
-    },
-  }))
-
-  return {
-    TestComponent,
     trackGoal,
   }
 }
