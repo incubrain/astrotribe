@@ -10,20 +10,23 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  turnstileValid: {
+    type: Boolean,
+    default: false,
+  },
+  turnstileToken: {
+    type: String,
+    default: null,
+  },
+  resetTurnstile: {
+    type: Function,
+    default: null,
+  },
 })
 
 const auth = useAuth()
 const isLoading = ref(false)
 const errorMessage = ref('')
-
-const turnstile = ref()
-const turnstileValid = ref(false)
-const turnstileToken = ref<string | null>(null)
-
-const onValidTurnstile = (token: string) => {
-  turnstileValid.value = true
-  turnstileToken.value = token
-}
 
 // Get focused input using directive instead of ref
 const vFocus = {
@@ -36,7 +39,7 @@ const vFocus = {
 }
 
 async function handleSubmit() {
-  if (!turnstileValid.value) return
+  if (!props.turnstileValid) return
 
   isLoading.value = true
   errorMessage.value = ''
@@ -47,25 +50,24 @@ async function handleSubmit() {
       await auth.registerWithEmail({
         email: form.email,
         password: form.password,
-        turnstileToken: turnstileToken.value,
-        resetTurnstile: turnstile.value?.reset,
+        turnstileToken: props.turnstileToken,
       })
     } else {
       // Login logic
       await auth.loginWithEmail(form.email, form.password, {
-        turnstileToken: turnstileToken.value,
-        resetTurnstile: turnstile.value?.reset,
+        turnstileToken: props.turnstileToken,
       })
     }
   } catch (error: any) {
     errorMessage.value = error.message || 'Authentication failed'
   } finally {
     isLoading.value = false
+    setTimeout(() => props.resetTurnstile(), 1000)
   }
 }
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if (turnstileValid.value && event.key === 'Enter') {
+  if (props.turnstileValid && event.key === 'Enter') {
     handleSubmit()
   }
 }
@@ -111,6 +113,7 @@ const handleKeydown = (event: KeyboardEvent) => {
         <PrimePassword
           id="password"
           v-model="form.password"
+          class="w-full"
           name="password"
           :disabled="isLoading"
           :feedback="isRegister"
@@ -146,12 +149,6 @@ const handleKeydown = (event: KeyboardEvent) => {
         Forgot password?
       </NuxtLink>
     </div>
-
-    <TurnstileChallenge
-      ref="turnstile"
-      class="mb-4"
-      :on-valid-token="onValidTurnstile"
-    />
 
     <PrimeButton
       type="submit"

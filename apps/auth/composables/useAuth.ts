@@ -41,11 +41,7 @@ export function useAuth() {
   }
 
   // Send magic link for passwordless login
-  async function sendMagicLink(
-    email: string,
-    turnstileToken: string | null = null,
-    resetTurnstile: (() => void) | null = null,
-  ) {
+  async function sendMagicLink(email: string, turnstileToken: string | null = null) {
     loading.setLoading('currentUser', true)
     trackAuthEvent('magic_link_attempt', { email: email.toLowerCase() })
 
@@ -65,7 +61,6 @@ export function useAuth() {
           email: email.toLowerCase(),
           error: error.message,
         })
-        if (resetTurnstile) resetTurnstile()
         throw error
       }
 
@@ -100,7 +95,6 @@ export function useAuth() {
     given_name?: string
     surname?: string
     turnstileToken?: string | null
-    resetTurnstile?: () => void
   }) => {
     loading.setLoading('currentUser', true)
     trackAuthEvent('signup_attempt', { email: formData.email })
@@ -120,7 +114,6 @@ export function useAuth() {
 
     if (!data.user?.identities?.length) {
       toast.error({ summary: 'Registration Failure', message: 'User already exists' })
-      if (formData.resetTurnstile) formData.resetTurnstile()
       trackAuthEvent('signup_error', {
         email: formData.email,
         error: 'User already exists',
@@ -131,7 +124,6 @@ export function useAuth() {
 
     if (error) {
       toast.error({ summary: 'Registration Failure', message: error.message })
-      if (formData.resetTurnstile) formData.resetTurnstile()
       trackAuthEvent('signup_error', {
         email: formData.email,
         error: error.message,
@@ -153,7 +145,6 @@ export function useAuth() {
     password: string,
     options?: {
       turnstileToken: string | null
-      resetTurnstile: () => void
     },
   ) => {
     loading.setLoading('currentUser', true)
@@ -171,7 +162,6 @@ export function useAuth() {
 
     if (error) {
       toast.error({ summary: 'Authentication Failure', message: error.message })
-      options?.resetTurnstile()
       trackAuthEvent('login_error', {
         email,
         method: 'password',
@@ -226,11 +216,7 @@ export function useAuth() {
     loading.setLoading('currentUser', false)
   }
 
-  async function forgotPassword(
-    email: string,
-    turnstileToken: string | null,
-    resetTurnstile: (() => void) | null,
-  ) {
+  async function forgotPassword(email: string, turnstileToken: string | null) {
     loading.setLoading('currentUser', true)
     trackAuthEvent('password_reset_request', { email })
 
@@ -246,7 +232,6 @@ export function useAuth() {
         email,
         error: error.message,
       })
-      if (resetTurnstile) resetTurnstile()
     } else {
       toast.success({
         summary: 'Email Sent',
@@ -254,6 +239,7 @@ export function useAuth() {
       })
       trackAuthEvent('password_reset_email_sent', { email })
     }
+
     loading.setLoading('currentUser', false)
   }
 
