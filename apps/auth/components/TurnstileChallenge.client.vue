@@ -64,6 +64,10 @@ const renderTurnstile = () => {
       window.turnstile.remove(turnstileWidgetId.value)
     }
 
+    const config = useRuntimeConfig()
+
+    console.log('Rendering Turnstile widget with sitekey:', config.public.turnstileSiteKey)
+
     turnstileWidgetId.value = window.turnstile.render('.cf-turnstile', {
       'sitekey': config.public.turnstileSiteKey,
       'theme': colorMode.value === 'dark' ? 'dark' : 'light',
