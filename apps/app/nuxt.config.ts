@@ -33,9 +33,6 @@ const privateKeys = [
   'razorpaySecret',
 ] as const
 
-// Load environment variables from the root .env file
-config({ path: resolve(dirname(fileURLToPath(import.meta.url)), '../../.env') })
-
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({

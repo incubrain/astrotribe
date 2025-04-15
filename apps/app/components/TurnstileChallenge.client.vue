@@ -89,7 +89,7 @@ const renderTurnstile = () => {
 
     const config = useRuntimeConfig()
 
-    console.log('Rendering Turnstile widget with sitekey:', config.public.turnstileSiteKey)
+    console.log('Rendering Turnstile widget with sitekey:', config)
 
     turnstileWidgetId.value = window.turnstile.render('.cf-turnstile', {
       'sitekey': config.public.turnstileSiteKey,

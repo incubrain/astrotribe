@@ -8,6 +8,7 @@
     "test": "vitest run",
     "dev": "pnpx nuxi dev --no-port-scanning",
     "build": "pnpx nuxi build",
+    "start:local": "dotenv -e ../../.env -- node .output/server/index.mjs",
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {

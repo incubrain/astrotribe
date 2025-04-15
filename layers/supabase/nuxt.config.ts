@@ -1,29 +1,4 @@
 import { defineNuxtConfig } from 'nuxt/config'
-import { getSharedEnv, pick } from '../../shared/env'
-
-console.log('NUXT_PUBLIC_SUPABASE_URL:', process.env.NUXT_PUBLIC_SUPABASE_URL)
-
-const env = getSharedEnv()
-
-const publicKeys = [
-  'supabaseURL',
-  'supabaseKey',
-  'appURL',
-  'apiURL',
-  'loginURL',
-  'websiteURL',
-  'scraperURL',
-  'devHelper',
-] as const
-
-const privateKeys = [
-  'resendApiKey',
-  'supabaseServiceKey',
-  'googleApiKey',
-  'scraperKey',
-  'razorpayKey',
-  'razorpaySecret',
-] as const
 
 console.log('Node Env:', process.env.NODE_ENV)
 
@@ -32,15 +7,6 @@ export default defineNuxtConfig({
 
   $meta: {
     name: 'supabase',
-  },
-
-  runtimeConfig: {
-    serviceName: 'crud',
-    ...pick(env.private, [...privateKeys]),
-    public: {
-      serviceName: 'crud',
-      ...pick(env.public, [...publicKeys]),
-    },
   },
 
   srcDir: '.',
