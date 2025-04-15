@@ -3,6 +3,7 @@ import { useRoute } from 'vue-router'
 
 export enum UserAcquisitionMetric {
   SignUpConversion = 'sign_up_conversion',
+  Conversion = 'conversion',
   DemoRequest = 'demo_request',
   ContactFormSubmission = 'contact_form_submission',
   FeaturePageEngagement = 'feature_page_engagement',
@@ -55,6 +56,27 @@ export interface AnalyticsEventProperties {
 }
 
 export function useAnalytics() {
+  if (import.meta.server) {
+    return {
+      trackEvent: () => {},
+      trackPageView: () => {},
+      identifyUser: () => {},
+      trackUserAcquisition: () => {},
+      trackOnboarding: () => {},
+      trackUserEngagement: () => {},
+      trackContentPerformance: () => {},
+      trackJobMarketActivity: () => {},
+      trackTechnicalPerformance: () => {},
+      trackError: () => {},
+      UserAcquisitionMetric,
+      OnboardingMetric,
+      UserEngagementMetric,
+      ContentPerformanceMetric,
+      JobMarketMetric,
+      TechnicalPerformanceMetric,
+    }
+  }
+
   const { $posthog } = useNuxtApp()
   const route = useRoute()
   const pageEnterTime = ref(Date.now())
@@ -151,45 +173,12 @@ export function useAnalytics() {
     trackJobMarketActivity,
     trackTechnicalPerformance,
     trackError,
+    // enums
+    UserAcquisitionMetric,
+    OnboardingMetric,
+    UserEngagementMetric,
+    ContentPerformanceMetric,
+    JobMarketMetric,
+    TechnicalPerformanceMetric,
   }
 }
-
-// import {
-//   UserAcquisitionMetric,
-//   OnboardingMetric,
-//   UserEngagementMetric,
-//   ContentPerformanceMetric,
-//   JobMarketMetric,
-//   TechnicalPerformanceMetric,
-//   ContentType,
-//   ErrorType
-// } from '~/types/analytics'
-
-// const {
-//   trackUserAcquisition,
-//   trackOnboarding,
-//   trackUserEngagement,
-//   trackContentPerformance,
-//   trackJobMarketActivity,
-//   trackTechnicalPerformance,
-//   trackError
-// } = useAnalytics()
-
-// // Track a sign-up conversion
-// trackUserAcquisition(UserAcquisitionMetric.SignUpConversion, { source: 'organic' })
-
-// // Track an onboarding step completion
-// trackOnboarding(OnboardingMetric.StepCompletion, { step: 'personal_info', timeSpent: 120 })
-
-// // Track a feature adoption
-// trackUserEngagement(UserEngagementMetric.FeatureAdoption, { feature: 'job_search' })
-
-// // Track a blog post share
-// trackContentPerformance(ContentPerformanceMetric.Share, 'blog_post', { postId: '123', platform: 'twitter' })
-
-// // Track a job application
-// trackJobMarketActivity(JobMarketMetric.JobApplication, { jobId: '456', companyId: '789' })
-
-// // Track page load time
-// trackTechnicalPerformance(TechnicalPerformanceMetric.PageLoadTime, performance.now())
-

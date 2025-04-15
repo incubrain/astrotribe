@@ -266,6 +266,7 @@ onMounted(async () => {
               <h3 class="text-xl font-semibold text-white">{{ name }}</h3>
               <div
                 v-for="plan in allPlans"
+                :key="plan.id"
                 class="mt-2 flex flex-col items-baseline"
               >
                 <div>
@@ -297,6 +298,7 @@ onMounted(async () => {
             <!-- Action Button -->
             <div
               v-for="plan in allPlans"
+              :key="plan.id"
               class="mt-4"
             >
               <div v-if="plan.isActive">
