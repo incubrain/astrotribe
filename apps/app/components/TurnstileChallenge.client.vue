@@ -16,7 +16,6 @@ const scriptLoaded = ref(false)
 const turnstileWidgetId = ref(null)
 
 const emit = defineEmits(['error', 'expired', 'success'])
-const config = useRuntimeConfig()
 const colorMode = useColorMode()
 
 const TURNSTILE_URL = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
@@ -87,6 +86,10 @@ const renderTurnstile = () => {
     if (turnstileWidgetId.value) {
       window.turnstile.remove(turnstileWidgetId.value)
     }
+
+    const config = useRuntimeConfig()
+
+    console.log('Rendering Turnstile widget with sitekey:', config.public.turnstileSiteKey)
 
     turnstileWidgetId.value = window.turnstile.render('.cf-turnstile', {
       'sitekey': config.public.turnstileSiteKey,

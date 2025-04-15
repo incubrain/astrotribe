@@ -1,7 +1,4 @@
-import { fileURLToPath } from 'url'
-import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { getSharedEnv, pick } from '../../shared/env'
 
 console.log('NUXT_PUBLIC_SUPABASE_URL:', process.env.NUXT_PUBLIC_SUPABASE_URL)
@@ -13,6 +10,7 @@ const publicKeys = [
   'supabaseKey',
   'appURL',
   'apiURL',
+  'loginURL',
   'websiteURL',
   'scraperURL',
   'devHelper',
@@ -25,8 +23,6 @@ const privateKeys = [
   'razorpayKey',
   'razorpaySecret',
 ] as const
-
-const currentDir = dirname(fileURLToPath(import.meta.url))
 
 console.log('Node Env:', process.env.NODE_ENV)
 
