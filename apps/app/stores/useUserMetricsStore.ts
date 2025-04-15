@@ -1,40 +1,69 @@
-// stores/useMetricsStore.ts
 import { defineStore } from 'pinia'
 
+type UserMetrics = {
+  votes: any[]
+  streakData: any[]
+  votesByDate: Record<string, any[]>
+  achievements?: Record<string, Record<string, boolean>>
+  current_level?: number
+  current_xp?: number
+  xp_to_next_level?: number
+  total_votes?: number
+  upvote_count?: number
+  downvote_count?: number
+  vote_accuracy?: number
+  current_streak?: number
+  best_streak?: number
+}
+
+const defaultMetrics: UserMetrics = {
+  votes: [],
+  streakData: [],
+  votesByDate: {},
+}
+
 export const useUserMetricsStore = defineStore('metrics', () => {
-  const metrics = ref(null)
+  const metrics = ref<UserMetrics>({ ...defaultMetrics })
   const isLoading = ref(true)
   const error = ref(null)
 
-  // Computed values from metrics
-  const currentLevel = computed(() => metrics.value?.current_level || 0)
+  const currentLevel = computed(() => metrics.value.current_level || 0)
+
   const levelProgress = computed(() => {
-    if (!metrics.value) return 0
-    const { current_xp, xp_to_next_level } = metrics.value
+    const { current_xp = 0, xp_to_next_level = 1 } = metrics.value
     return Math.round((current_xp / xp_to_next_level) * 100)
   })
 
-  const totalVotes = computed(() => metrics.value?.total_votes || 0)
-  const upvoteCount = computed(() => metrics.value?.upvote_count || 0)
-  const downvoteCount = computed(() => metrics.value?.downvote_count || 0)
-  const todayVoteCount = computed(() => metrics.value?.today_activity.votes.length || 0)
-  const voteAccuracy = computed(() => metrics.value?.vote_accuracy || 0)
+  const totalVotes = computed(() => metrics.value.total_votes || metrics.value.votes.length || 0)
+  const upvoteCount = computed(
+    () => metrics.value.votes.filter((v: any) => v.vote_type === 1).length,
+  )
+  const downvoteCount = computed(
+    () => metrics.value.votes.filter((v: any) => v.vote_type === -1).length,
+  )
 
-  const remainingDailyVotes = computed(() => 10 - todayVoteCount.value)
+  const todayVoteCount = computed(() => {
+    const today = new Date().toISOString().split('T')[0]
+    return metrics.value.votesByDate?.[today]?.length ?? 0
+  })
+
+  const voteAccuracy = computed(() => metrics.value.vote_accuracy || 0)
+
+  const remainingDailyVotes = computed(() => Math.max(10 - todayVoteCount.value, 0))
   const dailyProgress = computed(() => (todayVoteCount.value / 10) * 100)
 
-  // Streaks
-  const currentStreak = computed(() => metrics.value?.current_streak || 0)
-  const bestStreak = computed(() => metrics.value?.best_streak || 0)
+  const currentStreak = computed(() => metrics.value.current_streak || 0)
+  const bestStreak = computed(() => metrics.value.best_streak || 0)
 
   const achievementStats = computed(() => {
-    if (!metrics.value?.achievements) return { completed: 0, total: 0 }
+    const achievements = metrics.value.achievements
+    if (!achievements) return { completed: 0, total: 0 }
 
     let completed = 0
     let total = 0
 
-    Object.values(metrics.value.achievements).forEach((category) => {
-      Object.values(category as Record<string, boolean>).forEach((achieved) => {
+    Object.values(achievements).forEach((category) => {
+      Object.values(category).forEach((achieved) => {
         total++
         if (achieved) completed++
       })
@@ -44,25 +73,26 @@ export const useUserMetricsStore = defineStore('metrics', () => {
   })
 
   const recentAchievements = computed(() => {
-    if (!metrics.value?.achievements) return []
+    const achievements = metrics.value.achievements
+    if (!achievements) return []
 
-    const achievements: { category: string; name: string; achieved: boolean }[] = []
-
-    Object.entries(metrics.value.achievements).forEach(([category, items]) => {
-      Object.entries(items as Record<string, boolean>).forEach(([name, achieved]) => {
-        achievements.push({ category, name, achieved })
-      })
-    })
-
-    return achievements.filter((a) => a.achieved).slice(0, 3)
+    return Object.entries(achievements)
+      .flatMap(([category, items]) =>
+        Object.entries(items).map(([name, achieved]) => ({
+          category,
+          name,
+          achieved,
+        })),
+      )
+      .filter((a) => a.achieved)
+      .slice(0, 3)
   })
 
-  // Actions
   async function fetchMetrics() {
     try {
       isLoading.value = true
-      const data = await $fetch('/api/users/metrics/get')
-      metrics.value = data
+      const data = await $fetch('/api/users/metrics')
+      metrics.value = { ...defaultMetrics, ...data }
     } catch (err) {
       error.value = err
       console.error('Error fetching metrics:', err)
@@ -71,12 +101,16 @@ export const useUserMetricsStore = defineStore('metrics', () => {
     }
   }
 
+  function init() {
+    fetchMetrics()
+  }
+
   async function trackSourceVisit(sourceUrl: string, timeSpent: number) {
     const response = await $fetch('/api/users/metrics/track-source-visit', {
       method: 'POST',
       body: { sourceUrl, timeSpent },
     })
-    metrics.value = response // Update store with new metrics
+    metrics.value = { ...defaultMetrics, ...response }
     return response
   }
 
@@ -85,11 +119,11 @@ export const useUserMetricsStore = defineStore('metrics', () => {
       method: 'POST',
       body: { title },
     })
-    metrics.value = response // Update store with new metrics
+    metrics.value = { ...defaultMetrics, ...response }
     return response
   }
 
-  const trackNewsVisit = async (newsId: string) => {
+  const trackNewsVisit = (newsId: string) => {
     const startTime = Date.now()
     return async () => {
       const timeSpent = Math.floor((Date.now() - startTime) / 1000)
@@ -97,14 +131,9 @@ export const useUserMetricsStore = defineStore('metrics', () => {
         method: 'POST',
         body: { newsId, timeSpent },
       })
-      metrics.value = response // Update store with new metrics
+      metrics.value = { ...defaultMetrics, ...response }
       return response
     }
-  }
-
-  // Initialize metrics when store is created
-  function init() {
-    fetchMetrics()
   }
 
   return {
