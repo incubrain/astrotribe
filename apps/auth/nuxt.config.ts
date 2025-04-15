@@ -18,6 +18,7 @@ const publicKeys = [
   'posthogKey',
   'posthogURL',
 ] as const
+
 const privateKeys = ['resendApiKey', 'supabaseServiceKey', 'turnstileSecretKey'] as const
 
 // Load environment variables from the root .env file
