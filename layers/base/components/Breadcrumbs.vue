@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// const { breadcrumbs } = useBreadcrumbs()
+const { breadcrumbs } = useBreadcrumbs()
 // need to fix usage
 </script>
 
