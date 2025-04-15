@@ -117,17 +117,6 @@ export default defineNuxtConfig({
       },
     },
 
-    // Syntax highlighting configuration
-    highlight: {
-      theme: {
-        default: 'github-dark',
-        light: 'github-light',
-        dark: 'github-dark',
-      },
-      // Limit languages to only those you need to reduce bundle size
-      langs: ['json', 'js', 'ts', 'html', 'css', 'vue', 'bash', 'markdown', 'yaml'],
-    },
-
     // Database configuration optimized for different environments
     database: {
       type: 'postgres',
@@ -135,26 +124,6 @@ export default defineNuxtConfig({
         process.env.NUXT_CONTENT_DATABASE_URL ||
         'postgres://postgres:password@localhost:5432/postgres',
       // Ensure schema is properly defined
-      schema: 'content', // Using 'content' as schema instead of 'nuxt_content'
-      // Add migration options to ensure tables are created
-      migration: {
-        dir: './database/migrations',
-        disableForeignKeys: false,
-        autoMigrate: true, // Important: ensures tables are created
-      },
-      // Connection settings
-      pool: {
-        min: 2,
-        max: 10,
-      },
-      debug: process.env.NODE_ENV === 'development',
-    },
-
-    sources: {
-      content: {
-        driver: 'fs',
-        base: 'content',
-      },
     },
 
     build: {
@@ -208,6 +177,10 @@ export default defineNuxtConfig({
   },
 
   workspaceDir: '../../',
+
+  alias: {
+    '#config': fileURLToPath(new URL('../../shared', import.meta.url)),
+  },
 
   build: {
     transpile: [
@@ -274,6 +247,16 @@ export default defineNuxtConfig({
     ],
   },
 
+  icon: {
+    provider: 'server',
+    serverBundle: {
+      collections: ['material-symbols', 'mdi', 'lucide'], // Limit collections to reduce size
+    },
+    clientBundle: {
+      scan: process.env.NODE_ENV === 'production', // Only in production
+    },
+  },
+
   image: {
     format: ['webp', 'jpg', 'png'],
     quality: 80,
@@ -283,6 +266,34 @@ export default defineNuxtConfig({
     cms: { baseURL: `${process.env.NUXT_PUBLIC_CMS_URL}/uploads/` },
     ipx: {
       maxAge: 60 * 60 * 24 * 365, // 1 year (in seconds)
+    },
+    providers: {
+      supabase: {
+        provider: '../../layers/base/supabase-provider.ts',
+        options: {
+          baseURL: process.env.NUXT_PUBLIC_SUPABASE_URL,
+        },
+      },
+    },
+    presets: {
+      original: {
+        modifiers: {
+          width: 1920,
+          height: 1080,
+        },
+      },
+      mobile: {
+        modifiers: {
+          width: 768,
+          height: 1024,
+        },
+      },
+      thumbnail: {
+        modifiers: {
+          width: 300,
+          height: 200,
+        },
+      },
     },
   },
 
@@ -314,12 +325,14 @@ export default defineNuxtConfig({
           'https://*.supabase.co',
           'https://*.posthog.com',
           'https://nuxt.studio',
+          'https://ipapi.co/',
         ],
         'connect-src': [
           "'self'",
           ...localUrls,
           'http://localhost:3000',
           'http://localhost:8080',
+          'https://ipapi.co/',
           'http://host.docker.internal:8080',
           'http://localhost:54321',
           'https://o1175094.ingest.sentry.io',
@@ -469,7 +482,6 @@ export default defineNuxtConfig({
       blog: { sources: ['/api/__sitemap__/blog'] },
       policies: { sources: ['/api/__sitemap__/policies'] },
     },
-    cacheTTL: 1000 * 60 * 60, // 1 hour
     experimentalCompression: true,
     experimentalWarmUp: true,
   },
