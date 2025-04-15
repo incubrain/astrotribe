@@ -1,8 +1,4 @@
 {
   "extends": ["../../shared/tsconfig.web.json", "./.nuxt/tsconfig.json"],
-  "include": [
-    "../../shared/**/*.ts",
-    "./**/*.ts",
-    "./**/*.vue"
-  ]
+  "include": ["../../shared/**/*.ts", "./**/*.ts", "./**/*.vue"]
 }
