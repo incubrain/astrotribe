@@ -6,7 +6,9 @@ import { devPortMap } from './paths.config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
-config({ path: resolve(currentDir, '../.env') })
+if (process.env.NODE_ENV !== 'production') {
+  config({ path: resolve(currentDir, '../.env') })
+}
 
 const localHost = (port: string | number) => `http://localhost:${port}`
 

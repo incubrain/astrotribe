@@ -15,6 +15,7 @@ const publicKeys = [
   'scraperURL',
   'devHelper',
 ] as const
+
 const privateKeys = [
   'resendApiKey',
   'supabaseServiceKey',
