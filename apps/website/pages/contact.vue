@@ -3,7 +3,7 @@
     <!-- Hero section with space-themed background -->
     <IBImageHero
       :img="{
-        src: '/images/contact/contact-hero.jpg',
+        src: 'contact-hero.png',
         alt: 'AstronEra contact page hero image showing a telescope pointed at a starry night sky',
         width: 1920,
         height: 1080,
@@ -17,7 +17,7 @@
       object-position="object-center"
     />
 
-    <div class="wrapper py-8">
+    <div class="wrapper py-8 flex flex-col gap-16">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <!-- Contact Form Column -->
         <div class="lg:col-span-5 space-y-6">
@@ -27,94 +27,95 @@
             gradient="blue"
             intensity="low"
             interactive
-            class="p-6"
           >
-            <h2 class="text-2xl font-bold mb-6 text-white">Send Us a Message</h2>
+            <div>
+              <h2 class="text-2xl font-bold mb-6 text-white">Send Us a Message</h2>
 
-            <form
-              class="space-y-4"
-              @submit.prevent="submitForm"
-            >
-              <!-- Name Field -->
-              <div class="space-y-2">
-                <label
-                  for="name"
-                  class="block text-sm font-medium text-primary-200"
-                  >Your Name</label
-                >
-                <PrimeInputText
-                  id="name"
-                  v-model="formData.name"
-                  class="w-full"
-                  placeholder="Enter your name"
-                />
-              </div>
-
-              <!-- Email Field -->
-              <div class="space-y-2">
-                <label
-                  for="email"
-                  class="block text-sm font-medium text-primary-200"
-                  >Email Address</label
-                >
-                <PrimeInputText
-                  id="email"
-                  v-model="formData.email"
-                  class="w-full"
-                  placeholder="Enter your email"
-                />
-              </div>
-
-              <!-- Inquiry Type Field -->
-              <div class="space-y-2">
-                <label
-                  for="inquiryType"
-                  class="block text-sm font-medium text-primary-200"
-                  >Reason for Contact</label
-                >
-                <PrimeSelect
-                  id="inquiryType"
-                  v-model="formData.inquiryType"
-                  :options="inquiryOptions"
-                  option-label="label"
-                  option-value="value"
-                  placeholder="Select a reason"
-                  class="w-full"
-                />
-              </div>
-
-              <!-- Message Field -->
-              <div class="space-y-2">
-                <label
-                  for="message"
-                  class="block text-sm font-medium text-primary-200"
-                  >Message</label
-                >
-                <PrimeTextarea
-                  id="message"
-                  v-model="formData.message"
-                  rows="5"
-                  class="w-full"
-                  placeholder="How can we help you?"
-                />
-              </div>
-
-              <!-- Submit Button -->
-              <div class="pt-2">
-                <PrimeButton
-                  type="submit"
-                  severity="primary"
-                  class="w-full md:w-auto"
-                  :loading="isSubmitting"
-                >
-                  <Icon
-                    name="mdi:send"
-                    class="mr-2"
+              <form
+                class="space-y-4"
+                @submit.prevent="submitForm"
+              >
+                <!-- Name Field -->
+                <div class="space-y-2">
+                  <label
+                    for="name"
+                    class="block text-sm font-medium text-primary-200"
+                    >Your Name</label
+                  >
+                  <PrimeInputText
+                    id="name"
+                    v-model="formData.name"
+                    class="w-full"
+                    placeholder="Enter your name"
                   />
-                  Send Message
-                </PrimeButton>
-              </div>
-            </form>
+                </div>
+
+                <!-- Email Field -->
+                <div class="space-y-2">
+                  <label
+                    for="email"
+                    class="block text-sm font-medium text-primary-200"
+                    >Email Address</label
+                  >
+                  <PrimeInputText
+                    id="email"
+                    v-model="formData.email"
+                    class="w-full"
+                    placeholder="Enter your email"
+                  />
+                </div>
+
+                <!-- Inquiry Type Field -->
+                <div class="space-y-2">
+                  <label
+                    for="inquiryType"
+                    class="block text-sm font-medium text-primary-200"
+                    >Reason for Contact</label
+                  >
+                  <PrimeSelect
+                    id="inquiryType"
+                    v-model="formData.inquiryType"
+                    :options="inquiryOptions"
+                    option-label="label"
+                    option-value="value"
+                    placeholder="Select a reason"
+                    class="w-full"
+                  />
+                </div>
+
+                <!-- Message Field -->
+                <div class="space-y-2">
+                  <label
+                    for="message"
+                    class="block text-sm font-medium text-primary-200"
+                    >Message</label
+                  >
+                  <PrimeTextarea
+                    id="message"
+                    v-model="formData.message"
+                    rows="5"
+                    class="w-full"
+                    placeholder="How can we help you?"
+                  />
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-2">
+                  <PrimeButton
+                    type="submit"
+                    severity="primary"
+                    class="w-full md:w-auto"
+                    :loading="isSubmitting"
+                  >
+                    <Icon
+                      name="mdi:send"
+                      class="mr-2"
+                    />
+                    Send Message
+                  </PrimeButton>
+                </div>
+              </form>
+            </div>
           </IBGlass>
 
           <!-- FAQ Section -->
@@ -124,19 +125,20 @@
             gradient="purple"
             intensity="low"
             interactive
-            class="p-6"
           >
-            <h2 class="text-2xl font-bold mb-6 text-white">Frequently Asked Questions</h2>
+            <div>
+              <h2 class="text-2xl font-bold mb-6 text-white">Frequently Asked Questions</h2>
 
-            <PrimeAccordion class="faq-accordion">
-              <PrimeAccordionTab
-                v-for="faq in faqs"
-                :key="faq.header"
-                :header="faq.header"
-              >
-                <p>{{ faq.content }}</p>
-              </PrimeAccordionTab>
-            </PrimeAccordion>
+              <PrimeAccordion class="faq-accordion">
+                <PrimeAccordionTab
+                  v-for="faq in faqs"
+                  :key="faq.header"
+                  :header="faq.header"
+                >
+                  <p>{{ faq.content }}</p>
+                </PrimeAccordionTab>
+              </PrimeAccordion>
+            </div>
           </IBGlass>
         </div>
 
@@ -149,145 +151,148 @@
             gradient="mixed"
             intensity="low"
             interactive
-            class="p-6"
           >
-            <h2 class="text-2xl font-bold mb-6 text-white">Connect With Us</h2>
+            <div>
+              <h2 class="text-2xl font-bold mb-6 text-white">Connect With Us</h2>
 
-            <div class="space-y-6">
-              <!-- Email -->
-              <div class="flex items-start">
-                <div
-                  class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4 flex items-center justify-center"
-                >
-                  <Icon
-                    name="mdi:email"
-                    class="text-primary-400"
-                    size="24px"
-                  />
-                </div>
-                <div>
-                  <h3 class="text-lg font-semibold text-primary-200">Email</h3>
-                  <a
-                    href="mailto:connectus@astronera.org"
-                    class="text-white hover:text-primary-400 transition-colors"
-                  >
-                    connectus@astronera.org
-                  </a>
-                  <p class="text-xs text-primary-300 mt-1">We typically respond within 24 hours</p>
-                </div>
-              </div>
-
-              <!-- Phone -->
-              <div class="flex items-start">
-                <div
-                  class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4 flex items-center justify-center"
-                >
-                  <Icon
-                    name="mdi:phone"
-                    class="text-primary-400"
-                    size="24px"
-                  />
-                </div>
-                <div>
-                  <h3 class="text-lg font-semibold text-primary-200">Phone</h3>
-                  <a
-                    href="tel:+918806107510"
-                    class="text-white hover:text-primary-400 transition-colors"
-                  >
-                    +91 880 610 7510
-                  </a>
-                  <p class="text-xs text-primary-300 mt-1"
-                    >Available Mon-Fri, 10:00 AM - 6:00 PM IST</p
-                  >
-                </div>
-              </div>
-
-              <!-- Address -->
-              <div class="flex items-start">
-                <div
-                  class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4 flex items-center justify-center"
-                >
-                  <Icon
-                    name="mdi:map-marker"
-                    class="text-primary-400"
-                    size="24px"
-                  />
-                </div>
-                <div>
-                  <h3 class="text-lg font-semibold text-primary-200">Address</h3>
-                  <p class="text-white">
-                    Prachi, 392/6B, Atreya Soc., Deep Bangla Chowk,<br />
-                    Model Colony, Pune, Maharashtra 411016
-                  </p>
-                  <a
-                    href="https://maps.app.goo.gl/m4mY8ChLWpLbXhA98"
-                    target="_blank"
-                    class="inline-flex items-center text-primary-400 hover:text-primary-300 mt-2 text-sm"
+              <div class="space-y-6">
+                <!-- Email -->
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4 flex items-center justify-center"
                   >
                     <Icon
-                      name="mdi:directions"
-                      class="mr-1"
+                      name="mdi:email"
+                      class="text-primary-400"
+                      size="24px"
                     />
-                    Get Directions
-                  </a>
+                  </div>
+                  <div>
+                    <h3 class="text-lg font-semibold text-primary-200">Email</h3>
+                    <a
+                      href="mailto:connectus@astronera.org"
+                      class="text-white hover:text-primary-400 transition-colors"
+                    >
+                      connectus@astronera.org
+                    </a>
+                    <p class="text-xs text-primary-300 mt-1"
+                      >We typically respond within 24 hours</p
+                    >
+                  </div>
+                </div>
+
+                <!-- Phone -->
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4 flex items-center justify-center"
+                  >
+                    <Icon
+                      name="mdi:phone"
+                      class="text-primary-400"
+                      size="24px"
+                    />
+                  </div>
+                  <div>
+                    <h3 class="text-lg font-semibold text-primary-200">Phone</h3>
+                    <a
+                      href="tel:+918806107510"
+                      class="text-white hover:text-primary-400 transition-colors"
+                    >
+                      +91 880 610 7510
+                    </a>
+                    <p class="text-xs text-primary-300 mt-1"
+                      >Available Mon-Fri, 10:00 AM - 6:00 PM IST</p
+                    >
+                  </div>
+                </div>
+
+                <!-- Address -->
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 p-2 bg-primary-800 rounded-full mr-4 flex items-center justify-center"
+                  >
+                    <Icon
+                      name="mdi:map-marker"
+                      class="text-primary-400"
+                      size="24px"
+                    />
+                  </div>
+                  <div>
+                    <h3 class="text-lg font-semibold text-primary-200">Address</h3>
+                    <p class="text-white">
+                      Prachi, 392/6B, Atreya Soc., Deep Bangla Chowk,<br />
+                      Model Colony, Pune, Maharashtra 411016
+                    </p>
+                    <a
+                      href="https://maps.app.goo.gl/m4mY8ChLWpLbXhA98"
+                      target="_blank"
+                      class="inline-flex items-center text-primary-400 hover:text-primary-300 mt-2 text-sm"
+                    >
+                      <Icon
+                        name="mdi:directions"
+                        class="mr-1"
+                      />
+                      Get Directions
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Social Media Links -->
-            <div class="mt-8">
-              <h3 class="text-lg font-semibold text-primary-200 mb-4">Follow Us</h3>
-              <div class="flex space-x-4">
-                <a
-                  href="#"
-                  target="_blank"
-                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
-                >
-                  <Icon
-                    name="mdi:twitter"
-                    size="22px"
-                  />
-                </a>
-                <a
-                  href="#"
-                  target="_blank"
-                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
-                >
-                  <Icon
-                    name="mdi:linkedin"
-                    size="22px"
-                  />
-                </a>
-                <a
-                  href="#"
-                  target="_blank"
-                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
-                >
-                  <Icon
-                    name="mdi:youtube"
-                    size="22px"
-                  />
-                </a>
-                <a
-                  href="#"
-                  target="_blank"
-                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
-                >
-                  <Icon
-                    name="mdi:facebook"
-                    size="22px"
-                  />
-                </a>
-                <a
-                  href="#"
-                  target="_blank"
-                  class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
-                >
-                  <Icon
-                    name="mdi:instagram"
-                    size="22px"
-                  />
-                </a>
+              <!-- Social Media Links -->
+              <div class="mt-8">
+                <h3 class="text-lg font-semibold text-primary-200 mb-4">Follow Us</h3>
+                <div class="flex space-x-4">
+                  <a
+                    href="#"
+                    target="_blank"
+                    class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
+                  >
+                    <Icon
+                      name="mdi:twitter"
+                      size="22px"
+                    />
+                  </a>
+                  <a
+                    href="#"
+                    target="_blank"
+                    class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
+                  >
+                    <Icon
+                      name="mdi:linkedin"
+                      size="22px"
+                    />
+                  </a>
+                  <a
+                    href="#"
+                    target="_blank"
+                    class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
+                  >
+                    <Icon
+                      name="mdi:youtube"
+                      size="22px"
+                    />
+                  </a>
+                  <a
+                    href="#"
+                    target="_blank"
+                    class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
+                  >
+                    <Icon
+                      name="mdi:facebook"
+                      size="22px"
+                    />
+                  </a>
+                  <a
+                    href="#"
+                    target="_blank"
+                    class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
+                  >
+                    <Icon
+                      name="mdi:instagram"
+                      size="22px"
+                    />
+                  </a>
+                </div>
               </div>
             </div>
           </IBGlass>
@@ -300,78 +305,73 @@
             intensity="low"
             interactive
             :padded="false"
-            class="overflow-hidden"
           >
-            <div class="p-4 bg-primary-800/70">
-              <h3 class="text-lg font-semibold text-white">Our Location</h3>
-            </div>
+            <div>
+              <div class="p-4 bg-primary-800/70">
+                <h3 class="text-lg font-semibold text-white">Our Location</h3>
+              </div>
 
-            <div class="relative">
-              <iframe
-                loading="lazy"
-                class="w-full h-80"
-                style="filter: grayscale(80%) invert(92%) contrast(83%)"
-                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
-                referrerpolicy="no-referrer-when-downgrade"
-              ></iframe>
+              <div class="relative">
+                <iframe
+                  loading="lazy"
+                  class="w-full h-80"
+                  style="filter: grayscale(80%) invert(92%) contrast(83%)"
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
 
-              <div
-                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary-900 p-3 text-center"
-              >
-                <a
-                  href="https://maps.app.goo.gl/m4mY8ChLWpLbXhA98"
-                  target="_blank"
-                  class="text-primary-400 hover:text-primary-300 text-sm inline-flex items-center"
+                <div
+                  class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary-900 p-3 text-center"
                 >
-                  <Icon
-                    name="mdi:open-in-new"
-                    class="mr-1"
-                    size="16px"
-                  />
-                  View Larger Map
-                </a>
+                  <a
+                    href="https://maps.app.goo.gl/m4mY8ChLWpLbXhA98"
+                    target="_blank"
+                    class="text-primary-400 hover:text-primary-300 text-sm inline-flex items-center"
+                  >
+                    <Icon
+                      name="mdi:open-in-new"
+                      class="mr-1"
+                      size="16px"
+                    />
+                    View Larger Map
+                  </a>
+                </div>
               </div>
             </div>
           </IBGlass>
         </div>
       </div>
-    </div>
-
-    <!-- Full-Width Call to Action Section -->
-    <section class="w-full px-4 sm:px-8 lg:px-16 my-12">
+      <!-- Full-Width Call to Action Section -->
       <IBGlass
         hover-effect="glow"
         glow-color="purple"
         gradient="mixed"
         intensity="medium"
         interactive
-        class="w-full rounded-xl py-10 px-6 sm:px-10 text-center"
       >
-        <h3 class="text-2xl sm:text-3xl font-bold text-white mb-4">
-          Need a Personal Consultation?
-        </h3>
-        <p class="text-primary-200 mb-6 text-base sm:text-lg">
-          Schedule a 1:1 video session with our astronomy experts to get tailored guidance on your
-          journey.
-        </p>
-        <PrimeButton
-          severity="secondary"
-          size="large"
-          class="inline-flex items-center gap-2"
-        >
-          <Icon name="mdi:calendar-clock" />
-          Book a Call
-        </PrimeButton>
+        <div>
+          <h3 class="text-2xl sm:text-3xl font-bold text-white mb-4">
+            Need a Personal Consultation?
+          </h3>
+          <p class="text-primary-200 mb-6 text-base sm:text-lg">
+            Schedule a 1:1 video session with our astronomy experts to get tailored guidance on your
+            journey.
+          </p>
+          <PrimeButton
+            severity="secondary"
+            size="large"
+            class="inline-flex items-center gap-2"
+          >
+            <Icon name="mdi:calendar-clock" />
+            Book a Call
+          </PrimeButton>
+        </div>
       </IBGlass>
-    </section>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// 1. Imports
-import { ref } from 'vue'
-import type { Ref } from 'vue'
-
 // 2. Page/Layout Metadata
 definePageMeta({
   name: 'Contact',
@@ -395,7 +395,7 @@ useHead({
 })
 
 // 7. Reactive Variables
-const isSubmitting: Ref<boolean> = ref(false)
+const isSubmitting = ref(false)
 
 const formData = ref({
   name: '',
