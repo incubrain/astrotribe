@@ -7,8 +7,8 @@ const { conf: motionConstants } = useAnimation()
 // Use cases data
 const useCases = ref([
   {
-    id: 'researchers',
-    title: 'Researchers',
+    id: 'researcher',
+    title: 'Researcher',
     description: 'Find relevant papers, analyze data trends, and evaluate research novelty',
     icon: 'mdi:flask',
     color: 'blue',
@@ -18,7 +18,7 @@ const useCases = ref([
     features: [
       'Accelerate literature reviews by 70%',
       'Identify research gaps and opportunities',
-      'Connect with relevant researchers',
+      'Connect with relevant researcher',
       'Stay updated on field developments',
     ],
   },
@@ -40,14 +40,14 @@ const useCases = ref([
     ],
   },
   {
-    id: 'enthusiasts',
+    id: 'enthusiast',
     title: 'Space Enthusiasts',
     description: 'Stay updated on missions, discoveries, and space events with expert context',
     icon: 'mdi:star',
     color: 'amber',
     image: '/images/hero-image.jpg',
     oldWay: 'Search through scattered news sites with varying accuracy and depth',
-    newWay: 'One reliable hub for space news with context from leading researchers',
+    newWay: 'One reliable hub for space news with context from leading researcher',
     features: [
       'Understand complex astronomy concepts',
       'Follow space missions and events',

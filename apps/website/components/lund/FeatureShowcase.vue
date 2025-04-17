@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import { usePersona } from '~/composables/usePersona'
+import { useAnimation } from '~/composables/useAnimation'
+import { useAnalytics } from '#imports'
 
 const { conf: motionConstants } = useAnimation()
-const { trackUserEngagement } = useAnalytics()
+const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
 
-// Define props
-const props = defineProps({
-  activePersona: {
-    type: String,
-    default: 'all',
-  },
-})
+// Get persona state from our composable
+const { activePersona, personaStyles, isResearcher, isCommunicator, isEnthusiast } = usePersona()
 
 // Define feature data with persona relevance
 const features = ref([
@@ -27,7 +25,7 @@ const features = ref([
       'Real-time access to latest research findings',
       'Citation tracking and source verification',
     ],
-    personas: ['researchers', 'communicators', 'enthusiasts'],
+    personas: ['researcher', 'communicator', 'enthusiast'],
   },
   {
     id: 2,
@@ -42,7 +40,7 @@ const features = ref([
       'Automatic categorization of papers and data',
       'Collaborative sharing with research teams',
     ],
-    personas: ['researchers', 'communicators'],
+    personas: ['researcher', 'communicator'],
   },
   {
     id: 3,
@@ -57,7 +55,7 @@ const features = ref([
       'Get personalized insights from your research',
       'Create custom knowledge bases for your projects',
     ],
-    personas: ['researchers'],
+    personas: ['researcher'],
   },
   {
     id: 4,
@@ -72,7 +70,7 @@ const features = ref([
       'Trend identification in astronomy publications',
       'Opportunity scoring for research proposals',
     ],
-    personas: ['researchers'],
+    personas: ['researcher'],
   },
   {
     id: 5,
@@ -87,7 +85,7 @@ const features = ref([
       'Share to social media with one click',
       'Build streaks to track your astronomy journey',
     ],
-    personas: ['enthusiasts', 'communicators'],
+    personas: ['enthusiast', 'communicator'],
   },
   {
     id: 6,
@@ -102,7 +100,7 @@ const features = ref([
       'Generate quotes and key talking points',
       'Export in multiple formats including PDF and HTML',
     ],
-    personas: ['communicators'],
+    personas: ['communicator'],
   },
 ])
 
@@ -111,21 +109,23 @@ const selectedFeature = ref(features.value[0])
 
 // Filter features by persona
 const filteredFeatures = computed(() => {
-  if (props.activePersona === 'all') {
+  const personaName = activePersona.value.name
+  if (personaName === 'all') {
     return features.value
   }
-  return features.value.filter((feature) => feature.personas.includes(props.activePersona))
+  return features.value.filter((feature) => feature.personas.includes(personaName))
 })
 
 // Ensure a selected feature is valid for the current persona
 watch(
-  () => props.activePersona,
+  () => activePersona.value,
   () => {
     // If current selection isn't in the filtered list, select the first available feature
     if (!filteredFeatures.value.find((f) => f.id === selectedFeature.value.id)) {
       selectedFeature.value = filteredFeatures.value[0]
     }
   },
+  { deep: true },
 )
 
 // Function to track feature selection
@@ -139,7 +139,7 @@ const trackFeatureInterest = (featureId) => {
       feature: 'feature_selection',
       feature_id: featureId,
       feature_name: feature.title,
-      persona: props.activePersona,
+      persona: activePersona.value.name,
     })
   }
 }
@@ -149,7 +149,7 @@ const trackFeatureAction = (featureId) => {
   trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
     feature: 'feature_cta_click',
     feature_id: featureId,
-    persona: props.activePersona,
+    persona: activePersona.value.name,
   })
 }
 
@@ -157,7 +157,7 @@ const trackFeatureAction = (featureId) => {
 const trackViewAllFeatures = () => {
   trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
     feature: 'view_all_features',
-    persona: props.activePersona,
+    persona: activePersona.value.name,
   })
 }
 </script>
@@ -174,8 +174,14 @@ const trackViewAllFeatures = () => {
     <div class="absolute inset-0 bg-[url('/patterns/grid-pattern.svg')] opacity-7 z-0"></div>
 
     <!-- Glowing orbs -->
-    <div class="absolute -right-20 top-40 w-72 h-72 bg-blue-600/5 rounded-full blur-3xl"></div>
-    <div class="absolute -left-40 bottom-20 w-80 h-80 bg-primary-600/5 rounded-full blur-3xl"></div>
+    <div
+      class="absolute -right-20 top-40 w-72 h-72 rounded-full blur-3xl transition-colors duration-700"
+      :class="`bg-${activePersona.color}-600/5`"
+    ></div>
+    <div
+      class="absolute -left-40 bottom-20 w-80 h-80 rounded-full blur-3xl transition-colors duration-700"
+      :class="`bg-${activePersona.color}-600/5`"
+    ></div>
 
     <div class="wrapper relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section header -->
@@ -194,64 +200,27 @@ const trackViewAllFeatures = () => {
         class="text-center max-w-xl mx-auto mb-12"
       >
         <div class="flex items-center justify-center gap-2 mb-3">
-          <span class="text-primary-600 uppercase text-sm font-medium tracking-wider"
+          <span
+            class="uppercase text-sm font-medium tracking-wider transition-colors duration-500"
+            :class="`text-${activePersona.color}-600`"
             >AI-POWERED</span
           >
         </div>
         <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white leading-tight">
           <span class="inline-block">Explore</span>
           <span
-            class="bg-gradient-to-r from-blue-500 to-primary-600 bg-clip-text text-transparent inline-block"
+            class="inline-block transition-colors duration-500"
+            :class="personaStyles.sectionHeading"
           >
             The Universe
           </span>
         </h2>
         <p class="text-xl text-gray-300"
-          >Advanced tools helping researchers discover insights faster than ever before</p
+          >Advanced tools helping researcher discover insights faster than ever before</p
         >
       </div>
 
-      <!-- Persona filter tabs -->
-      <div
-        v-motion
-        :initial="{ opacity: 0, y: 20 }"
-        :visibleOnce="{ opacity: 1, y: 0, transition: { delay: 0.2 } }"
-        class="mb-10 flex flex-wrap justify-center gap-3"
-      >
-        <button
-          class="px-4 py-2 rounded-full text-sm transition-all duration-300"
-          :class="
-            props.activePersona === 'all'
-              ? 'bg-primary-600 text-white shadow-lg shadow-primary-900/30'
-              : 'bg-slate-800/70 text-gray-300 hover:bg-slate-700/70'
-          "
-        >
-          All Features
-        </button>
-
-        <button
-          v-for="persona in ['researchers', 'communicators', 'enthusiasts']"
-          :key="persona"
-          class="px-4 py-2 rounded-full text-sm transition-all duration-300 flex items-center gap-2"
-          :class="
-            props.activePersona === persona
-              ? 'bg-primary-600 text-white shadow-lg shadow-primary-900/30'
-              : 'bg-slate-800/70 text-gray-300 hover:bg-slate-700/70'
-          "
-        >
-          <Icon
-            :name="
-              persona === 'researchers'
-                ? 'mdi:microscope'
-                : persona === 'communicators'
-                  ? 'mdi:broadcast'
-                  : 'mdi:star'
-            "
-            size="16"
-          />
-          <span>{{ persona.charAt(0).toUpperCase() + persona.slice(1) }}</span>
-        </button>
-      </div>
+      <!-- Persona filter tabs (not needed anymore since we use the global persona selector) -->
 
       <!-- Feature Showcase Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -277,7 +246,11 @@ const trackViewAllFeatures = () => {
           <!-- Feature Card -->
           <div
             class="h-full bg-slate-900/60 backdrop-blur-sm rounded-xl border border-slate-800/50 p-6 overflow-hidden hover:border-primary-800/30 hover:shadow-lg hover:shadow-primary-900/10 transition-all duration-300 transform hover:-translate-y-1"
-            :class="selectedFeature.id === feature.id ? 'border-2 border-primary-600/50' : ''"
+            :class="
+              selectedFeature.id === feature.id
+                ? `border-2 border-${activePersona.color}-600/50`
+                : ''
+            "
           >
             <!-- Subtle gradient background based on feature -->
             <div
@@ -353,7 +326,8 @@ const trackViewAllFeatures = () => {
       <div class="text-center">
         <PrimeButton
           outlined
-          class="border-primary-600 text-primary-500 hover:bg-primary-900/30 transition-all duration-300"
+          class="transition-colors duration-500"
+          :class="personaStyles.secondaryButton"
           @click="trackViewAllFeatures"
         >
           Explore All Features
@@ -385,7 +359,9 @@ const trackViewAllFeatures = () => {
   }
 }
 
-.border-primary-600\/50 {
+.border-blue-600\/50,
+.border-amber-600\/50,
+.border-emerald-600\/50 {
   animation: pulse-border 2s ease-in-out infinite;
 }
 </style>

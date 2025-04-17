@@ -30,7 +30,7 @@ const plans = ref([
   {
     id: 'premium',
     name: 'Premium',
-    description: 'For serious researchers and astronomy enthusiasts',
+    description: 'For serious researcher and astronomy enthusiasts',
     price: {
       value: 19,
       currency: '$',

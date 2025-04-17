@@ -43,8 +43,8 @@ const customerProfiles: CustomerProfile[] = [
     ],
   },
   {
-    id: 'researchers',
-    title: 'Researchers',
+    id: 'researcher',
+    title: 'Researcher',
     icon: 'i-lucide-microscope',
     benefits: [
       'Share your astronomy research findings',

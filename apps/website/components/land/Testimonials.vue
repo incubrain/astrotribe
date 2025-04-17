@@ -132,7 +132,7 @@ const userTypeColors = {
             class="text-blue-500"
             size="18"
           />
-          Researchers
+          Researcher
         </button>
 
         <button

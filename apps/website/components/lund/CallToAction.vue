@@ -1,8 +1,23 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { usePersona } from '~/composables/usePersona'
+import { useAnimation } from '~/composables/useAnimation'
+import { useAnalytics } from '#imports'
 
 const { conf: motionConstants } = useAnimation()
 const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
+
+// Get persona state from our composable
+const { activePersona, personaStyles, isResearcher, isCommunicator, isEnthusiast } = usePersona()
+
+// Defensive access for computed properties
+const componentColor = computed(() => {
+  return activePersona.value?.color || 'gray'
+})
+
+const personaNameLower = computed(() => {
+  return activePersona.value?.name?.toLowerCase() || ''
+})
 
 // CTA button hover state
 const isHovered = ref(false)
@@ -13,7 +28,7 @@ const isSubmitting = ref(false)
 const isSubmitted = ref(false)
 const submitError = ref(null)
 
-// Handle newsletter submission
+// Handle newsletter subscription
 const handleSubmit = async () => {
   if (!email.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
     submitError.value = 'Please enter a valid email address'
@@ -31,6 +46,7 @@ const handleSubmit = async () => {
     trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
       feature: 'newsletter_subscription',
       source: 'cta_section',
+      persona: activePersona.value.name,
     })
 
     // Handle success
@@ -55,20 +71,91 @@ const trackCTAClick = (ctaType) => {
   trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
     action: 'cta_click',
     cta_type: ctaType,
+    persona: activePersona.value.name,
   })
 }
 
+// Get persona-specific CTA text
+const ctaText = computed(() => {
+  if (isResearcher.value) {
+    return 'Start Your Research Journey'
+  } else if (isCommunicator.value) {
+    return 'Enhance Your Science Communication'
+  } else {
+    return 'Begin Your Cosmic Adventure'
+  }
+})
+
 // Initialize animated stars
-const { stars, isClient, shootingStars } = useStarfield(30, 3)
+const stars = ref([])
+const shootingStars = ref([])
+const isClient = ref(false)
+
+// Generate stars
+const useStarfield = (count = 50, shootingCount = 5) => {
+  if (import.meta.client) {
+    isClient.value = true
+
+    // Create fixed stars
+    const newStars = []
+    for (let i = 0; i < count; i++) {
+      newStars.push({
+        id: i,
+        style: {
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          width: `${Math.random() * 3 + 1}px`,
+          height: `${Math.random() * 3 + 1}px`,
+          opacity: Math.random() * 0.8,
+          animationDelay: `${Math.random() * 3}s`,
+          animationDuration: `${Math.random() * 3 + 2}s`,
+        },
+      })
+    }
+    stars.value = newStars
+
+    // Create shooting stars
+    const newShooting = []
+    for (let i = 0; i < shootingCount; i++) {
+      newShooting.push({
+        id: i,
+        style: {
+          left: `${Math.random() * 80}%`,
+          top: `${Math.random() * 80}%`,
+          opacity: 0,
+          animationDelay: `${Math.random() * 15 + 3}s`,
+          animationDuration: '1s',
+        },
+      })
+    }
+    shootingStars.value = newShooting
+  }
+
+  return { stars, shootingStars, isClient }
+}
+
+// Generate stars on component mount
+onMounted(() => {
+  useStarfield(50, 8)
+})
 </script>
 
 <template>
   <section
-    id="cosmic-cta"
+    id="cta"
     class="py-20 md:py-28 relative overflow-hidden"
   >
     <!-- Background with gradient -->
-    <div class="absolute inset-0 bg-gradient-to-b from-primary-900/90 to-slate-950 z-0"></div>
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-primary-900/90 to-slate-950 z-0 transition-colors duration-700"
+      :class="
+        isResearcher
+          ? 'from-blue-900/90'
+          : isCommunicator
+            ? 'from-emerald-900/90'
+            : 'from-amber-900/90'
+      "
+    ></div>
 
     <!-- Animated stars -->
     <ClientOnly>
@@ -79,7 +166,7 @@ const { stars, isClient, shootingStars } = useStarfield(30, 3)
         <div
           v-for="star in stars"
           :key="star.id"
-          class="absolute rounded-full bg-white"
+          class="absolute rounded-full bg-white twinkle"
           :style="star.style"
         />
 
@@ -94,8 +181,14 @@ const { stars, isClient, shootingStars } = useStarfield(30, 3)
     </ClientOnly>
 
     <!-- Glowing orbs -->
-    <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-1/4 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
+    <div
+      class="absolute top-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl transition-colors duration-700"
+      :class="`bg-${componentColor}-600/10`"
+    ></div>
+    <div
+      class="absolute bottom-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl transition-colors duration-700"
+      :class="`bg-${componentColor}-600/10`"
+    ></div>
 
     <div class="wrapper relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
@@ -111,7 +204,8 @@ const { stars, isClient, shootingStars } = useStarfield(30, 3)
           class="md:col-span-2 flex justify-center"
         >
           <div
-            class="relative w-full max-w-sm aspect-square rounded-full overflow-hidden bg-primary-900/30 border border-primary-600/20 shadow-2xl shadow-primary-600/20"
+            class="relative w-full max-w-sm aspect-square rounded-full overflow-hidden bg-primary-900/30 shadow-2xl transition-colors duration-700"
+            :class="`border border-${componentColor}-600/20 shadow-${componentColor}-600/20`"
           >
             <PlanetModel
               planet-id="jupiter"
@@ -131,13 +225,21 @@ const { stars, isClient, shootingStars } = useStarfield(30, 3)
             <h2 class="text-4xl md:text-6xl font-bold text-white leading-tight">
               Ready to Explore
               <span
-                class="bg-gradient-to-r from-blue-500 to-primary-600 bg-clip-text text-transparent"
+                class="transition-colors duration-700"
+                :class="personaStyles.sectionHeading"
                 >the Cosmos?</span
               >
             </h2>
             <p class="text-xl text-gray-300">
-              Join thousands of researchers, educators, and astronomy enthusiasts using AstronEra to
-              unlock the secrets of the universe.
+              Join thousands of
+              {{
+                isResearcher
+                  ? 'researcher'
+                  : isCommunicator
+                    ? 'science communicator'
+                    : 'astronomy enthusiasts'
+              }}
+              using AstronEra to unlock the secrets of the universe.
             </p>
           </div>
 
@@ -154,10 +256,13 @@ const { stars, isClient, shootingStars } = useStarfield(30, 3)
           >
             <PrimeButton
               size="large"
-              class="bg-gradient-to-r from-primary-600 to-blue-600 hover:from-primary-500 hover:to-blue-500 transition-all duration-300 text-lg px-8 shadow-lg shadow-primary-900/30 border-none"
+              class="text-lg px-8 shadow-lg shadow-primary-900/30 border-none transition-all duration-500"
+              :class="personaStyles.primaryButton"
               @click="trackCTAClick('explore_free')"
+              @mouseenter="isHovered = true"
+              @mouseleave="isHovered = false"
             >
-              Explore The Universe for FREE
+              {{ ctaText }}
               <Icon
                 name="mdi:rocket-launch"
                 class="ml-2"
@@ -165,7 +270,82 @@ const { stars, isClient, shootingStars } = useStarfield(30, 3)
               />
             </PrimeButton>
           </div>
+
+          <!-- Newsletter signup -->
+          <div
+            v-if="!isSubmitted"
+            v-motion
+            :initial="{ opacity: 0, y: 20 }"
+            :visibleOnce="{
+              opacity: 1,
+              y: 0,
+              transition: { delay: 0.4 },
+            }"
+            class="max-w-md"
+          >
+            <p class="text-sm text-gray-400 mb-2"
+              >Stay updated with latest astronomy news and events</p
+            >
+            <form
+              class="flex flex-col sm:flex-row gap-2"
+              @submit.prevent="handleSubmit"
+            >
+              <div class="flex-grow relative">
+                <input
+                  v-model="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  class="w-full px-4 py-3 rounded-lg bg-slate-800/80 border text-white placeholder-gray-400 focus:outline-none transition-colors duration-500"
+                  :class="`border-${componentColor}-600/30 focus:border-${componentColor}-600 focus:ring-1 focus:ring-${componentColor}-600`"
+                />
+                <div
+                  v-if="submitError"
+                  class="absolute -bottom-6 left-0 text-xs text-red-500"
+                >
+                  {{ submitError }}
+                </div>
+              </div>
+              <PrimeButton
+                type="submit"
+                :loading="isSubmitting"
+                class="transition-colors duration-500"
+                :class="personaStyles.primaryButton"
+              >
+                Subscribe
+              </PrimeButton>
+            </form>
+          </div>
+
+          <!-- Success message -->
+          <div
+            v-else
+            class="rounded-lg p-4 text-sm transition-colors duration-500"
+            :class="`bg-${componentColor}-900/30 border border-${componentColor}-700/50 text-${componentColor}-400`"
+          >
+            <div class="flex items-center gap-2">
+              <Icon
+                name="mdi:check-circle"
+                size="18"
+              />
+              <span>Thanks for subscribing! We'll keep you updated.</span>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Persona badge at bottom -->
+      <div class="mt-16 text-center transition-colors duration-500">
+        <span
+          class="inline-block px-4 py-2 rounded-full text-sm backdrop-blur-sm transition-colors duration-500"
+          :class="`bg-${componentColor}-900/50 border border-${componentColor}-700/30 text-${componentColor}-400`"
+        >
+          <Icon
+            :name="activePersona.iconName"
+            class="mr-1"
+            size="14"
+          />
+          Customized for {{ activePersona.name }}
+        </span>
       </div>
     </div>
   </section>
@@ -189,6 +369,21 @@ const { stars, isClient, shootingStars } = useStarfield(30, 3)
   }
   100% {
     transform: translateX(150px);
+  }
+}
+
+.twinkle {
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1.2);
   }
 }
 

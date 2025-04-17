@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, provide } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useWindowScroll } from '@vueuse/core'
 import { useAnalytics } from '#imports'
 
@@ -25,23 +25,36 @@ useHead({
   ],
 })
 
-// Global persona state management
-const activePersona = ref('researchers')
+// Use our persona store for global state management
+const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
 
-// Function to update the active persona - will be passed down to children
-const setActivePersona = (persona: string) => {
-  activePersona.value = persona
+// Handle navigation and feature toggle events
+const handleNavigateTo = (sectionId) => {
+  // Find element by ID and scroll to it
+  const element = document.getElementById(sectionId)
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' })
+  }
 
-  // Track persona selection
-  trackUserAcquisition(UserAcquisitionMetric.SignUpConversion, {
-    action: 'persona_selection',
-    persona: persona,
+  // Track the navigation event
+  trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
+    action: 'section_navigation',
+    section: sectionId,
   })
 }
 
-// Provide these values to all child components
-provide('activePersona', activePersona)
-provide('setActivePersona', setActivePersona)
+const handleFeatureToggle = ({ tool, section, persona }) => {
+  // This could open modals, activate specific features, etc.
+  console.log(`Tool ${tool} activated in ${section} section for ${persona} persona`)
+
+  // Track the feature toggle event
+  trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
+    feature: 'mission_control_tool',
+    tool,
+    section,
+    persona,
+  })
+}
 
 // Track landing page view
 onMounted(() => {
@@ -53,40 +66,40 @@ onMounted(() => {
 
 // Scroll position for floating button
 const { y } = useWindowScroll()
+
+// Pre-load persona images for smoother transitions
+const preloadImages = () => {
+  if (import.meta.client) {
+    // We would normally preload images here, but for this example we're using a placeholder
+    // const images = ['/images/researchers-bg.jpg', '/images/communicators-bg.jpg', '/images/enthusiasts-bg.jpg']
+    // images.forEach(src => {
+    //   const img = new Image()
+    //   img.src = src
+    // })
+  }
+}
+
+onMounted(() => {
+  preloadImages()
+})
 </script>
 
 <template>
   <div>
     <!-- Main content sections -->
-    <LundHeroSection
-      id="home"
-      :active-persona="activePersona"
-      @set-persona="setActivePersona"
-    />
+    <LundHeroSection id="home" />
 
     <main>
-      <LundEventCountdown
-        id="events"
-        :active-persona="activePersona"
+      <LundMissionControlSidebar
+        @navigate-to="handleNavigateTo"
+        @toggle-feature="handleFeatureToggle"
       />
-      <LundProblemSolutionCompare
-        id="old-vs-new"
-        :active-persona="activePersona"
-      />
-      />
-      <LundFeatureShowcase
-        id="features"
-        :active-persona="activePersona"
-      />
+      <LundEventCountdown id="events" />
+      <LundProblemSolutionCompare id="comparison" />
+      <LundFeatureShowcase id="features" />
       <LundPartnerLogoScroll id="partners" />
-      <LundPricingTiers
-        id="pricing"
-        :active-persona="activePersona"
-      />
-      <LundCallToAction
-        id="get-started"
-        :active-persona="activePersona"
-      />
+      <LundPricingTiers id="pricing" />
+      <LundCallToAction id="cta" />
     </main>
 
     <!-- Floating scroll-to-top button -->

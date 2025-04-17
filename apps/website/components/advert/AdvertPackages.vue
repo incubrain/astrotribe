@@ -6,7 +6,7 @@ const profileTypes = [
   { id: 'space-tech', label: 'Space-Tech Companies' },
   { id: 'institution', label: 'Institutions' },
   { id: 'events', label: 'Events/Workshops' },
-  { id: 'researchers', label: 'Researchers' },
+  { id: 'researcher', label: 'Researchers' },
 ]
 const activeProfile = ref('space-tech')
 
@@ -214,7 +214,7 @@ const profilePackages = {
       ],
     },
   ],
-  'researchers': [
+  'researcher': [
     {
       id: 'standard',
       title: 'Research Visibility',

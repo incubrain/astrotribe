@@ -78,6 +78,10 @@ export default defineNuxtConfig({
 
   ssr: true,
 
+  imports: {
+    dirs: ['stores', 'composables/*', 'utils/*'],
+  },
+
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
