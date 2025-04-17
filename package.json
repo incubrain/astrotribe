@@ -82,6 +82,7 @@
     "@fullcalendar/vue3": "^6.1.15",
     "@ib/cache": "workspace:*",
     "@iconify-json/game-icons": "^1.2.1",
+    "@iconify-json/lucide": "^1.2.37",
     "@iconify-json/material-symbols": "^1.2.1",
     "@iconify-json/mdi": "^1.2.0",
     "@influxdata/influxdb-client": "^1.35.0",

@@ -61,12 +61,11 @@ export default defineEventHandler((event: H3Event) => {
   const host = event.node.req.headers.host || 'localhost'
   const path = new URL(url, `http://${host}`).pathname
 
-  console.info(`Traversing URL: ${url}, Host: ${host}, path: ${path}`)
-
   if (import.meta.prerender) {
-    console.info('crawlerGuard: Skipping middleware during prerender (build phase)')
     return
   }
+
+  console.info(`Traversing URL: ${url}, Host: ${host}, path: ${path}`)
 
   const anomalies = checkAnomalies(path)
   if (anomalies.length > 0) {
