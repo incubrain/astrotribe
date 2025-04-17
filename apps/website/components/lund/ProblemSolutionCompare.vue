@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { usePersona } from '~/composables/usePersona'
+import { useAnimation } from '~/composables/useAnimation'
+import { useAnalytics } from '#imports'
 
 const { conf: motionConstants } = useAnimation()
-const { trackUserEngagement } = useAnalytics()
+const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
 
-// Define props to receive selected persona
-const props = defineProps({
-  activePersona: {
-    type: String,
-    default: 'researchers',
-  },
-})
+// Get persona state from our composable
+const { activePersona, personaStyles, isResearcher, isCommunicator, isEnthusiast } = usePersona()
 
 // Sample comparison data
 const comparisons = [
@@ -45,7 +44,7 @@ const comparisons = [
       timeframe: 'Minutes to hours',
       color: 'blue',
     },
-    bestFor: 'researchers',
+    bestFor: 'researcher',
   },
   {
     id: 'education',
@@ -76,9 +75,9 @@ const comparisons = [
         'One-click updates when new research emerges',
       ],
       timeframe: 'Under 1 hour',
-      color: 'green',
+      color: 'emerald',
     },
-    bestFor: 'communicators',
+    bestFor: 'communicator',
   },
   {
     id: 'discovery',
@@ -109,15 +108,16 @@ const comparisons = [
         'Join discussions with other enthusiasts and experts',
       ],
       timeframe: 'Minutes per day',
-      color: 'primary',
+      color: 'amber',
     },
-    bestFor: 'enthusiasts',
+    bestFor: 'enthusiast',
   },
 ]
 
 // Find the preferred comparison for the current persona
 const getPreferredComparison = () => {
-  const preferred = comparisons.find((c) => c.bestFor === props.activePersona)
+  const personaName = activePersona.value.name
+  const preferred = comparisons.find((c) => c.bestFor === personaName)
   return preferred ? preferred.id : 'research'
 }
 
@@ -126,10 +126,11 @@ const activeComparisonId = ref(getPreferredComparison())
 
 // Update preferred comparison when persona changes
 watch(
-  () => props.activePersona,
+  () => activePersona.value,
   () => {
     activeComparisonId.value = getPreferredComparison()
   },
+  { deep: true },
 )
 
 // Get the active comparison data
@@ -145,7 +146,7 @@ const trackComparisonEngagement = (comparisonId) => {
   trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
     feature: 'comparison_view',
     comparison_id: comparisonId,
-    persona: props.activePersona,
+    persona: activePersona.value.name,
   })
 }
 
@@ -158,7 +159,7 @@ const trackCTAClick = () => {
   trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
     action: 'comparison_cta_click',
     comparison_id: activeComparisonId.value,
-    persona: props.activePersona,
+    persona: activePersona.value.name,
   })
 }
 </script>
@@ -175,8 +176,14 @@ const trackCTAClick = () => {
     <div class="absolute inset-0 bg-[url('/patterns/noise-pattern.svg')] opacity-5 z-0"></div>
 
     <!-- Subtle glow effects -->
-    <div class="absolute top-20 left-1/4 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-40 -right-40 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl"></div>
+    <div
+      class="absolute top-20 left-1/4 w-96 h-96 rounded-full blur-3xl transition-colors duration-700"
+      :class="`bg-${activePersona.color}-600/5`"
+    ></div>
+    <div
+      class="absolute bottom-40 -right-40 w-96 h-96 rounded-full blur-3xl transition-colors duration-700"
+      :class="`bg-${activePersona.color}-600/5`"
+    ></div>
 
     <div class="wrapper relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section heading -->
@@ -188,7 +195,11 @@ const trackCTAClick = () => {
       >
         <h2 class="text-4xl md:text-5xl font-bold tracking-tight">
           <span class="text-white">Experience the </span>
-          <span class="text-blue-500">Difference</span>
+          <span
+            :class="personaStyles.sectionHeading"
+            class="transition-colors duration-500"
+            >Difference</span
+          >
         </h2>
         <p class="mt-4 text-lg text-gray-400 max-w-3xl mx-auto">
           See how AstronEra transforms time-consuming astronomy tasks into streamlined, efficient
@@ -354,11 +365,11 @@ const trackCTAClick = () => {
                     :visibleOnce="{ opacity: 1, x: 0, transition: { delay: 0.1 + index * 0.1 } }"
                   >
                     <div
-                      class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 border"
+                      class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 border transition-colors duration-500"
                       :class="`bg-${activeComparison.newWay.color}-900/30 border-${activeComparison.newWay.color}-800/30`"
                     >
                       <span
-                        class="text-xs"
+                        class="text-xs transition-colors duration-500"
                         :class="`text-${activeComparison.newWay.color}-400`"
                         >{{ index + 1 }}</span
                       >
@@ -376,7 +387,7 @@ const trackCTAClick = () => {
               >
                 <span class="text-gray-400 text-sm">Average Time</span>
                 <span
-                  class="font-medium"
+                  class="font-medium transition-colors duration-500"
                   :class="`text-${activeComparison.newWay.color}-500`"
                   >{{ activeComparison.newWay.timeframe }}</span
                 >
@@ -391,9 +402,13 @@ const trackCTAClick = () => {
         v-motion
         :initial="{ opacity: 0, y: 20 }"
         :visibleOnce="{ opacity: 1, y: 0, transition: { delay: 0.5 } }"
-        class="mt-8 p-4 bg-blue-900/20 border border-blue-800/30 rounded-lg text-center"
+        class="mt-8 p-4 rounded-lg text-center transition-colors duration-500"
+        :class="`bg-${activePersona.color}-900/20 border border-${activePersona.color}-800/30`"
       >
-        <p class="text-blue-400">
+        <p
+          :class="`text-${activePersona.color}-400`"
+          class="transition-colors duration-500"
+        >
           <span class="font-bold">Save time and resources</span> with AstronEra's streamlined
           approach
         </p>
@@ -408,7 +423,8 @@ const trackCTAClick = () => {
       >
         <PrimeButton
           size="large"
-          class="bg-blue-600 hover:bg-blue-500 border-none shadow-lg shadow-blue-900/20 transition-all duration-300 px-6"
+          class="shadow-lg transition-all duration-500 px-6"
+          :class="personaStyles.primaryButton"
           @click="trackCTAClick"
         >
           Try AstronEra Today

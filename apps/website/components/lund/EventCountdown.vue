@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue'
+import { usePersona } from '~/composables/usePersona'
+import { useAnimation } from '~/composables/useAnimation'
+import { useAnalytics } from '#imports'
 
 const { conf: motionConstants } = useAnimation()
-const { trackUserEngagement } = useAnalytics()
+const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
 
-// Define props
-const props = defineProps({
-  activePersona: {
-    type: String,
-    default: 'researchers',
-  },
-})
+// Get persona state from our composable
+const { activePersona, personaStyles, isResearcher, isCommunicator, isEnthusiast } = usePersona()
 
 // Define events based on persona preferences
 const allEvents = [
@@ -22,7 +20,7 @@ const allEvents = [
     type: 'meteor',
     color: 'red',
     icon: 'mdi:meteor',
-    bestFor: 'communicators',
+    bestFor: 'communicator',
   },
   {
     id: 2,
@@ -32,7 +30,7 @@ const allEvents = [
     type: 'eclipse',
     color: 'amber',
     icon: 'mdi:weather-night',
-    bestFor: 'enthusiasts',
+    bestFor: 'enthusiast',
   },
   {
     id: 3,
@@ -42,17 +40,17 @@ const allEvents = [
     type: 'launch',
     color: 'blue',
     icon: 'mdi:rocket-launch',
-    bestFor: 'enthusiasts',
+    bestFor: 'enthusiast',
   },
   {
     id: 4,
     name: 'International Astronomy Conference',
     date: new Date('2025-05-10T09:00:00'),
-    description: 'Annual gathering of astronomy researchers from around the world',
+    description: 'Annual gathering of astronomy researcher from around the world',
     type: 'conference',
     color: 'indigo',
     icon: 'mdi:account-group',
-    bestFor: 'researchers',
+    bestFor: 'researcher',
   },
   {
     id: 5,
@@ -62,7 +60,7 @@ const allEvents = [
     type: 'workshop',
     color: 'primary',
     icon: 'mdi:database',
-    bestFor: 'researchers',
+    bestFor: 'researcher',
   },
 ]
 
@@ -73,19 +71,18 @@ const events = computed(() => {
 
 // Select active event based on persona
 const getInitialEvent = () => {
-  // First try to find an event specifically recommended for this persona
-  const personaEvent = events.value.find((event) => event.bestFor === props.activePersona)
+  const personaName = activePersona.value.name
+  const personaEvent = events.value.find((event) => event.bestFor === personaName)
   if (personaEvent) return personaEvent
 
-  // If none found, return the closest upcoming event
   const now = new Date().getTime()
   const futureEvents = events.value.filter((event) => event.date.getTime() > now)
 
   if (futureEvents.length > 0) {
-    return futureEvents[0] // Closest upcoming event
+    return futureEvents[0]
   }
 
-  return events.value[0] // Fallback to first event
+  return events.value[0]
 }
 
 // Active event state
@@ -93,11 +90,12 @@ const activeEvent = ref(getInitialEvent())
 
 // Update active event when persona changes
 watch(
-  () => props.activePersona,
+  () => activePersona.value,
   () => {
     activeEvent.value = getInitialEvent()
     initializeCountdown(activeEvent.value.date)
   },
+  { deep: true },
 )
 
 // Countdown timer state
@@ -180,6 +178,7 @@ const selectEvent = (eventId) => {
     feature: 'event_countdown',
     event_id: eventId,
     event_name: event.name,
+    persona: activePersona.value.name,
   })
 }
 
@@ -198,9 +197,15 @@ const formatEventDate = (date) => {
 const trackViewFullCalendar = () => {
   trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
     action: 'view_full_calendar',
-    persona: props.activePersona,
+    persona: activePersona.value.name,
   })
 }
+
+// Get events relevant to current persona
+const relevantEvents = computed(() => {
+  const personaName = activePersona.value.name.toLowerCase()
+  return events.value.filter((e) => e.bestFor === personaName).slice(0, 3)
+})
 
 // Set up countdown on mount
 onMounted(() => {
@@ -217,12 +222,20 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="py-16 md:py-20 relative overflow-hidden">
-    <!-- Background gradient -->
-    <div class="absolute inset-0 bg-gradient-to-b from-slate-950 to-primary-950/70 z-0"></div>
+    <!-- Background with persona-specific gradient -->
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-slate-950 to-primary-950/70 z-0 transition-colors duration-700"
+    ></div>
 
     <!-- Glow effects -->
-    <div class="absolute left-0 top-1/3 w-64 h-64 bg-primary-600/5 rounded-full blur-3xl"></div>
-    <div class="absolute right-0 bottom-1/3 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl"></div>
+    <div
+      class="absolute left-0 top-1/3 w-64 h-64 rounded-full blur-3xl transition-colors duration-700"
+      :class="`bg-${activePersona.color}-600/5`"
+    ></div>
+    <div
+      class="absolute right-0 bottom-1/3 w-64 h-64 rounded-full blur-3xl transition-colors duration-700"
+      :class="`bg-${activePersona.color}-600/5`"
+    ></div>
 
     <div class="wrapper relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section header -->
@@ -232,7 +245,9 @@ onBeforeUnmount(() => {
       >
         <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white leading-tight">
           Next
-          <span class="bg-gradient-to-r from-blue-500 to-primary-600 bg-clip-text text-transparent"
+          <span
+            :class="personaStyles.sectionHeading"
+            class="transition-colors duration-500"
             >Astronomical</span
           >
           Events
@@ -244,7 +259,8 @@ onBeforeUnmount(() => {
         <!-- View Full Calendar button at the top -->
         <PrimeButton
           size="large"
-          class="bg-blue-600 hover:bg-blue-500 border-none shadow-lg shadow-blue-900/20"
+          :class="personaStyles.primaryButton"
+          class="transition-colors duration-500 shadow-lg"
           @click="trackViewFullCalendar"
         >
           <Icon
@@ -290,17 +306,17 @@ onBeforeUnmount(() => {
         class="max-w-4xl mx-auto"
       >
         <div
-          class="rounded-xl bg-slate-900/60 backdrop-blur-sm border border-slate-800/50 overflow-hidden"
+          class="rounded-xl bg-slate-900/60 backdrop-blur-sm border border-slate-800/50 overflow-hidden transition-all duration-500"
           :class="`border-${activeEvent.color}-800/30 shadow-xl shadow-${activeEvent.color}-900/10`"
         >
           <!-- Event header -->
           <div
-            class="px-6 py-4 border-b border-slate-800/30 flex items-center justify-between"
+            class="px-6 py-4 border-b border-slate-800/30 flex items-center justify-between transition-colors duration-500"
             :class="`bg-${activeEvent.color}-900/20`"
           >
             <div class="flex items-center gap-3">
               <div
-                class="w-10 h-10 rounded-full flex items-center justify-center"
+                class="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-500"
                 :class="`bg-${activeEvent.color}-600/30 text-${activeEvent.color}-400`"
               >
                 <Icon
@@ -315,7 +331,7 @@ onBeforeUnmount(() => {
             </div>
             <div>
               <span
-                class="px-3 py-1 rounded-full text-sm"
+                class="px-3 py-1 rounded-full text-sm transition-colors duration-500"
                 :class="`bg-${activeEvent.color}-900/30 text-${activeEvent.color}-400 border border-${activeEvent.color}-800/30`"
               >
                 {{ activeEvent.type }}
@@ -335,12 +351,12 @@ onBeforeUnmount(() => {
               >
                 <!-- Subtle background glow matching event color -->
                 <div
-                  class="absolute inset-0 opacity-20"
+                  class="absolute inset-0 opacity-20 transition-colors duration-500"
                   :class="`bg-${activeEvent.color}-900/20`"
                 ></div>
 
                 <div
-                  class="text-5xl font-bold mb-1 relative z-10"
+                  class="text-5xl font-bold mb-1 relative z-10 transition-colors duration-500"
                   :class="`text-${activeEvent.color}-400`"
                 >
                   {{ value }}
@@ -357,7 +373,7 @@ onBeforeUnmount(() => {
                   <button
                     v-for="(cal, idx) in ['Google', 'Apple', 'Outlook']"
                     :key="idx"
-                    class="px-3 py-1.5 rounded text-xs transition-colors duration-300 flex items-center gap-1"
+                    class="px-3 py-1.5 rounded text-xs transition-colors duration-500 flex items-center gap-1"
                     :class="`bg-${activeEvent.color}-900/20 text-${activeEvent.color}-400 hover:bg-${activeEvent.color}-900/40 border border-${activeEvent.color}-800/30`"
                     @click="
                       trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
@@ -379,6 +395,7 @@ onBeforeUnmount(() => {
               <!-- Reminder button -->
               <PrimeButton
                 outlined
+                class="transition-colors duration-500"
                 :class="`border-${activeEvent.color}-600 text-${activeEvent.color}-500 hover:bg-${activeEvent.color}-900/20`"
                 @click="
                   trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
@@ -413,22 +430,19 @@ onBeforeUnmount(() => {
             class="text-yellow-500"
             size="20"
           />
-          <span
-            >Recommended for
-            {{ props.activePersona.charAt(0).toUpperCase() + props.activePersona.slice(1) }}</span
-          >
+          <span>Recommended for {{ activePersona.name }}</span>
         </h3>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
           <div
-            v-for="event in events.filter((e) => e.bestFor === props.activePersona).slice(0, 3)"
+            v-for="event in relevantEvents"
             :key="`rec-${event.id}`"
             class="bg-slate-900/40 backdrop-blur-sm rounded-lg border border-slate-800/50 p-4 hover:border-primary-800/30 transition-all duration-300 cursor-pointer"
             @click="selectEvent(event.id)"
           >
             <div class="flex items-center gap-3 mb-2">
               <div
-                class="w-8 h-8 rounded-full flex items-center justify-center"
+                class="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-500"
                 :class="`bg-${event.color}-900/50 text-${event.color}-500`"
               >
                 <Icon
