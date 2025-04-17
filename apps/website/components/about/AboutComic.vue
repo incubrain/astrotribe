@@ -58,7 +58,7 @@ const [emblaRef, emblaApi] = useEmblaCarousel(
       <!-- Embla Carousel -->
       <div
         ref="emblaRef"
-        class="overflow-hiddenx"
+        class="overflow-hidden"
       >
         <div class="embla__container grid auto-cols-max grid-flow-col gap-4">
           <div

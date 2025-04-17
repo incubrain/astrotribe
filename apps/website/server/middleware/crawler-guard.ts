@@ -64,7 +64,6 @@ const RDNS_CACHE_TTL = 60 * 60 * 1000 // 1 hour in milliseconds
 
 export default defineEventHandler(async (event) => {
   if (import.meta.prerender) {
-    console.info('crawlerGuard: Skipping middleware during prerender (build phase)')
     return
   }
 
