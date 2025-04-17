@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useWindowScroll } from '@vueuse/core'
+import { useWindowScroll, useWindowSize } from '@vueuse/core'
 import { useAnalytics } from '#imports'
 
 const { trackUserAcquisition, UserAcquisitionMetric } = useAnalytics()
+
+const { width, height } = useWindowSize()
 
 // SEO metadata
 useHead({
@@ -12,13 +14,13 @@ useHead({
     {
       name: 'description',
       content:
-        'Connect with astronomy data, analyze research, and discover cosmic insights with our AI-powered platform for researchers, communicators, and enthusiasts.',
+        'Connect with astronomy data, analyze research, and discover cosmic insights with our AI-powered platform for researchers, science communicators, and enthusiasts.',
     },
     { property: 'og:title', content: 'AstronEra - Space Intelligence Platform' },
     {
       property: 'og:description',
       content:
-        'Connect with astronomy data, analyze research, and discover cosmic insights with our AI-powered platform for researchers, communicators, and enthusiasts.',
+        'Connect with astronomy data, analyze research, and discover cosmic insights with our AI-powered platform for researchers, science communicators, and enthusiasts.',
     },
     { property: 'og:image', content: '/images/hero-image.jpg' },
     { name: 'twitter:card', content: 'summary_large_image' },
@@ -99,15 +101,18 @@ onMounted(() => {
       <LundFeatureShowcase id="features" />
       <LundPartnerLogoScroll id="partners" />
       <LundPricingTiers id="pricing" />
-      <LundCallToAction id="cta" />
+      <LundCallToAction
+        id="cta"
+        class="my-24"
+      />
     </main>
 
     <!-- Floating scroll-to-top button -->
-    <ClientOnly>
+    <ClientOnly v-if="width < 768">
       <Transition name="fade">
         <button
           v-show="y > 500"
-          class="fixed bottom-8 right-8 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-primary-600 to-blue-600 text-white shadow-lg shadow-primary-600/30 transition-all duration-300 hover:from-primary-500 hover:to-blue-500"
+          class="fixed bottom-8 right-8 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-primary-600 to-blue-600 text-white shadow-lg shadow-primary-600/30 transition-all duration-300 hover:from-primary-500 hover:to-blue-500 z-[1000]"
           @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
         >
           <Icon

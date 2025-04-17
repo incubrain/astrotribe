@@ -20,6 +20,8 @@ export enum OnboardingMetric {
 export enum UserEngagementMetric {
   SessionDuration = 'session_duration',
   ActionsPerSession = 'actions_per_session',
+  ContentPerformance = 'content_performance',
+  PageViews = 'page_views',
   VisitFrequency = 'visit_frequency',
   FeatureAdoption = 'feature_adoption',
 }

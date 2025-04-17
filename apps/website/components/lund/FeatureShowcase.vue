@@ -25,7 +25,7 @@ const features = ref([
       'Real-time access to latest research findings',
       'Citation tracking and source verification',
     ],
-    personas: ['researcher', 'communicator', 'enthusiast'],
+    personas: ['researcher', 'sci-commer', 'enthusiast'],
   },
   {
     id: 2,
@@ -40,7 +40,7 @@ const features = ref([
       'Automatic categorization of papers and data',
       'Collaborative sharing with research teams',
     ],
-    personas: ['researcher', 'communicator'],
+    personas: ['researcher', 'sci-commer'],
   },
   {
     id: 3,
@@ -85,7 +85,7 @@ const features = ref([
       'Share to social media with one click',
       'Build streaks to track your astronomy journey',
     ],
-    personas: ['enthusiast', 'communicator'],
+    personas: ['enthusiast', 'sci-commer'],
   },
   {
     id: 6,
@@ -100,32 +100,39 @@ const features = ref([
       'Generate quotes and key talking points',
       'Export in multiple formats including PDF and HTML',
     ],
-    personas: ['communicator'],
+    personas: ['sci-commer'],
   },
 ])
+
+const orderedFeatures = computed(() => {
+  const persona = activePersona.value?.name.toLowerCase()
+  return [...features.value].sort((a, b) => {
+    const aApplies = a.personas.includes(persona)
+    const bApplies = b.personas.includes(persona)
+    return aApplies === bApplies ? 0 : aApplies ? -1 : 1
+  })
+})
 
 // Selected feature
 const selectedFeature = ref(features.value[0])
 
-// Filter features by persona
-const filteredFeatures = computed(() => {
-  const personaName = activePersona.value.name
-  if (personaName === 'all') {
-    return features.value
-  }
-  return features.value.filter((feature) => feature.personas.includes(personaName))
-})
+// Check if a feature is applicable to the current persona
+const isFeatureApplicable = (feature) => {
+  const personaName = activePersona.value?.name.toLowerCase()
+  return feature.personas.includes(personaName)
+}
 
-// Ensure a selected feature is valid for the current persona
+// Set initial selected feature based on persona
 watch(
   () => activePersona.value,
   () => {
-    // If current selection isn't in the filtered list, select the first available feature
-    if (!filteredFeatures.value.find((f) => f.id === selectedFeature.value.id)) {
-      selectedFeature.value = filteredFeatures.value[0]
+    // Find an applicable feature for the current persona
+    const applicableFeature = features.value.find((f) => isFeatureApplicable(f))
+    if (applicableFeature) {
+      selectedFeature.value = applicableFeature
     }
   },
-  { deep: true },
+  { immediate: true },
 )
 
 // Function to track feature selection
@@ -135,30 +142,42 @@ const trackFeatureInterest = (featureId) => {
     selectedFeature.value = feature
 
     // Track the selection
-    trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
-      feature: 'feature_selection',
-      feature_id: featureId,
-      feature_name: feature.title,
-      persona: activePersona.value.name,
-    })
+    try {
+      trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
+        feature: 'feature_selection',
+        feature_id: featureId,
+        feature_name: feature.title,
+        persona: activePersona.value.name,
+      })
+    } catch (error) {
+      console.error('Error tracking feature interest:', error)
+    }
   }
 }
 
 // Track feature button action
 const trackFeatureAction = (featureId) => {
-  trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
-    feature: 'feature_cta_click',
-    feature_id: featureId,
-    persona: activePersona.value.name,
-  })
+  try {
+    trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
+      feature: 'feature_cta_click',
+      feature_id: featureId,
+      persona: activePersona.value.name,
+    })
+  } catch (error) {
+    console.error('Error tracking feature action:', error)
+  }
 }
 
 // Track view all features button
 const trackViewAllFeatures = () => {
-  trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
-    feature: 'view_all_features',
-    persona: activePersona.value.name,
-  })
+  try {
+    trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
+      feature: 'view_all_features',
+      persona: activePersona.value.name,
+    })
+  } catch (error) {
+    console.error('Error tracking view all features:', error)
+  }
 }
 </script>
 
@@ -215,17 +234,15 @@ const trackViewAllFeatures = () => {
             The Universe
           </span>
         </h2>
-        <p class="text-xl text-gray-300"
-          >Advanced tools helping researcher discover insights faster than ever before</p
-        >
+        <p class="text-xl text-gray-300">
+          Advanced tools helping researchers discover insights faster than ever before
+        </p>
       </div>
-
-      <!-- Persona filter tabs (not needed anymore since we use the global persona selector) -->
 
       <!-- Feature Showcase Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         <div
-          v-for="(feature, index) in filteredFeatures"
+          v-for="(feature, index) in orderedFeatures"
           :key="feature.id"
           v-motion
           :initial="{ opacity: 0, y: 30, scale: 0.95 }"
@@ -240,22 +257,26 @@ const trackViewAllFeatures = () => {
               delay: 0.1 + index * 0.05,
             },
           }"
-          class="relative group cursor-pointer"
-          @click="trackFeatureInterest(feature.id)"
+          class="relative group h-full"
+          :class="{ grayscale: !isFeatureApplicable(feature) }"
+          @click="isFeatureApplicable(feature) && trackFeatureInterest(feature.id)"
         >
           <!-- Feature Card -->
           <div
-            class="h-full bg-slate-900/60 backdrop-blur-sm rounded-xl border border-slate-800/50 p-6 overflow-hidden hover:border-primary-800/30 hover:shadow-lg hover:shadow-primary-900/10 transition-all duration-300 transform hover:-translate-y-1"
-            :class="
-              selectedFeature.id === feature.id
+            class="h-full bg-slate-900/60 backdrop-blur-sm rounded-xl border border-slate-800/50 p-6 overflow-hidden transition-all duration-300 transform flex flex-col"
+            :class="[
+              isFeatureApplicable(feature)
+                ? 'hover:border-primary-800/30 hover:shadow-lg hover:shadow-primary-900/10 hover:-translate-y-1 cursor-pointer'
+                : 'cursor-default',
+              selectedFeature.id === feature.id && isFeatureApplicable(feature)
                 ? `border-2 border-${activePersona.color}-600/50`
-                : ''
-            "
+                : '',
+            ]"
           >
             <!-- Subtle gradient background based on feature -->
             <div
               class="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-xl"
-              :class="`bg-gradient-to-br ${feature.color}`"
+              :class="[`bg-gradient-to-br ${feature.color}`]"
             ></div>
 
             <!-- Feature header -->
@@ -275,7 +296,7 @@ const trackViewAllFeatures = () => {
                 <h3 class="text-lg font-bold text-white">{{ feature.title }}</h3>
                 <span
                   class="text-xs px-2 py-0.5 rounded-full inline-flex items-center"
-                  :class="`bg-${feature.color.split(' ')[0].split('-')[0]}-900/30 text-${feature.color.split(' ')[0].split('-')[0]}-400 border border-${feature.color.split(' ')[0].split('-')[0]}-800/30`"
+                  :class="`bg-${feature.color.split(' ')[0]}-900/30 text-${feature.color.split(' ')[0]}-400 border border-${feature.color.split(' ')[0]}-800/30`"
                 >
                   {{ feature.highlight }}
                 </span>
@@ -286,17 +307,17 @@ const trackViewAllFeatures = () => {
             <p class="text-gray-400 text-sm mb-4 relative z-10">{{ feature.description }}</p>
 
             <!-- Feature capabilities -->
-            <div class="mb-4 relative z-10">
+            <div class="mb-auto relative z-10">
               <ul class="space-y-2">
                 <li
-                  v-for="(capability, idx) in feature.capabilities.slice(0, 2)"
+                  v-for="(capability, idx) in feature.capabilities"
                   :key="idx"
                   class="flex items-start gap-2 text-sm"
                 >
                   <Icon
                     name="mdi:check-circle"
                     class="flex-shrink-0 mt-0.5"
-                    :class="`text-${feature.color.split(' ')[0].split('-')[0]}-500`"
+                    :class="`text-${feature.color.split(' ')[0]}-500`"
                     size="16"
                   />
                   <span class="text-gray-300">{{ capability }}</span>
@@ -304,11 +325,15 @@ const trackViewAllFeatures = () => {
               </ul>
             </div>
 
-            <!-- Try Feature Button -->
-            <div class="relative z-10">
+            <!-- Try Feature Button - positioned at bottom right -->
+            <div class="relative z-10 mt-4 flex justify-end">
               <button
-                class="text-sm font-medium flex items-center gap-1.5 transition-colors duration-200 mt-auto"
-                :class="`text-${feature.color.split(' ')[0].split('-')[0]}-500 hover:text-${feature.color.split(' ')[0].split('-')[0]}-400`"
+                class="text-sm font-medium flex items-center gap-1.5 transition-colors duration-200"
+                :class="[
+                  isFeatureApplicable(feature)
+                    ? `text-${feature.color.split(' ')[0]}-500 hover:text-${feature.color.split(' ')[0]}-400`
+                    : '',
+                ]"
                 @click.stop="trackFeatureAction(feature.id)"
               >
                 <span>Try this feature</span>

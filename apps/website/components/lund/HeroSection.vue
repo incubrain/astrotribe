@@ -1,118 +1,13 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
-// Remove storeToRefs if it's no longer needed for other stores here
-// import { storeToRefs } from 'pinia'
+import { ref, computed, onMounted, watch, nextTick, onUnmounted } from 'vue'
 import { usePersona } from '~/composables/usePersona'
 import { useAnimation } from '~/composables/useAnimation'
 import { useAnalytics } from '#imports'
 
-const { conf: motionConstants } = useAnimation()
 const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
 
 // Get persona state from our composable
-const {
-  activePersona,
-  personas,
-  personaStyles,
-  setActivePersona,
-  isResearcher,
-  isCommunicator,
-  isEnthusiast,
-} = usePersona()
-
-// --- Remove these unused refs ---
-// const orbitingPersonas = ref([...personas.value]) // REMOVE
-// const orbitCenterX = ref(0) // REMOVE
-// const orbitCenterY = ref(0) // REMOVE
-// ---
-
-// Orbital animation state
-const orbitRadius = ref(140)
-const orbitProgress = ref(0)
-const isOrbiting = ref(false)
-
-// Calculate orbit positions for personas
-const getOrbitPositions = computed(() => {
-  // Add a guard clause for safety during initialization/SSR
-  if (!activePersona.value || !personas.value) {
-    console.warn('getOrbitPositions: activePersona or personas not ready yet.')
-    return {} // Return empty object if state isn't ready
-  }
-
-  // Console log can stay for debugging if needed
-  // console.log('getOrbitPositions recalculating for active:', activePersona.value.name)
-
-  const positions = {}
-  let index = 0
-
-  // Use .value because personas is a ComputedRef
-  personas.value.forEach((persona) => {
-    // Use .value because activePersona is a ComputedRef
-    if (persona.name === activePersona.value.name) {
-      // Active persona is in the center
-      positions[persona.name] = {
-        x: 0,
-        y: 0,
-        scale: 1.3, // Increased scale for better visibility
-        opacity: 1,
-        active: true,
-      }
-    } else {
-      // Position others in orbit
-      const angle = (orbitProgress.value + index * 180) % 360
-      const radian = angle * (Math.PI / 180)
-      const x = Math.cos(radian) * orbitRadius.value
-      const y = Math.sin(radian) * (orbitRadius.value * 0.4) // Flatter elliptical orbit
-
-      positions[persona.name] = {
-        x,
-        y,
-        scale: 0.8,
-        opacity: 0.7,
-        rotation: angle - 90, // Angle persona icon toward center
-        active: false,
-      }
-      index++
-    }
-  })
-
-  return positions
-})
-
-// Animation for orbit effect
-const startOrbiting = () => {
-  // ... (rest of startOrbiting function is likely fine) ...
-  if (isOrbiting.value) return
-  isOrbiting.value = true
-
-  // Continuously update orbit positions
-  const animateOrbit = () => {
-    if (!isOrbiting.value) return
-
-    orbitProgress.value += 0.5
-    if (orbitProgress.value >= 360) {
-      orbitProgress.value = 0
-    }
-
-    requestAnimationFrame(animateOrbit)
-  }
-
-  animateOrbit()
-}
-
-// Handle persona selection
-const selectPersona = (persona: Persona) => {
-  // Add type hint if Persona interface is available
-  // setActivePersona is now directly available from usePersona()
-  setActivePersona(persona)
-
-  // Tracking should still work if activePersona updates correctly
-  trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
-    action: 'persona_selection',
-    // Use persona.name directly from the argument for immediate tracking
-    persona: persona.name,
-  })
-}
+const { activePersona, personaStyles } = usePersona()
 
 // Dynamic headline based on persona
 const currentHeadline = computed(() => {
@@ -122,36 +17,43 @@ const currentHeadline = computed(() => {
 
 // Track CTA click
 const trackCTAClick = (ctaType: string) => {
-  // Add type hint
-  // Check if activePersona exists before accessing name
-  if (!activePersona.value) return
-
   trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
-    action: 'cta_click',
+    action: 'click_cta',
     cta_type: ctaType,
-    persona: activePersona.value.name,
+    persona: activePersona.value?.name || 'unknown',
   })
 }
 
 // Particle system for background atmosphere
-const stars = ref([])
+const stars = ref<
+  Array<{
+    id: number
+    x: number
+    y: number
+    size: number
+    opacity: number
+    animationDuration: number
+    animationDelay: number
+    color: string
+  }>
+>([])
+
+// Generate stars based on current persona
 const generateStars = () => {
-  // Add guard clause for safety
-  if (!activePersona.value) return
-
-  const starCount = 150
   const newStars = []
+  const count = 40
+  const color = activePersona.value?.color || 'blue'
 
-  for (let i = 0; i < starCount; i++) {
+  for (let i = 0; i < count; i++) {
     newStars.push({
       id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 2.5,
-      opacity: Math.random() * 0.8 + 0.2,
-      pulse: Math.random() * 3 + 1,
-      // Use optional chaining for color access
-      color: Math.random() > 0.8 ? activePersona.value?.color : 'white',
+      x: Math.random() * 100, // % position
+      y: Math.random() * 100, // % position
+      size: 1 + Math.random() * 3,
+      opacity: 0.1 + Math.random() * 0.5,
+      animationDuration: 3 + Math.random() * 7, // seconds
+      animationDelay: Math.random() * 5, // seconds
+      color,
     })
   }
 
@@ -161,76 +63,58 @@ const generateStars = () => {
 // Generate initial stars
 onMounted(() => {
   // Generate stars might rely on activePersona, ensure it's safe
-  generateStars() // Consider calling this within the watch below initially if needed
-  startOrbiting()
+  generateStars()
 
   // Track hero section view safely
-  if (activePersona.value) {
-    trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
-      feature: 'hero_section_view',
-      persona: activePersona.value.name,
-    })
-  }
+  nextTick(() => {
+    if (activePersona.value) {
+      trackUserEngagement(UserEngagementMetric.PageViews, {
+        section: 'hero',
+        persona: activePersona.value.name,
+      })
+    }
+  })
 })
 
-// Regenerate stars when persona changes
-// Use .value when accessing activePersona inside the watch source function
+const isTransitioning = ref(false)
+const previousPersona = ref<any>(null)
+// Update stars when persona changes
 watch(
   () => activePersona.value,
   (newPersona) => {
     if (newPersona) {
+      // Regenerate stars with new persona color
       generateStars()
-    }
-  },
-  { deep: true },
-) // deep: true might be needed if generateStars depends on nested properties
 
-// Keep the debugging watch if needed, but ensure it accesses .value
-watch(
-  () => activePersona.value, // Watch the value of the computed ref
-  (newVal, oldVal) => {
-    console.log('[HeroSection Watch] Active persona changed:', oldVal?.name, '->', newVal?.name)
-    // Access .value for computed properties here too
-    if (newVal) {
-      // Ensure newVal exists before calculating positions
-      const positions = getOrbitPositions.value
-      console.log('[HeroSection Watch] Recalculated positions:', JSON.stringify(positions, null, 2))
+      // If we're transitioning between personas, ensure proper state
+      if (previousPersona.value) {
+        // Small delay to ensure DOM is updated
+        setTimeout(() => {
+          isTransitioning.value = true
+        }, 50)
+      }
     }
   },
-  // No deep: true needed if just watching the ref itself change
 )
+
+// Feature animation state for staggered appearance
+const areFeatureItemsVisible = ref(false)
+
+onMounted(() => {
+  // Trigger features animation after a short delay
+  setTimeout(() => {
+    areFeatureItemsVisible.value = true
+  }, 800)
+})
 </script>
 
 <template>
-  <section
-    class="hero-section relative overflow-hidden min-h-[90vh] flex items-center py-16 md:py-24"
-  >
+  <section class="hero-section relative min-h-[90vh] flex items-center py-16 md:py-24">
     <!-- Background Effects -->
-    <div class="absolute inset-0 bg-slate-950 z-0"></div>
-    <div class="absolute inset-0 bg-[url('/patterns/stars-pattern.svg')] opacity-30 z-0"></div>
 
-    <!-- Dynamic star field -->
-    <div class="absolute inset-0 z-0">
-      <div
-        v-for="star in stars"
-        :key="star.id"
-        class="absolute rounded-full transition-colors duration-1000"
-        :style="{
-          left: `${star.x}%`,
-          top: `${star.y}%`,
-          width: `${star.size}px`,
-          height: `${star.size}px`,
-          opacity: star.opacity,
-          backgroundColor:
-            star.color === 'white' ? 'white' : `var(--color-${activePersona.color}-400)`,
-          animation: `pulse ${star.pulse}s infinite alternate`,
-        }"
-      ></div>
-    </div>
-
-    <!-- Main floating orbs -->
+    <!-- Background gradient accents -->
     <div
-      class="absolute top-1/4 right-1/4 w-64 h-64 rounded-full blur-3xl transition-colors duration-700"
+      class="absolute top-1/4 right-1/4 w-72 h-72 rounded-full blur-3xl transition-colors duration-700"
       :class="`bg-${activePersona.color}-600/10`"
     ></div>
     <div
@@ -250,26 +134,23 @@ watch(
             :visibleOnce="{
               opacity: 1,
               y: 0,
-              transition: { type: 'spring', stiffness: 200, damping: 20 },
+              transition: { delay: 0.3 },
             }"
-            class="text-4xl md:text-7xl font-bold mb-8 text-white leading-tight"
+            class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 transition-colors duration-500 underline underline-offset-8"
+            :class="`text-${activePersona.color}-500 decoration-${activePersona.color}-500`"
           >
-            <span
-              class="block transition-colors duration-500"
-              :class="personaStyles.sectionHeading"
-            >
-              {{ currentHeadline }}
-            </span>
+            {{ currentHeadline }}
           </h1>
 
+          <!-- Subtitle -->
           <p
             v-motion
             :initial="{ opacity: 0, y: 30 }"
             :visibleOnce="{ opacity: 1, y: 0, transition: { delay: 0.2 } }"
-            class="text-xl text-gray-300 mb-10 max-w-2xl"
+            class="text-xl text-gray-300 mb-8"
           >
-            Connect with astronomy data, analyze research, and discover cosmic insights with our
-            AI-powered platform.
+            Select your mission and join a community of stargazers, researchers, and space
+            enthusiasts.
           </p>
 
           <!-- CTA buttons -->
@@ -279,22 +160,38 @@ watch(
             :visibleOnce="{ opacity: 1, y: 0, transition: { delay: 0.5 } }"
             class="flex flex-wrap gap-4 mb-12"
           >
+            <LoginWrapper>
+              <template #default="{ login }">
+                <PrimeButton
+                  size="large"
+                  :class="personaStyles.primaryButton"
+                  @click="(trackCTAClick('get_started'), login())"
+                >
+                  <Icon
+                    name="mdi:rocket-launch"
+                    class="mr-2"
+                    size="20"
+                  />
+                  Get Started Free
+                </PrimeButton>
+              </template>
+            </LoginWrapper>
+
             <PrimeButton
+              outlined
               size="large"
-              class="bg-gradient-to-r transition-all duration-500 text-lg px-8 shadow-lg shadow-primary-900/30"
-              :class="personaStyles.primaryButton"
-              @click="trackCTAClick('begin_journey')"
+              class="border-gray-600 text-gray-300 hover:bg-gray-800/30"
+              @click="trackCTAClick('learn_more')"
             >
-              {{ activePersona.ctaText || 'Begin Cosmic Journey' }}
               <Icon
-                name="mdi:rocket-launch"
-                class="ml-2"
+                name="mdi:information-outline"
+                class="mr-2"
                 size="20"
               />
+              Learn More
             </PrimeButton>
           </div>
 
-          <!-- Stats bar -->
           <div
             v-motion
             :initial="{ opacity: 0, y: 30 }"
@@ -337,7 +234,7 @@ watch(
                 />
               </div>
               <div>
-                <div class="text-xl font-bold text-white">50+</div>
+                <div class="text-xl font-bold text-white">150+</div>
                 <div class="text-sm text-gray-400">Data Sources</div>
               </div>
             </div>
@@ -364,107 +261,67 @@ watch(
           </div>
         </div>
 
-        <!-- Right column: Persona Selector -->
+        <!-- Right column: Persona selection -->
         <div
           v-motion
-          :initial="{ opacity: 0, x: 50 }"
-          :visibleOnce="{
-            opacity: 1,
-            x: 0,
-            transition: { type: 'spring', stiffness: 150, damping: 20, delay: 0.4 },
-          }"
-          class="flex flex-col items-center"
+          class="flex flex-col items-center justify-center h-full"
+          :initial="{ opacity: 0, scale: 0.9 }"
+          :visibleOnce="{ opacity: 1, scale: 1, transition: { delay: 0.4 } }"
         >
-          <!-- "Select Your Mission" title -->
-          <h3
-            class="text-2xl font-bold text-center mb-10 transition-colors duration-500 px-4 py-2 rounded bg-slate-900/30 backdrop-blur-sm"
-            :class="`text-${activePersona.color}-500`"
+          <!-- Enhanced "Select Your Mission" title -->
+          <div
+            v-motion
+            :initial="{ opacity: 0, y: 30, letterSpacing: '0px' }"
+            :visibleOnce="{
+              opacity: 1,
+              y: 0,
+              letterSpacing: '1px',
+              transition: {
+                delay: 0.6,
+                duration: 0.8,
+                ease: 'easeOut',
+              },
+            }"
+            class="mission-title-container relative mb-6"
           >
-            Select Your Mission
-          </h3>
-
-          <!-- Interactive Persona Orbit Selector -->
-          <div class="relative h-[260px] w-[260px] mx-auto mb-10">
-            <!-- Center point reference for orbit -->
             <div
-              ref="orbitCenter"
-              class="absolute left-1/2 top-1/2 h-0 w-0"
-            ></div>
-
-            <!-- Orbiting personas -->
-            <div class="relative w-full h-full">
-              <div
-                v-for="persona in personas"
-                :key="persona.name"
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-700 cursor-pointer"
-                :style="{
-                  transform: `translate(${getOrbitPositions[persona.name].x}px, ${getOrbitPositions[persona.name].y}px) scale(${getOrbitPositions[persona.name].scale})`,
-                  opacity: getOrbitPositions[persona.name].opacity,
-                  zIndex: persona.name === activePersona.name ? 10 : 1,
-                }"
-                @click="selectPersona(persona)"
+              class="flex items-center justify-center"
+              :class="`bg-${activePersona.color}-500/60`"
+            >
+              <!-- <Icon
+                :name="'mdi:compass-outline'"
+                size="24"
+              /> -->
+              <h2
+                class="text-2xl md:text-3xl font-semibold text-white tracking-wider relative mission-title z-10 px-2"
               >
-                <!-- Persona Icon Circle -->
-                <div
-                  class="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500"
-                  :class="`${persona.name === activePersona.name ? `bg-${persona.color}-800 border-2 border-${persona.color}-500/70` : `bg-${persona.color}-900/50`}`"
-                >
-                  <Icon
-                    :name="persona.iconName"
-                    class="transition-colors duration-500"
-                    :class="`text-${persona.color}-500`"
-                    size="30"
-                  />
-                </div>
-
-                <!-- Persona Name -->
-                <div
-                  class="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-base font-medium transition-colors duration-500"
-                  :class="
-                    persona.name === activePersona.name
-                      ? `text-${persona.color}-500`
-                      : 'text-gray-500'
-                  "
-                >
-                  {{ persona.name }}
-                </div>
-              </div>
+                Select Your Mission
+              </h2>
             </div>
           </div>
 
-          <!-- Feature List for active persona -->
-          <div class="w-full space-y-3">
+          <!-- Persona orbit visualization -->
+          <LundPersonaOrbit />
+
+          <!-- Enhanced Feature List for active persona -->
+          <div
+            class="w-full space-y-4 transition-all duration-500 backdrop-blur-sm text-white enhanced-feature-container"
+          >
             <div
               v-for="(feature, index) in activePersona.features?.slice(0, 4)"
               :key="index"
-              class="flex items-center gap-3 bg-slate-900/80 backdrop-blur-sm rounded-lg px-4 py-3 border transition-colors duration-500"
-              :class="`border-${activePersona.color}-800/30`"
+              class="flex gap-4 py-1.5 feature-item transition-all duration-300 items-center justify-center rounded-lg px-3"
+              :class="{ 'feature-visible': areFeatureItemsVisible }"
+              :style="`transition-delay: ${200 + index * 100}ms`"
             >
-              <div
-                class="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-colors duration-500"
-                :class="`bg-${activePersona.color}-900/50 text-${activePersona.color}-500`"
+              <span
+                class="text-xl underline underline-offset-8 leading-tight text-gray-100 flex justify-center"
+                :class="`decoration-${activePersona.color}-500`"
+                >{{ feature }}</span
               >
-                <Icon
-                  name="mdi:check"
-                  size="16"
-                />
-              </div>
-              <span class="text-lg text-gray-300">{{ feature }}</span>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Subtle "scroll down" indicator -->
-      <div
-        class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce opacity-70"
-      >
-        <span class="text-sm text-gray-400 mb-2">Scroll to Explore</span>
-        <Icon
-          name="mdi:chevron-down"
-          :class="`text-${activePersona.color}-500 transition-colors duration-500`"
-          size="24"
-        />
       </div>
     </div>
   </section>
@@ -473,7 +330,67 @@ watch(
 <style scoped>
 .hero-section {
   position: relative;
-  overflow: hidden;
+}
+
+/* Enhanced mission title styling */
+.mission-title {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.mission-title-container {
+  position: relative;
+}
+
+.mission-title-container::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110%;
+  height: 150%;
+  background: radial-gradient(
+    circle,
+    var(--persona-glow-color, rgba(37, 99, 235, 0.2)) 0%,
+    transparent 70%
+  );
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* Set persona glow color dynamically with CSS variables */
+.mission-title-container:deep(.text-blue-500) ~ .mission-title-container::before {
+  --persona-glow-color: rgba(37, 99, 235, 0.3);
+}
+
+.mission-title-container:deep(.text-red-500) ~ .mission-title-container::before {
+  --persona-glow-color: rgba(220, 38, 38, 0.3);
+}
+
+.mission-title-container:deep(.text-amber-500) ~ .mission-title-container::before {
+  --persona-glow-color: rgba(245, 158, 11, 0.3);
+}
+
+/* Enhanced feature container */
+.enhanced-feature-container {
+  max-width: 450px;
+  margin: 0 auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Feature item animations */
+.feature-item {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.feature-item.feature-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.feature-icon-container {
+  box-shadow: 0 0 10px var(--persona-icon-glow, rgba(37, 99, 235, 0.4));
 }
 
 /* Pulse animation for stars */
@@ -491,5 +408,17 @@ watch(
 /* Prevent Safari transition on page load */
 .disable-transitions * {
   transition: none !important;
+}
+
+/* Smooth transitions for persona changes */
+.persona-transition-enter-active,
+.persona-transition-leave-active {
+  transition: all 0.7s ease;
+}
+
+.persona-transition-enter-from,
+.persona-transition-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
 }
 </style>
