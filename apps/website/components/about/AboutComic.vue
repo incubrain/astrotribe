@@ -20,9 +20,9 @@ const props = defineProps({
     type: Array as PropType<ComicStrip[]>,
     required: true,
   },
-  scrollSpeed: {
+  autoplaySpeed: {
     type: Number,
-    default: 2, // pixels per frame
+    default: 1, // Speed in seconds
   },
 })
 
@@ -33,7 +33,7 @@ const [emblaRef, emblaApi] = useEmblaCarousel(
   },
   [
     AutoScroll({
-      speed: props.scrollSpeed,
+      speed: props.autoplaySpeed,
       startDelay: 1000,
       direction: 'forward',
       playOnInit: true,
@@ -58,13 +58,13 @@ const [emblaRef, emblaApi] = useEmblaCarousel(
       <!-- Embla Carousel -->
       <div
         ref="emblaRef"
-        class="overflow-hidden"
+        class="overflow-hiddenx"
       >
-        <div class="embla__container flex">
+        <div class="embla__container grid auto-cols-max grid-flow-col gap-4">
           <div
             v-for="comic in comics"
             :key="`comic-${comic.id}`"
-            class="flex-grow-0 flex-shrink-0 min-w-[300px] sm:min-w-[600px] lg:min-w-[900px] pl-4 first:pl-0 pr-4"
+            class="embla__slide"
           >
             <IBGlass
               gradient="blue"
@@ -73,16 +73,16 @@ const [emblaRef, emblaApi] = useEmblaCarousel(
             >
               <div class="p-4">
                 <h4 class="mb-4 text-xl font-bold">{{ comic.title }}</h4>
-                <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <div class="grid auto-cols-max grid-flow-col gap-4">
                   <div
                     v-for="(panel, index) in comic.panels"
                     :key="`panel-${index}`"
                     class="comic-panel relative overflow-hidden rounded bg-primary-900/50 transition-transform duration-300 hover:scale-[1.03] hover:shadow-lg"
                   >
-                    <img
+                    <NuxtImg
                       :src="panel.image"
                       :alt="panel.alt"
-                      class="h-40 w-full object-cover sm:h-48"
+                      width="600px"
                     />
                     <div
                       v-if="panel.caption"
