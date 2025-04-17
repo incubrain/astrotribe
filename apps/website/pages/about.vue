@@ -10,79 +10,69 @@ const { conf, animateCounter } = useAnimation()
 const comicStrips = [
   {
     id: 1,
-    title: 'AstronEra Origins',
+    title: 'Shweta’s Journey Begins',
     panels: [
       {
-        image: '/api/placeholder/300/200',
-        alt: 'Shweta having the idea for AstronEra',
-        caption: 'The spark of an idea',
+        image: '/tara/comics/1.tara-comic-timeline-shwetas-astronera-beginnings-2011.jpg',
+        alt: 'Shweta begins stargazing as a teenager in 2011',
+        caption: 'A 16-year-old and a telescope—AstronEra begins.',
       },
       {
-        image: '/api/placeholder/300/200',
-        alt: 'Building the initial team',
-        caption: 'Assembling the team',
+        image: '/tara/comics/2.tara-comic-timeline-shweta-most-innovative-award-IAU-2019.jpg',
+        alt: 'Award-winning Bhimashankar event in 2019',
+        caption: 'Innovating under forest skies.',
       },
       {
-        image: '/api/placeholder/300/200',
-        alt: 'Creating the first astronomy course',
-        caption: 'First course creation',
+        image: '/tara/comics/3.tara-comic-timeline-astrotribe-2022-2023.jpg',
+        alt: 'AstroTribe trainings in Nashik, Ladakh and Manali',
+        caption: 'Tribal students become AstroGuides.',
       },
       {
-        image: '/api/placeholder/300/200',
-        alt: 'Launch day celebration',
-        caption: 'Launch day!',
+        image:
+          '/tara/comics/4.tara-comic-timeline-astrotribe-visits-cap-conference-sydney-2022.jpg',
+        alt: 'AstroTribe at Sydney CAP Conference in 2022',
+        caption: 'Local action meets global change.',
       },
     ],
   },
   {
     id: 2,
-    title: 'AstroTribe Begins',
+    title: 'Scaling the Vision',
     panels: [
       {
-        image: '/api/placeholder/300/200',
-        alt: 'Planning the AstroTribe initiative',
-        caption: 'Planning AstroTribe',
+        image: '/tara/comics/5.tara-comic-timeline-monks-stargazing-at-spiti-valley-2023.jpg',
+        alt: 'Monks explore galaxies at Key Monastery, Spiti',
+        caption: 'Where prayer met stars.',
       },
       {
-        image: '/api/placeholder/300/200',
-        alt: 'First student outreach',
-        caption: 'First outreach',
+        image:
+          '/tara/comics/6.tara-comic-timeline-international-dark-sky-preservation-and-astrotourism-conference-2023.jpg',
+        alt: 'Conference in the Himalayas on dark sky preservation',
+        caption: 'Uniting experts for darker skies.',
       },
       {
-        image: '/api/placeholder/300/200',
-        alt: 'Students learning astronomy',
-        caption: 'Learning together',
+        image:
+          '/tara/comics/7.tara-comic-timeline-meeting-ruskin-nalayini-and connie-at-lake-tekapo-2024.jpg',
+        alt: 'Dark sky friendships in New Zealand, 2024',
+        caption: 'Cross-hemisphere inspiration.',
       },
       {
-        image: '/api/placeholder/300/200',
-        alt: 'First stargazing event',
-        caption: 'First stargazing event',
+        image:
+          '/tara/comics/8.tara-comic-timeline-shweta-receives-dark-sky-defender-award-from-2024.jpg',
+        alt: 'Shweta receives the Dark Sky Defender Award in 2024',
+        caption: 'A global thank-you for a sky protector.',
       },
     ],
   },
   {
     id: 3,
-    title: 'Growing the Community',
+    title: 'Policy & Legacy',
     panels: [
       {
-        image: '/api/placeholder/300/200',
-        alt: 'Expanding to new regions',
-        caption: 'Global expansion',
-      },
-      {
-        image: '/api/placeholder/300/200',
-        alt: 'Building partnerships',
-        caption: 'Strategic partnerships',
-      },
-      {
-        image: '/api/placeholder/300/200',
-        alt: 'Launching the platform',
-        caption: 'Platform launch',
-      },
-      {
-        image: '/api/placeholder/300/200',
-        alt: 'Community celebration',
-        caption: 'Community milestone',
+        image:
+          '/tara/comics/9.tara-comic-timeline-indias-dark-sky-policy-and-sustainability-symposium-2025.jpg',
+        alt: 'India’s Dark Sky Policy meeting in 2025',
+        caption: 'A pledge to protect wonder.',
       },
     ],
   },
@@ -202,7 +192,7 @@ onMounted(() => {
 
       <AboutComic
         :comics="comicStrips"
-        :autoplay-speed="10000"
+        :autoplay-speed="0.4"
       />
     </div>
 
