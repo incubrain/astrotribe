@@ -234,10 +234,10 @@ onMounted(() => {
               Join thousands of
               {{
                 isResearcher
-                  ? 'researcher'
+                  ? 'Researcher'
                   : isCommunicator
-                    ? 'science communicator'
-                    : 'astronomy enthusiasts'
+                    ? 'Science Communicator'
+                    : 'Astronomy Enthusiasts'
               }}
               using AstronEra to unlock the secrets of the universe.
             </p>
@@ -270,83 +270,23 @@ onMounted(() => {
               />
             </PrimeButton>
           </div>
-
-          <!-- Newsletter signup -->
-          <div
-            v-if="!isSubmitted"
-            v-motion
-            :initial="{ opacity: 0, y: 20 }"
-            :visibleOnce="{
-              opacity: 1,
-              y: 0,
-              transition: { delay: 0.4 },
-            }"
-            class="max-w-md"
-          >
-            <p class="text-sm text-gray-400 mb-2"
-              >Stay updated with latest astronomy news and events</p
+          <div class="mt-16 transition-colors duration-500">
+            <span
+              class="inline-block px-4 py-2 rounded-full text-sm backdrop-blur-sm transition-colors duration-500"
+              :class="`bg-${componentColor}-900/50 border border-${componentColor}-700/30 text-${componentColor}-400`"
             >
-            <form
-              class="flex flex-col sm:flex-row gap-2"
-              @submit.prevent="handleSubmit"
-            >
-              <div class="flex-grow relative">
-                <input
-                  v-model="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  class="w-full px-4 py-3 rounded-lg bg-slate-800/80 border text-white placeholder-gray-400 focus:outline-none transition-colors duration-500"
-                  :class="`border-${componentColor}-600/30 focus:border-${componentColor}-600 focus:ring-1 focus:ring-${componentColor}-600`"
-                />
-                <div
-                  v-if="submitError"
-                  class="absolute -bottom-6 left-0 text-xs text-red-500"
-                >
-                  {{ submitError }}
-                </div>
-              </div>
-              <PrimeButton
-                type="submit"
-                :loading="isSubmitting"
-                class="transition-colors duration-500"
-                :class="personaStyles.primaryButton"
-              >
-                Subscribe
-              </PrimeButton>
-            </form>
-          </div>
-
-          <!-- Success message -->
-          <div
-            v-else
-            class="rounded-lg p-4 text-sm transition-colors duration-500"
-            :class="`bg-${componentColor}-900/30 border border-${componentColor}-700/50 text-${componentColor}-400`"
-          >
-            <div class="flex items-center gap-2">
               <Icon
-                name="mdi:check-circle"
-                size="18"
+                :name="activePersona.iconName"
+                class="mr-1"
+                size="14"
               />
-              <span>Thanks for subscribing! We'll keep you updated.</span>
-            </div>
+              Customized for {{ activePersona.name }}
+            </span>
           </div>
         </div>
       </div>
 
       <!-- Persona badge at bottom -->
-      <div class="mt-16 text-center transition-colors duration-500">
-        <span
-          class="inline-block px-4 py-2 rounded-full text-sm backdrop-blur-sm transition-colors duration-500"
-          :class="`bg-${componentColor}-900/50 border border-${componentColor}-700/30 text-${componentColor}-400`"
-        >
-          <Icon
-            :name="activePersona.iconName"
-            class="mr-1"
-            size="14"
-          />
-          Customized for {{ activePersona.name }}
-        </span>
-      </div>
     </div>
   </section>
 </template>

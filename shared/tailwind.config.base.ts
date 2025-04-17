@@ -9,8 +9,11 @@ export default {
     '-inset-[30%]',
     {
       pattern:
-        /(bg|border|text|from|to)-(primary|amber|blue|red|green|purple)-(100|400|500|700|800|900)/,
+        /(decoration|ring|bg|border|text|from|to)-(primary|amber|blue|red|green|purple|emerald)-(100|400|500|600|700|800|900)(\/(10|20|30|40|50|60|70|80|90))?/,
       variants: ['hover'],
+    },
+    {
+      pattern: /bg-gradient-to-(r|l|t|b)/,
     },
     {
       pattern: /backdrop-blur-(sm|md|lg|xl)/,

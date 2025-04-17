@@ -1,6 +1,6 @@
 // stores/usePersonaStore.ts
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, markRaw } from 'vue'
 
 export interface Persona {
   name: string
@@ -16,7 +16,7 @@ export interface Persona {
 export const usePersonaStore = defineStore('persona', () => {
   // State
   const personas = ref<Persona[]>([
-    {
+    markRaw({
       name: 'Researcher',
       color: 'blue',
       description: 'For researchers and scientists looking to analyze astronomical data.',
@@ -29,10 +29,10 @@ export const usePersonaStore = defineStore('persona', () => {
       ],
       ctaText: 'Start Research Analysis',
       iconName: 'mdi:microscope',
-    },
-    {
-      name: 'Communicator',
-      color: 'emerald',
+    }),
+    markRaw({
+      name: 'sci-commer',
+      color: 'red',
       description: 'For science communicator and educators sharing astronomy insights.',
       headline: 'Amplify Scientific Storytelling',
       features: [
@@ -43,8 +43,8 @@ export const usePersonaStore = defineStore('persona', () => {
       ],
       ctaText: 'Create Science Content',
       iconName: 'mdi:broadcast',
-    },
-    {
+    }),
+    markRaw({
       name: 'Enthusiast',
       color: 'amber',
       description: 'For astronomy enthusiasts wanting to explore the universe.',
@@ -57,25 +57,27 @@ export const usePersonaStore = defineStore('persona', () => {
       ],
       ctaText: 'Begin Cosmic Journey',
       iconName: 'mdi:star',
-    },
+    }),
   ])
 
   // Current active persona
   const activePersona = ref<Persona>(
-    personas.value[2] ?? {
-      name: 'Enthusiast',
-      description: 'For astronomy enthusiasts wanting to explore the universe.',
-      color: 'amber',
-      headline: 'Explore the Cosmos, Your Way',
-      features: [
-        'Learn astronomy at your pace',
-        'Track space missions and events',
-        'Join a community of stargazers',
-        'Access expert explanations',
-      ],
-      ctaText: 'Begin Cosmic Journey',
-      iconName: 'mdi:star',
-    },
+    markRaw(
+      personas.value[2] ?? {
+        name: 'Enthusiast',
+        description: 'For astronomy enthusiasts wanting to explore the universe.',
+        color: 'amber',
+        headline: 'Explore the Cosmos, Your Way',
+        features: [
+          'Learn astronomy at your pace',
+          'Track space missions and events',
+          'Join a community of stargazers',
+          'Access expert explanations',
+        ],
+        ctaText: 'Begin Cosmic Journey',
+        iconName: 'mdi:star',
+      },
+    ),
   )
 
   // Getters
@@ -98,8 +100,8 @@ export const usePersonaStore = defineStore('persona', () => {
         console.error(`Persona "${persona}" not found`)
       }
     } else {
-      // Direct persona object
-      activePersona.value = persona
+      // Direct persona object - use markRaw to prevent unnecessary reactivity
+      activePersona.value = markRaw(persona)
     }
 
     // Track the selection with analytics

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import type { Button } from 'primevue'
 import { usePersona } from '~/composables/usePersona'
 import { useAnalytics } from '#imports'
 
@@ -14,6 +15,7 @@ const discountPercentage = 20
 
 // Ref for FAQ popover
 const faqPopover = ref(null)
+const faqButton = ref<InstanceType<typeof Button> | null>(null)
 
 // Location detection state
 const isIndian = ref(false)
@@ -64,7 +66,7 @@ const personaFeatures = computed(() => {
     return {
       highlight: 'Academic discounts available',
       specialFeature: 'Research data export',
-      additionalInfo: 'Perfect for academic researcher and institutions',
+      additionalInfo: 'Perfect for academic researchers and institutions',
     }
   } else if (isCommunicator.value) {
     return {
@@ -84,55 +86,72 @@ const personaFeatures = computed(() => {
 // Computed prices based on location and billing cycle
 const basicPrice = computed(() => {
   const currency = isIndian.value ? 'inr' : 'usd'
-  const cycle = isAnnualBilling.value ? 'annual' : 'monthly'
+  const monthly = planPrices.basic[currency].monthly
+  const annual = planPrices.basic[currency].annual
+  const isAnnual = isAnnualBilling.value
+  const value = isAnnual ? annual : monthly
   const symbol = isIndian.value ? '₹' : '$'
-  const period = isAnnualBilling.value ? '/year' : '/month'
+  const period = isAnnual ? '/year' : '/month'
 
   return {
-    value: planPrices.basic[currency][cycle],
+    value,
     symbol,
     period,
+    annualSavings: isAnnual ? monthly * 12 - annual : undefined,
+    originalMonthlyPrice: isAnnual ? monthly * 12 : undefined,
   }
 })
 
 const expertPrice = computed(() => {
   const currency = isIndian.value ? 'inr' : 'usd'
-  const cycle = isAnnualBilling.value ? 'annual' : 'monthly'
+  const monthly = planPrices.expert[currency].monthly
+  const annual = planPrices.expert[currency].annual
+  const isAnnual = isAnnualBilling.value
+  const value = isAnnual ? annual : monthly
   const symbol = isIndian.value ? '₹' : '$'
-  const period = isAnnualBilling.value ? '/year' : '/month'
+  const period = isAnnual ? '/year' : '/month'
 
   return {
-    value: planPrices.expert[currency][cycle],
+    value,
     symbol,
     period,
+    annualSavings: isAnnual ? monthly * 12 - annual : undefined,
+    originalMonthlyPrice: isAnnual ? monthly * 12 : undefined,
   }
 })
 
-// Toggle billing cycle
+// Toggle billing cycle - fixed to properly handle click events
 const toggleBillingCycle = () => {
-  isAnnualBilling.value = !isAnnualBilling.value
-
-  // Track toggle event
-  trackUserAcquisition(UserAcquisitionMetric.FeaturePageEngagement, {
-    action: 'toggle_billing_cycle',
-    value: isAnnualBilling.value ? 'annual' : 'monthly',
-    persona: activePersona.value.name,
-  })
+  try {
+    trackUserAcquisition(UserAcquisitionMetric.FeaturePageEngagement, {
+      action: 'toggle_billing_cycle',
+      value: isAnnualBilling.value ? 'annual' : 'monthly',
+      persona: activePersona.value.name,
+    })
+  } catch (error) {
+    console.error('Error tracking billing cycle toggle:', error)
+  }
 }
 
 // Track CTA clicks
 const trackCtaClick = (plan) => {
-  trackUserAcquisition(UserAcquisitionMetric.SignUpConversion, {
-    plan,
-    billing_cycle: isAnnualBilling.value ? 'annual' : 'monthly',
-    currency: isIndian.value ? 'inr' : 'usd',
-    persona: activePersona.value.name,
-  })
+  try {
+    trackUserAcquisition(UserAcquisitionMetric.SignUpConversion, {
+      plan,
+      billing_cycle: isAnnualBilling.value ? 'annual' : 'monthly',
+      currency: isIndian.value ? 'inr' : 'usd',
+      persona: activePersona.value.name,
+    })
+  } catch (error) {
+    console.error('Error tracking CTA click:', error)
+  }
 }
 
-// Open FAQ popover
+// Open FAQ popover - fixed to center the popover on the button
 const openFaqPopover = (event) => {
-  faqPopover.value?.toggle(event)
+  if (faqPopover.value && faqButton.value?.$el) {
+    faqPopover.value.toggle({ currentTarget: faqButton.value.$el })
+  }
 }
 
 // Detect user location on component mount
@@ -148,24 +167,17 @@ onMounted(async () => {
     // Default to USD if location detection fails
     isIndian.value = false
   }
+
+  // Make sure toggle is properly initialized
+  const toggle = document.querySelector('.p-inputswitch')
+  if (toggle) {
+    toggle.addEventListener('click', toggleBillingCycle)
+  }
 })
 </script>
 
 <template>
   <section class="py-16 md:py-20 relative overflow-hidden">
-    <!-- Background gradient -->
-    <div class="absolute inset-0 bg-gradient-to-b from-slate-950 to-primary-950/70 z-0"></div>
-
-    <!-- Decorative elements -->
-    <div
-      class="absolute left-0 top-1/3 w-64 h-64 rounded-full blur-3xl transition-colors duration-700"
-      :class="`bg-${activePersona.color}-600/5`"
-    ></div>
-    <div
-      class="absolute right-0 bottom-1/3 w-64 h-64 rounded-full blur-3xl transition-colors duration-700"
-      :class="`bg-${activePersona.color}-600/5`"
-    ></div>
-
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header section -->
       <div
@@ -187,33 +199,57 @@ onMounted(async () => {
         </h2>
         <p class="text-xl text-gray-300 mb-8">Choose the plan that fits your needs</p>
 
-        <!-- Billing toggle -->
-        <div class="flex items-center justify-center space-x-4 mb-2">
-          <span
-            class="text-gray-300"
-            :class="{ 'text-white font-medium': !isAnnualBilling }"
-          >
-            Monthly Billing
-          </span>
-
-          <PrimeToggleSwitch
-            v-model="isAnnualBilling"
-            aria-label="Toggle billing cycle"
-            @click="toggleBillingCycle"
+        <!-- Simplified Toggle Button Group -->
+        <div class="flex items-center justify-center gap-3 mb-6">
+          <!-- Monthly Button -->
+          <PrimeToggleButton
+            :model-value="!isAnnualBilling"
+            :on-label="'Monthly'"
+            :off-label="'Monthly'"
+            :aria-label="'Select Monthly Billing'"
+            class="min-w-24"
+            :pt="{
+              content: {
+                class: 'bg-transparent',
+              },
+              root: {
+                class: !isAnnualBilling
+                  ? `text-white border-${activePersona.color}-500/60 bg-${activePersona.color}-800`
+                  : 'bg-slate-800 text-gray-400 border-slate-700',
+              },
+            }"
+            @click="
+              () => {
+                ;(isAnnualBilling = false), toggleBillingCycle()
+              }
+            "
           />
 
-          <span
-            class="flex items-center"
-            :class="{ 'text-white font-medium': isAnnualBilling }"
-          >
-            <span class="text-gray-300">Annual Billing</span>
-            <span
-              class="ml-2 text-xs rounded-full px-2 py-0.5 transition-colors duration-500"
-              :class="`bg-${activePersona.color}-900/30 text-${activePersona.color}-500 border border-${activePersona.color}-800/40`"
-            >
-              Save {{ discountPercentage }}%
-            </span>
-          </span>
+          <!-- Annually Button -->
+          <div class="relative">
+            <PrimeToggleButton
+              :model-value="isAnnualBilling"
+              :on-label="'Annually Save 20%'"
+              :off-label="'Annually Save 20%'"
+              :aria-label="'Select Annual Billing'"
+              class="min-w-24"
+              :pt="{
+                content: {
+                  class: 'bg-transparent',
+                },
+                root: {
+                  class: isAnnualBilling
+                    ? `text-white border-${activePersona.color}-500/60 bg-${activePersona.color}-800`
+                    : 'bg-slate-800 text-gray-400 border-slate-700',
+                },
+              }"
+              @click="
+                () => {
+                  ;(isAnnualBilling = true), toggleBillingCycle()
+                }
+              "
+            />
+          </div>
         </div>
       </div>
 
@@ -230,91 +266,27 @@ onMounted(async () => {
               transition: { type: 'spring', stiffness: 150, damping: 20, delay: 0.1 },
             },
           }"
-          class="relative group"
         >
-          <div
-            class="h-full bg-slate-900/60 backdrop-blur-sm border border-slate-800/50 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-slate-800/30 hover:-translate-y-1"
-          >
-            <div class="p-6">
-              <h3 class="text-2xl font-bold text-white mb-2">Free</h3>
-              <p class="text-gray-400 text-sm mb-6"
-                >Perfect for casual learners and space enthusiasts</p
-              >
-
-              <div class="flex items-end mb-8">
-                <span class="text-4xl font-bold text-white">0</span>
-                <span class="text-gray-400 ml-2">/month</span>
-              </div>
-
-              <div class="space-y-4 mb-8">
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 text-blue-500"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Basic AstronEra access</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 text-blue-500"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Daily news digest</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 text-blue-500"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Community access</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 text-blue-500"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Limited searches per day</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:close-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 text-gray-600"
-                    size="20"
-                  />
-                  <span class="text-gray-500">Knowledge Clusters</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:close-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 text-gray-600"
-                    size="20"
-                  />
-                  <span class="text-gray-500">API access</span>
-                </div>
-                <!-- Persona-specific feature -->
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:close-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 text-gray-600"
-                    size="20"
-                  />
-                  <span class="text-gray-500">{{ personaFeatures.specialFeature }}</span>
-                </div>
-              </div>
-
-              <!-- CTA Button -->
-              <PrimeButton
-                class="w-full bg-slate-700 hover:bg-slate-600 border-none"
-                @click="trackCtaClick('free')"
-              >
-                Sign Up Free
-              </PrimeButton>
-            </div>
-          </div>
+          <PricingCard
+            title="Free"
+            description="Perfect for casual learners and space enthusiasts"
+            price="0"
+            currency=""
+            period="/month"
+            :features="[
+              'Basic AstronEra access',
+              'Daily news digest',
+              'Community access',
+              'Limited searches per day',
+            ]"
+            :disabled-features="[
+              'Knowledge Clusters',
+              'API access',
+              personaFeatures.specialFeature,
+            ]"
+            button-text="Sign Up Free"
+            @action="trackCtaClick('free')"
+          />
         </div>
 
         <!-- Basic Plan -->
@@ -328,102 +300,28 @@ onMounted(async () => {
               transition: { type: 'spring', stiffness: 150, damping: 20, delay: 0.2 },
             },
           }"
-          class="relative group"
         >
-          <!-- Popular tag -->
-          <div class="absolute -top-3 inset-x-0 flex justify-center z-20">
-            <span
-              class="text-white text-xs font-semibold px-4 py-1 rounded-full shadow-lg transition-colors duration-500"
-              :class="`bg-gradient-to-r from-${activePersona.color}-600 to-${activePersona.color === 'blue' ? 'primary' : activePersona.color}-600`"
-            >
-              Most Popular
-            </span>
-          </div>
-
-          <div
-            class="h-full bg-slate-900/60 backdrop-blur-sm rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 shadow-lg transition-colors duration-500"
-            :class="`border border-${activePersona.color}-700/50 shadow-${activePersona.color}-900/10 hover:shadow-${activePersona.color}-900/20`"
-          >
-            <div class="p-8">
-              <h3 class="text-2xl font-bold text-white mb-2">Basic</h3>
-              <p class="text-gray-400 text-sm mb-6"
-                >For serious researcher and astronomy enthusiasts</p
-              >
-
-              <div class="flex items-end mb-8">
-                <span class="text-4xl font-bold text-white"
-                  >{{ basicPrice.symbol }}{{ basicPrice.value }}</span
-                >
-                <span class="text-gray-400 ml-2">{{ basicPrice.period }}</span>
-              </div>
-
-              <div class="space-y-4 mb-8">
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Everything in Free plan</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Unlimited searches</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Advanced filtering</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Knowledge clusters</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Priority support</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">{{ personaFeatures.specialFeature }}</span>
-                </div>
-              </div>
-
-              <!-- CTA Button -->
-              <PrimeButton
-                class="w-full border-none shadow transition-colors duration-500"
-                :class="personaStyles.primaryButton"
-                @click="trackCtaClick('basic')"
-              >
-                Get Basic
-              </PrimeButton>
-            </div>
-          </div>
+          <PricingCard
+            title="Basic"
+            description="For serious researchers and astronomy enthusiasts"
+            :price="basicPrice.value"
+            :annual-savings="basicPrice.annualSavings"
+            :original-monthly-price="basicPrice.originalMonthlyPrice"
+            :currency="basicPrice.symbol"
+            :period="basicPrice.period"
+            :features="[
+              'Everything in Free plan',
+              'Unlimited searches',
+              'Advanced filtering',
+              'Knowledge clusters',
+              'Priority support',
+              personaFeatures.specialFeature,
+            ]"
+            :special-feature="personaFeatures.specialFeature"
+            popular
+            button-text="Get Basic"
+            @action="trackCtaClick('basic')"
+          />
         </div>
 
         <!-- Expert Plan (Coming Soon) -->
@@ -437,101 +335,27 @@ onMounted(async () => {
               transition: { type: 'spring', stiffness: 150, damping: 20, delay: 0.3 },
             },
           }"
-          class="relative group"
         >
-          <!-- Coming soon badge -->
-          <div class="absolute -top-3 right-4 z-10">
-            <span
-              class="text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md transition-colors duration-500"
-              :class="`bg-${activePersona.color}-600/90`"
-            >
-              Coming Soon
-            </span>
-          </div>
-
-          <div
-            class="h-full bg-slate-900/60 backdrop-blur-sm border border-slate-800/30 rounded-xl overflow-hidden transition-all duration-300 opacity-80 hover:shadow-lg"
-          >
-            <div class="p-6">
-              <h3 class="text-2xl font-bold text-white mb-2">Expert</h3>
-              <p class="text-gray-400 text-sm mb-6"
-                >For professional researcher and organizations</p
-              >
-
-              <div class="flex items-end mb-8">
-                <span class="text-4xl font-bold text-white"
-                  >{{ expertPrice.symbol }}{{ expertPrice.value }}</span
-                >
-                <span class="text-gray-400 ml-2">{{ expertPrice.period }}</span>
-              </div>
-
-              <div class="space-y-4 mb-8">
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">All Basic features</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Team collaboration</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Unlimited API access</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Advanced analytics</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Dedicated support</span>
-                </div>
-                <div class="flex items-start">
-                  <Icon
-                    name="mdi:check-circle"
-                    class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
-                    :class="`text-${activePersona.color}-500`"
-                    size="20"
-                  />
-                  <span class="text-gray-300">Enterprise integrations</span>
-                </div>
-              </div>
-
-              <!-- CTA Button -->
-              <PrimeButton
-                class="w-full border-none transition-colors duration-500"
-                :class="`bg-${activePersona.color}-600/80 hover:bg-${activePersona.color}-600/90`"
-                disabled
-              >
-                Join Waitlist
-              </PrimeButton>
-            </div>
-          </div>
+          <PricingCard
+            title="Expert"
+            description="For professional researchers and organizations"
+            :price="expertPrice.value"
+            :annual-savings="expertPrice.annualSavings"
+            :original-monthly-price="expertPrice.originalMonthlyPrice"
+            :currency="expertPrice.symbol"
+            :period="expertPrice.period"
+            :features="[
+              'All Basic features',
+              'Team collaboration',
+              'Unlimited API access',
+              'Advanced analytics',
+              'Dedicated support',
+              'Enterprise integrations',
+            ]"
+            coming-soon
+            button-text="Join Waitlist"
+            :button-disabled="true"
+          />
         </div>
       </div>
 
@@ -572,48 +396,56 @@ onMounted(async () => {
         <h3 class="text-xl font-medium text-white mb-2">Have questions?</h3>
         <p class="text-gray-400 mb-4">Special academic pricing available on request</p>
 
-        <PrimeButton
-          class="text-nowrap transition-colors duration-500"
-          outlined
-          :class="personaStyles.secondaryButton"
-          @click="openFaqPopover"
-        >
-          View FAQ
-          <Icon
-            name="mdi:help-circle-outline"
-            class="ml-2"
-          />
-        </PrimeButton>
+        <div class="relative">
+          <PrimeButton
+            ref="faqButton"
+            class="text-nowrap transition-colors duration-500"
+            outlined
+            :class="personaStyles.secondaryButton"
+            @click="openFaqPopover"
+          >
+            View FAQ
+            <Icon
+              name="mdi:help-circle-outline"
+              class="ml-2"
+            />
+          </PrimeButton>
 
-        <!-- FAQ Popover -->
-        <PrimePopover ref="faqPopover">
-          <div class="p-5 max-w-md max-h-96 overflow-y-auto">
-            <h3 class="text-lg font-semibold mb-4 text-gray-800">Frequently Asked Questions</h3>
+          <!-- Fixed FAQ Popover with dark mode styling -->
+          <PrimePopover
+            ref="faqPopover"
+            :target="faqButton?.$el"
+            position="top"
+            class="dark-mode-popover"
+          >
+            <div class="p-5 max-w-md max-h-96 overflow-y-auto bg-slate-800 text-white rounded-lg">
+              <h3 class="text-lg font-semibold mb-4 text-white">Frequently Asked Questions</h3>
 
-            <div class="space-y-4">
-              <div
-                v-for="(faq, index) in faqs"
-                :key="index"
-                class="pb-3 border-b border-gray-200 last:border-0"
-              >
-                <h4 class="font-medium text-gray-900 mb-1">{{ faq.question }}</h4>
-                <p class="text-sm text-gray-600">{{ faq.answer }}</p>
+              <div class="space-y-4">
+                <div
+                  v-for="(faq, index) in faqs"
+                  :key="index"
+                  class="pb-3 border-b border-slate-700 last:border-0"
+                >
+                  <h4 class="font-medium text-gray-100 mb-1">{{ faq.question }}</h4>
+                  <p class="text-sm text-gray-300">{{ faq.answer }}</p>
+                </div>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-700 text-center">
+                <p class="text-sm text-gray-300">
+                  Still have questions?
+                  <a
+                    href="#"
+                    class="font-medium hover:underline transition-colors duration-500"
+                    :class="`text-${activePersona.color}-400`"
+                    >Contact our team</a
+                  >
+                </p>
               </div>
             </div>
-
-            <div class="mt-4 pt-3 border-t border-gray-200 text-center">
-              <p class="text-sm text-gray-500">
-                Still have questions?
-                <a
-                  href="#"
-                  class="font-medium hover:underline transition-colors duration-500"
-                  :class="`text-${activePersona.color}-600`"
-                  >Contact our team</a
-                >
-              </p>
-            </div>
-          </div>
-        </PrimePopover>
+          </PrimePopover>
+        </div>
       </div>
     </div>
   </section>
@@ -653,18 +485,24 @@ onMounted(async () => {
   transform: translateX(1.2rem) !important;
 }
 
-/* Popover styling */
-:deep(.p-component-overlay) {
-  background-color: rgba(0, 0, 0, 0.4);
+/* Popover styling for dark mode */
+:deep(.dark-mode-popover .p-component-overlay) {
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
-:deep(.p-popover) {
+:deep(.dark-mode-popover.p-popover) {
   border-radius: 0.5rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(30, 41, 59, 0.1);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(51, 65, 85, 0.5);
 }
 
-:deep(.p-popover .p-popover-content) {
+:deep(.dark-mode-popover .p-popover-content) {
   padding: 0;
+  background-color: #1e293b;
+  color: white;
+}
+
+:deep(.dark-mode-popover .p-popover-arrow) {
+  display: none;
 }
 </style>

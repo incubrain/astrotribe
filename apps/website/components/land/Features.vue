@@ -68,7 +68,7 @@ const features = ref([
   },
 ])
 
-const selectedFeature = ref(features.value[0])
+const selectedFeature = ref(features.value[0]!)
 </script>
 
 <template>
@@ -179,7 +179,7 @@ const selectedFeature = ref(features.value[0])
                       <h4 class="text-white font-medium">{{ feature.title }}</h4>
                       <span
                         class="text-xs px-1.5 py-0.5 rounded-full"
-                        :class="`bg-${feature.color.split(' ')[0].split('-')[0]}-900/40 text-${feature.color.split(' ')[0].split('-')[0]}-400 border border-${feature.color.split(' ')[0].split('-')[0]}-700/30`"
+                        :class="`bg-${feature.color}-900/40 text-${feature.color}-400 border border-${feature.color}-700/30`"
                       >
                         {{ feature.highlight }}
                       </span>
@@ -211,7 +211,7 @@ const selectedFeature = ref(features.value[0])
             <!-- Gradient orb specific to feature -->
             <div
               class="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-20 transition-all duration-500"
-              :class="`bg-${selectedFeature.color.split(' ')[0].split('-')[0]}-600/30`"
+              :class="`bg-${selectedFeature.color}-600/30`"
             ></div>
 
             <!-- Feature content -->
@@ -221,7 +221,7 @@ const selectedFeature = ref(features.value[0])
                 <div>
                   <div
                     class="inline-block mb-2 px-2 py-1 rounded-full text-xs border"
-                    :class="`bg-${selectedFeature.color.split(' ')[0].split('-')[0]}-900/40 text-${selectedFeature.color.split(' ')[0].split('-')[0]}-400 border-${selectedFeature.color.split(' ')[0].split('-')[0]}-700/30`"
+                    :class="`bg-${selectedFeature.color}-900/40 text-${selectedFeature.color}-400 border-${selectedFeature.color}-700/30`"
                   >
                     <div class="flex items-center gap-1.5">
                       <Icon
@@ -257,18 +257,18 @@ const selectedFeature = ref(features.value[0])
                   <div class="absolute inset-0 flex items-center justify-center">
                     <div
                       class="w-4/5 h-16 border border-slate-700/50 rounded-lg bg-slate-800/60 backdrop-blur-sm flex items-center px-4 shadow-lg"
-                      :class="`shadow-${selectedFeature.color.split(' ')[0].split('-')[0]}-900/5`"
+                      :class="`shadow-${selectedFeature.color}-900/5`"
                     >
                       <Icon
                         :name="selectedFeature.icon"
                         class="mr-3 opacity-70"
-                        :class="`text-${selectedFeature.color.split(' ')[0].split('-')[0]}-500`"
+                        :class="`text-${selectedFeature.color}-500`"
                         size="20"
                       />
                       <div class="h-4 w-56 rounded-full bg-slate-700/50"></div>
                       <div
                         class="ml-auto px-3 py-1.5 rounded-md flex items-center gap-1.5"
-                        :class="`bg-${selectedFeature.color.split(' ')[0].split('-')[0]}-600/20 text-${selectedFeature.color.split(' ')[0].split('-')[0]}-400`"
+                        :class="`bg-${selectedFeature.color}-600/20 text-${selectedFeature.color}-400`"
                       >
                         <Icon
                           name="mdi:magnify"
@@ -283,7 +283,7 @@ const selectedFeature = ref(features.value[0])
                 <!-- Pulse highlight -->
                 <div
                   class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-16 border-2 rounded-lg animate-pulse opacity-30"
-                  :class="`border-${selectedFeature.color.split(' ')[0].split('-')[0]}-500/70`"
+                  :class="`border-${selectedFeature.color}-500/70`"
                 ></div>
               </div>
 
@@ -310,11 +310,11 @@ const selectedFeature = ref(features.value[0])
                   >
                     <div
                       class="mt-1 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
-                      :class="`bg-${selectedFeature.color.split(' ')[0].split('-')[0]}-600/20`"
+                      :class="`bg-${selectedFeature.color}-600/20`"
                     >
                       <Icon
                         name="mdi:check"
-                        :class="`text-${selectedFeature.color.split(' ')[0].split('-')[0]}-500`"
+                        :class="`text-${selectedFeature.color}-500`"
                         size="14"
                       />
                     </div>
@@ -327,7 +327,7 @@ const selectedFeature = ref(features.value[0])
               <div class="mt-8 flex justify-end">
                 <PrimeButton
                   class="transition-all duration-300 border-none text-white"
-                  :class="`bg-${selectedFeature.color.split(' ')[0].split('-')[0]}-600 hover:bg-${selectedFeature.color.split(' ')[0].split('-')[0]}-500`"
+                  :class="`bg-${selectedFeature.color}-600 hover:bg-${selectedFeature.color}-500`"
                 >
                   Try This Feature
                   <Icon
