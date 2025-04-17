@@ -121,15 +121,6 @@ export default defineNuxtConfig({
       },
     },
 
-    // Database configuration optimized for different environments
-    database: {
-      type: 'postgres',
-      url:
-        process.env.NUXT_CONTENT_DATABASE_URL ||
-        'postgres://postgres:password@localhost:5432/postgres',
-      // Ensure schema is properly defined
-    },
-
     build: {
       // Optimize markdown processing
       markdown: {
