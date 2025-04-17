@@ -61,7 +61,7 @@ const currentGradient = gradientConfig[props.gradient]
 
 <template>
   <div
-    class="relative overflow-hidden transition-all duration-300 h-full"
+    class="relative overflow-hidden transition-all duration-300 h-auto"
     :class="[
       currentIntensity.backdrop,
       currentIntensity.bgOpacity,

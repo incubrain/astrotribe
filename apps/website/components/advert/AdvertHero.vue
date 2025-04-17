@@ -12,7 +12,7 @@ const scrollToContact = () => {
     <!-- Background image with overlay -->
     <IBImage
       :img="{
-        src: '/images/advertising/campaign-stats.jpg',
+        src: 'advertising-hero.png',
         alt: 'AstronEra advertising analytics dashboard',
         quality: '80',
         format: 'webp',

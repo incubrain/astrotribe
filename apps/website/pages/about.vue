@@ -82,7 +82,7 @@ const comicStrips = [
 const about = {
   images: [
     {
-      src: '/images/hero/telescope.jpg',
+      src: 'about-hero.png',
       alt: 'AstronEra Journey',
     },
   ],
