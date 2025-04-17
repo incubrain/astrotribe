@@ -70,7 +70,16 @@ export default defineEventHandler(async (event) => {
 
   const url = new URL(event.node.req.url || '/', `http://${event.node.req.headers.host}`)
 
-  const internalPaths = ['/_ipx/', '/api/', '/_nuxt/', '/favicon.ico']
+  const internalPaths = [
+    '/_ipx/',
+    '/api/',
+    '/_nuxt/',
+    '/favicon.ico',
+    '__nuxt_error',
+    '/robots.txt',
+    '/sitemap.xml',
+  ]
+
   if (internalPaths.some((prefix) => url.pathname.startsWith(prefix))) {
     // Skip middleware processing for internal routes
     return
