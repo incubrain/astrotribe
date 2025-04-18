@@ -53,7 +53,7 @@ const og = {
   url:
     process.env.SITE_URL ||
     (process.env.NODE_ENV === 'production'
-      ? 'https://www.astronera.org'
+      ? 'https://astronera.org'
       : `http://localhost:${process.env.PORT || 3000}`),
 }
 
@@ -62,7 +62,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/mdc',
     'nuxt-security',
-    '@nuxtjs/seo',
+    '@nuxtjs/seo', // Must be before @nuxt/content
     '@nuxt/devtools',
     '@vueuse/nuxt',
     '@nuxt/image',
@@ -316,6 +316,7 @@ export default defineNuxtConfig({
           'http://localhost:3000',
           'http://localhost:54321',
           'https://www.astronera.org',
+          'https://astronera.org',
           'https://*.up.railway.app',
           'https://*.supabase.co',
           'https://*.posthog.com',
@@ -323,8 +324,9 @@ export default defineNuxtConfig({
           'https://ipapi.co/',
         ],
         'connect-src': [
-          "'self'",
           ...localUrls,
+          "'self'",
+          'https:',
           'http://localhost:3000',
           'http://localhost:8080',
           'https://ipapi.co/',
@@ -358,6 +360,7 @@ export default defineNuxtConfig({
         'img-src': [
           "'self'",
           'data:',
+          'https:',
           'http://localhost:54321',
           'http://localhost:3000',
           'http://localhost:1337/',
@@ -382,6 +385,12 @@ export default defineNuxtConfig({
         'script-src': [
           "'self'",
           "'unsafe-inline'",
+          'https:',
+          "'nonce-{{nonce}}'",
+          "'unsafe-eval'",
+          'https://cdn.jsdelivr.net',
+          'https://static.cloudflareinsights.com',
+          '/cdn-cgi/challenge-platform/scripts/jsd/main.js',
           "'wasm-unsafe-eval'",
           'https://player.vimeo.com',
           'http://localhost:3000',
@@ -399,6 +408,7 @@ export default defineNuxtConfig({
         'style-src': [
           "'self'",
           "'unsafe-inline'",
+          'https:',
           'https://fonts.googleapis.com',
           'https://*.posthog.com',
           'https://*.nuxt.studio',
