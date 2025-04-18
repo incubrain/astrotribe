@@ -9,8 +9,9 @@ export default defineNuxtConfig({
     name: 'supabase',
   },
 
-  srcDir: '.',
-  workspaceDir: '../../',
+  future: {
+    compatibilityVersion: 4,
+  },
 
   supabase: {
     url: process.env.NUXT_PUBLIC_SUPABASE_URL,

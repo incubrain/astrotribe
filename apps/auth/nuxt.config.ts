@@ -80,9 +80,6 @@ export default defineNuxtConfig({
     },
   },
 
-  srcDir: '.',
-  workspaceDir: '../../',
-
   build: {
     transpile: ['../../layers/base', '../../layers/supabase', 'primevue'],
   },
@@ -94,6 +91,10 @@ export default defineNuxtConfig({
   devServer: {
     host: 'localhost',
     port: process.env.NUXT_MULTI_APP ? devPortMap.auth : 3009,
+  },
+
+  future: {
+    compatibilityVersion: 4,
   },
 
   compatibilityDate: '2024-10-03',

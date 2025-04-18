@@ -1,7 +1,6 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import { config } from 'dotenv'
 import AstroTheme from '../../shared/theme'
 import { devPortMap } from '../../shared/paths.config'
 import { getSharedEnv, pick } from '../../shared/env'
@@ -71,17 +70,17 @@ export default defineNuxtConfig({
     },
   },
 
-  srcDir: '.',
-  workspaceDir: '../../',
-
   alias: {
-    '#shared': fileURLToPath(new URL('./shared', import.meta.url)),
     '~/utils': fileURLToPath(new URL('./utils', import.meta.url)),
   },
 
   devServer: {
     host: 'localhost',
     port: process.env.NUXT_MULTI_APP ? devPortMap.app : 3000,
+  },
+
+  future: {
+    compatibilityVersion: 4,
   },
 
   experimental: {
@@ -123,20 +122,6 @@ export default defineNuxtConfig({
       exclude: ['fsevents'],
     },
   },
-
-  // debug: {
-  //   // Enable specific debugging features
-  //   templates: true,
-  //   modules: true,
-  //   watchers: true,
-  //   hooks: {
-  //     client: true,
-  //     server: true,
-  //   },
-  //   nitro: true,
-  //   router: true,
-  //   hydration: true,
-  // },
 
   image: {
     format: ['webp', 'jpg'],
