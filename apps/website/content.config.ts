@@ -1,31 +1,41 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content'
+import { asSeoCollection } from '@nuxtjs/seo/content'
 
 export default defineContentConfig({
   collections: {
     // Main content collection
-    content: defineCollection({
-      type: 'page',
-      source: '**/*.md',
-    }),
+    content: defineCollection(
+      asSeoCollection({
+        type: 'page',
+        source: '**/*.md',
+      }),
+    ),
 
     // Blog posts collection
-    blog: defineCollection({
-      type: 'page',
-      source: 'blog/**/*.md',
-      schema: z.object({
-        title: z.string(),
-        description: z.string().optional(),
-        createdAt: z.string(), // Use string instead of date for better compatibility
-        publishedAt: z.string(), // Use string instead of date for better compatibility
-        updatedAt: z.string().optional(),
-        author: z.string(), // Reference to author ID
-        category: z.string(), // Reference to category slug
-        image: z.string(), // Reference to category slug
-        tags: z.array(z.string()).optional(), // Array of tag IDs
-        draft: z.boolean().default(false),
-        featured: z.boolean().default(false),
+    blog: defineCollection(
+      asSeoCollection({
+        type: 'page',
+        source: 'blog/**/*.md',
+        schema: z.object({
+          title: z.string(),
+          description: z.string().optional(),
+          createdAt: z.string(), // Use string instead of date for better compatibility
+          publishedAt: z.string(), // Use string instead of date for better compatibility
+          updatedAt: z.string().optional(),
+          author: z.string(), // Reference to author ID
+          category: z.string(), // Reference to category slug
+          image: z.string(), // Reference to category slug
+          tags: z.array(z.string()).optional(), // Array of tag IDs
+          draft: z.boolean().default(false),
+          featured: z.boolean().default(false),
+          // SEO fields can be directly added in frontmatter
+          ogImage: z.any().optional(),
+          sitemap: z.any().optional(),
+          robots: z.string().optional(),
+          schemaOrg: z.any().optional(),
+        }),
       }),
-    }),
+    ),
 
     // Authors collection
     authors: defineCollection({
