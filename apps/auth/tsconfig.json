@@ -1,12 +1,3 @@
 {
-  "extends": ["../../shared/tsconfig.web.json", "./.nuxt/tsconfig.json"],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "#layers/*": ["../../layers/*"],
-      "#shared/*": ["./shared/*"]
-    }
-  },
-  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.vue"],
-  "exclude": ["node_modules", "dist"]
+  "extends": ["./.nuxt/tsconfig.json"]
 }

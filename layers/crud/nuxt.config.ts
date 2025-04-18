@@ -4,4 +4,8 @@ export default defineNuxtConfig({
   $meta: {
     name: 'crud',
   },
+
+  future: {
+    compatibilityVersion: 4,
+  },
 })

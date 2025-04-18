@@ -7,7 +7,7 @@
     "lint": "eslint . --ext .ts,.vue",
     "test": "vitest run",
     "dev": "pnpx nuxi dev",
-    "build": "nuxi build"
+    "build": "pnpx nuxi build"
   },
   "dependencies": {
     "@astronera/advert": "workspace:*",
