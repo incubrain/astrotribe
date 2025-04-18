@@ -2,6 +2,20 @@
 onMounted(() => {
   document.documentElement.classList.add('dark')
 })
+
+// inside your layout file or main page <script setup>
+useHead(
+  {
+    script: [
+      {
+        src: '/cdn-cgi/challenge-platform/scripts/jsd/main.js',
+        crossorigin: 'anonymous',
+        referrerpolicy: 'origin',
+      },
+    ],
+  },
+  { mode: 'client' },
+)
 </script>
 
 <template>
