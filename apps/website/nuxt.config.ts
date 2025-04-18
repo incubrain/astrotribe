@@ -292,6 +292,14 @@ export default defineNuxtConfig({
     },
   },
 
+  ogImage: {
+    // Component defaults
+    defaults: {
+      cacheMaxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+      component: '~/components/og/DefaultOgImage.vue',
+    },
+  },
+
   primevue: {
     autoImport: true,
     components: {
@@ -388,9 +396,6 @@ export default defineNuxtConfig({
           'https:',
           "'nonce-{{nonce}}'",
           "'unsafe-eval'",
-          'https://cdn.jsdelivr.net',
-          'https://static.cloudflareinsights.com',
-          '/cdn-cgi/challenge-platform/scripts/jsd/main.js',
           "'wasm-unsafe-eval'",
           'https://player.vimeo.com',
           'http://localhost:3000',
