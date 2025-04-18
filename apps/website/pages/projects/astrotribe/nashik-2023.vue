@@ -3,31 +3,31 @@ import { projects } from './astrotribe.json'
 
 const project = projects.astrotribe_2023
 
-const tab = ref('Overview')
+const tab = ref('overview')
 
 const toc = [
   {
-    id: 'About',
+    id: 'about',
     depth: 1,
     text: 'About',
   },
   {
-    id: 'Evaluation',
+    id: 'evaluation',
     depth: 1,
     text: 'Evaluation',
   },
   {
-    id: 'Achievements',
+    id: 'achievements',
     depth: 1,
     text: 'Astroguide Achievements',
   },
   {
-    id: 'Stargazing',
+    id: 'stargazing',
     depth: 1,
     text: 'Independent Stargazing Events',
   },
   {
-    id: 'Resorts',
+    id: 'resorts',
     depth: 1,
     text: 'Certified Resort Collaborations',
   },
@@ -70,7 +70,7 @@ const toc = [
       </PrimeAccordionPanel>
     </PrimeAccordion>
     <div
-      id="About"
+      id="about"
       class="flex flex-col gap-5"
     >
       <h2 class="text-2xl">About</h2>
