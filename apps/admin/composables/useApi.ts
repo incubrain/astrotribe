@@ -37,6 +37,7 @@ export function useApi() {
           addLog('Warning: Connection not using HTTPS')
         }
       },
+
       onResponseError({ response }) {
         const message = `Request failed: ${response.status} - ${response.statusText}`
         addLog(message)
