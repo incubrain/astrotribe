@@ -7,27 +7,27 @@ const tab = ref('Overview')
 
 const toc = [
   {
-    id: 'About',
+    id: 'about',
     depth: 1,
     text: 'About',
   },
   {
-    id: 'DPS',
+    id: 'dps',
     depth: 1,
     text: 'DPS Manali AstroGuides',
   },
   {
-    id: 'SECMOL',
+    id: 'secmol',
     depth: 1,
     text: 'SECMOL AstroGuides',
   },
   {
-    id: 'Comparison',
+    id: 'comparison',
     depth: 1,
     text: 'Comparative Study',
   },
   {
-    id: 'Evaluation',
+    id: 'evaluation',
     depth: 1,
     text: 'Comparative Evaluation',
   },
@@ -70,14 +70,14 @@ const toc = [
       </PrimeAccordionPanel>
     </PrimeAccordion>
     <div
-      id="About"
+      id="about"
       class="flex flex-col gap-5"
     >
       <h2 class="text-2xl">About</h2>
       <p>{{ project.about }}</p>
 
       <div
-        id="DPS"
+        id="dps"
         class="flex flex-col"
       >
         <h2 class="text-2xl">DPS Manali AstroGuides</h2>
@@ -87,13 +87,18 @@ const toc = [
           <p><b>Conducted by: </b>{{ project.dpsManali.conductedBy }}</p>
           <h3 class="text-xl mt-2">Event Highlights:</h3>
           <ul class="list-disc ml-5">
-            <li v-for="highlight in project.dpsManali.highlights">{{ highlight }}</li>
+            <li
+              v-for="highlight in project.dpsManali.highlights"
+              :key="highlight"
+            >
+              {{ highlight }}
+            </li>
           </ul>
         </div>
       </div>
 
       <div
-        id="SECMOL"
+        id="secmol"
         class="flex flex-col"
       >
         <h2 class="text-2xl">SECMOL AstroGuides</h2>
@@ -102,7 +107,12 @@ const toc = [
           <p><b>Conducted by: </b>{{ project.secmol.conductedBy }}</p>
           <h3 class="text-xl mt-2">Event Highlights:</h3>
           <ul class="list-disc ml-5">
-            <li v-for="highlight in project.secmol.highlights">{{ highlight }}</li>
+            <li
+              v-for="highlight in project.secmol.highlights"
+              :key="`secmol-${highlight}`"
+            >
+              >{{ highlight }}</li
+            >
           </ul>
           <IBImage
             class="justify-self-center my-4"
@@ -112,7 +122,7 @@ const toc = [
       </div>
 
       <div
-        id="Comparison"
+        id="comparison"
         class="flex flex-col"
       >
         <h2 class="text-2xl">Comparative Study: SECMOL and Delhi Public School Manali</h2>
@@ -129,7 +139,11 @@ const toc = [
             <p>{{ project.comparison.secmol.description }}</p>
             <h4 class="text-lg mt-2">Key Features:</h4>
             <ul class="list-disc ml-5">
-              <li v-for="feature in project.comparison.secmol.features">{{ feature }}</li>
+              <li
+                v-for="feature in project.comparison.secmol.features"
+                :key="feature"
+                >{{ feature }}</li
+              >
             </ul>
           </LandingGlass>
 
@@ -145,7 +159,11 @@ const toc = [
             <p>{{ project.comparison.dps.description }}</p>
             <h4 class="text-lg mt-2">Key Features:</h4>
             <ul class="list-disc ml-5">
-              <li v-for="feature in project.comparison.dps.features">{{ feature }}</li>
+              <li
+                v-for="feature in project.comparison.dps.features"
+                :key="`dps-${feature}`"
+                >{{ feature }}</li
+              >
             </ul>
           </LandingGlass>
         </div>
@@ -155,19 +173,24 @@ const toc = [
           <p>{{ project.comparison.purpose }}</p>
           <h4 class="text-lg mt-2">Parameters Compared:</h4>
           <ul class="list-disc ml-5">
-            <li v-for="parameter in project.comparison.parameters">{{ parameter }}</li>
+            <li
+              v-for="parameter in project.comparison.parameters"
+              :key="parameter"
+              >{{ parameter }}</li
+            >
           </ul>
         </div>
       </div>
 
       <div
-        id="Evaluation"
+        id="evaluation"
         class="flex flex-col"
       >
         <h2 class="text-2xl">Comparative Evaluation</h2>
         <div class="m-4 flex gap-2 justify-center">
           <IBImage
-            v-for="image in project.evaluation.images"
+            v-for="(image, index) in project.evaluation.images"
+            :key="`image-${index}`"
             :img="{ src: image }"
             height="500"
             width="auto"
@@ -191,14 +214,22 @@ const toc = [
             >
               <span class="font-bold">{{ item.title }}:</span>
               <ul class="list-disc ml-5">
-                <li v-for="point in item.points">{{ point }}</li>
+                <li
+                  v-for="(point, idx) in item.points"
+                  :key="`${index}${idx}-${point}`"
+                  >{{ point }}</li
+                >
               </ul>
             </li>
           </ol>
 
           <h3 class="text-xl mt-4">Key Takeaways:</h3>
           <ul class="list-disc ml-5">
-            <li v-for="takeaway in project.evaluation.takeaways">{{ takeaway }}</li>
+            <li
+              v-for="takeaway in project.evaluation.takeaways"
+              :key="`${project.title}-${takeaway}`"
+              >{{ takeaway }}</li
+            >
           </ul>
         </LandingGlass>
 
