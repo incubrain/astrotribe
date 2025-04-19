@@ -243,7 +243,7 @@
                 <h3 class="text-lg font-semibold text-primary-200 mb-4">Follow Us</h3>
                 <div class="flex space-x-4">
                   <a
-                    href="#"
+                    href="https://x.com/AstronEra"
                     target="_blank"
                     class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                   >
@@ -253,7 +253,7 @@
                     />
                   </a>
                   <a
-                    href="#"
+                    href="https://www.linkedin.com/company/7584381/admin/dashboard/"
                     target="_blank"
                     class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                   >
@@ -263,7 +263,7 @@
                     />
                   </a>
                   <a
-                    href="#"
+                    href="https://www.youtube.com/@AstronEra"
                     target="_blank"
                     class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                   >
@@ -273,7 +273,7 @@
                     />
                   </a>
                   <a
-                    href="#"
+                    href="https://www.facebook.com/AstronEra/"
                     target="_blank"
                     class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                   >
@@ -283,7 +283,7 @@
                     />
                   </a>
                   <a
-                    href="#"
+                    href="https://www.instagram.com/astronera"
                     target="_blank"
                     class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                   >
@@ -411,6 +411,7 @@ const inquiryOptions = ref([
   { label: 'Join Us', value: 'hiring' },
   { label: 'Press/Media', value: 'media' },
   { label: 'Feedback', value: 'feedback' },
+  { label: 'Internship/Job Vacancy', value: 'job' },
 ])
 
 const faqs = [
@@ -476,6 +477,10 @@ const submitForm = () => {
   50% {
     opacity: 0.3;
   }
+}
+
+:deep(.p-select-label.p-placeholder) {
+  color: #64748b !important;
 }
 
 :deep(.faq-accordion) .p-accordion-header-link {

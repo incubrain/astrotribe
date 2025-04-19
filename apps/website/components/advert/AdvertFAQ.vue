@@ -23,8 +23,8 @@ const faqs = [
   },
   {
     question: 'Can I target specific regions or demographics?',
-    answer:
-      'Absolutely! We can target your promotion to specific regions in India or globally, and to audiences with particular interests within astronomy. Our targeting options help ensure your promotion reaches the most relevant audience.',
+    answer: 'Not for now',
+    //answer: 'Absolutely! We can target your promotion to specific regions in India or globally, and to audiences with particular interests within astronomy. Our targeting options help ensure your promotion reaches the most relevant audience.',
   },
 ]
 </script>

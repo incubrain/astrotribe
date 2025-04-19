@@ -320,7 +320,7 @@ export const FOOTER_SECTIONS = [
     label: 'Dark Skies',
     icon: 'material-symbols:nightlight',
     // We can override which children to show in the footer
-    showKeys: ['dark-sky-conference-2023'],
+    //showKeys: ['dark-sky-conference-2023'],
   },
   {
     key: 'blog',
