@@ -98,6 +98,10 @@ const about = {
         "The Pune-based firm has gained global recognition for organizing stargazing events, workshops, and courses. Leveraging collaborations with diverse partners and age groups, AstronEra launched the world's first astronomy-dedicated e-learning platform, hosting over 15 courses by worldwide instructors.",
         'The platform at www.astronera.org is transitioning to an interactive community. This will allow the public to connect with astronomy professionals globally, fostering a community of shared knowledge and passion.',
       ],
+      images: [
+        { src: '/images/trusted/iau.png', alt: 'IAU', link: 'https://www.iau.org/' },
+        { src: '/images/trusted/oad.png', alt: 'OAD', link: 'https://astro4dev.org/' },
+      ],
     },
     {
       title: 'AstroTribe',
@@ -259,7 +263,23 @@ onMounted(() => {
                   {{ item }}
                 </p>
               </div>
-              <div> </div>
+              <div
+                v-if="section.images"
+                class="flex gap-2 mt-4"
+              >
+                <NuxtLink
+                  v-for="image in section.images"
+                  :to="image.link"
+                  target="_blank"
+                >
+                  <IBImage
+                    :img="{ src: image.src, alt: image.alt }"
+                    width="100"
+                    height="100"
+                    class="bg-white p-4"
+                  />
+                </NuxtLink>
+              </div>
             </IBGlass>
           </div>
         </div>
