@@ -2,7 +2,7 @@
 FROM node:20.19-bookworm AS builder
 
 # Set environment variables for better performance and reproducibility
-ENV NODE_ENV=development
+# ENV NODE_ENV=development
 
 # Enable corepack for PNPM
 RUN corepack enable && corepack prepare pnpm@9.15.2 --activate
