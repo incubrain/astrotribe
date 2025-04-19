@@ -39,12 +39,12 @@
       {
         "title": "Astrotribe 2023",
         "subtitle": "Location: Nashik",
-        "link": "astrotribe/astrotribe-2023-nashik"
+        "link": "astrotribe/nashik-2023"
       },
       {
         "title": "Astrotribe 2024",
         "subtitle": "Location: Ladakh and Himachal Pradesh",
-        "link": "astrotribe/astrotribe-2024-ladakh"
+        "link": "astrotribe/ladakh-2024"
       }
     ],
     "socials": [
@@ -328,23 +328,6 @@
       "events_done": 2,
       "overall_rating": 2.5,
       "locality": "Ajmer Daudane, Nashik"
-    },
-    {
-      "given_name": "Vipul",
-      "surname": "Khiradi",
-      "professional_title": "Astroguide",
-      "avatar": "vipul-khiradi",
-      "featured": false,
-      "inPerson": true,
-      "astronomy_knowledge": null,
-      "telescope_handling": null,
-      "english_fluency": null,
-      "marathi_hindi_fluency": null,
-      "stargazing": null,
-      "communication_skills": null,
-      "events_done": null,
-      "overall_rating": null,
-      "locality": null
     },
     {
       "given_name": "Sharmila",

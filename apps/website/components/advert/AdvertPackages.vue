@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+const props = defineProps<{ openModal: () => void }>()
 
 // Define the profile types and active tab
 const profileTypes = [
@@ -361,7 +362,7 @@ const scrollToContact = () => {
         <div class="text-center">
           <PrimeButton
             class="bg-primary-600 hover:bg-primary-700 px-6 py-3"
-            @click="scrollToContact"
+            @click="openModal"
           >
             Get Started
           </PrimeButton>

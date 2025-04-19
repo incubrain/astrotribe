@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const props = defineProps<{ openModal: () => void }>()
+
 const scrollToContact = () => {
   const contactElement = document.getElementById('contact-form')
   if (contactElement) {
@@ -43,7 +45,7 @@ const scrollToContact = () => {
         <div>
           <PrimeButton
             class="bg-primary-600 hover:bg-primary-700 px-6 py-3 text-lg"
-            @click="scrollToContact"
+            @click="openModal"
           >
             Advertise With Us
             <Icon
