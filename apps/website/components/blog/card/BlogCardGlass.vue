@@ -156,7 +156,10 @@ const { data: authorData } = await useAsyncData(`author-${props.article.id}`, as
 
         <!-- Read more button -->
         <div class="mt-auto pt-2">
-          <NuxtLink :to="getArticleUrl(article)">
+          <NuxtLink
+            :to="getArticleUrl(article)"
+            target="_blank"
+          >
             <PrimeButton
               outlined
               size="small"
