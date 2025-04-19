@@ -87,24 +87,24 @@ const about = {
     },
   ],
   mission:
-    'To make astronomy accessible to all, we provide scientifically accurate and innovative learning opportunities.',
+    'Bringing the cosmos closer to every soul, nurturing a timeless curiosity with authentic knowledge, for a future guided by wonder and scientific spirit.',
   vision:
-    "To be the world's leading astronomy education platform, empowering people to explore the universe.",
+    'To be the leading global platform making astronomy accessible and inclusive, fostering a scientifically curious and informed society for a sustainable and inspired future.',
   sections: [
     {
       title: 'AstronEra',
       paragraphs: [
-        'AstronEra, officially known as AEI Pvt. Ltd., has been operational since 2018. Committed to the scientifically accurate and innovative dissemination of astronomy, it was established by Shweta Kulkarni and incubated by the Indian Institute of Management, Bangalore.',
-        "The Pune-based firm has gained global recognition for organizing stargazing events, workshops, and courses. Leveraging collaborations with diverse partners and age groups, AstronEra launched the world's first astronomy-dedicated e-learning platform.",
-        'Hosting over 15 courses by worldwide instructors, the platform at www.astronera.org is transitioning to an interactive community. This will allow the public to connect with astronomy professionals globally, fostering a community of shared knowledge and passion.',
+        'AstronEra, registered as AEII Pvt. Ltd., has been operational since 2018. Committed to the scientifically accurate and innovative dissemination of astronomy, it was established by Shweta Kulkarni and incubated by the Indian Institute of Management, Bangalore.',
+        "The Pune-based firm has gained global recognition for organizing stargazing events, workshops, and courses. Leveraging collaborations with diverse partners and age groups, AstronEra launched the world's first astronomy-dedicated e-learning platform, hosting over 15 courses by worldwide instructors.",
+        'The platform at www.astronera.org is transitioning to an interactive community. This will allow the public to connect with astronomy professionals globally, fostering a community of shared knowledge and passion.',
       ],
     },
     {
       title: 'AstroTribe',
       paragraphs: [
         'The International Astronomical Union (IAU), a Paris-based NGO, is committed to enhancing astronomy through research, outreach, and development. It sponsors the AstroTribe project through its Office of Astronomy for Development (OAD).',
-        'Established by AstronEra, AstroTribe aims to empower economically disadvantaged tribal students in India and Brazil. The project links them into AstroGuides, providing them with learning and earning opportunities through a unique online platform.',
-        "In 2022, AstroTribe successfully trained 15 students in Maharashtra, India. The project's ambition extends to training 15 more students in Himachal Pradesh, India, and Brazil in 2023. Through a rigorous selection process, AstroTribe identifies students aged 14-19 and provides them with knowledge, communication, and skill training. It also connects them with mentors and organizers globally for ongoing support and potential stargazing event opportunities.",
+        'Established by AstronEra, AstroTribe aims to empower economically disadvantaged tribal students in India. The project links them into AstroGuides, providing them with learning and earning opportunities through a unique online platform.',
+        "In 2022, AstroTribe successfully trained 15 students in Maharashtra, India. The project's ambition extends to training 15 more students in Himachal Pradesh, India in 2023. Through a rigorous selection process, AstroTribe identifies students aged 14-19 and provides them with knowledge, communication, and skill training. It also connects them with mentors and organizers globally for ongoing support and potential stargazing event opportunities.",
       ],
     },
   ],
@@ -117,32 +117,32 @@ const about = {
     },
     {
       date: { month: 'November', year: 2013 },
-      title: 'Astron-STEM Trust',
-      body: 'Our non-profit under STEM Trust was registered. Shweta, its founder, became CEO.',
+      title: 'Astron-SHK Trust',
+      body: 'Our non-profit under SHK Trust was registered. Shweta, became CEO.',
       icon: 'i-lucide-award',
     },
     {
-      date: { month: 'June', year: 2018 },
+      date: { month: 'June', year: 2016 },
       title: 'DST, GOI Funded',
-      body: 'Guided by Dr. Mathirajan and Prof. Srinivas, we received DST, GOI grant, launching our online presence.',
+      body: 'Guided by Dr Raghunath Mashelkar and Prof. Govind Swarup, we received DST, GOI grant, launching our online presence.',
       icon: 'i-lucide-rocket',
     },
     {
       date: { month: 'March', year: 2019 },
       title: 'IIMB Incubated',
-      body: 'Shweta, among top 100 women entrepreneurs in India, helped shape AstronEra, registered as AEI Pvt. Ltd.',
+      body: 'Shweta, among top 100 women entrepreneurs in India, helped shape AstronEra, registered as AEII Pvt. Ltd.',
       icon: 'i-lucide-graduation-cap',
     },
     {
-      date: { month: 'November', year: 2019 },
+      date: { month: 'November', year: 2018 },
       title: 'AstronEra Founded',
       body: 'AstronEra, the first astronomy elearning platform, was launched at Pune Chandrashekhar Auditorium.',
       icon: 'i-lucide-star',
     },
     {
-      date: { month: 'March', year: 2020 },
+      date: { month: 'March', year: 2019 },
       title: 'IAU Award',
-      body: 'Our efforts to popularize astronomy among children recognized by the International Astronomical Union.',
+      body: 'Our efforts to popularize astronomy among tribal children recognized by the International Astronomical Union as the most innovative initiative.',
       icon: 'i-lucide-medal',
     },
     {

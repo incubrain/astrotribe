@@ -90,7 +90,7 @@ const profilePackages = {
       ],
     },
   ],
-  'stargazing': [
+  'institution': [
     {
       id: 'standard',
       title: 'Club Visibility',
