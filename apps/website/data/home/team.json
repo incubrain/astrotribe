@@ -89,5 +89,26 @@
         "username": "uk"
       }
     ]
+  },
+  {
+    "id": 4,
+    "given_name": "Ruturaj",
+    "name": "Ruturaj Gole",
+    "position": {
+      "title": "Web Developer"
+    },
+    "avatar": "/images/team/ruturaj-gole.png",
+    "bio": [
+      "Ruturaj Gole is an enthusiast of natural sciences, especially cosmology.",
+      "He is a master's graduate in Computer Science with a specialization in AI and machine learning from the University of Alberta."
+    ],
+    "socials": [
+      {
+        "id": 2,
+        "platform": "linkedin",
+        "url": "https://www.linkedin.com/in/ruturaj-gole-ab84a6169/",
+        "username": "ruturaj-gole-ab84a6169"
+      }
+    ]
   }
 ]
