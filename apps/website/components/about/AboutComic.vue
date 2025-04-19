@@ -85,11 +85,10 @@ const [emblaRef, emblaApi] = useEmblaCarousel(
                       width="600px"
                     />
                     <div
+                      v-html="panel.caption"
                       v-if="panel.caption"
                       class="caption absolute bottom-0 w-full bg-primary-950/80 p-2 text-center text-sm backdrop-blur-sm"
-                    >
-                      {{ panel.caption }}
-                    </div>
+                    />
                   </div>
                 </div>
               </div>
