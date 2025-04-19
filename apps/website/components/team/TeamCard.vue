@@ -127,7 +127,7 @@ const navigateToProfile = () => {
               class="flip-card-back absolute w-full h-full backface-hidden rotate-y-180 rounded-full overflow-hidden"
             >
               <NuxtImg
-                :src="imageUrl.replace('.jpg', '-cartoon.jpg')"
+                :src="imageUrl.replace(/\.(jpg|png)$/, '-cartoon.png')"
                 :alt="`Cartoon version of ${member.name}`"
                 loading="lazy"
                 width="128"
