@@ -24,7 +24,7 @@ const props = defineProps({
 
 // 5. Core Nuxt Composables
 const { $config } = useNuxtApp()
-
+console.log('Public Environment Variables', $config.public)
 // 6. Other Composables
 const { y } = useWindowScroll()
 
