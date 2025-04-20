@@ -45,6 +45,3 @@ grant trigger on table "public"."queries" to "service_role";
 grant truncate on table "public"."queries" to "service_role";
 
 grant update on table "public"."queries" to "service_role";
-
-ALTER TABLE "public"."contents"
-ADD COLUMN summary text;

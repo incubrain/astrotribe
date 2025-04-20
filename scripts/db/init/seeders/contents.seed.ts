@@ -14,7 +14,6 @@ export async function seedContents(pool: Pool, count: number) {
     updated_at: Date
     author?: string
     company_id?: string
-    content_signature?: string
     deleted_at?: Date
     description?: string
     details?: any
@@ -62,10 +61,6 @@ export async function seedContents(pool: Pool, count: number) {
       featured_image: faker.image.url(),
       is_active: true,
       published_at: faker.date.recent(),
-      content_signature: title
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, '')
-        .slice(0, 50),
       details: {
         tags: faker.helpers.arrayElements(['technology', 'science', 'business', 'health'], {
           min: 1,
