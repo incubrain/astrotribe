@@ -243,7 +243,7 @@
                 <h3 class="text-lg font-semibold text-primary-200 mb-4">Follow Us</h3>
                 <div class="flex space-x-4">
                   <a
-                    href="#"
+                    href="https://x.com/AstronEra"
                     target="_blank"
                     class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                   >
@@ -253,7 +253,7 @@
                     />
                   </a>
                   <a
-                    href="#"
+                    href="https://www.linkedin.com/company/7584381/admin/dashboard/"
                     target="_blank"
                     class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                   >
@@ -263,7 +263,7 @@
                     />
                   </a>
                   <a
-                    href="#"
+                    href="https://www.youtube.com/@AstronEra"
                     target="_blank"
                     class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                   >
@@ -273,7 +273,7 @@
                     />
                   </a>
                   <a
-                    href="#"
+                    href="https://www.facebook.com/AstronEra/"
                     target="_blank"
                     class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                   >
@@ -283,7 +283,7 @@
                     />
                   </a>
                   <a
-                    href="#"
+                    href="https://www.instagram.com/astronera"
                     target="_blank"
                     class="p-2 bg-primary-800 rounded-full text-primary-400 hover:text-white hover:bg-primary-700 transition-colors flex items-center justify-center"
                   >
@@ -361,6 +361,13 @@
             severity="secondary"
             size="large"
             class="inline-flex items-center gap-2"
+            @click="
+              openModal({
+                header: 'Book a Call',
+                textareaTitle: 'Tell us what you would like to know',
+                textareaPlaceholder: 'Write a brief note to let us know what you are looking for',
+              })
+            "
           >
             <Icon name="mdi:calendar-clock" />
             Book a Call
@@ -368,10 +375,95 @@
         </div>
       </IBGlass>
     </div>
+    <PrimeDialog
+      v-model:visible="isModalOpen"
+      modal
+      :header="modalConfig.header"
+      :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
+    >
+      <div class="p-4">
+        <PrimeForm
+          class="space-y-4"
+          @submit.prevent="submitForm"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label
+                for="name"
+                class="block text-sm font-medium"
+                >Your Name</label
+              >
+              <PrimeInputText
+                id="name"
+                v-model="formData.name"
+                class="w-full"
+              />
+            </div>
+            <div class="space-y-2">
+              <label
+                for="email"
+                class="block text-sm font-medium"
+                >Email Address</label
+              >
+              <PrimeInputText
+                id="email"
+                v-model="formData.email"
+                class="w-full"
+              />
+            </div>
+          </div>
+          <div class="space-y-2">
+            <label
+              for="message"
+              class="block text-sm font-medium"
+              >{{ modalConfig.textareaTitle }}</label
+            >
+            <PrimeTextarea
+              id="message"
+              v-model="formData.message"
+              rows="5"
+              :placeholder="modalConfig.textareaPlaceholder"
+              class="w-full"
+            />
+          </div>
+          <div class="flex justify-end pt-4">
+            <PrimeButton
+              type="submit"
+              :loading="isSubmitting"
+              class="bg-primary-600"
+              >Send</PrimeButton
+            >
+          </div>
+
+          <div
+            v-if="showSuccessMessage"
+            class="mt-4 p-3 bg-green-800/50 text-green-200 rounded text-center"
+          >
+            Application submitted successfully! We'll get back to you soon.
+          </div>
+        </PrimeForm>
+      </div>
+    </PrimeDialog>
   </div>
 </template>
 
 <script setup lang="ts">
+const isModalOpen = ref(false)
+const showSuccessMessage = ref(false)
+
+interface ModalConfig {
+  header: string
+  textareaTitle: string
+  textareaPlaceholder: string
+}
+
+const openModal = (config: ModalConfig) => {
+  modalConfig.value = config
+  isModalOpen.value = true
+}
+
+const modalConfig = ref({ header: '', textareaTitle: '', textareaPlaceholder: '' })
+
 // 2. Page/Layout Metadata
 definePageMeta({
   name: 'Contact',
@@ -411,6 +503,7 @@ const inquiryOptions = ref([
   { label: 'Join Us', value: 'hiring' },
   { label: 'Press/Media', value: 'media' },
   { label: 'Feedback', value: 'feedback' },
+  { label: 'Internship/Job Vacancy', value: 'job' },
 ])
 
 const faqs = [
@@ -476,6 +569,10 @@ const submitForm = () => {
   50% {
     opacity: 0.3;
   }
+}
+
+:deep(.p-select-label.p-placeholder) {
+  color: #64748b !important;
 }
 
 :deep(.faq-accordion) .p-accordion-header-link {
