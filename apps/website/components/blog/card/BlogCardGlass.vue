@@ -9,8 +9,6 @@ const props = defineProps({
   },
 })
 
-console.log('THESE ARE THE PUBLISHED ARTICLES', props.article)
-
 const { getArticleUrl } = useBlogHelpers()
 
 // Get a formatted date from the article
