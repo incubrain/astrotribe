@@ -5,6 +5,7 @@ import { devPortMap } from '../../shared/paths.config'
 import { getSharedEnv, pick } from '../../shared/env'
 
 // Place this at the top of your nuxt.config.ts after importing env
+const env = getSharedEnv()
 
 const publicKeys = [
   'supabaseURL',
@@ -108,7 +109,11 @@ export default defineNuxtConfig({
   },
 
   site: { url: og.url, name: 'AstronEra', description: 'Astronomy Hub', defaultLocale: 'en' },
-
+  hooks: {
+    ready: (nuxt: any) => {
+      console.log('PUBLIC CONFIG IN BUILD:', nuxt.options.runtimeConfig.public)
+    },
+  },
   content: {
     // Studio preview configuration - enhanced for better performance
     preview: {
@@ -161,15 +166,14 @@ export default defineNuxtConfig({
     },
   },
 
-  runtimeConfig: (() => {
-    const env = getSharedEnv()
-    return {
-      ...pick(env.private, [...privateKeys]),
-      public: {
-        ...pick(env.public, [...publicKeys]),
-      },
-    }
-  })(),
+  runtimeConfig: {
+    serviceName: 'website',
+    ...pick(env.private, [...privateKeys]),
+    public: {
+      serviceName: 'website',
+      ...pick(env.public, [...publicKeys]),
+    },
+  },
 
   workspaceDir: '../../',
 
