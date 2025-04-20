@@ -13,7 +13,7 @@ const conferences = [
       src: '/conference/photos/IDSPAC23-ruchira-huchgol.jpg',
       description: 'Featured image for the Dark Sky Conservation India Conference',
     },
-    slug: '/conferences/dark-sky-conference-2023',
+    slug: '/conferences/idspac-2023',
   },
 ]
 </script>

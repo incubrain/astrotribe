@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const props = defineProps<{ openModal: () => void }>()
+
 const scrollToContact = () => {
   const contactElement = document.getElementById('contact-form')
   if (contactElement) {
@@ -29,11 +31,11 @@ const scrollToContact = () => {
       <div
         class="relative z-50 flex h-full w-full flex-col items-center gap-8 text-center lg:items-start lg:text-left"
       >
-        <SvgStars
+        <!-- <SvgStars
           class="top-14 left-14"
           :size="24"
           svg-color="#6366f1"
-        />
+        /> -->
         <h1 class="max-w-lg text-4xl font-bold leading-tight lg:text-5xl">
           Reach Your Target Audience with AstronEra
         </h1>
@@ -43,7 +45,7 @@ const scrollToContact = () => {
         <div>
           <PrimeButton
             class="bg-primary-600 hover:bg-primary-700 px-6 py-3 text-lg"
-            @click="scrollToContact"
+            @click="openModal"
           >
             Advertise With Us
             <Icon
@@ -52,11 +54,11 @@ const scrollToContact = () => {
             />
           </PrimeButton>
         </div>
-        <SvgStars
+        <!-- <SvgStars
           class="bottom-14 right-0"
           :size="18"
           svg-color="#6366f1"
-        />
+        /> -->
       </div>
 
       <!-- Hero Right - Analytics showcase -->

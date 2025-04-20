@@ -27,7 +27,10 @@ const teamData = computed(() => {
           name: 'Shweta Kulkarni',
           position: { title: 'Director' },
           avatar: '/images/team/shweta-kulkarni.jpg',
-          socials: { linkedin: 'https://linkedin.com', twitter: 'https://twitter.com' },
+          socials: {
+            linkedin: 'https://www.linkedin.com/in/ShwetaAstronEra/',
+            twitter: 'https://twitter.com',
+          },
         },
       ]
 })
