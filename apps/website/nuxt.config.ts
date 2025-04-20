@@ -5,7 +5,6 @@ import { devPortMap } from '../../shared/paths.config'
 import { getSharedEnv, pick } from '../../shared/env'
 
 // Place this at the top of your nuxt.config.ts after importing env
-const env = getSharedEnv()
 
 const publicKeys = [
   'supabaseURL',
@@ -162,14 +161,15 @@ export default defineNuxtConfig({
     },
   },
 
-  runtimeConfig: {
-    serviceName: 'website',
-    ...pick(env.private, [...privateKeys]),
-    public: {
-      serviceName: 'website',
-      ...pick(env.public, [...publicKeys]),
-    },
-  },
+  runtimeConfig: (() => {
+    const env = getSharedEnv()
+    return {
+      ...pick(env.private, [...privateKeys]),
+      public: {
+        ...pick(env.public, [...publicKeys]),
+      },
+    }
+  })(),
 
   workspaceDir: '../../',
 
