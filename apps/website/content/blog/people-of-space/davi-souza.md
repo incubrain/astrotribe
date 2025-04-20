@@ -10,7 +10,7 @@ publishedAt: '2024-12-13T05:29:01.366Z'
 updatedAt: '2024-12-13T05:29:01.297Z'
 author: ruchira-huchgol
 category: people-of-space
-image: '/images/blog/posts/yana-yakushina-people-of-space-ep9'
+image: '/images/blog/posts/05.people-of-space-davi-souza'
 draft: false
 ---
 

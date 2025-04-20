@@ -9,7 +9,7 @@ publishedAt: '2024-12-03T08:24:44.452Z'
 updatedAt: '2024-12-03T08:24:44.402Z'
 author: ruchira-huchgol
 category: people-of-space
-image: '/images/blog/posts/09.people-of-space-yana-yakushina'
+image: '/images/blog/posts/10.people-of-space-yana-yakushina'
 tags:
   - light pollution
   - space law
