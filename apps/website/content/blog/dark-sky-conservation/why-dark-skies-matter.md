@@ -9,7 +9,7 @@ date: '2024-10-28T22:58:45.541Z'
 updatedAt: '2024-10-28T22:58:45.450Z'
 author: ruchira-huchgol
 category: dark-sky-conservation
-image: '/images/blog/posts/yana-yakushina-people-of-space-ep9'
+image: '/images/blog/posts/why-dark-skies-matter'
 tags:
   - name: Stargazing
 draft: false

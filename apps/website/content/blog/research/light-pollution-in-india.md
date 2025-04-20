@@ -14,7 +14,7 @@ publishedAt: '2025-03-28T22:58:45.450Z'
 updatedAt: '2025-03-28T22:58:45.450Z'
 author: drew-macgibbon
 category: research
-image: '/images/blog/posts/09.people-of-space-yana-yakushina'
+image: '/images/blog/posts/light-Pollution-In-India'
 tags:
   - name: Light Pollution
 draft: false
