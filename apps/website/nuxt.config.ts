@@ -111,11 +111,6 @@ export default defineNuxtConfig({
   },
 
   site: { url: og.url, name: 'AstronEra', description: 'Astronomy Hub', defaultLocale: 'en' },
-  hooks: {
-    ready: (nuxt: any) => {
-      console.log('PUBLIC CONFIG IN BUILD:', nuxt.options.runtimeConfig.public)
-    },
-  },
   content: {
     // Studio preview configuration - enhanced for better performance
     preview: {
@@ -170,10 +165,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     serviceName: 'website',
-    ...pick(process.env, [...privateKeys]),
+    ...pick(env.private, [...privateKeys]),
     public: {
       serviceName: 'website',
-      ...pick(process.env, [...publicKeys]),
+      ...pick(env.public, [...publicKeys]),
     },
   },
 
