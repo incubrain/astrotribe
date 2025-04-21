@@ -86,12 +86,12 @@ const { data: authorData } = await useAsyncData(`author-${props.article.id}`, as
     <div class="h-full flex flex-col">
       <div class="h-48 w-full overflow-hidden rounded-t-xl relative z-0">
         <BlogMedia
-          v-if="article.cover?.url"
-          :url="article.cover.url"
-          :alt="article.cover.alternativeText || article.title"
+          v-if="article.image"
+          :url="`${article.image}.png`"
+          :alt="article.image || article.title"
           :width="400"
           :height="250"
-          class="h-full w-full object-cover"
+          class="h-full w-full object-contain"
         />
         <div
           v-else
