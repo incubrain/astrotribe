@@ -1,5 +1,4 @@
 import OpenAI from 'https://deno.land/x/openai@v4.24.0/mod.ts'
-
 const openAiApiKey = Deno.env.get('OPENAI_API_KEY')
 const openai = new OpenAI({
   apiKey: openAiApiKey,
@@ -19,7 +18,7 @@ export async function getEmbedding(text) {
     })
     return normalize(response.data[0].embedding)
   } catch (error) {
-    console.error('OpenAI Error: Could not get embeddings', error)
+    console.error(`OpenAI Error: Could not get embeddings`, error)
     return null
   }
 }
