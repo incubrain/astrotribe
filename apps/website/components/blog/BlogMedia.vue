@@ -54,7 +54,7 @@ const embedUrl = computed(() => {
       :alt="alt || 'Blog Media'"
       :width="width"
       :height="height"
-      class="h-full w-full object-cover"
+      class="h-full w-full object-contain"
     />
   </div>
 </template>
