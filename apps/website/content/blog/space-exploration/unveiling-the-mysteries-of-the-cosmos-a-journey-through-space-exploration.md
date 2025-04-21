@@ -8,7 +8,7 @@ publishedAt: '2024-10-28T22:59:55.761Z'
 updatedAt: '2024-10-28T22:59:55.714Z'
 author: ruchira-huchgol
 category: space-exploration
-image: '/images/blog/posts/yana-yakushina-people-of-space-ep9'
+image: '/images/blog/posts/unveiling-the-mysteries-of-the-cosmos-a-journey-through-space-exploration'
 draft: false
 ---
 

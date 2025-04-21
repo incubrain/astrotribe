@@ -8,7 +8,7 @@ publishedAt: '2024-12-20T06:01:16.296Z'
 updatedAt: '2024-12-20T06:01:16.187Z'
 author: ruchira-huchgol
 category: people-of-space
-image: '/images/blog/posts/yana-yakushina-people-of-space-ep9'
+image: '/images/blog/posts/06-people-of-space-graham-lau'
 draft: false
 ---
 

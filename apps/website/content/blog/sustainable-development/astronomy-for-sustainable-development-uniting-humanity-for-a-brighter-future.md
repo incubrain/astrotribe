@@ -8,7 +8,7 @@ publishedAt: '2024-10-28T22:58:18.715Z'
 updatedAt: '2024-10-28T22:58:18.650Z'
 author: ruchira-huchgol
 category: sustainable-development
-image: '/images/blog/posts/yana-yakushina-people-of-space-ep9'
+image: '/images/blog/posts/astronomy-for-sustainable-development-uniting-humanity-for-a-brighter-future'
 draft: false
 ---
 

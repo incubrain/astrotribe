@@ -105,19 +105,25 @@ const toc = [
       >
         <h1 class="text-2xl">About</h1>
         <p>{{ astrotribe.about.text }}</p>
-        <LandingGlass
-          v-for="(section, index) in astrotribe.about.sections"
-          :key="index"
-          hover-effect="glow"
-          glow-color="blue"
-          gradient="blue"
-          intensity="low"
-          interactive
-          class="flex flex-1"
-        >
-          <h2>{{ section.name }}</h2>
-          {{ section.text }}
-        </LandingGlass>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <IBGlass
+            v-for="(section, index) in astrotribe.about.sections"
+            :key="index"
+            hover-effect="glow"
+            glow-color="purple"
+            gradient="mixed"
+            intensity="low"
+            interactive
+            padding
+          >
+            <div class="h-auto">
+              <h3 class="text-2xl font-bold mb-4 text-white">{{ section.name }}</h3>
+              <p class="text-base mb-6">{{ section.text }}</p>
+            </div>
+            <!-- <h2>{{ section.name }}</h2>
+          {{ section.text }} -->
+          </IBGlass>
+        </div>
         <div class="flex gap-2 justify-self-center m-6">
           <NuxtLink
             v-for="project in astrotribe.about.projects"

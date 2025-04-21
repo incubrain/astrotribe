@@ -7,6 +7,8 @@ import { getSharedEnv, pick } from '../../shared/env'
 // Place this at the top of your nuxt.config.ts after importing env
 const env = getSharedEnv()
 
+console.log('ENVIRONMENT VARIABLES', env)
+
 const publicKeys = [
   'supabaseURL',
   'supabaseKey',
@@ -109,7 +111,6 @@ export default defineNuxtConfig({
   },
 
   site: { url: og.url, name: 'AstronEra', description: 'Astronomy Hub', defaultLocale: 'en' },
-
   content: {
     // Studio preview configuration - enhanced for better performance
     preview: {
