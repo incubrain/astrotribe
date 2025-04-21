@@ -9,7 +9,6 @@ const handledJobs = [
   'SELECT public.gather_database_stats()',
   'SELECT public.cleanup_table_stats()',
   'SELECT public.perform_weekly_maintenance()',
-  'SELECT public.refresh_content_views()',
   'SELECT public.sync_all_logs()',
   'SELECT sync_all_logs()',
 ]
