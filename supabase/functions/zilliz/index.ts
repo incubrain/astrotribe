@@ -1,7 +1,6 @@
 // supabase/functions/upsertToZilliz/index.ts
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { embedData } from './openai.ts'
-
 const milvusEndpoint = Deno.env.get('MILVUS_ENDPOINT')
 const milvusUsername = Deno.env.get('MILVUS_USERNAME')
 const milvusToken = Deno.env.get('MILVUS_TOKEN')
@@ -17,35 +16,25 @@ Object.entries({
     throw new Error(`${key.toUpperCase()} key not set in environment variables`)
   }
 })
-serve(async (req) => {
-  const { searchParams } = new URL(req.url)
-  const { type: operation, record, old_record } = await req.json()
-  const inputColumns = searchParams.get('inputColumns').split(',')
-  const outputColumn = searchParams.get('outputColumn')
-  const collection_name = searchParams.get('collection_name')
+serve(async (req: any) => {
+  const { operation, record, inputColumns, outputColumn, collection_name } = await req.json()
   if (!inputColumns || !outputColumn || !collection_name) {
     return new Response('Ignored', {
       status: 200,
     })
   }
-  console.log(`Vectorization for id: ${record.id} in ${collection_name}`)
   try {
-    if (operation == 'INSERT' && inputColumns.every((column) => record[column])) {
-      return await upsertToZilliz(collection_name, record, inputColumns, outputColumn)
-    } else if (
-      operation == 'UPDATE' &&
-      inputColumns.every((column) => record[column]) &&
-      inputColumns.some(
-        (column) => JSON.stringify(record[column]) !== JSON.stringify(old_record?.[column]),
-      )
-    ) {
-      console.log('Upserting to Zilliz')
-      return await upsertToZilliz(collection_name, record, inputColumns, outputColumn)
+    const columns = inputColumns.split(',')
+    if (operation == 'INSERT' && columns.every((column: any) => record[column])) {
+      return await upsertToZilliz(collection_name, record, columns, outputColumn)
+    } else if (operation == 'UPDATE' && columns.every((column: any) => record[column])) {
+      console.log('PUBLISHED_AT', record.published_at)
+      return await upsertToZilliz(collection_name, record, columns, outputColumn)
     } else if (operation == 'DELETE') {
-      const { collection_name, ids } = await req.json()
-      return await deleteFromZilliz(collection_name, ids)
+      const { collection_name, record } = await req.json()
+      return await deleteFromZilliz(collection_name, [record.id])
     } else {
-      return new Response('Error: Wrong Path', {
+      return new Response(`Error: Wrong Path`, {
         status: 500,
       })
     }
@@ -56,13 +45,14 @@ serve(async (req) => {
   }
 })
 const upsertToZilliz = async (collection_name, records, inputColumns, outputColumn) => {
+  console.log('UPSERTING TO ZILLIZ')
   const embedded = await embedData([records], {
     inputColumns,
     outputColumn: outputColumn ?? 'vector',
   })
   if (!embedded) {
     console.error('Could not get embeddings')
-    return new Response('Could not get embeddings', {
+    return new Response(`Could not get embeddings`, {
       status: 500,
     })
   }
