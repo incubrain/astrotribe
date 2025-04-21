@@ -8,6 +8,14 @@
 # working directory name when running `supabase init`.
 project_id = "astrotribe"
 
+[db.settings]
+max_connections = 100
+shared_buffers = "256MB"
+work_mem = "4MB"
+maintenance_work_mem = "64MB"
+effective_cache_size = "512MB"
+max_wal_size = "1GB"
+
 [api]
 enabled = true
 # Port to use for the API URL.
@@ -31,16 +39,12 @@ shadow_port = 54320
 major_version = 15
 
 [db.pooler]
-enabled = false
-# Port to use for the local connection pooler.
-port = 54329
-# Specifies when a server connection can be reused by other clients.
+enabled = true
 # Configure one of the supported pooler modes: `transaction`, `session`.
 pool_mode = "transaction"
-# How many server connections to allow per user/database pair.
-default_pool_size = 15
-# Maximum number of client connections allowed.
+default_pool_size = 20
 max_client_conn = 100
+
 
 [realtime]
 enabled = true
@@ -70,8 +74,13 @@ port = 54324
 
 [storage]
 enabled = true
-# The maximum file size allowed (e.g. "5MB", "500KB").
 file_size_limit = "50MiB"
+# The maximum file size allowed (e.g. "5MB", "500KB").
+
+[storage.buckets.cms]
+public = true
+file_size_limit = "50MiB"
+allowed_mime_types = ["image/png", "image/jpeg"]
 
 # db:med:hard:4 add the ability for users to view as guests, 
 # bug:med:med:2 - when setting boolean default and nullable it always sets NULL if value is not present
@@ -108,6 +117,8 @@ refresh_token_reuse_interval = 10
 enable_signup = true
 # Allow/disallow testing manual linking of accounts
 enable_manual_linking = true
+minimum_password_length = 6
+password_requirements = "lower_upper_letters_digits_symbols"
 
 [auth.email]
 # Allow/disallow new user signups via email to your project.
@@ -116,16 +127,24 @@ enable_signup = true
 # addresses. If disabled, only the new email is required to confirm.
 double_confirm_changes = true
 # If enabled, users need to confirm their email address before signing in.
-enable_confirmations = false
+enable_confirmations = true
+otp_expiry = 86400   
 
 # Uncomment to customize email template
 # [auth.email.template.invite]
 # subject = "You have been invited"
 # content_path = "./supabase/templates/invite.html"
 
+[auth.mfa]
+max_enrolled_factors = 10
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true 
+
 [auth.sms]
 # Allow/disallow new user signups via SMS to your project.
-enable_signup = true
+enable_signup = false
 # If enabled, users need to confirm their phone number before signing in.
 enable_confirmations = false
 # Template for sending OTP to users
@@ -155,14 +174,12 @@ auth_token = "env(SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN)"
 enabled = true
 client_id = "env(SUPABASE_AUTH_LINKEDIN_CLIENT_ID)"
 secret = "env(SUPABASE_AUTH_LINKEDIN_SECRET)"
-# overide the default redirect_uri
 redirect_uri = "http://localhost:54321/auth/v1/callback"
 
 [auth.external.twitter]
 enabled = true
 client_id = "env(SUPABASE_AUTH_TWITTER_API_KEY)"
 secret = "env(SUPABASE_AUTH_TWITTER_API_SECRET)"
-# overide the default redirect_uri
 redirect_uri = "http://localhost:54321/auth/v1/callback"
 
 
@@ -170,19 +187,15 @@ redirect_uri = "http://localhost:54321/auth/v1/callback"
 enabled = true
 port = 54327
 vector_port = 54328
-# Configure one of the supported backends: `postgres`, `bigquery`
 backend = "postgres"
+# Configure one of the supported backends: `postgres`, `bigquery`
 
-# Experimental features may be deprecated any time
-[experimental]
-# Configures Postgres storage engine to use OrioleDB (S3)
-orioledb_version = ""
-# Configures S3 bucket URL, eg. <bucket_name>.s3-<region>.amazonaws.com
-s3_host = "env(S3_HOST)"
-# Configures S3 bucket region, eg. us-east-1
-s3_region = "env(S3_REGION)"
-# Configures AWS_ACCESS_KEY_ID for S3 bucket
-s3_access_key = "env(S3_ACCESS_KEY)"
-# Configures AWS_SECRET_ACCESS_KEY for S3 bucket
-s3_secret_key = "env(S3_SECRET_KEY)"
+[edge_runtime]
+enabled = true
+# Use "per_worker" for load testing or production-like scenarios
+policy = "oneshot"  # "oneshot" for development with hot reload
+inspector_port = 8083
+
+[experimental.webhooks]
+enabled = true
 
