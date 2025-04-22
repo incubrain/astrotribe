@@ -45,9 +45,9 @@ Deno.serve(async (req) => {
       return await matchResearch(query, match_threshold, match_count)
     } else if (data.operation == 'summarize') {
       const { record, column } = data
-      return await summarize(record.id, record[column])
+      summarize(record.id, record[column])
     }
-    return new Response('Ignored', {
+    return new Response('Updating Summary', {
       status: 200,
     })
   } catch (error) {
@@ -67,37 +67,34 @@ const summarize = async (id, text) => {
   try {
     const summary = await summarizeText(JSON.stringify(text))
     if (!summary) {
-      return new Response(`Could not get summary`, {
-        status: 500,
-      })
+      console.error(`Could not get summary for ${id}`)
+      return
     }
-    console.log('Successfully retrieved summary')
-    const supabase = createClient(supabaseUrl, supabaseKey)
+    console.log(`Successfully retrieved summary for ${id}`)
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      global: {
+        fetch: (input, init) =>
+          fetch(input, {
+            ...init,
+            signal: AbortSignal.timeout(15000),
+          }),
+      },
+    })
     console.log('Updating summary in Supabase')
-    console.log('ID', id)
-    console.log('TEXT', text)
-    console.log('SUMMARY', summary)
-    const { error } = await supabase
+    supabase
       .from('contents')
       .update({
         summary,
       })
       .eq('id', id)
-    if (error) {
-      console.error(`Supabase Error ${JSON.stringify(error)}`)
-      return new Response(`Error updating summary: ${JSON.stringify(error)}`, {
-        status: 500,
+      .then(({ error }) => {
+        if (error) {
+          console.error(`Could not update summary for ${id}`, JSON.stringify(error))
+        }
+        console.log(`Updated summary successfully ${id}`)
       })
-    }
-    return new Response('Successfully Updated Summary', {
-      status: 200,
-    })
   } catch (error) {
-    // 👇 This catches both OpenAI and Supabase-level errors
     console.error(`Error in summarize: ${error.message}`)
-    return new Response(`Error summarizing content: ${error.message}`, {
-      status: 500,
-    })
   }
 }
 const matchResearch = async (query, match_threshold, match_count) => {
