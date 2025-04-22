@@ -14,7 +14,7 @@ const openai = new OpenAI({
 export async function summarizeText(text, minWords = 50, maxWords = 300) {
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4.1-nano-2025-04-14',
       messages: [
         {
           role: 'system',

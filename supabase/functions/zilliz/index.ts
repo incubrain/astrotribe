@@ -1,6 +1,7 @@
 // supabase/functions/upsertToZilliz/index.ts
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { embedData } from './openai.ts'
+import { schema } from './schema.ts'
 const milvusEndpoint = Deno.env.get('MILVUS_ENDPOINT')
 const milvusUsername = Deno.env.get('MILVUS_USERNAME')
 const milvusToken = Deno.env.get('MILVUS_TOKEN')
@@ -16,25 +17,31 @@ Object.entries({
     throw new Error(`${key.toUpperCase()} key not set in environment variables`)
   }
 })
-serve(async (req: any) => {
+serve(async (req) => {
   const { operation, record, inputColumns, outputColumn, collection_name } = await req.json()
   if (!inputColumns || !outputColumn || !collection_name) {
-    return new Response('Ignored', {
-      status: 200,
+    return new Response('Invalid Parameters', {
+      status: 500,
     })
   }
   try {
     const columns = inputColumns.split(',')
-    if (operation == 'INSERT' && columns.every((column: any) => record[column])) {
-      return await upsertToZilliz(collection_name, record, columns, outputColumn)
-    } else if (operation == 'UPDATE' && columns.every((column: any) => record[column])) {
-      console.log('PUBLISHED_AT', record.published_at)
-      return await upsertToZilliz(collection_name, record, columns, outputColumn)
+    if (
+      columns.every((column) => record[column]) &&
+      (operation == 'INSERT' || operation == 'UPDATE')
+    ) {
+      upsertToZilliz(collection_name, record, columns, outputColumn)
+      return new Response('Uploading to Zilliz', {
+        status: 200,
+      })
     } else if (operation == 'DELETE') {
       const { collection_name, record } = await req.json()
-      return await deleteFromZilliz(collection_name, [record.id])
+      deleteFromZilliz(collection_name, [record.id])
+      return new Response('Deleting from Zilliz', {
+        status: 200,
+      })
     } else {
-      return new Response(`Error: Wrong Path`, {
+      return new Response(`Error: Wrong Operation ${operation}`, {
         status: 500,
       })
     }
@@ -52,24 +59,17 @@ const upsertToZilliz = async (collection_name, records, inputColumns, outputColu
   })
   if (!embedded) {
     console.error('Could not get embeddings')
-    return new Response(`Could not get embeddings`, {
-      status: 500,
-    })
   }
   // 2. Format your data for Zilliz
+  const columns = schema[collection_name]?.map((field) => field.name)
   const payload = {
     collectionName: collection_name,
-    data: embedded.map((record) => ({
-      ...Object.keys(record).reduce(
-        (acc, key) => ({
-          ...acc,
-          [key]: record[key],
-        }),
-        {},
-      ),
-    })),
+    data: embedded.map((record) => {
+      const temp = {}
+      columns.forEach((column) => (temp[column] = record[column]))
+      return temp
+    }),
   }
-  console.log(JSON.stringify(payload))
   // 3. Send to Zilliz via REST API
   const zillizResp = await fetch(`${milvusEndpoint}/v2/vectordb/entities/upsert`, {
     method: 'POST',
@@ -85,21 +85,9 @@ const upsertToZilliz = async (collection_name, records, inputColumns, outputColu
   if (!zillizResp.ok) {
     const err = await zillizResp.text()
     console.error(`Zilliz upsert error: ${JSON.stringify(err)}`)
-    return new Response(`Failed to upsert to Zilliz: ${err}`, {
-      status: 500,
-    })
   }
   const result = await zillizResp.json()
   console.log(`Successfully updated Zilliz ${JSON.stringify(result)}`)
-  return new Response(
-    JSON.stringify({
-      success: true,
-      result,
-    }),
-    {
-      status: 200,
-    },
-  )
 }
 const deleteFromZilliz = async (collection_name, ids) => {
   const zillizResp = await fetch(`${milvusEndpoint}/v2/vectordb/entities/delete`, {
@@ -118,18 +106,9 @@ const deleteFromZilliz = async (collection_name, ids) => {
   })
   if (!zillizResp.ok) {
     const err = await zillizResp.text()
-    return new Response(`Failed to upsert to Zilliz: ${err}`, {
-      status: 500,
-    })
+    if (err) {
+      console.error(`Could not delete ${ids} from Zilliz`, JSON.stringify(err))
+    }
   }
-  const result = await zillizResp.json()
-  return new Response(
-    JSON.stringify({
-      success: true,
-      result,
-    }),
-    {
-      status: 200,
-    },
-  )
+  console.log(`Deleted ${ids} from Zilliz`)
 }
