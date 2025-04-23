@@ -73,6 +73,8 @@ defineProps({
         <PrimeDialog
           v-model:visible="isOpen"
           modal
+          :closable="true"
+          :dismissable-mask="true"
           :header="speaker.abstract.title"
           :style="{ width: '60rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
