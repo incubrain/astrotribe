@@ -3,6 +3,8 @@
 import { useWindowScroll } from '@vueuse/core'
 import { getNavigation } from '#shared/constants'
 
+// Place this at the top of your nuxt.config.ts after importing env
+
 const websiteLinks = getNavigation()
 
 // 3. Component Options
@@ -24,7 +26,8 @@ const props = defineProps({
 
 // 5. Core Nuxt Composables
 const { $config } = useNuxtApp()
-console.log('Public Environment Variables', process.env.NODE_ENV)
+const config = useRuntimeConfig()
+console.log('Public Environment Variables', process.env, config)
 // 6. Other Composables
 const { y } = useWindowScroll()
 

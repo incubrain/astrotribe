@@ -59,7 +59,7 @@ useHead({
 <template>
   <div>
     <!-- Hero Section -->
-    <AdvertHero :openModal="openModal" />
+    <AdvertHero :open-modal="openModal" />
 
     <!-- Why Partner With AstronEra -->
     <AdvertPartnerBenefits />
@@ -69,23 +69,6 @@ useHead({
 
     <!-- Advertising Packages -->
     <AdvertPackages :open-modal="openModal" />
-
-    <!-- Contact Form -->
-    <div class="wrapper py-16 text-center">
-      <LandingTitle
-        title="Ready to Reach Your Target Audience?"
-        subtitle="Get in touch with our team"
-      />
-
-      <div class="mt-8">
-        <AdvertContactForm />
-      </div>
-
-      <div class="mt-12 text-center text-primary-300">
-        <p>You can also reach us directly at:</p>
-        <p class="text-primary-400 mt-2 text-lg">connectus@astronera.org</p>
-      </div>
-    </div>
 
     <!-- FAQ Section -->
     <AdvertFAQ />

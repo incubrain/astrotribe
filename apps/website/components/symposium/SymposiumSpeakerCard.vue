@@ -1,17 +1,14 @@
 <script setup lang="ts">
-// 1. Imports
 import { ref } from 'vue'
 
-// 2. Component Options
+const bioPopover = ref(null)
+const bioButton = ref(null)
+
 defineOptions({
   name: 'SymposiumSpeakerCard',
 })
 
-// 3. Reactive Variables
-const isOpen = ref(false)
-
-// 4. Props and Emits
-const props = defineProps({
+defineProps({
   speaker: {
     type: Object,
     required: true,
@@ -21,13 +18,21 @@ const props = defineProps({
     default: false,
   },
 })
+
+const BIO_PREVIEW_LENGTH = 240
+
+function openBioPopover() {
+  if (bioPopover.value && bioButton.value?.$el) {
+    bioPopover.value.toggle({ currentTarget: bioButton.value.$el })
+  }
+}
 </script>
 
 <template>
   <div
     class="bg-primary-800/30 backdrop-blur-sm rounded-lg overflow-hidden border border-primary-700/30 h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:border-primary-600/50"
   >
-    <!-- Speaker Image -->
+    <!-- Image -->
     <div class="relative">
       <IBImage
         :img="{
@@ -39,16 +44,12 @@ const props = defineProps({
         class="w-full aspect-square object-cover"
       />
 
-      <!-- Online/In-person indicator -->
       <div
-        v-if="speaker.inPerson !== undefined"
-        class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-medium"
-        :class="speaker.inPerson ? 'bg-emerald-500/80 text-white' : 'bg-blue-500/80 text-white'"
+        class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/80 text-white"
       >
-        {{ speaker.inPerson ? 'In-Person' : 'Online' }}
+        Online
       </div>
 
-      <!-- Featured badge -->
       <div
         v-if="featured"
         class="absolute top-4 left-4 bg-primary-500/80 text-white px-3 py-1 rounded-full text-xs font-medium"
@@ -57,7 +58,7 @@ const props = defineProps({
       </div>
     </div>
 
-    <!-- Speaker Info -->
+    <!-- Info -->
     <div class="p-5 flex flex-col flex-grow">
       <h3 class="text-xl font-bold text-primary-300 mb-2">
         {{ speaker.title ? `${speaker.title} ` : '' }}{{ speaker.given_name }} {{ speaker.surname }}
@@ -72,34 +73,29 @@ const props = defineProps({
         <p class="text-sm text-primary-400 font-medium">{{ speaker.professional_title }}</p>
       </div>
 
-      <div class="flex-grow">
-        <p
-          v-if="!isOpen && speaker.bio"
-          class="text-sm text-gray-300 line-clamp-3"
-        >
-          {{ speaker.bio.slice(0, 240) }}...
-        </p>
-        <p
-          v-else-if="speaker.bio"
-          class="text-sm text-gray-300"
-        >
-          {{ speaker.bio }}
-        </p>
-
+      <!-- Bio preview with popover -->
+      <div v-if="speaker.bio">
         <button
-          v-if="speaker.bio && speaker.bio.length > 240"
-          class="mt-2 text-primary-400 text-sm font-medium hover:text-primary-300 transition-colors duration-200 flex items-center gap-1"
-          @click="isOpen = !isOpen"
+          ref="bioButton"
+          class="text-sm text-gray-300 line-clamp-3 text-left w-full hover:underline"
+          @click="openBioPopover"
         >
-          {{ isOpen ? 'Read Less' : 'Read More' }}
-          <Icon
-            :name="isOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-            size="16"
-          />
+          {{ speaker.bio.slice(0, BIO_PREVIEW_LENGTH) }}...
         </button>
+
+        <PrimePopover
+          ref="bioPopover"
+          :target="bioButton?.$el"
+          position="top"
+          class="dark-mode-popover"
+        >
+          <div class="p-4 max-w-sm text-sm text-gray-100 whitespace-pre-line">
+            {{ speaker.bio }}
+          </div>
+        </PrimePopover>
       </div>
 
-      <!-- Abstract/Topic Preview -->
+      <!-- Abstract -->
       <div
         v-if="speaker.abstract"
         class="mt-4 p-3 bg-primary-900/60 rounded-md border border-primary-800/50"
@@ -117,3 +113,21 @@ const props = defineProps({
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(.dark-mode-popover.p-popover) {
+  border-radius: 0.5rem;
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
+}
+
+:deep(.dark-mode-popover .p-popover-content) {
+  padding: 0;
+  background-color: #1e293b;
+  color: white;
+}
+
+:deep(.dark-mode-popover .p-popover-arrow) {
+  display: none;
+}
+</style>
