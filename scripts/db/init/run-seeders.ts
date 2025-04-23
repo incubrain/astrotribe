@@ -95,11 +95,6 @@ export async function runSeeders() {
 
     const businessDomainIds = businessDomains.map((d) => d.id)
 
-    // 4. Seed security-related tables with no dependencies
-    const blacklistedDomains = await checkAndSeed(client, 'blacklisted_domains', () =>
-      seed.seedBlacklistedDomains(client, config.counts.blacklistedDomains),
-    )
-
     // 5. First seed social media before companies
     const socialMedia = await checkAndSeed(client, 'social_media', () =>
       seed.seedSocialMedia(client, config.counts.socialMedia),
@@ -111,21 +106,6 @@ export async function runSeeders() {
     )
 
     const companyIds = companies.map((c) => c.id)
-
-    // Now seed blacklisted URLs which depend on companies
-    await checkAndSeed(client, 'blacklisted_urls', () =>
-      seed.seedBlacklistedURLs(client, companyIds, config.counts.blacklistedURLs),
-    )
-
-    // Seed categorized URLs which depend on companies and business domains
-    await checkAndSeed(client, 'categorized_urls', () =>
-      seed.seedCategorizedURLs(
-        client,
-        companyIds,
-        businessDomainIds,
-        config.counts.categorizedURLs,
-      ),
-    )
 
     const contentSources = await checkAndSeed(client, 'content_sources', () =>
       seed.seedContentSources(client, 50),
@@ -293,8 +273,6 @@ export async function runSeeders() {
     await checkAndSeed(client, 'feed_sources', () =>
       seed.seedFeedSources(client, feedIds, contentSourceIds),
     )
-
-    await checkAndSeed(client, 'error_logs', () => seed.seedErrorLogs(client, 50))
 
     // Try to disable triggers - use standard syntax without IF EXISTS (not supported in older PG versions)
     try {

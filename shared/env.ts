@@ -16,6 +16,7 @@ export const getSharedEnv = () => ({
   public: {
     turnstileSiteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
     formbricksEnvironment: process.env.NUXT_PUBLIC_FORMBRICKS_ENVIRONMENT,
+    testing: process.env.TESTING ?? 'default only',
     formbricksHost: process.env.NUXT_PUBLIC_FORMBRICKS_HOST,
     supabaseURL: process.env.NUXT_PUBLIC_SUPABASE_URL,
     supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_KEY,

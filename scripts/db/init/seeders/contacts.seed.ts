@@ -37,23 +37,12 @@ export async function seedContacts(pool: Pool, userIds: string[]) {
       console.warn('Error fetching enum values, using defaults')
     }
 
-    // Get the next id_old value
-    let nextIdOld = 1
-    try {
-      const { rows: maxId } = await pool.query(
-        'SELECT COALESCE(MAX(id_old), 0) + 1 as next_id FROM contacts',
-      )
-      nextIdOld = parseInt(maxId[0].next_id, 10)
-      console.log(`Starting id_old value for contacts: ${nextIdOld}`)
-    } catch (err) {
-      console.warn('Could not get max id_old for contacts, starting from 1')
-    }
+   
 
     // Generate contacts using the valid enum values
     const contacts = userIds.flatMap((userId, idx) =>
       Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, (_, innerIdx) => ({
         id: generateUUID(),
-        id_old: nextIdOld + idx * 3 + innerIdx, // Generate sequential id_old values
         title: faker.person.jobTitle(),
         is_primary: faker.datatype.boolean(),
         email: faker.internet.email(),

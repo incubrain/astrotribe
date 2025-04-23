@@ -4,8 +4,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   const env = nuxtApp.$config.public
   const env2 = useRuntimeConfig().public
 
-  const posthogKey = env.posthogKey || env2.posthogKey
-  const posthogURL = env.posthogURL || env2.posthogURL
+  const posthogKey = String(env.posthogKey || env2.posthogKey)
+  const posthogURL = String(env.posthogURL || env2.posthogURL)
+
+  console.log('PostHog KEYS:', env, env2)
 
   // Initialize PostHog
   posthog.init(posthogKey, {

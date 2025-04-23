@@ -99,10 +99,8 @@ function categorizeTable(tableName: string, schemas: any[]): string {
   // Security tables
   if (
     tableName.includes('permission') ||
-    tableName.includes('blacklist') ||
     tableName.includes('customer_') ||
-    tableName.includes('payment') ||
-    ['error_logs', 'role_hierarchy'].includes(tableName)
+    tableName.includes('payment')
   ) {
     return 'security_tables'
   }

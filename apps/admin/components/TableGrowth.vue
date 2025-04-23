@@ -11,8 +11,6 @@ const tables = [
   'user_profiles',
   'content_sources',
   'contents',
-  'blacklisted_domains',
-  'blacklisted_urls',
   'searches',
   'research',
 ]

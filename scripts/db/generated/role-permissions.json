@@ -79,7 +79,6 @@
         "scoring_weights",
         "workflows",
         "business_domains",
-        "categorized_urls",
         "astronomy_events",
         "jobs",
         "content_interactions",
@@ -94,8 +93,6 @@
       "tables": [
         "plan_permissions",
         "role_permissions",
-        "blacklisted_urls",
-        "blacklisted_domains",
         "customer_payments",
         "customer_processed_webhooks",
         "customer_refunds",
@@ -104,7 +101,6 @@
         "payment_providers",
         "role_hierarchy",
         "role_permissions_materialized",
-        "error_logs",
         "customer_subscription_offers"
       ],
       "default_permissions": [],
