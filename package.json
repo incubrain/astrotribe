@@ -36,7 +36,7 @@
     "docker:all": "pnpx tsx ./ci/2.build-docker-containers.ts",
     "build:libs": "turbo run build --filter=@astronera/db  --filter=@ib/cache",
     "build:layers": "scripts/build-layers.sh",
-    "build:website": "turbo run build --filter=@astronera/website",
+    "build:website": "turbo run build --filter=@astronera/website && node ./apps/website/.output/server/index.mjs",
     "build:app": "turbo run build --filter=@astronera/app --filter=@astronera/auth",
     "build:auth": "turbo run build --filter=@astronera/auth",
     "build:admin": "turbo run build --filter=@astronera/admin",

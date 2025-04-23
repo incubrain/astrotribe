@@ -4,21 +4,21 @@ import { ref, onMounted } from 'vue'
 // Stats data with astronomy-themed icons
 const stats = [
   {
-    value: '30+',
-    dataValue: 30,
+    suffix: '+',
+    dataValue: 40,
     label: 'Years Combined Experience',
     icon: 'mdi:telescope',
     description: 'Our team brings decades of astronomy and business expertise',
   },
   {
-    value: '120+',
+    suffix: '+',
     dataValue: 120,
     label: 'Countries Reached',
     icon: 'mdi:globe-model',
     description: 'Serving astronomy enthusiasts worldwide',
   },
   {
-    value: '25+',
+    suffix: '+',
     dataValue: 10000,
     label: 'Minds Inspired',
     icon: 'mdi:star-shooting',
@@ -40,6 +40,9 @@ onMounted(() => {
   const observer = new IntersectionObserver(
     (entries) => {
       const [entry] = entries
+
+      if (!entry) return
+
       isIntersecting.value = entry.isIntersecting
 
       if (entry.isIntersecting) {
@@ -123,11 +126,13 @@ onMounted(() => {
               />
             </div>
 
-            <div
-              class="counter-value text-4xl font-bold text-white mb-2"
-              :data-value="stat.dataValue"
-              >{{ stat.value }}</div
-            >
+            <div class="counter-value text-4xl font-bold text-white mb-2">
+              <span
+                class="counter-number"
+                :data-value="stat.dataValue"
+                >{{ stat.dataValue }}</span
+              ><span>{{ stat.suffix }}</span>
+            </div>
             <div class="stat-label text-primary-300 font-semibold mb-2">{{ stat.label }}</div>
             <div class="stat-description text-sm text-primary-400">{{ stat.description }}</div>
           </div>

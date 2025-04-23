@@ -62,7 +62,7 @@ const scrollToContent = () => {
         class="flex flex-col items-center gap-2 text-white bg-black/30 px-6 py-3 rounded-full backdrop-blur-sm hover:bg-black/50 transition-all duration-300"
         @click="scrollToContent"
       >
-        <span class="text-sm font-medium">Explore Dark Sky Initiatives</span>
+        <span class="text-sm font-medium">Explore Initiatives</span>
         <Icon
           name="mdi:chevron-down"
           size="24px"

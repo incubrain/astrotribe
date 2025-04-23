@@ -77,17 +77,20 @@ const [emblaRef, emblaApi] = useEmblaCarousel(
                   <div
                     v-for="(panel, index) in comic.panels"
                     :key="`panel-${index}`"
-                    class="comic-panel relative overflow-hidden rounded bg-primary-900/50 transition-transform duration-300 hover:scale-[1.03] hover:shadow-lg"
+                    class="group comic-panel relative overflow-hidden rounded bg-primary-900/50 transition-transform duration-300 hover:scale-[1.03] hover:shadow-lg"
                   >
-                    <NuxtImg
-                      :src="panel.image"
-                      :alt="panel.alt"
-                      width="600px"
-                    />
+                    <div class="transition-transform duration-300 group-hover:scale-[1.03]">
+                      <NuxtImg
+                        :src="panel.image"
+                        :alt="panel.alt"
+                        width="600px"
+                      />
+                    </div>
+
                     <div
-                      v-html="panel.caption"
                       v-if="panel.caption"
-                      class="caption absolute bottom-0 w-full bg-primary-950/80 p-2 text-center text-sm backdrop-blur-sm"
+                      class="caption absolute bottom-0 left-0 right-0 bg-primary-950/80 p-2 text-center text-sm backdrop-blur-sm transition-transform duration-300 group-hover:scale-[1.03]"
+                      v-html="panel.caption"
                     />
                   </div>
                 </div>

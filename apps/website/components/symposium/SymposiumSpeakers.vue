@@ -9,7 +9,6 @@ const speakers = [
     She is currently the immediate past president and Fellow of the Royal Astronomical Society of New Zealand (RASNZ) and is a co-founder of the Aotearoa Astrotourism Academy, a non-profit that promotes dark skies and the education of astronomy (integrating indigenous astronomy) through the provision of nationwide immersion training courses for those seeking a solid foundation of knowledge and practical skills to pursue astronomy and astrotourism. `,
     avatar: 'nalayini_bitro_davis',
     featured: true,
-    inPerson: true,
   },
   {
     given_name: 'Dan',
@@ -20,7 +19,6 @@ const speakers = [
     Starting from a conservation volunteer, he is lead ranger for the Wealden Heaths and the dark skies officer for the park. At the Park, he was instrumental in developing and submitting Moore’s’ Reserve Dark Sky Places application in May 2016.`,
     avatar: 'dan_oakley',
     featured: true,
-    inPerson: true,
   },
   {
     given_name: 'Yana',
@@ -32,7 +30,6 @@ const speakers = [
     As a scientific coordinator of the PLAN-B project, she leads the project's efforts towards a better understanding of light and noise pollution impacts and the development of the most effective solutions for their mitigation.`,
     avatar: 'yana_yakushina',
     featured: true,
-    inPerson: true,
   },
   {
     given_name: 'Shweta',
@@ -69,7 +66,6 @@ const speakers = [
     },
     avatar: 'shweta-kulkarni',
     featured: true,
-    inPerson: true,
   },
 ]
 

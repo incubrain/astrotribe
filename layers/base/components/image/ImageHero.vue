@@ -41,7 +41,7 @@ defineProps({
       <slot />
       <div class="flex flex-col gap-4">
         <h2
-          :class="`rounded-md bg-black/30 px-4 py-1 text-3xl font-bold shadow-xl lg:text-5xl xl:px-8 text-${title.centered ? 'center' : 'left'}`"
+          :class="`rounded-md bg-black/10 px-4 py-1 text-3xl font-bold shadow-xl lg:text-5xl xl:px-8 text-${title.centered ? 'center' : 'left'}`"
         >
           {{ title.main }}
         </h2>

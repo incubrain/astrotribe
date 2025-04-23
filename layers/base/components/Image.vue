@@ -40,6 +40,6 @@ function loadFallbackImage(error: Error) {
     :quality="img.quality"
     :loading="img.loading"
     crossorigin="anonymous"
-    @error="loadFallbackImage"
+    @on-error="loadFallbackImage"
   />
 </template>

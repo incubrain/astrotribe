@@ -15,23 +15,27 @@ const comicStrips = [
       {
         image: '/tara/comics/1.tara-comic-timeline-shwetas-astronera-beginnings-2011.jpg',
         alt: 'Shweta begins stargazing as a teenager in 2011',
-        caption: `<b>Shweta’s Stargazing Journey (2011–Present)</b><p>A young girl’s curiosity turned into a global mission as Shweta began stargazing at 16 and slowly uncovered the challenges of light pollution. Today, through AstronEra, she empowers others to protect the night skies.</p>`,
+        caption:
+          '<b>Shweta’s Stargazing Journey (2011–Present)</b><p>A young girl’s curiosity turned into a global mission as Shweta began stargazing at 16 and slowly uncovered the challenges of light pollution. Today, through AstronEra, she empowers others to protect the night skies.</p>',
       },
       {
         image: '/tara/comics/2.tara-comic-timeline-shweta-most-innovative-award-IAU-2019.jpg',
         alt: 'Award-winning Bhimashankar event in 2019',
-        caption: `<b>Most Innovative Event Award – Bhimashankar, 2019</b><p>An unforgettable stargazing event at a tribal school, blending science with storytelling, earned global recognition from the International Astronomical Union. This milestone boosted AstronEra’s credibility and reach.</p>`,
+        caption:
+          '<b>Most Innovative Event Award – Bhimashankar, 2019</b><p>An unforgettable stargazing event at a tribal school, blending science with storytelling, earned global recognition from the International Astronomical Union. This milestone boosted AstronEra’s credibility and reach.</p>',
       },
       {
         image: '/tara/comics/3.tara-comic-timeline-astrotribe-2022-2023.jpg',
         alt: 'AstroTribe trainings in Nashik, Ladakh and Manali',
-        caption: `<b>AstroTribe Training & Telescope Donation (2022–23)</b><p>AstronEra trained 100+ tribal students across Nashik, Ladakh, and Manali under the AstroTribe initiative, helping 30 become certified AstroGuides. Telescopes were donated so they could earn and educate through stargazing.</p>`,
+        caption:
+          '<b>AstroTribe Training & Telescope Donation (2022–23)</b><p>AstronEra trained 100+ tribal students across Nashik, Ladakh, and Manali under the AstroTribe initiative, helping 30 become certified AstroGuides. Telescopes were donated so they could earn and educate through stargazing.</p>',
       },
       {
         image:
           '/tara/comics/4.tara-comic-timeline-astrotribe-visits-cap-conference-sydney-2022.jpg',
         alt: 'AstroTribe at Sydney CAP Conference in 2022',
-        caption: `<b>AstroTribe Goes Global – CAP Conference Sydney (2022)</b><p>Shweta presented the AstroTribe project to the world at the prestigious CAP Conference in Sydney. The young AstroGuides also made their mark by joining virtually and sharing their stories.</p>`,
+        caption:
+          '<b>AstroTribe Goes Global – CAP Conference Sydney (2022)</b><p>Shweta presented the AstroTribe project to the world at the prestigious CAP Conference in Sydney. The young AstroGuides also made their mark by joining virtually and sharing their stories.</p>',
       },
     ],
   },
@@ -42,25 +46,29 @@ const comicStrips = [
       {
         image: '/tara/comics/5.tara-comic-timeline-monks-stargazing-at-spiti-valley-2023.jpg',
         alt: 'Monks explore galaxies at Key Monastery, Spiti',
-        caption: `<b>Stargazing at Key Monastery, Spiti Valley (2023)</b><p>AstronEra brought telescopes to the monks of Key Monastery, uniting meditation and the cosmos. For many, it was their first glimpse into galaxies beyond prayer flags and mountain skies.</p>`,
+        caption:
+          '<b>Stargazing at Key Monastery, Spiti Valley (2023)</b><p>AstronEra brought telescopes to the monks of Key Monastery, uniting meditation and the cosmos. For many, it was their first glimpse into galaxies beyond prayer flags and mountain skies.</p>',
       },
       {
         image:
           '/tara/comics/6.tara-comic-timeline-international-dark-sky-preservation-and-astrotourism-conference-2023.jpg',
         alt: 'Conference in the Himalayas on dark sky preservation',
-        caption: `<b>International Dark Sky & Astrotourism Conference, Manali (2023)</b><p>Held in the Himalayas, AstronEra’s conference gathered experts, policymakers, and educators to address light pollution. Backed by DST and IAU, it was a pioneering step toward India’s dark sky future.</p>`,
+        caption:
+          '<b>International Dark Sky & Astrotourism Conference, Manali (2023)</b><p>Held in the Himalayas, AstronEra’s conference gathered experts, policymakers, and educators to address light pollution. Backed by DST and IAU, it was a pioneering step toward India’s dark sky future.</p>',
       },
       {
         image:
           '/tara/comics/7.tara-comic-timeline-meeting-ruskin-nalayini-and connie-at-lake-tekapo-2024.jpg',
         alt: 'Dark sky friendships in New Zealand, 2024',
-        caption: `<b>Global Connections at Lake Tekapo, New Zealand (2024)</b><p>At the Aoraki Mackenzie Dark Sky Reserve, Shweta connected with dark sky legends Ruskin Hartley, Nalayini Brito- Davies, and Connie Walker. A moment of inspiration that seeded international partnerships.</p>`,
+        caption:
+          '<b>Global Connections at Lake Tekapo, New Zealand (2024)</b><p>At the Aoraki Mackenzie Dark Sky Reserve, Shweta connected with dark sky legends Ruskin Hartley, Nalayini Brito- Davies, and Connie Walker. A moment of inspiration that seeded international partnerships.</p>',
       },
       {
         image:
           '/tara/comics/8.tara-comic-timeline-shweta-receives-dark-sky-defender-award-from-2024.jpg',
         alt: 'Shweta receives the Dark Sky Defender Award in 2024',
-        caption: `<b>Dark Sky Defender Asia Award (2024)</b><p>Recognized by DarkSky International, Shweta became the first Indian woman to receive the Dark Sky Defender (Asia) award. A tribute to her years of relentless sky-saving efforts.</p>`,
+        caption:
+          '<b>Dark Sky Defender Asia Award (2024)</b><p>Recognized by DarkSky International, Shweta became the first Indian woman to receive the Dark Sky Defender (Asia) award. A tribute to her years of relentless sky-saving efforts.</p>',
       },
     ],
   },
@@ -72,7 +80,8 @@ const comicStrips = [
         image:
           '/tara/comics/9.tara-comic-timeline-indias-dark-sky-policy-and-sustainability-symposium-2025.jpg',
         alt: 'India’s Dark Sky Policy meeting in 2025',
-        caption: `<b>India’s Dark Sky Policy & Sustainability Symposium (2025)</b><p>AstronEra convened experts and policymakers to draft actionable frameworks for India’s first dark sky policy. It was more than a meeting—it was a national pledge to preserve wonder.</p>`,
+        caption:
+          '<b>India’s Dark Sky Policy & Sustainability Symposium (2025)</b><p>AstronEra convened experts and policymakers to draft actionable frameworks for India’s first dark sky policy. It was more than a meeting—it was a national pledge to preserve wonder.</p>',
       },
     ],
   },
@@ -269,6 +278,7 @@ onMounted(() => {
               >
                 <NuxtLink
                   v-for="image in section.images"
+                  :key="image.src"
                   :to="image.link"
                   target="_blank"
                 >
