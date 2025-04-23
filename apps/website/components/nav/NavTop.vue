@@ -26,8 +26,8 @@ const props = defineProps({
 
 // 5. Core Nuxt Composables
 const { $config } = useNuxtApp()
-const config = useRuntimeConfig()
-console.log('Public Environment Variables', process.env, config)
+console.log('USE RUNTIME CONFIG', useRuntimeConfig().public)
+console.log('Public Environment Variables', process.env.NODE_ENV)
 // 6. Other Composables
 const { y } = useWindowScroll()
 
