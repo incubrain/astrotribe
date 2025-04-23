@@ -2,6 +2,7 @@
 // https://deno.land/manual/getting_started/setup_your_environment
 // This enables autocomplete, go to definition, etc.
 import OpenAI from 'https://deno.land/x/openai@v4.24.0/mod.ts'
+
 const openAiApiKey = Deno.env.get('OPENAI_API_KEY')
 // Check if environment variables are set
 if (!openAiApiKey) {

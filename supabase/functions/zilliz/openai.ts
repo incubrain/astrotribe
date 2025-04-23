@@ -1,8 +1,10 @@
-import OpenAI from 'https://deno.land/x/openai@v4.24.0/mod.ts'
+import OpenAI from '@openai/openai'
+
 const openAiApiKey = Deno.env.get('OPENAI_API_KEY')
 const openai = new OpenAI({
   apiKey: openAiApiKey,
 })
+
 function normalize(vectors) {
   // Compute L2 norm (magnitude)
   const norm = Math.sqrt(vectors.reduce((sum, val) => sum + val * val, 0))
@@ -18,7 +20,7 @@ export async function getEmbedding(text) {
     })
     return normalize(response.data[0].embedding)
   } catch (error) {
-    console.error(`OpenAI Error: Could not get embeddings`, error)
+    console.error('OpenAI Error: Could not get embeddings', error)
     return null
   }
 }

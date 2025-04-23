@@ -1,11 +1,13 @@
 // supabase/functions/upsertToZilliz/index.ts
-import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { embedData } from './openai.ts'
 import { schema } from './schema.ts'
+
 const milvusEndpoint = Deno.env.get('MILVUS_ENDPOINT')
 const milvusUsername = Deno.env.get('MILVUS_USERNAME')
 const milvusToken = Deno.env.get('MILVUS_TOKEN')
 const milvusId = Deno.env.get('MILVUS_CLUSTER_ID')
+const doNotRun = Deno.env.get('EXIT_EDGEFUNC_EARLY') === 'true'
+
 Object.entries({
   milvusEndpoint,
   milvusUsername,
@@ -17,13 +19,24 @@ Object.entries({
     throw new Error(`${key.toUpperCase()} key not set in environment variables`)
   }
 })
-serve(async (req) => {
+
+Deno.serve(async (req) => {
+  console.log('Request received:', req.method, req.url)
+
   const { operation, record, inputColumns, outputColumn, collection_name } = await req.json()
   if (!inputColumns || !outputColumn || !collection_name) {
     return new Response('Invalid Parameters', {
       status: 500,
     })
   }
+
+  if (doNotRun) {
+    console.log('Skipping function execution due to EXIT_EDGEFUNC_EARLY flag')
+    return new Response('Skipping function execution', {
+      status: 200,
+    })
+  }
+
   try {
     const columns = inputColumns.split(',')
     if (
@@ -51,6 +64,7 @@ serve(async (req) => {
     })
   }
 })
+
 const upsertToZilliz = async (collection_name, records, inputColumns, outputColumn) => {
   console.log('UPSERTING TO ZILLIZ')
   const embedded = await embedData([records], {
@@ -76,7 +90,6 @@ const upsertToZilliz = async (collection_name, records, inputColumns, outputColu
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${milvusToken}`,
-      // Optional: Custom headers for your context
       'x-zilliz-username': milvusUsername,
       'x-zilliz-cluster-id': milvusId,
     },

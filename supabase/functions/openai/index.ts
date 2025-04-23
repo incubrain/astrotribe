@@ -1,36 +1,44 @@
 // Follow this setup guide to integrate the Deno language server with your editor:
 // https://deno.land/manual/getting_started/setup_your_environment
 // This enables autocomplete, go to definition, etc.
-import OpenAI from 'https://deno.land/x/openai@v4.24.0/mod.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.0.0'
+import OpenAI from '@openai/openai'
+import { createClient } from '@supabase/supabase-js'
+import { summarizeText } from './summary.ts'
+
 const openAiApiKey = Deno.env.get('OPENAI_API_KEY')
 const supabaseUrl = Deno.env.get('SUPABASE_URL')
 const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')
-import { summarizeText } from './summary.ts'
+const doNotRun = Deno.env.get('EXIT_EDGEFUNC_EARLY') === 'true'
+
 // Check if environment variables are set
 if (!openAiApiKey) {
   console.error('Error: OpenAI API key not set in environment variables')
   throw new Error('OpenAI API key not set in environment variables')
 }
+
 if (!supabaseUrl) {
   console.error('Error: Supabase URL not set in environment variables')
   throw new Error('Supabase URL not set in environment variables')
 }
+
 if (!supabaseKey) {
   console.error('Error: Supabase ANON KEY not set in environment variables')
   throw new Error('Supabase ANON KEY not set in environment variables')
 }
-console.log('Hello from Functions!')
+
 const openai = new OpenAI({
   apiKey: openAiApiKey,
 })
+
 const headers = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-client-info, apikey',
 }
+
 Deno.serve(async (req) => {
+  console.log('Request received:', req.method, req.url)
   const data = await req.json()
   // Handle CORS preflight request
   if (req.method === 'OPTIONS') {
@@ -39,6 +47,14 @@ Deno.serve(async (req) => {
       status: 204,
     })
   }
+
+  if (doNotRun) {
+    console.log('Skipping function execution due to EXIT_EDGEFUNC_EARLY flag')
+    return new Response('Skipping function execution', {
+      status: 200,
+    })
+  }
+
   try {
     if (data.operation == 'match-research') {
       const { query, match_threshold, match_count } = await req.json()
@@ -50,7 +66,7 @@ Deno.serve(async (req) => {
     return new Response('Updating Summary', {
       status: 200,
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error processing request:', JSON.stringify(error))
     return new Response(
       JSON.stringify({
@@ -93,7 +109,7 @@ const summarize = async (id, text) => {
         }
         console.log(`Updated summary successfully ${id}`)
       })
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error in summarize: ${error.message}`)
   }
 }
