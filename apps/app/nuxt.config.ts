@@ -7,6 +7,8 @@ import { getSharedEnv, pick } from '../../shared/env'
 
 const env = getSharedEnv()
 
+console.log('Environment Variables', env.public)
+
 const publicKeys = [
   'turnstileSiteKey',
   'supabaseURL',
