@@ -1,13 +1,15 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import AstroTheme from '../../shared/theme'
+import { config } from 'dotenv'
 import { devPortMap } from '../../shared/paths.config'
 import { getSharedEnv, pick } from '../../shared/env'
 
 // Place this at the top of your nuxt.config.ts after importing env
 const env = getSharedEnv()
 
-console.log('ENVIRONMENT VARIABLES', env)
+// Load environment variables from the root .env file
+config({ path: resolve(dirname(fileURLToPath(import.meta.url)), '../../.env') })
 
 const publicKeys = [
   'supabaseURL',
