@@ -1,16 +1,48 @@
-create extension if not exists "http" with schema "extensions" version '1.5';
+-- Safely create http extension if it doesn't exist
+CREATE EXTENSION IF NOT EXISTS "http" WITH SCHEMA "extensions" VERSION '1.5';
 
-alter table "public"."customer_subscriptions" alter column "current_end" drop not null;
-alter table "public"."customer_subscriptions" alter column "current_start" drop not null;
+-- Safely alter columns by checking if they are not null first
+DO $$
+BEGIN
+  -- Check if current_end column is NOT NULL
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+    AND table_name = 'customer_subscriptions'
+    AND column_name = 'current_end'
+    AND is_nullable = 'NO'
+  ) THEN
+    -- Alter column only if it's NOT NULL
+    ALTER TABLE "public"."customer_subscriptions" ALTER COLUMN "current_end" DROP NOT NULL;
+  END IF;
 
+  -- Check if current_start column is NOT NULL
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+    AND table_name = 'customer_subscriptions'
+    AND column_name = 'current_start'
+    AND is_nullable = 'NO'
+  ) THEN
+    -- Alter column only if it's NOT NULL
+    ALTER TABLE "public"."customer_subscriptions" ALTER COLUMN "current_start" DROP NOT NULL;
+  END IF;
+END $$;
+
+-- Safely drop type and table
 DROP TYPE IF EXISTS public.http_header;
-DROP table if exists "public"."token_text";
+DROP TABLE IF EXISTS "public"."token_text";
 
-set check_function_bodies = off;
+-- Turn off checking function bodies
+SET check_function_bodies = off;
 
+-- Drop functions if they exist
 DROP FUNCTION IF EXISTS public.summarize();
 DROP FUNCTION IF EXISTS public.test();
 
+-- Create or replace function for summarize_webhook (this is idempotent by default)
 CREATE OR REPLACE FUNCTION public.summarize_webhook()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -41,9 +73,6 @@ BEGIN
 
     inputColumn := TG_ARGV[0];
 
-    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use webhook_url: >>%<<', webhook_url;
-    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use webhook_url: >>%<<', inputColumn;
-
     set statement_timeout = '30s';
 
     perform extensions.http((
@@ -60,10 +89,9 @@ BEGIN
     ));
     RETURN NEW;
 END;
-$function$
-;
+$function$;
 
-
+-- Create or replace function for vectorize_webhook (this is idempotent by default)
 CREATE OR REPLACE FUNCTION public.vectorize_webhook()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -108,12 +136,6 @@ BEGIN
     inputColumns := TG_ARGV[1];
     outputColumn := TG_ARGV[2];
 
-
-    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use webhook_url: >>%<<', webhook_url;
-    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use collection_name: >>%<<', collection_name;
-    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use inputColumns: >>%<<', inputColumns;
-    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use webhooutputColumnok_url: >>%<<', outputColumn;
-
     set statement_timeout = '30s';
 
     perform extensions.http((
@@ -132,9 +154,9 @@ BEGIN
     ));
     RETURN NEW;
 END;
-$function$
-;
+$function$;
 
+-- Create or replace function for is_subscription_trigger (this is idempotent by default)
 CREATE OR REPLACE FUNCTION public.is_subscription_trigger()
  RETURNS boolean
  LANGUAGE plpgsql
@@ -149,9 +171,9 @@ BEGIN
         AND proname = 'update_user_plan'
     );
 END;
-$function$
-;
+$function$;
 
+-- Create or replace function for users_columns_updateable (this is idempotent by default)
 CREATE OR REPLACE FUNCTION public.users_columns_updateable()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -184,31 +206,53 @@ BEGIN
 
     RETURN NEW;
 END;
-$function$
-;
+$function$;
 
+-- Safely create triggers only if they don't exist
 DO $$
 BEGIN
+  -- Check if contents_summarize_webhook trigger exists
   IF NOT EXISTS (
     SELECT 1 FROM pg_trigger
     WHERE tgname = 'contents_summarize_webhook'
+    AND tgrelid = 'public.contents'::regclass
   ) THEN
-    CREATE TRIGGER contents_summarize_webhook
-    AFTER INSERT OR UPDATE OF details
-    ON public.contents
-    FOR EACH ROW
-    EXECUTE FUNCTION public.summarize_webhook('details');
+    -- Only try to create trigger if the contents table exists
+    IF EXISTS (
+      SELECT 1 FROM information_schema.tables 
+      WHERE table_schema = 'public' 
+      AND table_name = 'contents'
+    ) THEN
+      CREATE TRIGGER contents_summarize_webhook
+      AFTER INSERT OR UPDATE OF details
+      ON public.contents
+      FOR EACH ROW
+      EXECUTE FUNCTION public.summarize_webhook('details');
+    ELSE
+      RAISE NOTICE 'Skipping creation of contents_summarize_webhook trigger: contents table does not exist';
+    END IF;
   END IF;
 
+  -- Check if contents_vectorization_webhook trigger exists
   IF NOT EXISTS (
     SELECT 1 FROM pg_trigger
     WHERE tgname = 'contents_vectorization_webhook'
+    AND tgrelid = 'public.contents'::regclass
   ) THEN
-    CREATE TRIGGER contents_vectorization_webhook
-    AFTER INSERT OR UPDATE OF summary
-    ON public.contents
-    FOR EACH ROW
-    EXECUTE FUNCTION public.vectorize_webhook('Contents', 'summary', 'content_vector');
+    -- Only try to create trigger if the contents table exists
+    IF EXISTS (
+      SELECT 1 FROM information_schema.tables 
+      WHERE table_schema = 'public' 
+      AND table_name = 'contents'
+    ) THEN
+      CREATE TRIGGER contents_vectorization_webhook
+      AFTER INSERT OR UPDATE OF summary
+      ON public.contents
+      FOR EACH ROW
+      EXECUTE FUNCTION public.vectorize_webhook('Contents', 'summary', 'content_vector');
+    ELSE
+      RAISE NOTICE 'Skipping creation of contents_vectorization_webhook trigger: contents table does not exist';
+    END IF;
   END IF;
 END
 $$;
