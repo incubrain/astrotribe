@@ -103,6 +103,9 @@
     "**/coverage": true
   },
 
+  "deno.enablePaths": ["./supabase/functions"],
+  "deno.importMap": "./supabase/functions/import_map.json",
+
   // Add some workspace memory settings
   "js/ts.implicitProjectConfig.checkJs": false,
   "javascript.updateImportsOnFileMove.enabled": "never",

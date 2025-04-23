@@ -3,23 +3,7 @@ create extension if not exists "http" with schema "extensions" version '1.5';
 alter table "public"."customer_subscriptions" alter column "current_end" drop not null;
 alter table "public"."customer_subscriptions" alter column "current_start" drop not null;
 
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1
-    FROM pg_type
-    WHERE typname = 'http_header'
-      AND typnamespace = 'public'::regnamespace
-  ) THEN
-    CREATE TYPE public.http_header AS (
-      field varchar,
-      value varchar
-    );
-  END IF;
-END
-$$;
-
-
+DROP TYPE IF EXISTS public.http_header;
 DROP table if exists "public"."token_text";
 
 set check_function_bodies = off;
@@ -34,12 +18,21 @@ CREATE OR REPLACE FUNCTION public.summarize_webhook()
 AS $function$
 DECLARE
     token_text TEXT;
+    webhook_url TEXT;
     inputColumn TEXT;
 BEGIN
     -- Retrieve the token from Supabase Vault
     SELECT decrypted_secret INTO token_text
     FROM vault.decrypted_secrets
     WHERE name = 'service_key';
+   
+    SELECT decrypted_secret INTO webhook_url
+    FROM vault.decrypted_secrets
+    WHERE name = 'edge_url_openai';
+
+    IF webhook_url IS NULL OR webhook_url = '' THEN
+        RAISE EXCEPTION 'Webhook URL (edge_url_openai) not found or empty in vault';
+    END IF;
     
     -- Check if the token exists
     IF token_text IS NULL THEN
@@ -48,13 +41,16 @@ BEGIN
 
     inputColumn := TG_ARGV[0];
 
+    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use webhook_url: >>%<<', webhook_url;
+    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use webhook_url: >>%<<', inputColumn;
+
     set statement_timeout = '30s';
 
     perform extensions.http((
       'POST',
-      'https://idsifamzvzlpgnmlnldw.supabase.co/functions/v1/openai',
-      ARRAY[public.http_header('Authorization', 'Bearer ' || token_text),
-            public.http_header('Content-Type', 'application/json')],
+      webhook_url,
+      ARRAY[extensions.http_header('Authorization', 'Bearer ' || token_text),
+            extensions.http_header('Content-Type', 'application/json')],
       'application/json',
       jsonb_build_object(
         'record', NEW,
@@ -75,6 +71,7 @@ CREATE OR REPLACE FUNCTION public.vectorize_webhook()
 AS $function$
 DECLARE
     token_text TEXT;
+    webhook_url TEXT;
     collection_name TEXT;
     inputColumns TEXT;
     outputColumn TEXT;
@@ -84,6 +81,14 @@ BEGIN
     SELECT decrypted_secret INTO token_text
     FROM vault.decrypted_secrets
     WHERE name = 'service_key';
+
+    SELECT decrypted_secret INTO webhook_url
+    FROM vault.decrypted_secrets
+    WHERE name = 'edge_url_zilliz';
+
+    IF webhook_url IS NULL OR webhook_url = '' THEN
+        RAISE EXCEPTION 'Webhook URL (edge_url_openai) not found or empty in vault';
+    END IF;
     
     -- Check if the token exists
     IF token_text IS NULL THEN
@@ -103,12 +108,19 @@ BEGIN
     inputColumns := TG_ARGV[1];
     outputColumn := TG_ARGV[2];
 
+
+    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use webhook_url: >>%<<', webhook_url;
+    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use collection_name: >>%<<', collection_name;
+    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use inputColumns: >>%<<', inputColumns;
+    RAISE NOTICE 'DEBUG summarize_webhook: Attempting to use webhooutputColumnok_url: >>%<<', outputColumn;
+
     set statement_timeout = '30s';
+
     perform extensions.http((
       'POST',
-      'https://idsifamzvzlpgnmlnldw.supabase.co/functions/v1/zilliz',
-      ARRAY[public.http_header('Authorization', 'Bearer ' || token_text),
-            public.http_header('Content-Type', 'application/json')],
+      webhook_url,
+      ARRAY[extensions.http_header('Authorization', 'Bearer ' || token_text),
+            extensions.http_header('Content-Type', 'application/json')],
       'application/json',
       jsonb_build_object(
         'collection_name', collection_name,

@@ -15,6 +15,7 @@
   },
   "scripts": {
     "freesh": "pnpm clean && pnpm init",
+    "db:test": "tsx supabase/tests/contents_trigger.ts",
     "init": "supabase start && pnpm db:setup && pnpm prisma:update",
     "clean": "scripts/speed/clean.sh",
     "prisma:update": "pnpx tsx libs/db/src/prisma/update-prisma.ts",
@@ -36,7 +37,7 @@
     "docker:all": "pnpx tsx ./ci/2.build-docker-containers.ts",
     "build:libs": "turbo run build --filter=@astronera/db  --filter=@ib/cache",
     "build:layers": "scripts/build-layers.sh",
-    "build:website": "turbo run build --filter=@astronera/website && node ./apps/website/.output/server/index.mjs",
+    "build:website": "turbo run build --filter=@astronera/website && NODE_ENV=development node ./apps/website/.output/server/index.mjs",
     "build:app": "turbo run build --filter=@astronera/app --filter=@astronera/auth",
     "build:auth": "turbo run build --filter=@astronera/auth",
     "build:admin": "turbo run build --filter=@astronera/admin",
