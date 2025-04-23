@@ -75,6 +75,8 @@ useHead({
     <PrimeDialog
       v-model:visible="isModalOpen"
       modal
+      :closable="true"
+      :dismissable-mask="true"
       header="Advertise with Us"
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
     >

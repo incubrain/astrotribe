@@ -127,6 +127,8 @@ const { conf } = useAnimation()
       <PrimeDialog
         v-model:visible="isModalOpen"
         modal
+        :closable="true"
+        :dismissable-mask="true"
         header="Join Our Team"
         :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
       >
