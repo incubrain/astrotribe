@@ -178,10 +178,9 @@ export default defineNuxtConfig({
     },
   },
 
-  workspaceDir: '../../',
-
   alias: {
     '#config': fileURLToPath(new URL('../../shared', import.meta.url)),
+    '#data': fileURLToPath(new URL('data', import.meta.url)),
   },
 
   build: {
