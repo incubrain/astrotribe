@@ -484,7 +484,7 @@ const processContent = computed(() => {
 })
 
 // Try AstronEra CTA click tracking
-const trackCtaClick = () => {
+const trackCTAClick = () => {
   try {
     trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
       action: 'try_astronera_cta',
@@ -686,19 +686,24 @@ const trackCtaClick = () => {
         :visibleOnce="{ opacity: 1, y: 0, transition: { delay: 0.5 } }"
         class="text-center"
       >
-        <PrimeButton
-          size="large"
-          :class="personaStyles.primaryButton"
-          class="transition-colors duration-500 shadow-lg px-8 py-3 text-lg"
-          @click="trackCtaClick"
-        >
-          <span>Try AstronEra Today</span>
-          <Icon
-            name="mdi:arrow-right"
-            class="ml-2"
-            size="20"
-          />
-        </PrimeButton>
+        <LoginWrapper>
+          <template #default="{ login }">
+            <PrimeButton
+              size="large"
+              :class="personaStyles.primaryButton"
+              class="mt-6"
+              @click="
+                () => {
+                  trackCTAClick('problem_solution'),
+                  login(),
+                  useRouter().push('/dashboard')
+                }
+              "
+            >
+              Get Started Now
+            </PrimeButton>
+          </template>
+        </LoginWrapper>
       </div>
     </div>
   </section>

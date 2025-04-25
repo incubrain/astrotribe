@@ -176,20 +176,6 @@ onMounted(() => {
                 </PrimeButton>
               </template>
             </LoginWrapper>
-
-            <PrimeButton
-              outlined
-              size="large"
-              class="border-gray-600 text-gray-300 hover:bg-gray-800/30"
-              @click="trackCTAClick('learn_more')"
-            >
-              <Icon
-                name="mdi:information-outline"
-                class="mr-2"
-                size="20"
-              />
-              Learn More
-            </PrimeButton>
           </div>
 
           <div
