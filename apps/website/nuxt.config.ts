@@ -12,6 +12,7 @@ const publicKeys = [
   'supabaseURL',
   'supabaseKey',
   'loginPath',
+  'registerPath',
   'cmsURL',
   'authURL',
   'appURL',
