@@ -149,3 +149,20 @@ export const PLANETS: Record<string, PlanetConfig> = {
     color: '#3953A4',
   },
 }
+
+export default function usePlanet() {
+  const getPlanet = (planetId: string, overrides: ConfigOverrides = {}) => {
+    const planet = PLANETS[planetId]
+    if (!planet) {
+      throw new Error(`Planet with ID ${planetId} not found`)
+    }
+
+    return {
+      ...planet,
+      size: overrides.size || DEFAULT_SIZE,
+      rotationPeriod: overrides.rotationPeriod || DEFAULT_ROTATION_PERIOD,
+    }
+  }
+
+  return { getPlanet, PLANETS }
+}

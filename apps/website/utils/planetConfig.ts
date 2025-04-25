@@ -1,4 +1,4 @@
-import type { ConfigOverrides, PlanetConfig } from '../data/planets'
+import type { ConfigOverrides, PlanetConfig } from '../composables/usePlanet'
 
 /**
  * Applies configuration overrides to the default planet configuration

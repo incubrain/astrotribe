@@ -4,7 +4,8 @@
 import { ref, onMounted, onBeforeUnmount, watchEffect } from 'vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { PLANETS, type PlanetConfig } from '../../data/planets'
+
+const { PLANETS } = usePlanet()
 
 // 2. Component Options
 defineOptions({
