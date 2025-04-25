@@ -62,9 +62,6 @@ export default defineNuxtConfig({
     },
   },
 
-  srcDir: '.',
-  workspaceDir: '../../',
-
   devServer: {
     host: 'localhost',
     port: process.env.NUXT_MULTI_APP ? devPortMap.admin : 3000,
