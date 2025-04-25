@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "baseUrl": ".",
-    "rootDir": "../../",
-    "paths": {
-      "#layers/*": ["../../layers/*"]
-    }
-  }
-}

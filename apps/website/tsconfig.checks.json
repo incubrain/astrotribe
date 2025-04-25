@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "incremental": true,
-    "tsBuildInfoFile": "./.ts-cache/checks.tsbuildinfo",
-    "composite": true,
-    "noEmit": true
-  },
-  "references": [{ "path": "./tsconfig.json" }]
-}
