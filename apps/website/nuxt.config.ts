@@ -36,6 +36,11 @@ const privateKeys = [
   'razorpaySecret',
 ] as const
 
+console.log('ENVAR_TEST', {
+  private: pick(env.private, [...privateKeys]),
+  public: pick(env.public, [...publicKeys]),
+})
+
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const rootDir = join(currentDir, '../..')
 
