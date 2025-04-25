@@ -107,10 +107,6 @@ const about = {
         "The Pune-based firm has gained global recognition for organizing stargazing events, workshops, and courses. Leveraging collaborations with diverse partners and age groups, AstronEra launched the world's first astronomy-dedicated e-learning platform, hosting over 15 courses by worldwide instructors.",
         'The platform at www.astronera.org is transitioning to an interactive community. This will allow the public to connect with astronomy professionals globally, fostering a community of shared knowledge and passion.',
       ],
-      images: [
-        { src: '/images/trusted/iau.png', alt: 'IAU', link: 'https://www.iau.org/' },
-        { src: '/images/trusted/oad.png', alt: 'OAD', link: 'https://astro4dev.org/' },
-      ],
     },
     {
       title: 'AstroTribe',
@@ -118,6 +114,10 @@ const about = {
         'The International Astronomical Union (IAU), a Paris-based NGO, is committed to enhancing astronomy through research, outreach, and development. It sponsors the AstroTribe project through its Office of Astronomy for Development (OAD).',
         'Established by AstronEra, AstroTribe aims to empower economically disadvantaged tribal students in India. The project links them into AstroGuides, providing them with learning and earning opportunities through a unique online platform.',
         "In 2022, AstroTribe successfully trained 15 students in Maharashtra, India. The project's ambition extends to training 15 more students in Himachal Pradesh, India in 2023. Through a rigorous selection process, AstroTribe identifies students aged 14-19 and provides them with knowledge, communication, and skill training. It also connects them with mentors and organizers globally for ongoing support and potential stargazing event opportunities.",
+      ],
+      images: [
+        { src: '/images/trusted/iau.png', alt: 'IAU', link: 'https://www.iau.org/' },
+        { src: '/images/trusted/oad.png', alt: 'OAD', link: 'https://astro4dev.org/' },
       ],
     },
   ],
