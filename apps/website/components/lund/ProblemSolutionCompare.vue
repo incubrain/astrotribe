@@ -6,7 +6,7 @@ import { useAnalytics } from '#imports'
 
 const { conf: motionConstants } = useAnimation()
 const { activePersona, personaStyles, isResearcher, isCommunicator, isEnthusiast } = usePersona()
-const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
+const { trackUserEngagement, trackCTAClick, UserEngagementMetric } = useAnalytics()
 
 // Active process tab
 const activeProcess = ref('default')
@@ -482,20 +482,6 @@ const processContent = computed(() => {
 
   return processMap[activeProcess.value] || processMap['default']
 })
-
-// Try AstronEra CTA click tracking
-const trackCTAClick = () => {
-  try {
-    trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
-      action: 'try_astronera_cta',
-      source: 'experience_difference',
-      persona: activePersona.value.name,
-      process: activeProcess.value,
-    })
-  } catch (error) {
-    console.error('Error tracking CTA click:', error)
-  }
-}
 </script>
 
 <template>
@@ -686,24 +672,25 @@ const trackCTAClick = () => {
         :visibleOnce="{ opacity: 1, y: 0, transition: { delay: 0.5 } }"
         class="text-center"
       >
-        <LoginWrapper>
-          <template #default="{ login }">
+        <AuthWrapper
+          mode="register"
+          redirect-url="/dashboard"
+        >
+          <template #default="{ authAction }">
             <PrimeButton
               size="large"
               :class="personaStyles.primaryButton"
               class="mt-6"
               @click="
                 () => {
-                  trackCTAClick('problem_solution'),
-                  login(),
-                  useRouter().push('/dashboard')
+                  trackCTAClick?.('problem_solution', activePersona.name), authAction()
                 }
               "
             >
               Get Started Now
             </PrimeButton>
           </template>
-        </LoginWrapper>
+        </AuthWrapper>
       </div>
     </div>
   </section>

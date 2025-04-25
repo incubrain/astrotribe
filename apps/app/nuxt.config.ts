@@ -13,7 +13,7 @@ const publicKeys = [
   'turnstileSiteKey',
   'supabaseURL',
   'supabaseKey',
-  'loginURL',
+  'loginPath',
   'authURL',
   'apiURL',
   'adminURL',

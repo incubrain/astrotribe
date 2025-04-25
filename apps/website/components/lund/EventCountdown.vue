@@ -258,15 +258,19 @@ const trackViewFullCalendar = () => {
 
       <!-- View Full Calendar button at the bottom -->
       <div class="text-center mt-12">
-        <LoginWrapper>
-          <template #default="{ login }">
+        <AuthWrapper
+          mode="login"
+          redirect-url="/calendar"
+        >
+          <template #default="{ authAction }">
             <PrimeButton
               size="large"
               :class="personaStyles.primaryButton"
               class="transition-colors duration-500 shadow-lg"
               @click="
                 () => {
-                  trackViewFullCalendar(), login(), useRouter().push('/calendar')
+                  trackViewFullCalendar()
+                  authAction()
                 }
               "
             >
@@ -278,7 +282,7 @@ const trackViewFullCalendar = () => {
               View Full Calendar
             </PrimeButton>
           </template>
-        </LoginWrapper>
+        </AuthWrapper>
       </div>
     </div>
   </section>

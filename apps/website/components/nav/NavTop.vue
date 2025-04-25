@@ -260,7 +260,7 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
 
             <NuxtLink
               v-ripple
-              :to="`${$config.public.authURL}/register`"
+              :to="`${$config.public.authURL}${$config.public.registerPath}`"
             >
               <PrimeButton
                 severity="primary"
@@ -395,7 +395,7 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
 
           <NuxtLink
             v-ripple
-            :to="`${$config.public.authURL}/register`"
+            :to="`${$config.public.authURL}${$config.public.registerPath}`"
             class="w-full"
           >
             <PrimeButton

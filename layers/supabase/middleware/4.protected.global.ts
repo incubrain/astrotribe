@@ -8,8 +8,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
   }
 
   const config = useRuntimeConfig()
-  const { loginURL, authURL } = config.public
-  console.log('USER_NOT_LOGGED_IN', authURL, loginURL)
+  const { loginPath, authURL } = config.public
+  console.log('USER_NOT_LOGGED_IN', authURL, loginPath)
 
   try {
     const user = useSupabaseUser()
@@ -27,13 +27,13 @@ export default defineNuxtRouteMiddleware((to, from) => {
       }
 
       // Redirect to login with the redirect parameter
-      return navigateTo(String(`${authURL}${loginURL}?redirect_to=${targetUrl}`), {
+      return navigateTo(String(`${authURL}${loginPath}?redirect_to=${targetUrl}`), {
         external: true,
       })
     }
   } catch (error: any) {
     console.error('Protected middleware error', { error, path: to.path })
     // Fallback to login if there's an error
-    return navigateTo(String(`${authURL}${loginURL}`), { external: true })
+    return navigateTo(String(`${authURL}${loginPath}`), { external: true })
   }
 })

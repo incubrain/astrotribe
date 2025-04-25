@@ -4,7 +4,7 @@ const userStore = useCurrentUser()
 const toast = useNotification()
 const supabase = useSupabaseClient()
 const { profile, isAdmin } = storeToRefs(userStore)
-const { adminURL, loginURL, authURL } = useRuntimeConfig().public
+const { adminURL, loginPath, authURL } = useRuntimeConfig().public
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
@@ -40,7 +40,7 @@ const signOut = async () => {
     console.error(error.message)
     toast.error({ summary: 'Could not log out', message: error.message })
   } else {
-    return navigateTo(String(`${authURL}${loginURL}`), { external: true })
+    return navigateTo(String(`${authURL}${loginPath}`), { external: true })
   }
 }
 

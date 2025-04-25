@@ -7,7 +7,7 @@ import { devPortMap } from './paths.config'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 // if (process.env.NODE_ENV !== 'production') {
-  config({ path: resolve(currentDir, '../.env') })
+config({ path: resolve(currentDir, '../.env') })
 // }
 
 const localHost = (port: string | number) => `http://localhost:${port}`
@@ -20,7 +20,8 @@ export const getSharedEnv = () => ({
     formbricksHost: process.env.NUXT_PUBLIC_FORMBRICKS_HOST,
     supabaseURL: process.env.NUXT_PUBLIC_SUPABASE_URL,
     supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_KEY,
-    loginURL: process.env.NUXT_PUBLIC_LOGIN_URL,
+    loginPath: process.env.NUXT_PUBLIC_LOGIN_PATH,
+    registerPath: process.env.NUXT_PUBLIC_REGISTER_PATH,
     cmsURL: process.env.NUXT_PUBLIC_CMS_URL ?? localHost(devPortMap.cms),
     authURL: process.env.NUXT_PUBLIC_AUTH_URL ?? localHost(devPortMap.auth),
     appURL: process.env.NUXT_PUBLIC_APP_URL ?? localHost(devPortMap.app),

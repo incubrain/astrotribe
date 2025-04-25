@@ -151,6 +151,14 @@ export function useAnalytics() {
     $posthog.capture(`Technical Performance - ${metric}`, { value, ...properties })
   }
 
+  const trackCTAClick = (ctaType: string, personaName: string) => {
+    trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
+      action: 'cta_click',
+      cta_type: ctaType,
+      persona: personaName,
+    })
+  }
+
   // Session tracking
   onMounted(() => {
     trackPageView()
@@ -175,6 +183,7 @@ export function useAnalytics() {
     trackJobMarketActivity,
     trackTechnicalPerformance,
     trackError,
+    trackCTAClick,
     // enums
     UserAcquisitionMetric,
     OnboardingMetric,
