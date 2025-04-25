@@ -97,7 +97,7 @@ const selectPersona = (persona: any) => {
   // Track persona selection
   trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
     action: 'select_persona',
-    persona_name: persona.name,
+    persona_name: persona.displayName,
   })
 }
 
@@ -144,7 +144,7 @@ const selectPersona = (persona: any) => {
               : 'text-gray-500 opacity-70'
           "
         >
-          {{ persona.name }}
+          {{ persona.displayName }}
         </div>
         <div
           v-if="persona.name === activePersona?.name"

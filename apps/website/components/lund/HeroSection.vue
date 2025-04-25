@@ -7,7 +7,7 @@ import { useAnalytics } from '#imports'
 const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
 
 // Get persona state from our composable
-const { activePersona, personaStyles } = usePersona()
+const { activePersona, personaStyles, getBackgroundStyle } = usePersona()
 
 // Dynamic headline based on persona
 const currentHeadline = computed(() => {
@@ -115,11 +115,11 @@ onMounted(() => {
     <!-- Background gradient accents -->
     <div
       class="absolute top-1/4 right-1/4 w-72 h-72 rounded-full blur-3xl transition-colors duration-700"
-      :class="`bg-${activePersona.color}-600/10`"
+      :style="getBackgroundStyle"
     ></div>
     <div
       class="absolute bottom-1/3 left-1/5 w-72 h-72 rounded-full blur-3xl transition-colors duration-700"
-      :class="`bg-${activePersona.color}-600/10`"
+      :style="getBackgroundStyle"
     ></div>
 
     <!-- Main Content -->

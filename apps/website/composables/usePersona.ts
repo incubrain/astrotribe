@@ -1,5 +1,6 @@
 // composables/usePersona.ts
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { usePersonaStore } from '~/stores/usePersonaStore'
 
 export function usePersona() {
@@ -18,7 +19,7 @@ export function usePersona() {
     { deep: false },
   )
 
-  // Initialize persona based on URL query param if present
+  // Initialize persona based on URL query param or cookie
   onMounted(() => {
     let initialPersonaSet = false
 
@@ -52,49 +53,60 @@ export function usePersona() {
     isMounted.value = true
   })
 
-  // Ensure activePersona.name is always lowercase for consistent usage
+  // Dynamic color configuration
+  const colorConfig = computed(() => {
+    const name = personaStore.activePersona?.name?.toLowerCase()
+    return (
+      {
+        'researcher': {
+          primary: 'blue-900',
+          secondary: 'blue-800',
+          accent: 'primary-600',
+          gradient: 'radial-gradient(circle at 70% 30%, rgba(29, 78, 216, 0.1), transparent 60%)',
+        },
+        'sci-commer': {
+          primary: 'emerald-900',
+          secondary: 'emerald-800',
+          accent: 'emerald-600',
+          gradient: 'radial-gradient(circle at 30% 40%, rgba(4, 120, 87, 0.1), transparent 60%)',
+        },
+        'enthusiast': {
+          primary: 'amber-900',
+          secondary: 'amber-800',
+          accent: 'amber-600',
+          gradient: 'radial-gradient(circle at 50% 20%, rgba(180, 83, 9, 0.1), transparent 60%)',
+        },
+      }[name] || {
+        primary: 'blue-900',
+        secondary: 'blue-800',
+        accent: 'primary-600',
+        gradient: 'radial-gradient(circle at 50% 50%, rgba(29, 78, 216, 0.1), transparent 60%)',
+      }
+    )
+  })
+
+  // Ensure activePersona.displayName is in Pascal Case
   const activePersona = computed(() => {
     const persona = personaStore.activePersona
-    if (persona && persona.name) {
-      persona.name = persona.name.toLowerCase()
-    }
     return persona
   })
 
   // Utility function for getting persona-based background styles
-  const getBackgroundStyle = computed(() => {
-    const color = personaStore.activePersona.color
-    const backgroundStyles: Record<string, { background: string; backgroundBlendMode: string }> = {
-      'researcher': {
-        background: 'radial-gradient(circle at 70% 30%, rgba(37, 99, 235, 0.15), transparent 60%)',
-        backgroundBlendMode: 'multiply',
-      },
-      'sci-commer': {
-        background: 'radial-gradient(circle at 30% 40%, rgba(5, 150, 105, 0.15), transparent 60%)',
-        backgroundBlendMode: 'multiply',
-      },
-      'enthusiast': {
-        background: 'radial-gradient(circle at 50% 20%, rgba(217, 119, 6, 0.15), transparent 60%)',
-        backgroundBlendMode: 'multiply',
-      },
-    }
-    const name = personaStore.activePersona?.name?.toLowerCase?.()
-    return backgroundStyles[name] || {}
-  })
+  const getBackgroundStyle = computed(() => ({
+    background: colorConfig.value.gradient,
+    backgroundBlendMode: 'multiply',
+  }))
 
   // Semantic utility functions for component styling
-  const personaStyles = computed(() => {
-    const color = personaStore.activePersona.color
-    return {
-      primaryButton: `bg-gradient-to-r from-${color}-600 to-${color === 'blue' ? 'primary' : color}-500 hover:from-${color}-500 hover:to-${color === 'blue' ? 'primary' : color}-400 text-white`,
-      secondaryButton: `border border-${color}-600/30 text-${color}-500 hover:bg-${color}-600/10`,
-      sectionHeading: `bg-gradient-to-r from-${color}-500 to-${color === 'blue' ? 'primary' : color}-600 bg-clip-text text-transparent`,
-      cardBorder: `border-${color}-800/30 hover:border-${color}-700/50`,
-      icon: `text-${color}-500`,
-      highlight: `bg-${color}-900/20 text-${color}-400`,
-      badge: `bg-${color}-900/30 text-${color}-400 border border-${color}-800/30`,
-    }
-  })
+  const personaStyles = computed(() => ({
+    primaryButton: `bg-gradient-to-r from-${colorConfig.value.primary} to-${colorConfig.value.accent} hover:from-${colorConfig.value.secondary} hover:to-${colorConfig.value.accent} text-white`,
+    secondaryButton: `border border-${colorConfig.value.secondary}/30 text-${colorConfig.value.accent} hover:bg-${colorConfig.value.primary}/10`,
+    sectionHeading: `bg-gradient-to-r from-${colorConfig.value.accent} to-${colorConfig.value.primary} bg-clip-text text-transparent`,
+    cardBorder: `border-${colorConfig.value.secondary}/30 hover:border-${colorConfig.value.accent}/50`,
+    icon: `text-${colorConfig.value.accent}`,
+    highlight: `bg-${colorConfig.value.primary}/20 text-${colorConfig.value.accent}`,
+    badge: `bg-${colorConfig.value.primary}/30 text-${colorConfig.value.accent} border border-${colorConfig.value.secondary}/30`,
+  }))
 
   // Persona type helpers
   const isResearcher = computed(() => activePersona.value?.name?.toLowerCase() === 'researcher')

@@ -54,7 +54,6 @@ export async function seedCompanies(pool: Pool, count: number) {
       is_government: faker.datatype.boolean(),
       failed_count: faker.number.int({ min: 0, max: 5 }),
       is_english: faker.datatype.boolean(),
-      scrape_rating: faker.number.int({ min: 0, max: 100 }),
       content_status: faker.helpers.arrayElement(['draft', 'published', 'archived']),
       keywords: JSON.stringify(keywordsArray), // Properly format as JSON string for JSONB
       job_url: faker.internet.url(),
