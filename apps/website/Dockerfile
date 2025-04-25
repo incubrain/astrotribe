@@ -59,7 +59,7 @@ RUN pnpm install --filter @astronera/website...
 RUN pnpm turbo run build --filter=@astronera/website
 
 # Prune dependencies for production
-WORKDIR /app/apps/website
+WORKDIR /app/apps/website/.output
 
 # Use the correct path to the entry point
 CMD ["node", ".output/server/index.mjs"]
