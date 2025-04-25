@@ -11,13 +11,15 @@ export interface Persona {
   features?: string[]
   ctaText?: string
   iconName?: string
+  displayName: string
 }
 
 export const usePersonaStore = defineStore('persona', () => {
   // State
   const personas = ref<Persona[]>([
     markRaw({
-      name: 'Researcher',
+      name: 'researcher',
+      displayName: 'Researcher',
       color: 'blue',
       description: 'For researchers and scientists looking to analyze astronomical data.',
       headline: 'Accelerate Research Discovery',
@@ -32,6 +34,7 @@ export const usePersonaStore = defineStore('persona', () => {
     }),
     markRaw({
       name: 'sci-commer',
+      displayName: 'Science Communicator',
       color: 'red',
       description: 'For science communicator and educators sharing astronomy insights.',
       headline: 'Amplify Scientific Storytelling',
@@ -45,7 +48,8 @@ export const usePersonaStore = defineStore('persona', () => {
       iconName: 'mdi:broadcast',
     }),
     markRaw({
-      name: 'Enthusiast',
+      name: 'enthusiast',
+      displayName: 'Enthusiast',
       color: 'amber',
       description: 'For astronomy enthusiasts wanting to explore the universe.',
       headline: 'Explore the Cosmos, Your Way',
@@ -64,7 +68,8 @@ export const usePersonaStore = defineStore('persona', () => {
   const activePersona = ref<Persona>(
     markRaw(
       personas.value[2] ?? {
-        name: 'Enthusiast',
+        name: 'enthusiast',
+        displayName: 'Enthusiast',
         description: 'For astronomy enthusiasts wanting to explore the universe.',
         color: 'amber',
         headline: 'Explore the Cosmos, Your Way',
