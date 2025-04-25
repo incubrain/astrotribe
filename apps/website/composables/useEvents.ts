@@ -50,13 +50,19 @@ export function useEvents() {
     }
   }
 
+  const randomFutureDate = (days: number): Date => {
+    const now = new Date()
+    const futureDate = new Date(now.getTime() + days * 24 * 60 * 60 * 1000)
+    return futureDate
+  }
+
   // Mock data for events - this would be replaced with API calls in the future
   const allEvents = ref<AstronomyEvent[]>([
     // Researcher events
     createEvent(
       1,
       'International Astronomy Conference',
-      new Date('2025-05-10T09:00:00'),
+      randomFutureDate(7),
       'Annual gathering of astronomy researchers from around the world discussing the latest discoveries and techniques in the field.',
       'conference',
       'blue',
@@ -67,7 +73,7 @@ export function useEvents() {
     createEvent(
       2,
       'NASA Data Workshop',
-      new Date('2025-04-05T10:00:00'),
+      randomFutureDate(20),
       'Learn how to use NASA open data for research and analysis with expert guidance from NASA scientists.',
       'workshop',
       'primary',
@@ -78,7 +84,7 @@ export function useEvents() {
     createEvent(
       3,
       'Astronomy Research Symposium',
-      new Date('2025-05-25T08:30:00'),
+      randomFutureDate(12),
       'Focused symposium on cutting-edge astronomy research methods and findings with opportunities for collaboration.',
       'symposium',
       'indigo',
@@ -91,7 +97,7 @@ export function useEvents() {
     createEvent(
       4,
       'Lyrid Meteor Shower',
-      new Date('2025-04-22T22:00:00'),
+      randomFutureDate(19),
       'Annual meteor shower active from April 16–25, perfect for public engagement and education.',
       'meteor',
       'red',
@@ -102,7 +108,7 @@ export function useEvents() {
     createEvent(
       5,
       'Science Communication Workshop',
-      new Date('2025-03-18T13:00:00'),
+      randomFutureDate(11),
       'Workshop focused on effectively communicating complex astronomy concepts to diverse audiences.',
       'workshop',
       'red',
@@ -113,11 +119,11 @@ export function useEvents() {
     createEvent(
       6,
       'Planetarium Directors Summit',
-      new Date('2025-06-12T09:00:00'),
+      randomFutureDate(4),
       'Annual gathering for planetarium professionals to share best practices in astronomy education.',
       'conference',
       'red',
-      'mdi:video-projector',
+      'lucide:projector',
       'sci-commer',
       480, // 8 hours
     ),
@@ -126,7 +132,7 @@ export function useEvents() {
     createEvent(
       7,
       'Partial Solar Eclipse',
-      new Date('2025-03-29T09:00:00'),
+      randomFutureDate(9),
       'Visible from North America and parts of Europe, this partial solar eclipse will be a spectacular event for sky watchers.',
       'eclipse',
       'amber',
@@ -137,7 +143,7 @@ export function useEvents() {
     createEvent(
       8,
       'SpaceX Starship Launch',
-      new Date('2025-03-15T14:30:00'),
+      randomFutureDate(2),
       'Next orbital test flight from Boca Chica, Texas, representing a major milestone in commercial spaceflight.',
       'launch',
       'amber',
@@ -148,7 +154,7 @@ export function useEvents() {
     createEvent(
       9,
       'Jupiter Opposition',
-      new Date('2025-07-10T23:00:00'),
+      randomFutureDate(40),
       'Jupiter at its closest approach to Earth, offering excellent viewing conditions for amateur astronomers.',
       'planetary',
       'amber',
@@ -178,19 +184,19 @@ export function useEvents() {
   })
 
   // Get initial event based on persona
-  const getInitialEvent = () => {
+  const getInitialEvent = (): AstronomyEvent => {
     const personaEvents = relevantEvents.value
 
-    if (personaEvents.length === 0) return allEvents.value[0]
+    if (personaEvents.length === 0) return allEvents.value[0]!
 
     const now = new Date().getTime()
     const futureEvents = personaEvents.filter((event) => event.date.getTime() > now)
 
     if (futureEvents.length > 0) {
-      return futureEvents[0]
+      return futureEvents[0]!
     }
 
-    return personaEvents[0]
+    return personaEvents[0]!
   }
 
   // Format date for display - using a consistent format that works on both server and client
