@@ -5,7 +5,6 @@ import { useAnimation } from '~/composables/useAnimation'
 import { useEvents } from '~/composables/useEvents'
 import { useAnalytics } from '#imports'
 import AddToCalendarButton from '~/components/AddToCalendarButton.vue'
-import SetReminderButton from '~/components/SetReminderButton.vue'
 import CountdownTimer from '~/components/CountdownTimer.vue'
 
 const { conf: motionConstants } = useAnimation()
@@ -252,20 +251,6 @@ const trackViewFullCalendar = () => {
                   />
                 </div>
               </div>
-
-              <!-- Reminder button -->
-              <SetReminderButton
-                :event-name="activeEvent.name"
-                :event-date="activeEvent.date"
-                :event-id="activeEvent.id"
-                variant="outlined"
-                @reminder-set="
-                  (data) => {
-                    // Handle reminder set event if needed
-                    console.log('Reminder set:', data)
-                  }
-                "
-              />
             </div>
           </div>
         </div>
@@ -273,19 +258,27 @@ const trackViewFullCalendar = () => {
 
       <!-- View Full Calendar button at the bottom -->
       <div class="text-center mt-12">
-        <PrimeButton
-          size="large"
-          :class="personaStyles.primaryButton"
-          class="transition-colors duration-500 shadow-lg"
-          @click="trackViewFullCalendar"
-        >
-          <Icon
-            name="mdi:calendar-month"
-            class="mr-2"
-            size="20"
-          />
-          View Full Calendar
-        </PrimeButton>
+        <LoginWrapper>
+          <template #default="{ login }">
+            <PrimeButton
+              size="large"
+              :class="personaStyles.primaryButton"
+              class="transition-colors duration-500 shadow-lg"
+              @click="
+                () => {
+                  trackViewFullCalendar(), login(), useRouter().push('/calendar')
+                }
+              "
+            >
+              <Icon
+                name="mdi:calendar-month"
+                class="mr-2"
+                size="20"
+              />
+              View Full Calendar
+            </PrimeButton>
+          </template>
+        </LoginWrapper>
       </div>
     </div>
   </section>

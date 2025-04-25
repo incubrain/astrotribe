@@ -349,19 +349,23 @@ const trackViewAllFeatures = () => {
 
       <!-- CTA -->
       <div class="text-center">
-        <PrimeButton
-          outlined
-          class="transition-colors duration-500"
-          :class="personaStyles.secondaryButton"
-          @click="trackViewAllFeatures"
-        >
-          Explore All Features
-          <Icon
-            name="mdi:chevron-right"
-            class="ml-2"
-            size="18"
-          />
-        </PrimeButton>
+        <LoginWrapper>
+          <template #default="{ login }">
+            <PrimeButton
+              :class="personaStyles.primaryButton"
+              class="mt-8"
+              @click="
+                () => {
+                  trackCTAClick('explore_features')
+                  login()
+                  useRouter().push('/features')
+                }
+              "
+            >
+              Discover All Tools
+            </PrimeButton>
+          </template>
+        </LoginWrapper>
       </div>
     </div>
   </section>

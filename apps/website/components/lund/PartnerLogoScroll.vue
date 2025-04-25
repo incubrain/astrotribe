@@ -494,18 +494,22 @@ const getUserTypeBadgeClass = (userType) => {
         <p class="mb-6 text-lg text-gray-300">
           Ready to transform your astronomy experience with AI?
         </p>
-        <button
-          class="px-6 py-3 rounded-lg transition-all duration-500 text-lg inline-flex items-center text-white"
-          :class="personaStyles.primaryButton"
-          @click="trackCTAClick"
-        >
-          Get Started Today
-          <Icon
-            name="mdi:arrow-right"
-            class="ml-2"
-            size="20"
-          />
-        </button>
+        <LoginWrapper>
+          <template #default="{ login }">
+            <PrimeButton
+              size="large"
+              :class="personaStyles.primaryButton"
+              class="mt-6"
+              @click="
+                () => {
+                  trackCTAClick(), login(), useRouter().push('/onboarding')
+                }
+              "
+            >
+              Get Started
+            </PrimeButton>
+          </template>
+        </LoginWrapper>
       </div>
     </div>
   </section>

@@ -254,21 +254,22 @@ onMounted(() => {
             }"
             class="flex flex-col sm:flex-row gap-4"
           >
-            <PrimeButton
-              size="large"
-              class="text-lg px-8 shadow-lg shadow-primary-900/30 border-none transition-all duration-500"
-              :class="personaStyles.primaryButton"
-              @click="trackCTAClick('explore_free')"
-              @mouseenter="isHovered = true"
-              @mouseleave="isHovered = false"
-            >
-              {{ ctaText }}
-              <Icon
-                name="mdi:rocket-launch"
-                class="ml-2"
-                size="20"
-              />
-            </PrimeButton>
+            <LoginWrapper>
+              <template #default="{ login }">
+                <PrimeButton
+                  size="large"
+                  :class="personaStyles.primaryButton"
+                  class="mt-6"
+                  @click="
+                    () => {
+                      trackCTAClick('final_cta'), login(), useRouter().push('/onboarding')
+                    }
+                  "
+                >
+                  Start Your Journey
+                </PrimeButton>
+              </template>
+            </LoginWrapper>
           </div>
           <div class="mt-16 transition-colors duration-500">
             <span
