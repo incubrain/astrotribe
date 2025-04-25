@@ -62,6 +62,6 @@ RUN pnpm turbo run build --filter=@astronera/website
 WORKDIR /app/apps/website/.output
 
 # Use the correct path to the entry point
-CMD ["node", ".output/server/index.mjs"]
+CMD ["node", "server/index.mjs"]
 
 # docker build \   --build-arg NUXT_PUBLIC_POSTHOG_URL=$NUXT_PUBLIC_POSTHOG_URL \   --build-arg NUXT_PUBLIC_POSTHOG_KEY=$NUXT_PUBLIC_POSTHOG_KEY \   --build-arg NUXT_PUBLIC_LOG_LEVEL=$NUXT_PUBLIC_LOG_LEVEL \   --build-arg RAILWAY_DOCKERFILE_PATH=$RAILWAY_DOCKERFILE_PATH \   --build-arg NUXT_PUBLIC_LOGIN_URL=$NUXT_PUBLIC_LOGIN_URL \   --build-arg NUXT_PUBLIC_STRAPI_URL=$NUXT_PUBLIC_STRAPI_URL \   --build-arg NUXT_STRAPI_URL=$NUXT_STRAPI_URL \   --build-arg NODE_ENV=$NODE_ENV \   --build-arg NUXT_PUBLIC_APP_URL=$NUXT_PUBLIC_APP_URL \   --build-arg NUXT_PUBLIC_SUPABASE_KEY=$NUXT_PUBLIC_SUPABASE_KEY \   --build-arg NUXT_PUBLIC_SUPABASE_URL=$NUXT_PUBLIC_SUPABASE_URL \   -t website \   -f apps/website/Dockerfile
