@@ -85,124 +85,100 @@ const testimonials = [
 const allPartners = [
   {
     name: 'NASA',
-    image: '/images/partners/nasa-logo.png',
+    image: 'logos/nasa_logo.svg',
     type: 'agency',
     personas: ['researcher', 'sci-commer', 'enthusiast'],
   },
   {
     name: 'ESA',
-    image: '/images/partners/esa-logo.png',
+    image: 'logos/esa_logo.png',
     type: 'agency',
     personas: ['researcher', 'sci-commer', 'enthusiast'],
   },
   {
     name: 'ISRO',
-    image: '/images/partners/isro-logo.png',
+    image: 'logos/isro_logo.png',
     type: 'agency',
     personas: ['researcher', 'sci-commer', 'enthusiast'],
   },
   {
     name: 'ArXiv',
-    image: '/images/partners/arxiv-logo.png',
+    image: 'logos/arxiv_logo.png',
     type: 'data',
     personas: ['researcher'],
   },
-  { name: 'MAST', image: '/images/partners/mast-logo.png', type: 'data', personas: ['researcher'] },
-  {
-    name: 'JWST',
-    image: '/images/partners/jwst-logo.png',
-    type: 'data',
-    personas: ['researcher', 'sci-commer', 'enthusiast'],
-  },
   {
     name: 'Nature',
-    image: '/images/partners/nature-logo.png',
+    image: 'logos/nature_logo.png',
     type: 'publisher',
     personas: ['researcher', 'sci-commer'],
   },
   {
     name: 'Science',
-    image: '/images/partners/science-logo.png',
+    image: 'logos/science_logo.png',
     type: 'publisher',
     personas: ['researcher', 'sci-commer'],
   },
   {
     name: 'AAAS',
-    image: '/images/partners/aaas-logo.png',
+    image: 'logos/aaas_logo.png',
     type: 'publisher',
     personas: ['researcher', 'sci-commer'],
   },
   {
     name: 'Google Scholar',
-    image: '/images/partners/google-scholar-logo.png',
+    image: 'logos/google_scholar_logo.png',
     type: 'data',
     personas: ['researcher'],
   },
   {
     name: 'IEEE',
-    image: '/images/partners/ieee-logo.png',
+    image: 'logos/ieee_logo.png',
     type: 'publisher',
     personas: ['researcher'],
   },
   {
     name: 'JAXA',
-    image: '/images/partners/jaxa-logo.png',
+    image: 'logos/jaxa_logo.png',
     type: 'agency',
     personas: ['researcher', 'sci-commer', 'enthusiast'],
   },
   // Additional sources
   {
-    name: 'AstronomyToday',
-    image: '/images/partners/astronomy-today.png',
-    type: 'media',
-    personas: ['sci-commer', 'enthusiast'],
-  },
-  {
     name: 'Space.com',
-    image: '/images/partners/space-com.png',
+    image: 'logos/space_com_logo.png',
     type: 'media',
     personas: ['sci-commer', 'enthusiast'],
   },
   {
     name: 'SETI Institute',
-    image: '/images/partners/seti.png',
+    image: 'logos/seti_logo.png',
     type: 'agency',
     personas: ['researcher', 'enthusiast'],
-  },
-  {
-    name: 'Astronomy Magazine',
-    image: '/images/partners/astronomy-mag.png',
-    type: 'media',
-    personas: ['enthusiast', 'sci-commer'],
-  },
-  {
-    name: 'Universe Today',
-    image: '/images/partners/universe-today.png',
-    type: 'media',
-    personas: ['enthusiast', 'sci-commer'],
   },
 ]
 
 // Filter sources based on the active persona
 const filteredPartners = computed(() => {
   const personaName = activePersona.value.name.toLowerCase()
-  return allPartners.filter((partner) => partner.personas.includes(personaName))
+  const filtered = allPartners.filter((partner) => partner.personas.includes(personaName))
+  return [...filtered, ...filtered]
 })
 
 // AI technology partners - don't filter these
 const aiTechnologies = [
-  { name: 'Claude AI', image: '/images/partners/claude-ai-icon.png' },
-  { name: 'Google Gemini', image: '/images/partners/google-gemini-icon.png' },
-  { name: 'Grok', image: '/images/partners/grok-icon.png' },
-  { name: 'Hugging Face', image: '/images/partners/huggingface-icon.png' },
-  { name: 'Mistral AI', image: '/images/partners/mistral-ai-icon.png' },
-  { name: 'OpenAI', image: '/images/partners/openai-icon.png' },
-  { name: 'Claude AI', image: '/images/partners/claude-ai-icon.png' },
-  { name: 'Google Gemini', image: '/images/partners/google-gemini-icon.png' },
-  { name: 'Grok', image: '/images/partners/grok-icon.png' },
-  { name: 'Hugging Face', image: '/images/partners/huggingface-icon.png' },
-  { name: 'Mistral AI', image: '/images/partners/mistral-ai-icon.png' },
-  { name: 'OpenAI', image: '/images/partners/openai-icon.png' },
+  { name: 'Claude AI', image: 'partners/claude_ai_icon.png' },
+  { name: 'Google Gemini', image: 'partners/google_gemini_icon.png' },
+  { name: 'Grok', image: 'partners/grok_icon.png' },
+  { name: 'Hugging Face', image: 'partners/huggingface_icon.png' },
+  { name: 'Mistral AI', image: 'partners/mistral_ai_icon.png' },
+  { name: 'OpenAI', image: 'partners/openai_icon.png' },
+  { name: 'Claude AI', image: 'partners/claude_ai_icon.png' },
+  { name: 'Google Gemini', image: 'partners/google_gemini_icon.png' },
+  { name: 'Grok', image: 'partners/grok_icon.png' },
+  { name: 'Hugging Face', image: 'partners/huggingface_icon.png' },
+  { name: 'Mistral AI', image: 'partners/mistral_ai_icon.png' },
+  { name: 'OpenAI', image: 'partners/openai_icon.png' },
 ]
 
 // Set up testimonials carousel with auto-scroll (fastest)
@@ -404,7 +380,7 @@ const getUserTypeBadgeClass = (userType) => {
                 <div
                   class="tech-logo bg-slate-900/60 border border-slate-800/50 rounded-lg p-4 flex flex-col items-center transition-all duration-300 hover:border-slate-700/70"
                 >
-                  <img
+                  <NuxtImg
                     :src="tech.image"
                     :alt="tech.name"
                     class="h-16 w-auto mb-2 grayscale hover:grayscale-0 transition-all duration-300"
@@ -433,7 +409,7 @@ const getUserTypeBadgeClass = (userType) => {
                 <div
                   class="partner-logo bg-slate-900/60 border border-slate-800/50 rounded-lg p-4 flex flex-col items-center transition-all duration-300 hover:border-slate-700/70"
                 >
-                  <img
+                  <NuxtImg
                     :src="partner.image"
                     :alt="partner.name"
                     class="h-12 w-auto mb-2 grayscale hover:grayscale-0 transition-all duration-300"
