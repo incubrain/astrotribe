@@ -3,7 +3,6 @@
 // 1. Imports
 import { ref, computed, onMounted } from 'vue'
 import type { Planet } from '../types/solarsystem'
-import { PLANETS } from '../data/planets'
 
 // 2. Component Options
 defineOptions({
