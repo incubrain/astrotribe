@@ -129,11 +129,11 @@ const trackViewFullCalendar = () => {
           <div
             v-for="event in relevantEvents"
             :key="`rec-${event.id}`"
-            class="bg-slate-900/40 backdrop-blur-sm rounded-lg border border-slate-800/50 p-5 transition-all duration-300 cursor-pointer hover:transform hover:scale-[1.02]"
             :class="[
+              `p-4 transition-all duration-300 cursor-pointer hover:transform hover:scale-[1.02] hover:border-${activePersona.color}-800/30`,
               activeEvent.id === event.id
-                ? `border-${activePersona.color}-700/50 shadow-lg shadow-${activePersona.color}-900/20`
-                : `hover:border-${activePersona.color}-800/30`,
+                ? `bg-${activePersona.color}-700/50 shadow-[0_0_12px_4px_theme('colors.${activePersona.color}.500')]`
+                : `bg-slate-900/40 backdrop-blur-sm rounded-lg border border-slate-800/50 p-5`,
             ]"
             @click="selectEvent(event.id)"
           >
