@@ -254,22 +254,26 @@ onMounted(() => {
             }"
             class="flex flex-col sm:flex-row gap-4"
           >
-            <LoginWrapper>
-              <template #default="{ login }">
+            <AuthWrapper
+              mode="register"
+              redirect-url="/onboarding"
+            >
+              <template #default="{ authAction }">
                 <PrimeButton
                   size="large"
                   :class="personaStyles.primaryButton"
                   class="mt-6"
                   @click="
                     () => {
-                      trackCTAClick('final_cta'), login(), useRouter().push('/onboarding')
+                      trackCTAClick('final_cta')
+                      authAction()
                     }
                   "
                 >
                   Start Your Journey
                 </PrimeButton>
               </template>
-            </LoginWrapper>
+            </AuthWrapper>
           </div>
           <div class="mt-16 transition-colors duration-500">
             <span

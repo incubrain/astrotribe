@@ -11,7 +11,7 @@ const env = getSharedEnv()
 const publicKeys = [
   'supabaseURL',
   'supabaseKey',
-  'loginURL',
+  'loginPath',
   'cmsURL',
   'authURL',
   'appURL',

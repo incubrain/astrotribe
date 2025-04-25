@@ -9,13 +9,13 @@ const p = defineProps({
 })
 
 const filterBy = computed(() =>
-  p.newsCategory === 'all' ?
-    null :
-    {
-      columnName: 'source',
-      operator: 'eq',
-      value: p.newsCategory,
-    },
+  p.newsCategory === 'all'
+    ? null
+    : {
+        columnName: 'source',
+        operator: 'eq',
+        value: p.newsCategory,
+      },
 )
 
 const { data: spaceNews, error } = await useAsyncData(
@@ -55,7 +55,7 @@ if (error.value) {
     </div>
     <NuxtLink
       class="hover:text-primary-500 flex w-full items-center justify-end gap-2 pt-20"
-      to="/register"
+      :to="`${$config.public.registerPath}`"
     >
       <h2 class="decoration-primary-500 text-end text-3xl font-bold underline underline-offset-8">
         JOIN FREE FOR MORE

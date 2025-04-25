@@ -49,7 +49,7 @@ onMounted(() => {
   })
 })
 
-const { loginURL, authURL } = useRuntimeConfig().public
+const { loginPath, authURL } = useRuntimeConfig().public
 </script>
 
 <template>
@@ -110,7 +110,7 @@ const { loginURL, authURL } = useRuntimeConfig().public
     </LandingGlass>
     <div class="mt-6 flex justify-center">
       <NuxtLink
-        :to="String(`${authURL}${loginURL}`)"
+        :to="String(`${authURL}${loginPath}`)"
         external
         class="relative group"
       >

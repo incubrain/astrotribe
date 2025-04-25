@@ -65,12 +65,12 @@ onUnmounted(() => {
   }
 })
 
-const { loginURL, authURL } = useRuntimeConfig().public
+const { loginPath, authURL } = useRuntimeConfig().public
 
-const fullLoginURL = computed(() => {
-  if (!authURL || !loginURL) return null
+const fullLoginPath = computed(() => {
+  if (!authURL || !loginPath) return null
   try {
-    return new URL(loginURL, authURL).toString()
+    return new URL(loginPath, authURL).toString()
   } catch {
     return null
   }
@@ -159,8 +159,8 @@ const fullLoginURL = computed(() => {
           <!-- CTA section -->
           <div class="flex flex sm:flex-row justify-center gap-4 pt-8">
             <NuxtLink
-              v-if="fullLoginURL"
-              :to="fullLoginURL"
+              v-if="fullLoginPath"
+              :to="fullLoginPath"
               external
             >
               <PrimeButton

@@ -5,7 +5,7 @@ import AutoScroll from 'embla-carousel-auto-scroll'
 import { usePersona } from '~/composables/usePersona'
 import { useAnalytics, UserEngagementMetric } from '#imports'
 
-const { trackUserEngagement } = useAnalytics()
+const { trackUserEngagement, trackCTAClick } = useAnalytics()
 
 // Get persona state from our composable
 const { activePersona, personaStyles, isResearcher, isCommunicator, isEnthusiast } = usePersona()
@@ -233,18 +233,6 @@ const trackElementView = (element, type) => {
     })
   } catch (error) {
     console.error('Error tracking element view:', error)
-  }
-}
-
-// Track CTA click
-const trackCTAClick = () => {
-  try {
-    trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
-      action: 'social_proof_cta_click',
-      persona: activePersona.value.name,
-    })
-  } catch (error) {
-    console.error('Error tracking CTA click:', error)
   }
 }
 
@@ -494,22 +482,25 @@ const getUserTypeBadgeClass = (userType) => {
         <p class="mb-6 text-lg text-gray-300">
           Ready to transform your astronomy experience with AI?
         </p>
-        <LoginWrapper>
-          <template #default="{ login }">
+        <AuthWrapper
+          mode="register"
+          redirect-url="/onboarding"
+        >
+          <template #default="{ authAction }">
             <PrimeButton
               size="large"
               :class="personaStyles.primaryButton"
               class="mt-6"
               @click="
                 () => {
-                  trackCTAClick(), login(), useRouter().push('/onboarding')
+                  trackCTAClick?.('register', activePersona.name), authAction()
                 }
               "
             >
               Get Started
             </PrimeButton>
           </template>
-        </LoginWrapper>
+        </AuthWrapper>
       </div>
     </div>
   </section>

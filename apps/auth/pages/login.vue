@@ -28,7 +28,7 @@ definePageMeta({
       subtitle: 'Don\'t have an account?',
       label: 'Sign up',
     }"
-    help-url="/register"
+    :help-url="`${$config.public.registerPath}`"
   >
     <template #content>
       <div class="w-full flex flex-col gap-4">

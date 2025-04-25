@@ -4,7 +4,7 @@ import { usePersona } from '~/composables/usePersona'
 import { useAnimation } from '~/composables/useAnimation'
 import { useAnalytics } from '#imports'
 
-const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
+const { trackUserEngagement, trackCTAClick, UserEngagementMetric } = useAnalytics()
 
 // Get persona state from our composable
 const { activePersona, personaStyles, getBackgroundStyle } = usePersona()
@@ -14,15 +14,6 @@ const currentHeadline = computed(() => {
   // Add optional chaining or default value for safety
   return activePersona.value?.headline || 'Explore the Cosmos'
 })
-
-// Track CTA click
-const trackCTAClick = (ctaType: string) => {
-  trackUserEngagement(UserEngagementMetric.ActionsPerSession, {
-    action: 'click_cta',
-    cta_type: ctaType,
-    persona: activePersona.value?.name || 'unknown',
-  })
-}
 
 // Particle system for background atmosphere
 const stars = ref<
@@ -160,12 +151,19 @@ onMounted(() => {
             :visibleOnce="{ opacity: 1, y: 0, transition: { delay: 0.5 } }"
             class="flex flex-wrap gap-4 mb-12"
           >
-            <LoginWrapper>
-              <template #default="{ login }">
+            <AuthWrapper
+              mode="register"
+              redirect-url="/onboarding"
+            >
+              <template #default="{ authAction }">
                 <PrimeButton
                   size="large"
                   :class="personaStyles.primaryButton"
-                  @click="(trackCTAClick('get_started'), login())"
+                  @click="
+                    () => {
+                      trackCTAClick?.('get_started', activePersona.name ?? 'undefined'), authAction()
+                    }
+                  "
                 >
                   <Icon
                     name="mdi:rocket-launch"
@@ -175,7 +173,7 @@ onMounted(() => {
                   Get Started Free
                 </PrimeButton>
               </template>
-            </LoginWrapper>
+            </AuthWrapper>
           </div>
 
           <div

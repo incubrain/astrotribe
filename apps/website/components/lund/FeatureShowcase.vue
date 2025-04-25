@@ -5,7 +5,7 @@ import { useAnimation } from '~/composables/useAnimation'
 import { useAnalytics } from '#imports'
 
 const { conf: motionConstants } = useAnimation()
-const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
+const { trackUserEngagement, UserEngagementMetric, trackCTAClick } = useAnalytics()
 
 // Get persona state from our composable
 const { activePersona, personaStyles, isResearcher, isCommunicator, isEnthusiast } = usePersona()
@@ -349,23 +349,24 @@ const trackViewAllFeatures = () => {
 
       <!-- CTA -->
       <div class="text-center">
-        <LoginWrapper>
-          <template #default="{ login }">
+        <AuthWrapper
+          mode="login"
+          redirect-url="/features"
+        >
+          <template #default="{ authAction }">
             <PrimeButton
               :class="personaStyles.primaryButton"
               class="mt-8"
               @click="
                 () => {
-                  trackCTAClick('explore_features')
-                  login()
-                  useRouter().push('/features')
+                  trackCTAClick?.('explore_features', activePersona.name), authAction()
                 }
               "
             >
               Discover All Tools
             </PrimeButton>
           </template>
-        </LoginWrapper>
+        </AuthWrapper>
       </div>
     </div>
   </section>

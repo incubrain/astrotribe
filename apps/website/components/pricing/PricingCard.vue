@@ -147,20 +147,32 @@ const isDisabledFeature = (feature: string) => {
         </div>
 
         <!-- CTA Button -->
-        <PrimeButton
-          class="w-full border-none transition-colors duration-500"
-          :class="[
-            popular
-              ? personaStyles.primaryButton
-              : comingSoon
-                ? `bg-${activePersona.color}-600/80 hover:bg-${activePersona.color}-600/90`
-                : 'bg-slate-700 hover:bg-slate-600',
-          ]"
-          :disabled="buttonDisabled || comingSoon"
-          @click="handleButtonClick"
+        <AuthWrapper
+          mode="register"
+          :query-params="{ plan: title.toLowerCase() }"
         >
-          {{ buttonText }}
-        </PrimeButton>
+          <template #default="{ authAction }">
+            <PrimeButton
+              class="w-full border-none transition-colors duration-500"
+              :class="[
+                popular
+                  ? personaStyles.primaryButton
+                  : comingSoon
+                    ? `bg-${activePersona.color}-600/80 hover:bg-${activePersona.color}-600/90`
+                    : 'bg-slate-700 hover:bg-slate-600',
+              ]"
+              :disabled="buttonDisabled || comingSoon"
+              @click="
+                () => {
+                  handleButtonClick()
+                  authAction()
+                }
+              "
+            >
+              {{ buttonText }}
+            </PrimeButton>
+          </template>
+        </AuthWrapper>
       </div>
     </div>
   </div>
