@@ -436,7 +436,7 @@ onMounted(async () => {
                 <p class="text-sm text-gray-300">
                   Still have questions?
                   <a
-                    href="#"
+                    href="/contact"
                     class="font-medium hover:underline transition-colors duration-500"
                     :class="`text-${activePersona.color}-400`"
                     >Contact our team</a
