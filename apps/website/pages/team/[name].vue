@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import team from '../../data/home/team.json'
+import team from '@/assets/data/team.json'
 
 definePageMeta({
   name: 'TeamIndividual',

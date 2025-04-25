@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Prachi Shevgaonkar",
+    "role": "Founder",
+    "institution": "Cool The Globe",
+    "image": "/images/testimonials/prachi-shevgaonkar.jpg",
+    "quote": "Astronomy has always seemed beyond our reach. Not just because it studies the universe beyond the Earth's atmosphere, but because there are very few avenues for the ordinary citizens to study it. AstronEra is changing that. AstronEra is doing magical work. Scientifically. It is making Astronomy accessible, enjoyable and within reach for citizens around the world.",
+    "outcome": "Made astronomy accessible to citizens",
+    "userType": "enthusiast"
+  },
+  {
+    "id": 2,
+    "name": "Dr. Raghunath Mashelkar",
+    "role": "Renowned Scientist",
+    "institution": "",
+    "image": "/images/testimonials/dr-raghunath-mashelkar.jpg",
+    "quote": "Such a remarkable initiative of digitising astronomy by Shweta Kulkarni, whom I admire enormously. I applaud her very noble objective to create a scientific temper. This is precisely what India needs.",
+    "outcome": "Promoted scientific temper through astronomy",
+    "userType": "industry"
+  },
+  {
+    "id": 3,
+    "name": "Dr. Jayant Narlikar",
+    "role": "Astrophysicist",
+    "institution": "",
+    "image": "/images/testimonials/dr-jayant-narlika.jpg",
+    "quote": "This is an effort of understanding the significance of astronomy enjoy this search. Let me hope that you will feel much more friendly with astronomy through this initiative.",
+    "outcome": "Encouraged public understanding of astronomy",
+    "userType": "researcher"
+  },
+  {
+    "id": 4,
+    "name": "Kevin Govender",
+    "role": "Director",
+    "institution": "Office of Astronomy Development, IAU",
+    "image": "/images/testimonials/kevin-govender.jpg",
+    "quote": "The IAU OAD is proud to support the Astrotribe project. By training and supporting disadvantaged tribal students, they are not only improving the students' educational outcomes but also setting them up with livelihood opportunities, boosting their soft skills, and helping them develop as individuals.",
+    "outcome": "Supported disadvantaged students through astronomy",
+    "userType": "industry"
+  },
+  {
+    "id": 5,
+    "name": "Sarang Sathaye",
+    "role": "Director",
+    "institution": "BhaDiPa",
+    "image": "/images/testimonials/sarang-sathaye.jpg",
+    "quote": "AstronEra and Shweta came in my life during a tough phase of my life. When there is darkness you need light. What a better way to find the light  than on a stary night. This is the feeling I got when I did my first ever star gazing with Shweta and AstronEra. Her spirit and passion to see beyond  our world, to explore the space is so contagious. Stay curious!",
+    "outcome": "Inspired curiosity through stargazing",
+    "userType": "enthusiast"
+  },
+  {
+    "id": 6,
+    "name": "Kasturi Sukhapure",
+    "role": "Engineer and Policy Researcher",
+    "institution": "MSc in Climate Change Policy",
+    "image": "/images/testimonials/kasturi-sukhapure.jpg",
+    "quote": "Shweta and her team at Astron Era are doing remarkable work spreading the joys of astronomy in India. Everyone should experience the wonders of the universe - not least so we protect our planet and all life on it.",
+    "outcome": "Promoted environmental awareness through astronomy",
+    "userType": "enthusiast"
+  }
+]

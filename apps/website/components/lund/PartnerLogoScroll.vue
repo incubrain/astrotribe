@@ -2,6 +2,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import useEmblaCarousel from 'embla-carousel-vue'
 import AutoScroll from 'embla-carousel-auto-scroll'
+import testimonials from '@/assets/data/testimonials.json'
 import { usePersona } from '~/composables/usePersona'
 import { useAnalytics, UserEngagementMetric } from '#imports'
 
@@ -10,77 +11,6 @@ const { trackUserEngagement, trackCTAClick } = useAnalytics()
 // Get persona state from our composable
 const { activePersona, personaStyles, isResearcher, isCommunicator, isEnthusiast } = usePersona()
 
-// Personal testimonials - do NOT filter these based on persona
-const testimonials = [
-  {
-    id: 1,
-    name: 'Dr. Rachel Thompson',
-    role: 'Astronomy PhD Candidate',
-    institution: 'MIT Department of Physics',
-    image: '/images/hero-image.jpg',
-    quote:
-      "AstronEra has reduced my literature review time by 70%. I can explore research gaps and find relevant papers in minutes instead of days. It's become an essential tool for my doctoral work.",
-    outcome: 'Reduced research time by 70%',
-    userType: 'researcher',
-  },
-  {
-    id: 2,
-    name: 'Prof. Michael Chen',
-    role: 'Astronomy Professor',
-    institution: 'University of California',
-    image: '/images/hero-image.jpg',
-    quote:
-      'I recommend AstronEra to all my graduate students. The ability to contextualize queries with specific papers has transformed how we approach new research questions and hypothesis generation.',
-    outcome: 'Streamlined hypothesis generation',
-    userType: 'researcher',
-  },
-  {
-    id: 3,
-    name: 'Samantha Wright',
-    role: 'Space Enthusiast',
-    institution: 'Amateur Astronomy Club',
-    image: '/images/hero-image.jpg',
-    quote:
-      'As someone passionate about astronomy but without formal training, AstronEra helps me understand complex concepts by explaining them in accessible ways while still linking to the scientific sources.',
-    outcome: 'Made complex astronomy accessible',
-    userType: 'enthusiast',
-  },
-  {
-    id: 4,
-    name: 'Alex Rodriguez',
-    role: 'Research Lead',
-    institution: 'NewSpace Technologies',
-    image: '/images/hero-image.jpg',
-    quote:
-      'Our R&D team uses AstronEra daily to stay current on industry developments and identify potential collaboration opportunities. The knowledge clustering feature has been particularly valuable for our innovation processes.',
-    outcome: 'Accelerated innovation process',
-    userType: 'industry',
-  },
-  {
-    id: 5,
-    name: 'Maria Gonzalez',
-    role: 'Science Journalist',
-    institution: 'AstroNews Network',
-    image: '/images/hero-image.jpg',
-    quote:
-      'AstronEra helps me fact-check astronomy news quickly with reliable sources. The Press Kit Generator has revolutionized how I create accurate, accessible articles about complex space discoveries.',
-    outcome: 'Improved reporting accuracy',
-    userType: 'sci-commer',
-  },
-  {
-    id: 6,
-    name: 'Dr. Priya Sharma',
-    role: 'Astrophysics Researcher',
-    institution: 'TIFR, Mumbai',
-    image: '/images/hero-image.jpg',
-    quote:
-      'The platform helped me connect with international researchers and access global resources that were previously difficult to find. AstronEra bridges geography and makes astronomy truly global.',
-    outcome: 'Enhanced international collaboration',
-    userType: 'researcher',
-  },
-]
-
-// Partner organizations and data sources - these will be filtered based on persona
 // Main set of partners
 const allPartners = [
   {
@@ -233,17 +163,6 @@ onMounted(() => {
   if (partnersApi.value) partnersApi.value.reInit()
 })
 
-// Define user type colors mapping
-const getUserTypeColor = (userType) => {
-  const colorMap = {
-    'researcher': 'from-blue-600 to-primary-600',
-    'sci-commer': 'from-red-600 to-rose-600',
-    'enthusiast': 'from-amber-600 to-orange-600',
-    'industry': 'from-indigo-600 to-purple-600',
-  }
-  return colorMap[userType] || 'from-gray-600 to-gray-500'
-}
-
 // Get a badge class based on user type
 const getUserTypeBadgeClass = (userType) => {
   const classMap = {
@@ -310,28 +229,40 @@ const getUserTypeBadgeClass = (userType) => {
                     class="absolute top-3 right-3 px-2 py-0.5 rounded-full text-xs border flex items-center gap-1"
                     :class="getUserTypeBadgeClass(testimonial.userType)"
                   >
-                    <span v-if="testimonial.userType === 'researcher'">
+                    <span
+                      v-if="testimonial.userType === 'researcher'"
+                      class="flex items-center"
+                    >
                       <Icon
                         name="mdi:telescope"
                         size="12"
                       />
                       <span class="ml-1">Researcher</span>
                     </span>
-                    <span v-else-if="testimonial.userType === 'sci-commer'">
+                    <span
+                      v-else-if="testimonial.userType === 'sci-commer'"
+                      class="flex items-center"
+                    >
                       <Icon
                         name="mdi:broadcast"
                         size="12"
                       />
                       <span class="ml-1">Science Comm</span>
                     </span>
-                    <span v-else-if="testimonial.userType === 'enthusiast'">
+                    <span
+                      v-else-if="testimonial.userType === 'enthusiast'"
+                      class="flex items-center"
+                    >
                       <Icon
                         name="mdi:star"
                         size="12"
                       />
                       <span class="ml-1">Enthusiast</span>
                     </span>
-                    <span v-else-if="testimonial.userType === 'industry'">
+                    <span
+                      v-else-if="testimonial.userType === 'industry'"
+                      class="flex items-center"
+                    >
                       <Icon
                         name="mdi:office-building"
                         size="12"
