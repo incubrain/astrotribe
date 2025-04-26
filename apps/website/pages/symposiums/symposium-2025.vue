@@ -247,13 +247,16 @@ onBeforeUnmount(() => {
                   class="w-full h-full blur-sm pointer-events-none"
                 ></iframe>
                 <div class="absolute inset-0 flex items-center justify-center">
-                  <PrimeButton
-                    class="bg-primary-600 hover:bg-primary-500 shadow-lg"
-                    icon="mdi:file-download"
-                    label="Download Report"
+                  <a
                     href="/symposium/idsps_symposium_report.pdf"
                     download="IDSPS_Symposium_Report.pdf"
-                  />
+                  >
+                    <PrimeButton
+                      class="bg-primary-600 hover:bg-primary-500 shadow-lg"
+                      icon="mdi:file-download"
+                      label="Download Report"
+                    />
+                  </a>
                 </div>
               </div>
             </div>
@@ -271,13 +274,16 @@ onBeforeUnmount(() => {
                   class="w-full h-full blur-sm pointer-events-none"
                 ></iframe>
                 <div class="absolute inset-0 flex items-center justify-center">
-                  <PrimeButton
-                    class="bg-primary-600 hover:bg-primary-500 shadow-lg"
-                    icon="mdi:file-download"
-                    label="Download Brochure"
+                  <a
                     href="/symposium/brochure_symposium_2025.pdf"
                     download="IDSPS_Symposium_Brochure.pdf"
-                  />
+                  >
+                    <PrimeButton
+                      class="bg-primary-600 hover:bg-primary-500 shadow-lg"
+                      icon="mdi:file-download"
+                      label="Download Brochure"
+                    />
+                  </a>
                 </div>
               </div>
             </div>
