@@ -118,7 +118,7 @@ const isDisabledFeature = (feature: string) => {
               class="flex-shrink-0 mt-0.5 mr-3 transition-colors duration-500"
               :class="[
                 isSpecialFeature(feature)
-                  ? `text-${activePersona.color}-500 animate-pulse`
+                  ? `text-${activePersona.color}-500`
                   : popular || comingSoon
                     ? `text-${activePersona.color}-500`
                     : 'text-blue-500',
