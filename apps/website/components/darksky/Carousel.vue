@@ -24,6 +24,7 @@ const scrollToContent = () => {
   <section class="relative w-full">
     <AppCarousel
       has-navigation
+      stop-on-interaction
       :items="items"
       type="darksky"
       :interval="interval || 8000"
