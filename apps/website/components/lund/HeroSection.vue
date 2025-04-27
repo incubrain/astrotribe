@@ -140,8 +140,7 @@ onMounted(() => {
             :visibleOnce="{ opacity: 1, y: 0, transition: { delay: 0.2 } }"
             class="text-xl text-gray-300 mb-8"
           >
-            Select your mission and join a community of stargazers, researchers, and space
-            enthusiasts.
+            Begin your journey and join a community of {{ activePersona.displayName }}s.
           </p>
 
           <!-- CTA buttons -->
@@ -161,7 +160,8 @@ onMounted(() => {
                   :class="personaStyles.primaryButton"
                   @click="
                     () => {
-                      trackCTAClick?.('get_started', activePersona.name ?? 'undefined'), authAction()
+                      trackCTAClick?.('get_started', activePersona.name ?? 'undefined'),
+                        authAction()
                     }
                   "
                 >
