@@ -535,7 +535,7 @@ onMounted(() => {
             <div class="event-column">
               <div class="event-card">
                 <!-- Icon and header section -->
-                <div class="flex items-start gap-3">
+                <div class="flex items-center gap-3">
                   <div class="icon-container">
                     <Icon
                       :name="getIconByType(item)"
