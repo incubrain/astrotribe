@@ -50,18 +50,20 @@ const faqs = [
           :value="index.toString()"
           class="w-full mb-4"
         >
-          <PrimeAccordionHeader
-            class="flex flex-grow gap-4 bg-primary-800/50 py-3 rounded-md items-center justify-between min-w-full px-4 mx-auto"
-          >
-            <Icon
-              name="i-lucide-help-circle"
-              size="24"
-              class="text-primary-400 flex-shrink-0"
-            />
-            <h3 class="text-lg font-semibold flex-1 text-left">{{ faq.question }}</h3>
+          <PrimeAccordionHeader class="flex items-center bg-primary-800/50 py-3 rounded-md px-4">
+            <div class="flex items-center w-full gap-4">
+              <Icon
+                name="i-lucide-help-circle"
+                size="24"
+                class="text-primary-400 flex-shrink-0"
+              />
+              <h3 class="text-lg font-semibold text-left overflow-hidden">{{ faq.question }}</h3>
+            </div>
           </PrimeAccordionHeader>
-          <PrimeAccordionContent class="bg-primary-900/30 rounded-b-md mt-px">
-            <p class="p-4 text-primary-200">{{ faq.answer }}</p>
+          <PrimeAccordionContent
+            class="w-full break-words whitespace-normal justify-between bg-primary-900/30 rounded-b-md mt-px"
+          >
+            <p class="p-4 overflow-wrap-anywhere text-primary-200">{{ faq.answer }}</p>
           </PrimeAccordionContent>
         </PrimeAccordionPanel>
       </PrimeAccordion>
