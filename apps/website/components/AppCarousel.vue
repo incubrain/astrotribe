@@ -8,22 +8,30 @@ const props = defineProps<{
   type: string
   interval?: number
   hasNavigation?: boolean
+  stopOnInteraction?: boolean
 }>()
+
+const autoplay = AutoPlay({
+  delay: props.interval || 8000,
+  stopOnInteraction: props.stopOnInteraction,
+})
 
 const [emblaRefGeneric, emblaApi] = useEmblaCarousel(
   {
     loop: true,
     align: 'start',
   },
-  [AutoPlay({ delay: props.interval || 8000, stopOnInteraction: false })],
+  [autoplay],
 )
 
 const scrollPrev = () => {
   emblaApi.value?.scrollPrev()
+  autoplay.stop()
 }
 
 const scrollNext = () => {
   emblaApi.value?.scrollNext()
+  autoplay.stop()
 }
 
 const carouselLoaded = ref(false)
