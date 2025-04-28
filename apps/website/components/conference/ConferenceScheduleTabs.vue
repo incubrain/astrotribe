@@ -383,7 +383,7 @@ function printSchedule() {
     <head>
       <title>Conference Schedule - Dark Sky Conservation India Conference</title>
       <style>
-        body { font-family: Arial, sans-serif; color: #333; }
+        body { font-family: Arial, sans-serif; color: #333; margin: 30px; }
         .day-header { margin-top: 30px; padding-bottom: 10px; border-bottom: 2px solid #333; }
         .event { margin: 20px 0; padding: 10px; border-left: 4px solid #3f51b5; }
         .event-time { font-weight: bold; }
@@ -391,8 +391,9 @@ function printSchedule() {
         .event-speaker { color: #666; font-style: italic; }
         .online-badge { display: inline-block; padding: 2px 8px; background: #4caf50; color: white; border-radius: 10px; font-size: 12px; margin-left: 10px; }
         @media print {
-          .day-header { break-before: page; }
-          .no-break { break-inside: avoid; }
+          .day-header { page-break-before: always; }
+          .no-break { page-break-inside: avoid; }
+          .first-day { page-break-before: avoid !important; }
         }
       </style>
     </head>
@@ -402,9 +403,9 @@ function printSchedule() {
   `
 
   // Add each day's schedule
-  schedule.forEach((day) => {
+  schedule.forEach((day, index) => {
     content += `
-      <div class="day-header">
+      <div class="day-header ${index === 0 ? 'first-day' : ''}">
         <h2>${day.label}, November ${day.day}, 2023</h2>
       </div>
     `
@@ -437,10 +438,12 @@ function printSchedule() {
   printWindow.document.write(content)
   printWindow.document.close()
 
-  // Wait for content to load before printing
-  setTimeout(() => {
-    printWindow.print()
-  }, 500)
+  // Wait for content to fully load before printing
+  printWindow.onload = function () {
+    setTimeout(() => {
+      printWindow.print()
+    }, 1000)
+  }
 }
 
 // Initialize the component with proper tab selection
@@ -522,14 +525,8 @@ onMounted(() => {
             class="schedule-item"
             :class="getColorClassByType(item)"
           >
-            <!-- Timeline connector (proper vertical line) -->
-            <div
-              v-if="index < day.items.length - 1"
-              class="timeline-connector"
-            ></div>
-
             <!-- Left column with time and dot -->
-            <div class="time-column">
+            <div class="time-column self-center">
               <div class="time-dot"></div>
               <div class="time-text">{{ convertISTtoLocal(day.day, item.time) }}</div>
             </div>
@@ -538,7 +535,7 @@ onMounted(() => {
             <div class="event-column">
               <div class="event-card">
                 <!-- Icon and header section -->
-                <div class="flex items-start gap-3">
+                <div class="flex items-center gap-3">
                   <div class="icon-container">
                     <Icon
                       :name="getIconByType(item)"
@@ -607,7 +604,7 @@ onMounted(() => {
 /* Time column (left side) - Fixed width to prevent wrapping */
 .time-column {
   @apply flex flex-col items-center relative;
-  width: 120px;
+  padding: 2;
   flex-shrink: 0;
 }
 
@@ -620,7 +617,6 @@ onMounted(() => {
   @apply mt-3 text-gray-300 font-medium text-center;
   font-size: 0.75rem;
   line-height: 1.1;
-  width: 80px; /* Fixed width to prevent wrapping */
 }
 
 /* Event column (right side) */

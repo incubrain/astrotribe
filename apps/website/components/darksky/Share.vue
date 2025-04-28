@@ -13,6 +13,8 @@ const props = defineProps<{
   introText?: string
 }>()
 
+const isCopied = ref(false)
+
 const shareOnPlatform = (platform: string, baseUrl: string) => {
   const shareText = encodeURIComponent(
     'Join me in protecting our night skies from light pollution. Learn more about dark sky preservation and what you can do to help. #DarkSkyPreservation',
@@ -39,7 +41,22 @@ const shareOnPlatform = (platform: string, baseUrl: string) => {
 }
 
 const copyToClipboard = (text: string) => {
-  navigator.clipboard.writeText(text)
+  const toast = useNotification()
+
+  try {
+    navigator.clipboard.writeText(text)
+    isCopied.value = true
+    toast.success({
+      summary: 'Successful',
+      message: 'The link was successfully copied to your clipboard.',
+    })
+  } catch (error) {
+    console.error('Could not copy text: ', error)
+    toast.error({
+      summary: 'Error: Could not copy text',
+      message: `Please select and copy it manually: ${props.pageUrl}`,
+    })
+  }
   // TODO: Show a notification/toast when copied
 }
 </script>
@@ -141,7 +158,7 @@ const copyToClipboard = (text: string) => {
                     severity="secondary"
                     @click="copyToClipboard(pageUrl)"
                   >
-                    <Icon name="mdi:content-copy" />
+                    <Icon :name="`mdi:${isCopied ? 'check-bold' : 'content-copy'}`" />
                   </PrimeButton>
                 </div>
               </div>

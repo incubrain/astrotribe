@@ -231,11 +231,7 @@ const { stars, isClient } = useStarfield(30, 3)
             <div class="mt-auto">
               <PrimeButton
                 :severity="tier.highlight ? 'primary' : 'secondary'"
-                :class="
-                  tier.highlight
-                    ? 'w-full bg-gradient-to-r from-indigo-600 to-purple-600 border-0'
-                    : 'w-full'
-                "
+                :class="tier.highlight ? 'w-full' : 'w-full'"
                 @click="selectTier(tier)"
               >
                 <div class="flex items-center justify-center gap-2 py-1">

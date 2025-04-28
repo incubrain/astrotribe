@@ -8,7 +8,24 @@ const { conf: motionConstants } = useAnimation()
 const { trackUserEngagement, UserEngagementMetric, trackCTAClick } = useAnalytics()
 
 // Get persona state from our composable
-const { activePersona, personaStyles, isResearcher, isCommunicator, isEnthusiast } = usePersona()
+const {
+  activePersona,
+  personaStyles,
+  getPersonaByName,
+  isResearcher,
+  isCommunicator,
+  isEnthusiast,
+} = usePersona()
+
+const personas = ['researcher', 'sci-commer', 'enthusiast'].map((key) => {
+  const persona = getPersonaByName(key)
+
+  return {
+    name: persona?.name,
+    displayName: persona?.displayName,
+    icon: persona?.iconName,
+  }
+})
 
 // Define feature data with persona relevance
 const features = ref([
@@ -270,6 +287,15 @@ const trackFeatureAction = (featureId) => {
                 >
                   {{ feature.highlight }}
                 </span>
+                <Icon
+                  v-for="persona in personas.filter(
+                    (persona) => persona?.name && feature.personas.includes(persona.name),
+                  )"
+                  v-tooltip="`Feature available for ${persona.displayName}`"
+                  class="align-text-bottom transition-colors duration-500"
+                  :name="persona.icon"
+                  size="20"
+                />
               </div>
             </div>
 

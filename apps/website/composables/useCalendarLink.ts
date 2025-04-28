@@ -62,7 +62,13 @@ export function useCalendarLink() {
         .filter(Boolean)
         .join('%0A')
 
-      const appleUrl = `data:text/calendar;charset=utf8,${iCalData}`
+      // Create a Blob (acts like a file in memory)
+      const blob = new Blob([iCalData], { type: 'text/calendar' })
+
+      // Create a temporary URL for the Blob
+      const url = URL.createObjectURL(blob)
+
+      const appleUrl = url
 
       // Outlook Calendar URL
       // Format: YYYY-MM-DDTHH:MM:SSZ (e.g., 2025-04-05T10:00:00Z)

@@ -129,7 +129,7 @@
             <div>
               <h2 class="text-2xl font-bold mb-6 text-white">Frequently Asked Questions</h2>
 
-              <PrimeAccordion class="faq-accordion">
+              <PrimeAccordion class="flex flex-col gap-4 faq-accordion">
                 <PrimeAccordionTab
                   v-for="faq in faqs"
                   :key="faq.header"
@@ -316,15 +316,14 @@
                   loading="lazy"
                   class="w-full h-80"
                   style="filter: grayscale(80%) invert(92%) contrast(83%)"
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.0115985226535!2d73.831345!3d18.528377999999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1745688635228!5m2!1sen!2sin"
                   referrerpolicy="no-referrer-when-downgrade"
                 ></iframe>
-
                 <div
                   class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary-900 p-3 text-center"
                 >
                   <a
-                    href="https://maps.app.goo.gl/m4mY8ChLWpLbXhA98"
+                    href="https://maps.app.goo.gl/jvJo85gbM1vNCZVU6"
                     target="_blank"
                     class="text-primary-400 hover:text-primary-300 text-sm inline-flex items-center"
                   >
