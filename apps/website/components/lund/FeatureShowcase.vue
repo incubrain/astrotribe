@@ -26,6 +26,7 @@ const features = ref([
       'Citation tracking and source verification',
     ],
     personas: ['researcher', 'sci-commer', 'enthusiast'],
+    availableNow: true,
   },
   {
     id: 2,
@@ -41,6 +42,7 @@ const features = ref([
       'Collaborative sharing with research teams',
     ],
     personas: ['researcher', 'sci-commer'],
+    availableNow: false,
   },
   {
     id: 3,
@@ -56,6 +58,7 @@ const features = ref([
       'Create custom knowledge bases for your projects',
     ],
     personas: ['researcher'],
+    availableNow: false,
   },
   {
     id: 4,
@@ -71,6 +74,7 @@ const features = ref([
       'Opportunity scoring for research proposals',
     ],
     personas: ['researcher'],
+    availableNow: false,
   },
   {
     id: 5,
@@ -86,6 +90,7 @@ const features = ref([
       'Build streaks to track your astronomy journey',
     ],
     personas: ['enthusiast', 'sci-commer'],
+    availableNow: true,
   },
   {
     id: 6,
@@ -101,6 +106,7 @@ const features = ref([
       'Export in multiple formats including PDF and HTML',
     ],
     personas: ['sci-commer'],
+    availableNow: false,
   },
 ])
 
@@ -167,18 +173,6 @@ const trackFeatureAction = (featureId) => {
     console.error('Error tracking feature action:', error)
   }
 }
-
-// Track view all features button
-const trackViewAllFeatures = () => {
-  try {
-    trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
-      feature: 'view_all_features',
-      persona: activePersona.value.name,
-    })
-  } catch (error) {
-    console.error('Error tracking view all features:', error)
-  }
-}
 </script>
 
 <template>
@@ -204,40 +198,16 @@ const trackViewAllFeatures = () => {
 
     <div class="wrapper relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section header -->
-      <div
-        v-motion
-        :initial="{ opacity: 0, y: 30 }"
-        :visibleOnce="{
-          opacity: 1,
-          y: 0,
-          transition: {
-            type: 'spring',
-            stiffness: 250,
-            damping: 20,
-          },
+      <LundTitle
+        :title="{
+          label: 'AI-Powered',
+          main: 'Explore The Universe',
+          subtitle: 'Advanced tools helping researchers discover insights faster',
         }"
-        class="text-center max-w-xl mx-auto mb-12"
-      >
-        <div class="flex items-center justify-center gap-2 mb-3">
-          <span
-            class="uppercase text-sm font-medium tracking-wider transition-colors duration-500"
-            :class="`text-${activePersona.color}-600`"
-            >AI-POWERED</span
-          >
-        </div>
-        <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white leading-tight">
-          <span class="inline-block">Explore</span>
-          <span
-            class="inline-block transition-colors duration-500"
-            :class="personaStyles.sectionHeading"
-          >
-            The Universe
-          </span>
-        </h2>
-        <p class="text-xl text-gray-300">
-          Advanced tools helping researchers discover insights faster than ever before
-        </p>
-      </div>
+        alignment="center"
+        dynamic-styling
+        highlight-last-word
+      />
 
       <!-- Feature Showcase Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -336,9 +306,10 @@ const trackViewAllFeatures = () => {
                 ]"
                 @click.stop="trackFeatureAction(feature.id)"
               >
-                <span>Try this feature</span>
+                <span v-if="feature.availableNow"> Try this feature </span>
+                <span v-else> Coming soon</span>
                 <Icon
-                  name="mdi:arrow-right"
+                  :name="feature.availableNow ? 'mdi:arrow-right' : 'mdi:clock-outline'"
                   size="16"
                 />
               </button>

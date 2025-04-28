@@ -119,7 +119,18 @@ onMounted(() => {
         <!-- Left column: Main content -->
         <div>
           <!-- Headline based on persona -->
-          <h1
+          <LundTitle
+            :title="{
+              main: currentHeadline,
+              subtitle:
+                'Select your mission and join a community of stargazers, researchers, and space enthusiasts.',
+            }"
+            alignment="left"
+            dynamic-styling
+            class="mb-8"
+          />
+
+          <!-- <h1
             v-motion
             :initial="{ opacity: 0, y: 30 }"
             :visibleOnce="{
@@ -133,7 +144,6 @@ onMounted(() => {
             {{ currentHeadline }}
           </h1>
 
-          <!-- Subtitle -->
           <p
             v-motion
             :initial="{ opacity: 0, y: 30 }"
@@ -143,6 +153,7 @@ onMounted(() => {
             Select your mission and join a community of stargazers, researchers, and space
             enthusiasts.
           </p>
+          -->
 
           <!-- CTA buttons -->
           <div
@@ -161,7 +172,8 @@ onMounted(() => {
                   :class="personaStyles.primaryButton"
                   @click="
                     () => {
-                      trackCTAClick?.('get_started', activePersona.name ?? 'undefined'), authAction()
+                      trackCTAClick?.('get_started', activePersona.name ?? 'undefined'),
+                        authAction()
                     }
                   "
                 >

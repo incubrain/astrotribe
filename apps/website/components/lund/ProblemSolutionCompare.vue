@@ -490,23 +490,16 @@ const processContent = computed(() => {
 
     <div class="wrapper relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section header -->
-      <div
-        v-motion="motionConstants.sectionTitle"
-        class="text-center max-w-3xl mx-auto mb-10"
-      >
-        <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white leading-tight">
-          Experience the
-          <span
-            :class="personaStyles.sectionHeading"
-            class="transition-colors duration-500"
-            >Difference</span
-          >
-        </h2>
-        <p class="text-xl text-gray-300">
-          See how AstronEra transforms time-consuming astronomy tasks into streamlined, efficient
-          processes
-        </p>
-      </div>
+      <LundTitle
+        :title="{
+          main: 'Experience the Difference',
+          subtitle:
+            'See how AstronEra transforms time-consuming astronomy tasks into streamlined, efficient processes',
+        }"
+        alignment="center"
+        dynamic-styling
+        class="max-w-3xl mx-auto mb-10"
+      />
 
       <!-- Process tabs -->
       <div

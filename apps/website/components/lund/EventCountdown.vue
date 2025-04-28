@@ -91,23 +91,15 @@ const trackViewFullCalendar = () => {
 
     <div class="wrapper relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section header -->
-      <div
-        v-motion="motionConstants.sectionTitle"
-        class="text-center max-w-3xl mx-auto mb-8"
-      >
-        <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white leading-tight">
-          Next
-          <span
-            :class="personaStyles.sectionHeading"
-            class="transition-colors duration-500"
-            >Astronomical</span
-          >
-          Events
-        </h2>
-        <p class="text-xl text-gray-300 mb-6">
-          Stay updated with important space events and never miss a launch
-        </p>
-      </div>
+      <LundTitle
+        :title="{
+          main: 'Next Astronomical Events',
+          subtitle: 'Stay updated with important space events and never miss a launch',
+        }"
+        alignment="center"
+        dynamic-styling
+        class="max-w-3xl mx-auto mb-8"
+      />
 
       <!-- Recommended persona-specific events -->
       <div
