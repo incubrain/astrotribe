@@ -179,16 +179,14 @@ const getUserTypeBadgeClass = (userType) => {
   <section class="py-12 relative overflow-hidden">
     <div class="wrapper relative z-10 max-w-7xl mx-auto px-4">
       <!-- Section header -->
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white leading-tight">
-          The Best Global Sources &
-          <span
-            :class="personaStyles.sectionHeading"
-            class="transition-colors duration-500"
-            >Cutting-Edge AI Tech</span
-          >
-        </h2>
-      </div>
+      <LundTitle
+        :title="{
+          main: 'The Best Global Sources & Cutting-Edge AI Tech',
+        }"
+        alignment="center"
+        dynamic-styling
+        class="mb-12"
+      />
 
       <div class="relative overflow-hidden">
         <div

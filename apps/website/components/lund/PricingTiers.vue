@@ -180,27 +180,17 @@ onMounted(async () => {
   <section class="py-16 md:py-20 relative overflow-hidden">
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header section -->
-      <div
-        v-motion="{
-          initial: { opacity: 0, y: 20 },
-          enter: { opacity: 1, y: 0, transition: { duration: 600 } },
+      <LundTitle
+        :title="{
+          main: 'Simple, Transparent Pricing',
+          subtitle: 'Choose the plan that fits your needs',
         }"
-        class="text-center max-w-3xl mx-auto mb-12"
+        alignment="center"
+        dynamic-styling
+        class="max-w-3xl mx-auto"
       >
-        <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">
-          Simple,
-          <span
-            class="transition-colors duration-500"
-            :class="personaStyles.sectionHeading"
-          >
-            Transparent
-          </span>
-          Pricing
-        </h2>
-        <p class="text-xl text-gray-300 mb-8">Choose the plan that fits your needs</p>
+        <div class="flex items-center justify-center gap-3 pt-6">
 
-        <!-- Simplified Toggle Button Group -->
-        <div class="flex items-center justify-center gap-3 mb-6">
           <!-- Monthly Button -->
           <PrimeToggleButton
             :model-value="!isAnnualBilling"
@@ -251,7 +241,7 @@ onMounted(async () => {
             />
           </div>
         </div>
-      </div>
+      </LundTitle>
 
       <!-- Pricing Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">

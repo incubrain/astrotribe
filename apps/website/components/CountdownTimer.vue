@@ -6,14 +6,12 @@ const { activePersona } = usePersona()
 
 const props = defineProps<{
   targetDate: Date
-  expiredCallback?: () => void
   color?: string
   animateDigits?: boolean
 }>()
 
 // Emit events
 const emit = defineEmits<{
-  expired: []
   tick: [{ days: number; hours: number; minutes: number; seconds: number }]
 }>()
 
@@ -55,12 +53,6 @@ const updateCountdown = (targetDate: Date) => {
     const targetTime = targetDate.getTime()
     const difference = targetTime - now
 
-    // Handle expired countdown
-    if (difference <= 0) {
-      handleExpired()
-      return
-    }
-
     // Calculate time units
     const days = Math.floor(difference / (1000 * 60 * 60 * 24))
     const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
@@ -74,28 +66,6 @@ const updateCountdown = (targetDate: Date) => {
     emit('tick', countdown.value)
   } catch (error) {
     console.error('Error updating countdown:', error)
-  }
-}
-
-// Handle expired countdown
-const handleExpired = () => {
-  try {
-    if (countdownInterval) {
-      clearInterval(countdownInterval)
-      countdownInterval = null
-    }
-
-    countdown.value = { days: 0, hours: 0, minutes: 0, seconds: 0 }
-
-    // Call callback if provided
-    if (props.expiredCallback) {
-      props.expiredCallback()
-    }
-
-    // Emit expired event
-    emit('expired')
-  } catch (error) {
-    console.error('Error handling expired countdown:', error)
   }
 }
 

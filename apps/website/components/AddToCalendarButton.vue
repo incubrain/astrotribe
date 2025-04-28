@@ -21,12 +21,15 @@ const props = defineProps<{
 }>()
 
 // Generate calendar links
-const calendarLinks = generateAstronomyEventLinks(
-  props.eventName,
-  props.eventDate,
-  props.eventDescription,
-  props.duration || 120,
-)
+const calendarLinks = computed(() => {
+  return generateAstronomyEventLinks(
+    props.eventName,
+    props.eventDate,
+    props.eventDescription,
+    props.duration || 120,
+  )
+})
+
 
 // Track calendar link clicks
 const trackCalendarAdd = (calendarType: string) => {
@@ -40,7 +43,8 @@ const trackCalendarAdd = (calendarType: string) => {
 
 // Add to specific calendar
 const addToCalendar = (calendarType: string) => {
-  openCalendarLink(calendarType, calendarLinks)
+  // Access the value of the computed property
+  openCalendarLink(calendarType, calendarLinks.value)
   trackCalendarAdd(calendarType)
   isDropdownOpen.value = false
 }

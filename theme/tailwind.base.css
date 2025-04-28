@@ -125,7 +125,7 @@
   }
 
   .border-color {
-    @apply !border-zinc-700;
+    @apply !border-slate-800/50;
   }
 
   .divider-color {

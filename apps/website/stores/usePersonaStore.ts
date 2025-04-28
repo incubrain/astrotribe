@@ -52,7 +52,7 @@ export const usePersonaStore = defineStore('persona', () => {
       displayName: 'Enthusiast',
       color: 'amber',
       description: 'For astronomy enthusiasts wanting to explore the universe.',
-      headline: 'Explore the Cosmos, Your Way',
+      headline: 'Uncover Mysterious Worlds',
       features: [
         'Learn astronomy at your pace',
         'Track space missions and events',

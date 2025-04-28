@@ -2,65 +2,64 @@
 import { ref, watch, computed } from 'vue'
 import { usePersona } from '~/composables/usePersona'
 import { useAnimation } from '~/composables/useAnimation'
-import { useEvents } from '~/composables/useEvents'
+import { useEvents, type AstronomyEvent } from '~/composables/useEvents'
 import { useAnalytics } from '#imports'
-import AddToCalendarButton from '~/components/AddToCalendarButton.vue'
-import CountdownTimer from '~/components/CountdownTimer.vue'
+
 
 const { conf: motionConstants } = useAnimation()
 const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
 
 // Get persona state from our composable
-const { activePersona, personaStyles, isResearcher, isCommunicator, isEnthusiast } = usePersona()
+const { activePersona, personaStyles } = usePersona()
 
 // Get events from our composable
-const {
-  allEvents,
-  events,
-  relevantEvents,
-  getEventById,
-  formatEventDate,
-  formatShortDate,
-  getInitialEvent,
-} = useEvents()
+const { relevantEvents, getEventById, formatShortDate, getInitialEvent } = useEvents()
 
 // Active event state
-const activeEvent = ref(getInitialEvent()!)
+const activeEvent = ref(null as AstronomyEvent | null)
+
+// Get the initial event based on the active persona
 
 // Update active event when persona changes
 watch(
-  () => activePersona.value,
+  () => activePersona.value.name,
   () => {
-    activeEvent.value = getInitialEvent()!
+    console.log('Persona changed, setting initial event')
+    activeEvent.value = getInitialEvent()
+  },
+)
+
+watch(
+  () => activeEvent.value,
+  () => {
+    console.log('Active event changed:', activeEvent.value)
   },
   { deep: true },
 )
 
-// Handle expired countdown
-const handleExpired = () => {
-  // Find the next event
-  const now = new Date().getTime()
-  const futureEvents = relevantEvents.value.filter((event) => event.date.getTime() > now)
-
-  if (futureEvents.length > 0) {
-    activeEvent.value = futureEvents[0]!
-  }
-}
+onMounted(() => {
+  // Set the initial event when the component mounts
+  console.log('Component mounted, setting initial event')
+  activeEvent.value = getInitialEvent()
+})
 
 // Select a specific event
 const selectEvent = (eventId: number) => {
   const event = getEventById(eventId)
+
   if (!event) return
 
   activeEvent.value = event
 
-  // Track the interaction
-  trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
-    feature: 'event_countdown',
-    event_id: eventId,
-    event_name: event.name,
-    persona: activePersona.value.name,
-  })
+  console.log('Selected event:', eventId, activeEvent.value)
+
+  // trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
+  //   feature: 'event_countdown',
+  //   event_id: eventId,
+  //   event_name: event.name,
+  //   persona: activePersona.value.name,
+  // })
+
 }
 
 // Track when users click "View Full Calendar"
@@ -73,7 +72,10 @@ const trackViewFullCalendar = () => {
 </script>
 
 <template>
-  <section class="py-16 md:py-20 relative overflow-hidden">
+  <section
+    v-if="activeEvent"
+    class="py-16 md:py-20 relative overflow-hidden"
+  >
     <!-- Background with persona-specific gradient -->
     <div
       class="absolute inset-0 bg-gradient-to-b from-slate-950 to-primary-950/70 z-0 transition-colors duration-700"
@@ -91,23 +93,16 @@ const trackViewFullCalendar = () => {
 
     <div class="wrapper relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section header -->
-      <div
-        v-motion="motionConstants.sectionTitle"
-        class="text-center max-w-3xl mx-auto mb-8"
-      >
-        <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white leading-tight">
-          Next
-          <span
-            :class="personaStyles.sectionHeading"
-            class="transition-colors duration-500"
-            >Astronomical</span
-          >
-          Events
-        </h2>
-        <p class="text-xl text-gray-300 mb-6">
-          Stay updated with important space events and never miss a launch
-        </p>
-      </div>
+      <LundTitle
+        :title="{
+          main: 'Next Astronomical Events',
+          subtitle: 'Stay updated with important space events and never miss a launch',
+        }"
+        alignment="center"
+        dynamic-styling
+        class="max-w-3xl mx-auto mb-8"
+      />
+
 
       <!-- Recommended persona-specific events -->
       <div
@@ -129,11 +124,12 @@ const trackViewFullCalendar = () => {
           <div
             v-for="event in relevantEvents"
             :key="`rec-${event.id}`"
+            class="transition-all duration-300 cursor-pointer hover:transform hover:scale-[1.02] rounded-lg p-5 border border-color"
             :class="[
-              `p-4 transition-all duration-300 cursor-pointer hover:transform hover:scale-[1.02] hover:border-${activePersona.color}-800/30`,
+              `hover:border-${activePersona.color}-800/30`,
               activeEvent.id === event.id
-                ? `bg-${activePersona.color}-700/50 shadow-[0_0_12px_4px_theme('colors.${activePersona.color}.500')]`
-                : `bg-slate-900/40 backdrop-blur-sm rounded-lg border border-slate-800/50 p-5`,
+                ? `bg-${activePersona.color}-700/30 shadow-[0_0_12px_4px_theme('colors.${activePersona.color}.500')]`
+                : `bg-slate-900/40 backdrop-blur-sm  `,
             ]"
             @click="selectEvent(event.id)"
           >
@@ -183,77 +179,13 @@ const trackViewFullCalendar = () => {
 
       <!-- Countdown display -->
       <div
+        :key="`event-${activeEvent.id}`"
         v-motion
         :initial="{ opacity: 0, y: 30 }"
         :visibleOnce="{ opacity: 1, y: 0, transition: { delay: 0.3 } }"
         class="mx-auto"
       >
-        <div
-          class="rounded-xl bg-slate-900/60 backdrop-blur-sm border border-slate-800/50 overflow-hidden transition-all duration-500"
-          :class="`border-${activePersona.color}-800/30 shadow-xl shadow-${activePersona.color}-900/10`"
-        >
-          <!-- Event header -->
-          <div
-            class="px-6 py-4 border-b border-slate-800/30 flex items-center justify-between transition-colors duration-500"
-            :class="`bg-${activePersona.color}-900/20`"
-          >
-            <div class="flex items-center gap-3">
-              <div
-                class="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-500"
-                :class="`bg-${activePersona.color}-600/30 text-${activePersona.color}-400`"
-              >
-                <Icon
-                  :name="activeEvent.icon"
-                  size="24"
-                />
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-white">{{ activeEvent.name }}</h3>
-                <p class="text-sm text-gray-400">{{ formatEventDate(activeEvent.date) }}</p>
-              </div>
-            </div>
-            <div>
-              <span
-                class="px-3 py-1 rounded-full text-sm transition-colors duration-500"
-                :class="`bg-${activePersona.color}-900/30 text-${activePersona.color}-400 border border-${activePersona.color}-800/30`"
-              >
-                {{ activeEvent.type }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Countdown display -->
-          <div class="p-8">
-            <p class="text-gray-300 mb-6">{{ activeEvent.description }}</p>
-
-            <div class="mb-8">
-              <CountdownTimer
-                :target-date="activeEvent.date"
-                :color="activePersona.color"
-                @expired="handleExpired"
-              />
-            </div>
-
-            <!-- Add to calendar options -->
-            <div
-              class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
-            >
-              <div>
-                <span class="text-sm text-gray-400">Add to your calendar:</span>
-                <div class="mt-2">
-                  <AddToCalendarButton
-                    :event-name="activeEvent.name"
-                    :event-date="activeEvent.date"
-                    :event-description="activeEvent.description"
-                    :event-id="activeEvent.id"
-                    variant="mini"
-                    inline
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <EventDetailCard :event="activeEvent" />
       </div>
 
       <!-- View Full Calendar button at the bottom -->

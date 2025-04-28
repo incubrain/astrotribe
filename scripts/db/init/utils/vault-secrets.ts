@@ -6,7 +6,8 @@ export async function createVaultSecrets(client: Pool): Promise<boolean> {
 
     const secrets = [
       {
-        secret: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU',
+        secret:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU',
         name: 'service_key',
         description: 'supabase_service_key, used for JWT auth in edge functions',
       },
@@ -19,6 +20,11 @@ export async function createVaultSecrets(client: Pool): Promise<boolean> {
         secret: 'http://host.docker.internal:54321/functions/v1/zilliz',
         name: 'edge_url_zilliz',
         description: 'supabase edge function url for openai',
+      },
+      {
+        secret: 'http://host.docker.internal:4111/webhooks',
+        name: 'webhook_mastra_agents',
+        description: 'mastra dynamic webhook endpoint',
       },
     ]
 
