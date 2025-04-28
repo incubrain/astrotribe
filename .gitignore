@@ -13,13 +13,13 @@ node_modules
 .cli-store
 
 
-
 # compiled output
 dist
 tmp
 /out-tsc
 .env
 .npm_token
+**/.eslintcache
 **.eslintcache
 .eslintcache
 **.temp

@@ -130,7 +130,7 @@ onMounted(() => {
             class="mb-8"
           />
 
-          <!-- <h1
+          <-- <h1
             v-motion
             :initial="{ opacity: 0, y: 30 }"
             :visibleOnce="{

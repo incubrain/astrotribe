@@ -30,6 +30,7 @@ const calendarLinks = computed(() => {
   )
 })
 
+
 // Track calendar link clicks
 const trackCalendarAdd = (calendarType: string) => {
   trackUserEngagement(UserEngagementMetric.FeatureAdoption, {
