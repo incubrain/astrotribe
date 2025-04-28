@@ -187,12 +187,9 @@ onMounted(async () => {
         }"
         alignment="center"
         dynamic-styling
-        class="max-w-3xl mx-auto mb-12"
-      />
-
-      <div>
-        <!-- Simplified Toggle Button Group -->
-        <div class="flex items-center justify-center gap-3 mb-6">
+        class="max-w-3xl mx-auto"
+      >
+        <div class="flex items-center justify-center gap-3 pt-6">
           <!-- Monthly Button -->
           <PrimeToggleButton
             :model-value="!isAnnualBilling"
@@ -243,7 +240,7 @@ onMounted(async () => {
             />
           </div>
         </div>
-      </div>
+      </LundTitle>
 
       <!-- Pricing Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
