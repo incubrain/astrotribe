@@ -13,7 +13,7 @@ const activeTab = ref('About')
 // 4. Component state
 const tabs = [
   { id: 'About', label: 'About' },
-  { id: 'Venue', label: 'Venue' },
+  // { id: 'Venue', label: 'Venue' },
   { id: 'Schedule', label: 'Schedule' },
   { id: 'Speakers', label: 'Speakers' },
 ]
@@ -194,12 +194,12 @@ const { isMobile } = useNavigation()
         </div>
 
         <!-- Venue Tab -->
-        <div
+        <!-- <div
           v-show="activeTab === 'Venue'"
           class="animate-fadeIn"
         >
           <ConferenceVenue />
-        </div>
+        </div> -->
 
         <!-- Schedule Tab -->
         <div
