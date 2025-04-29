@@ -10,6 +10,7 @@ onMounted(() => {
     <NuxtLayout>
       <NuxtPage class="dark" />
     </NuxtLayout>
+    <PrimeToast position="bottom-right" />
   </div>
 </template>
 
