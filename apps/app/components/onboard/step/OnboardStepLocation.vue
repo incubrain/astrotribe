@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form } from '@primevue/forms'
+import { useForm } from '@primevue/forms/useform'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import { z } from 'zod'
 import { ref, computed } from 'vue'
@@ -41,9 +41,23 @@ const initialValues = {
   location: onboardingStore.stepData.location || null,
 }
 
+// Initialize form with useForm
+const form = useForm({
+  resolver,
+  initialValues,
+  validateOnValueUpdate: true,
+})
+
+// Define field on mount
+onMounted(() => {
+  form.defineField('location')
+})
+
 // Handle form submission
 function handleSubmit(e) {
-  emit('complete', e.values)
+  if (e.valid) {
+    emit('complete', e.values)
+  }
 }
 
 // Auto-detect location using browser geolocation + reverse geocoding
@@ -76,17 +90,29 @@ async function detectLocation() {
     }
 
     const locationData = await response.json()
-    const formattedLocation = formatLocation(locationData)
-
-    // Set the form value
-    // Note: We'll need access to the form ref later
     selectedLocation.value = locationData
-    return formattedLocation
+
+    // Set the form value with formatted location data
+    const formattedLocation = formatLocation(locationData)
+    form.setFieldValue('location', formattedLocation)
   } catch (error) {
     console.error('Error detecting location:', error)
-    return null
   } finally {
     isDetectingLocation.value = false
+  }
+}
+
+// Format location data for storage
+function formatLocation(location) {
+  const address = location.address || {}
+  return {
+    placeName: location.display_name,
+    city: address.city || address.town || address.village || address.hamlet,
+    state: address.state,
+    country: address.country,
+    countryCode: address.country_code,
+    latitude: parseFloat(location.lat),
+    longitude: parseFloat(location.lon),
   }
 }
 
@@ -130,34 +156,26 @@ async function searchLocations(event) {
   }
 }
 
-// Format location data for storage
-function formatLocation(location) {
-  const address = location.address || {}
-  return {
-    placeName: location.display_name,
-    city: address.city || address.town || address.village || address.hamlet,
-    state: address.state,
-    country: address.country,
-    countryCode: address.country_code,
-    latitude: parseFloat(location.lat),
-    longitude: parseFloat(location.lon),
-  }
-}
-
 // Handle selected from autocomplete
-function onLocationSelected(event, $form) {
-  const locationData = formatLocation(event.value.data)
-  selectedLocation.value = event.value.data
-  $form.setFieldValue('location', locationData)
+function onLocationSelected(event) {
+  const locationData = event.value.data
+  selectedLocation.value = locationData
+  form.setFieldValue('location', formatLocation(locationData))
 }
 
-// Handle location detection and set form value
-async function handleLocationDetection($form) {
-  const locationData = await detectLocation()
-  if (locationData) {
-    $form.setFieldValue('location', locationData)
+// Get active location for display
+const currentLocationDisplay = computed(() => {
+  if (selectedLocation.value) {
+    return selectedLocation.value.display_name
   }
-}
+
+  const locationState = form.getFieldState('location')?.value
+  if (locationState?.placeName) {
+    return locationState.placeName
+  }
+
+  return null
+})
 </script>
 
 <template>
@@ -165,10 +183,8 @@ async function handleLocationDetection($form) {
     <h2 class="text-2xl font-bold mb-2">Where are you located?</h2>
     <p class="text-gray-400 mb-6">This helps us show relevant events and content near you.</p>
 
-    <Form
-      v-slot="$form"
-      :resolver="resolver"
-      :initial-values="initialValues"
+    <PrimeForm
+      :form-control="form"
       @submit="handleSubmit"
     >
       <!-- Auto-detect location button -->
@@ -180,16 +196,21 @@ async function handleLocationDetection($form) {
           :loading="isDetectingLocation"
           :disabled="isDetectingLocation"
           outlined
-          @click="handleLocationDetection($form)"
+          @click="detectLocation"
         />
         <p class="text-sm text-gray-400 mt-2"> Or search for your location below. </p>
       </div>
 
-      <!-- Hidden input for location object -->
-      <input
-        type="hidden"
+      <!-- Hidden form field for location data -->
+      <PrimeFormField
+        v-slot="field"
         name="location"
-      />
+      >
+        <input
+          type="hidden"
+          v-bind="field.props"
+        />
+      </PrimeFormField>
 
       <!-- Location search autocomplete -->
       <div class="mb-6">
@@ -208,14 +229,14 @@ async function handleLocationDetection($form) {
           placeholder="Start typing your city, region or country"
           :dropdown="true"
           @complete="searchLocations"
-          @item-select="(e) => onLocationSelected(e, $form)"
+          @item-select="onLocationSelected"
         />
         <div class="text-xs text-gray-400 mt-1">Enter at least 3 characters to search</div>
       </div>
 
       <!-- Selected location display -->
       <div
-        v-if="selectedLocation"
+        v-if="currentLocationDisplay"
         class="p-4 bg-gray-800/50 rounded-lg mb-6"
       >
         <h3 class="text-sm font-medium mb-2">Selected Location</h3>
@@ -225,7 +246,7 @@ async function handleLocationDetection($form) {
             class="text-primary-500"
             size="20px"
           />
-          <span>{{ selectedLocation.display_name }}</span>
+          <span>{{ currentLocationDisplay }}</span>
         </div>
       </div>
 
@@ -243,6 +264,6 @@ async function handleLocationDetection($form) {
           icon-pos="right"
         />
       </div>
-    </Form>
+    </PrimeForm>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form } from '@primevue/forms'
+import { useForm } from '@primevue/forms/useform'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import { z } from 'zod'
 import { ref, computed, onMounted } from 'vue'
@@ -27,8 +27,18 @@ const initialValues = {
   featureInterests: onboardingStore.stepData.featureInterests || [],
 }
 
-// Load features
+// Initialize form with useForm
+const form = useForm({
+  resolver,
+  initialValues,
+  validateOnValueUpdate: true,
+})
+
+// Define field on mount
 onMounted(async () => {
+  form.defineField('featureInterests')
+
+  // Load features
   isLoading.value = true
   try {
     const response = await fetch('/api/onboard/features')
@@ -50,44 +60,31 @@ onMounted(async () => {
   }
 })
 
-// Handle form submission
-function handleSubmit(e) {
-  emit('complete', e.values)
-}
+// Filter features by status (only show planned or in-progress features)
+const upcomingFeatures = computed(() => {
+  return features.value
+    .filter(
+      (f) => f.status === 'planned' || f.status === 'in_progress' || f.status === 'in-progress',
+    )
+    .map((feature) => ({
+      value: feature.id,
+      label: feature.title,
+      description: feature.description || '',
+      status: feature.status,
+    }))
+})
 
 // Track feature selection
 function trackFeatureToggle(featureId, featureTitle, isSelected) {
   analytics.trackFeatureInterestClick(featureId, featureTitle, isSelected ? 'select' : 'deselect')
 }
 
-// Handle selecting/deselecting a feature
-function toggleFeature($form, featureId, featureTitle) {
-  console.log('Toggling feature:', $form, featureId, featureTitle)
-  const currentFeatures = [...($form.featureInterests?.value || [])]
-  const index = currentFeatures.indexOf(featureId)
-
-  if (index === -1) {
-    // Add to selected
-    currentFeatures.push(featureId)
-    trackFeatureToggle(featureId, featureTitle, true)
-  } else {
-    // Remove from selected
-    currentFeatures.splice(index, 1)
-    trackFeatureToggle(featureId, featureTitle, false)
+// Handle form submission
+function handleSubmit(e) {
+  if (e.valid) {
+    emit('complete', e.values)
   }
 }
-
-// Check if a feature is selected
-function isFeatureSelected(featureInterests, featureId) {
-  return featureInterests && featureInterests.includes(featureId)
-}
-
-// Filter features by status (only show planned or in-progress features)
-const upcomingFeatures = computed(() => {
-  return features.value.filter(
-    (f) => f.status === 'planned' || f.status === 'in_progress' || f.status === 'in-progress',
-  )
-})
 </script>
 
 <template>
@@ -104,83 +101,55 @@ const upcomingFeatures = computed(() => {
     </div>
 
     <!-- Features grid -->
-    <Form
+    <PrimeForm
       v-else-if="upcomingFeatures.length > 0"
-      v-slot="$form"
-      :resolver="resolver"
-      :initial-values="initialValues"
+      :form-control="form"
       @submit="handleSubmit"
     >
-      <!-- Hidden input for storing the feature interests array -->
-      <input
-        type="hidden"
+      <!-- Use SelectableCardField for feature selection -->
+      <FormSelectableCardField
         name="featureInterests"
-      />
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <PrimeCard
-          v-for="feature in upcomingFeatures"
-          :key="feature.id"
-          :class="{
-            'border-primary-500 bg-primary-900/20': isFeatureSelected(
-              $form.featureInterests?.value,
-              feature.id,
-            ),
-            'border-gray-700 hover:border-gray-500': !isFeatureSelected(
-              $form.featureInterests?.value,
-              feature.id,
-            ),
-          }"
-          class="cursor-pointer transition-all hover:shadow-md"
-          @click="toggleFeature($form, feature.id, feature.title)"
-        >
-          <template #header>
+        :form="form"
+        :options="upcomingFeatures"
+        :multiple="true"
+        :track-selection="trackFeatureToggle"
+        card-class="cursor-pointer transition-all hover:shadow-md"
+      >
+        <!-- Custom card content with feature info -->
+        <template #card-content="{ option, selected }">
+          <div>
+            <!-- Feature header with badge -->
             <div class="flex justify-between items-center p-3">
               <div
                 class="badge py-1 px-2 rounded-full text-xs uppercase"
                 :class="{
-                  'bg-blue-900 text-blue-200': feature.status === 'planned',
+                  'bg-blue-900 text-blue-200': option.status === 'planned',
                   'bg-yellow-900 text-yellow-200':
-                    feature.status === 'in_progress' || feature.status === 'in-progress',
+                    option.status === 'in_progress' || option.status === 'in-progress',
                 }"
               >
-                {{ feature.status.replace('_', ' ') }}
+                {{ option.status.replace('_', ' ') }}
               </div>
               <Icon
-                v-if="isFeatureSelected($form.featureInterests?.value, feature.id)"
+                v-if="selected"
                 name="mdi:check-circle"
                 class="text-primary-500"
                 size="24px"
               />
             </div>
-          </template>
 
-          <template #content>
+            <!-- Feature content -->
             <div class="p-3">
-              <h3 class="text-lg font-medium mb-2">{{ feature.title }}</h3>
+              <h3 class="text-lg font-medium mb-2">{{ option.label }}</h3>
               <p
-                v-if="feature.description"
+                v-if="option.description"
                 class="text-sm text-gray-400"
-                >{{ feature.description }}</p
+                >{{ option.description }}</p
               >
             </div>
-          </template>
-        </PrimeCard>
-      </div>
-
-      <!-- Validation error -->
-      <PrimeMessage
-        v-if="$form.featureInterests?.invalid && $form.featureInterests?.touched"
-        severity="error"
-        class="mb-4"
-      >
-        {{ $form.featureInterests.error?.message }}
-      </PrimeMessage>
-
-      <!-- Selected count info -->
-      <div class="text-sm text-gray-400 mb-4">
-        {{ ($form.featureInterests?.value || []).length }} features selected
-      </div>
+          </div>
+        </template>
+      </FormSelectableCardField>
 
       <!-- Navigation buttons -->
       <div class="flex justify-end mt-6">
@@ -189,10 +158,10 @@ const upcomingFeatures = computed(() => {
           label="Continue"
           icon="mdi:arrow-right"
           icon-pos="right"
-          :disabled="!$form.valid || isLoading"
+          :disabled="!form.valid || isLoading"
         />
       </div>
-    </Form>
+    </PrimeForm>
 
     <!-- No features message -->
     <div

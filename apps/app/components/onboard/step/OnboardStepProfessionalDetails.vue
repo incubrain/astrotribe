@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form } from '@primevue/forms'
+import { useForm } from '@primevue/forms/useform'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import { z } from 'zod'
 import { useOnboardingStore } from '@/stores/useOnboardingStore'
@@ -33,6 +33,22 @@ const initialValues = {
   linkedinUrl: onboardingStore.stepData.professionalDetails?.linkedinUrl || '',
 }
 
+// Initialize form with useForm
+const form = useForm({
+  resolver,
+  initialValues,
+  validateOnValueUpdate: true,
+  validateOnBlur: true,
+})
+
+// Define all fields on mount
+onMounted(() => {
+  form.defineField('companyName')
+  form.defineField('position')
+  form.defineField('industry')
+  form.defineField('linkedinUrl')
+})
+
 // Industry options
 const industries = [
   { label: 'Aerospace & Defense', value: 'aerospace' },
@@ -50,7 +66,9 @@ const industries = [
 
 // Handle form submission
 function handleSubmit(e) {
-  emit('complete', e.values)
+  if (e.valid) {
+    emit('complete', e.values)
+  }
 }
 </script>
 
@@ -61,10 +79,8 @@ function handleSubmit(e) {
       Help us personalize your experience and connect you with relevant professionals.
     </p>
 
-    <Form
-      v-slot="$form"
-      :resolver="resolver"
-      :initial-values="initialValues"
+    <PrimeForm
+      :form-control="form"
       @submit="handleSubmit"
     >
       <!-- Company Name -->
@@ -74,19 +90,24 @@ function handleSubmit(e) {
           class="block text-sm font-medium mb-2"
           >Company Name</label
         >
-        <PrimeInputText
-          id="companyName"
+        <PrimeFormField
+          v-slot="field"
           name="companyName"
-          class="w-full"
-          placeholder="Your organization's name"
-        />
-        <PrimeMessage
-          v-if="$form.companyName?.invalid && $form.companyName?.touched"
-          severity="error"
-          class="mt-1 text-sm"
         >
-          {{ $form.companyName.error?.message }}
-        </PrimeMessage>
+          <PrimeInputText
+            id="companyName"
+            v-bind="field.props"
+            class="w-full"
+            placeholder="Your organization's name"
+          />
+          <PrimeMessage
+            v-if="field.invalid && field.touched"
+            severity="error"
+            class="mt-1 text-sm"
+          >
+            {{ field.error?.message }}
+          </PrimeMessage>
+        </PrimeFormField>
       </div>
 
       <!-- Position -->
@@ -96,19 +117,24 @@ function handleSubmit(e) {
           class="block text-sm font-medium mb-2"
           >Your Position / Title</label
         >
-        <PrimeInputText
-          id="position"
+        <PrimeFormField
+          v-slot="field"
           name="position"
-          class="w-full"
-          placeholder="e.g. Astrophysicist, Engineer, Professor"
-        />
-        <PrimeMessage
-          v-if="$form.position?.invalid && $form.position?.touched"
-          severity="error"
-          class="mt-1 text-sm"
         >
-          {{ $form.position.error?.message }}
-        </PrimeMessage>
+          <PrimeInputText
+            id="position"
+            v-bind="field.props"
+            class="w-full"
+            placeholder="e.g. Astrophysicist, Engineer, Professor"
+          />
+          <PrimeMessage
+            v-if="field.invalid && field.touched"
+            severity="error"
+            class="mt-1 text-sm"
+          >
+            {{ field.error?.message }}
+          </PrimeMessage>
+        </PrimeFormField>
       </div>
 
       <!-- Industry -->
@@ -118,22 +144,27 @@ function handleSubmit(e) {
           class="block text-sm font-medium mb-2"
           >Industry</label
         >
-        <PrimeSelect
-          id="industry"
+        <PrimeFormField
+          v-slot="field"
           name="industry"
-          :options="industries"
-          option-label="label"
-          option-value="value"
-          placeholder="Select your industry"
-          class="w-full"
-        />
-        <PrimeMessage
-          v-if="$form.industry?.invalid && $form.industry?.touched"
-          severity="error"
-          class="mt-1 text-sm"
         >
-          {{ $form.industry.error?.message }}
-        </PrimeMessage>
+          <PrimeSelect
+            id="industry"
+            v-bind="field.props"
+            :options="industries"
+            option-label="label"
+            option-value="value"
+            placeholder="Select your industry"
+            class="w-full"
+          />
+          <PrimeMessage
+            v-if="field.invalid && field.touched"
+            severity="error"
+            class="mt-1 text-sm"
+          >
+            {{ field.error?.message }}
+          </PrimeMessage>
+        </PrimeFormField>
       </div>
 
       <!-- LinkedIn URL -->
@@ -143,22 +174,29 @@ function handleSubmit(e) {
           class="block text-sm font-medium mb-2"
           >LinkedIn Username (Optional)</label
         >
-        <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">linkedin.com/in/</span>
-          <PrimeInputText
-            id="linkedinUrl"
-            name="linkedinUrl"
-            placeholder="your-profile"
-          />
-        </div>
-        <p class="text-xs text-gray-400 mt-1">Enter just your profile name without the full URL</p>
-        <PrimeMessage
-          v-if="$form.linkedinUrl?.invalid && $form.linkedinUrl?.touched"
-          severity="error"
-          class="mt-1 text-sm"
+        <PrimeFormField
+          v-slot="field"
+          name="linkedinUrl"
         >
-          {{ $form.linkedinUrl.error?.message }}
-        </PrimeMessage>
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">linkedin.com/in/</span>
+            <PrimeInputText
+              id="linkedinUrl"
+              v-bind="field.props"
+              placeholder="your-profile"
+            />
+          </div>
+          <p class="text-xs text-gray-400 mt-1"
+            >Enter just your profile name without the full URL</p
+          >
+          <PrimeMessage
+            v-if="field.invalid && field.touched"
+            severity="error"
+            class="mt-1 text-sm"
+          >
+            {{ field.error?.message }}
+          </PrimeMessage>
+        </PrimeFormField>
       </div>
 
       <!-- Privacy note -->
@@ -173,9 +211,9 @@ function handleSubmit(e) {
           label="Continue"
           icon="mdi:arrow-right"
           icon-pos="right"
-          :disabled="!$form.valid"
+          :disabled="!form.valid"
         />
       </div>
-    </Form>
+    </PrimeForm>
   </div>
 </template>

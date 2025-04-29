@@ -4,7 +4,7 @@ import { useOnboardingStore } from '@/stores/useOnboardingStore'
 const onboardingStore = useOnboardingStore()
 const analytics = useOnboardingAnalytics()
 const onboardingApi = useOnboardingApi()
-const { currentStep, totalSteps, isComplete, progressPercentage, isProfessional } =
+const { currentStep, totalSteps, isComplete, progressPercentage, isProfessional, shouldSkipStep } =
   storeToRefs(onboardingStore)
 
 // Handle navigation
@@ -48,7 +48,7 @@ async function handleStepComplete(step: number, data: any) {
     // Track completion
     analytics.trackStepComplete(step, stepNames[step], data)
 
-    // Optionally save to API (could be done all at once at the end)
+    // Save to API
     await onboardingApi.saveStepData(step, data)
 
     // Move to next step
@@ -99,7 +99,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="onboarding-container max-w-4xl mx-auto">
+  <div class="onboarding-container max-w-4xl mx-auto px-4 py-8">
     <!-- Transition between steps -->
     <Transition
       name="slide-fade"
@@ -110,36 +110,43 @@ definePageMeta({
         class="onboarding-step bg-gray-900/50 rounded-lg p-6 shadow-lg border border-gray-800"
         :class="{ 'pointer-events-none': isNavigating }"
       >
+        <!-- Step 1: User Type -->
         <OnboardStepUserType
           v-if="currentStep === 1"
           @complete="handleStepComplete(1, $event)"
         />
 
+        <!-- Step 2: Professional Details (Conditional) -->
         <OnboardStepProfessionalDetails
-          v-if="currentStep === 2 && !onboardingStore.shouldSkipStep(2)"
+          v-if="currentStep === 2 && !shouldSkipStep(2)"
           @complete="handleStepComplete(2, $event)"
         />
 
+        <!-- Step 3: Interests -->
         <OnboardStepInterests
           v-if="currentStep === 3"
           @complete="handleStepComplete(3, $event)"
         />
 
+        <!-- Step 4: Feature Interests -->
         <OnboardStepFeatures
           v-if="currentStep === 4"
           @complete="handleStepComplete(4, $event)"
         />
 
+        <!-- Step 5: Topics -->
         <OnboardStepTopics
           v-if="currentStep === 5"
           @complete="handleStepComplete(5, $event)"
         />
 
+        <!-- Step 6: Location -->
         <OnboardStepLocation
           v-if="currentStep === 6"
           @complete="handleStepComplete(6, $event)"
         />
 
+        <!-- Step 7: Confirmation -->
         <OnboardStepConfirmation
           v-if="currentStep === 7"
           @complete="handleComplete"
@@ -147,6 +154,7 @@ definePageMeta({
       </div>
     </Transition>
 
+    <!-- Navigation Buttons -->
     <div class="flex justify-between mt-8">
       <PrimeButton
         v-if="currentStep > 1"

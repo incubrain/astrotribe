@@ -2,7 +2,6 @@
 import { useForm } from '@primevue/forms/useform'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import { z } from 'zod'
-import { useOnboardingStore } from '@/stores/useOnboardingStore'
 
 const emit = defineEmits(['complete'])
 const onboardingStore = useOnboardingStore()
@@ -18,23 +17,19 @@ const userTypeSchema = z.object({
 // Resolver
 const resolver = zodResolver(userTypeSchema)
 
-// Initial values
+// Initial values from store
 const initialValues = {
-  userType: 'hobbyist',
+  userType: onboardingStore.stepData.userType || '',
 }
 
 // useForm instance
 const form = useForm({
   resolver,
-  initialValues: initialValues,
+  initialValues,
   validateOnValueUpdate: true,
 })
 
-onMounted(() => {
-  form.defineField('userType')
-})
-
-// Options
+// Define user type options
 const userTypes = [
   {
     value: 'professional',
@@ -60,31 +55,19 @@ const userTypes = [
     icon: 'mdi:school',
     description: 'Studying astronomy or related field',
   },
-  {
-    value: 'other',
-    label: 'Other',
-    icon: 'mdi:account',
-    description: 'None of the above',
-  },
+  { value: 'other', label: 'Other', icon: 'mdi:account', description: 'None of the above' },
 ]
 
-// Utility to set selected value
-function setValue(value: string) {
-  form.setFieldValue('userType', value)
-}
-
-// Utility to get live selected value
-function selectedValue() {
-  return form.getFieldState('userType')?.value
+// Track user type selection for analytics
+function trackUserTypeSelection(value, label, isSelected) {
+  if (isSelected) {
+    analytics.trackInterestSelect('user_type', label)
+  }
 }
 
 // Submit handler
 function handleSubmit(e) {
   if (e.valid) {
-    const selectedType = userTypes.find((t) => t.value === e.values.userType)
-    if (selectedType) {
-      analytics.trackInterestSelect('user_type', selectedType.label)
-    }
     emit('complete', e.values)
   }
 }
@@ -99,47 +82,14 @@ function handleSubmit(e) {
       :form-control="form"
       @submit="handleSubmit"
     >
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        <PrimeCard
-          v-for="type in userTypes"
-          :key="type.value"
-          :class="{
-            'border-primary-500 bg-primary-500/20': selectedValue() === type.value,
-            'border-gray-700 bg-gray-800/20': selectedValue() !== type.value,
-          }"
-          class="cursor-pointer transition-all hover:shadow-md"
-          @click="() => setValue(type.value)"
-        >
-          <template #content>
-            <div class="flex items-center gap-3 p-2">
-              <div class="rounded-full flex p-3 bg-gray-800">
-                <Icon
-                  :name="type.icon"
-                  size="24px"
-                />
-              </div>
-              <div>
-                <h3 class="text-lg font-medium">{{ type.label }}</h3>
-                <p class="text-sm text-gray-400">{{ type.description }}</p>
-              </div>
-            </div>
-          </template>
-        </PrimeCard>
-      </div>
-
-      <!-- Validation error message -->
-      <PrimeFormField
-        v-slot="field"
+      <!-- Use the reusable SelectableCardField component -->
+      <FormSelectableCardField
         name="userType"
-      >
-        <PrimeMessage
-          v-if="field.invalid && field.touched"
-          severity="error"
-          class="mb-4"
-        >
-          {{ field.error?.message }}
-        </PrimeMessage>
-      </PrimeFormField>
+        :form="form"
+        :options="userTypes"
+        :multiple="false"
+        :track-selection="trackUserTypeSelection"
+      />
 
       <div class="flex justify-end mt-6">
         <PrimeButton

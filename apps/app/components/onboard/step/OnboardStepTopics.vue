@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form } from '@primevue/forms'
+import { useForm } from '@primevue/forms/useform'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import { z } from 'zod'
 import { ref, computed, onMounted, watch } from 'vue'
@@ -31,6 +31,13 @@ const initialValues = {
   topics: onboardingStore.stepData.topics || [],
 }
 
+// Initialize form with useForm
+const form = useForm({
+  resolver,
+  initialValues,
+  validateOnValueUpdate: true,
+})
+
 // Load tags
 onMounted(async () => {
   isLoading.value = true
@@ -43,10 +50,42 @@ onMounted(async () => {
   }
 })
 
-// Handle form submission
-function handleSubmit(e) {
-  emit('complete', e.values)
-}
+// Format search results for SelectableCardField
+const searchResultOptions = computed(() => {
+  return searchResults.value.map((tag) => ({
+    value: tag.id,
+    label: tag.name,
+  }))
+})
+
+// Format suggested topics for SelectableCardField
+const suggestedTopicOptions = computed(() => {
+  // Get first 10 tags as suggestions
+  return categoryTagStore.tags.slice(0, 10).map((tag) => ({
+    value: tag.id,
+    label: tag.name,
+  }))
+})
+
+// Get selected topics for display
+const selectedTopics = computed(() => {
+  const topicIds = form.getFieldState('topics')?.value || []
+  return categoryTagStore.tags
+    .filter((tag) => topicIds.includes(tag.id))
+    .map((tag) => ({
+      value: tag.id,
+      label: tag.name,
+    }))
+})
+
+// Format browse topics for SelectableCardField
+const browseTopicOptions = computed(() => {
+  // Get a selection of tags for browsing
+  return categoryTagStore.tags.slice(0, 15).map((tag) => ({
+    value: tag.id,
+    label: tag.name,
+  }))
+})
 
 // Filter tags by search query
 function searchTags() {
@@ -61,67 +100,22 @@ function searchTags() {
     .slice(0, 10) // Limit to 10 results
 }
 
-// Handle input changes
+// Watch for search query changes
 watch(searchQuery, () => {
   searchTags()
 })
 
-// Track tag selection
-function trackTopicToggle(tagId, tagName, isSelected) {
+// Track tag selection for analytics
+function trackTopicSelection(tagId, tagName, isSelected) {
   analytics.trackTopicSelect(tagId, tagName, isSelected ? 'select' : 'deselect')
 }
 
-// Handle selecting/deselecting a tag
-function toggleTopic($form, tagId, tagName) {
-  const currentTopics = [...($form.topics?.value || [])]
-  const index = currentTopics.indexOf(tagId)
-
-  if (index === -1) {
-    // Add to selected
-    currentTopics.push(tagId)
-    trackTopicToggle(tagId, tagName, true)
-  } else {
-    // Remove from selected
-    currentTopics.splice(index, 1)
-    trackTopicToggle(tagId, tagName, false)
-  }
-
-  // Update form value
-  $form.setFieldValue('topics', currentTopics)
-}
-
-// Remove a selected tag
-function removeTopic($form, tagId, tagName) {
-  const currentTopics = [...($form.topics?.value || [])]
-  const index = currentTopics.indexOf(tagId)
-
-  if (index !== -1) {
-    currentTopics.splice(index, 1)
-    trackTopicToggle(tagId, tagName, false)
-    $form.setFieldValue('topics', currentTopics)
+// Handle form submission
+function handleSubmit(e) {
+  if (e.valid) {
+    emit('complete', e.values)
   }
 }
-
-// Check if a tag is selected
-function isTopicSelected(topics, tagId) {
-  return topics && topics.includes(tagId)
-}
-
-// Get selected tags for display
-function getSelectedTags(selectedIds) {
-  return categoryTagStore.tags
-    .filter((tag) => selectedIds.includes(tag.id))
-    .map((tag) => ({ id: tag.id, name: tag.name }))
-}
-
-// Suggest popular topics (use actual tags from loaded data)
-const suggestedTopics = computed(() => {
-  // Get a random selection of tags (limit to 10)
-  return categoryTagStore.tags.slice(0, 10).map((tag) => ({
-    id: tag.id,
-    name: tag.name,
-  }))
-})
 </script>
 
 <template>
@@ -138,19 +132,11 @@ const suggestedTopics = computed(() => {
     </div>
 
     <!-- Topics content -->
-    <Form
+    <PrimeForm
       v-else
-      v-slot="$form"
-      :resolver="resolver"
-      :initial-values="initialValues"
+      :form-control="form"
       @submit="handleSubmit"
     >
-      <!-- Hidden input for topics array -->
-      <input
-        type="hidden"
-        name="topics"
-      />
-
       <!-- Search box -->
       <div class="mb-6">
         <label
@@ -179,16 +165,27 @@ const suggestedTopics = computed(() => {
         class="mb-6"
       >
         <h3 class="text-sm font-medium mb-2">Search Results</h3>
-        <div class="flex flex-wrap gap-2">
-          <PrimeChip
-            v-for="tag in searchResults"
-            :key="tag.id"
-            :label="tag.name"
-            class="cursor-pointer hover:bg-primary-800"
-            :class="{ 'bg-primary-800': isTopicSelected($form.topics?.value, tag.id) }"
-            @click="toggleTopic($form, tag.id, tag.name)"
-          />
-        </div>
+        <!-- Use SelectableCardField for search results -->
+        <FormSelectableCardField
+          name="topics"
+          :form="form"
+          :options="searchResultOptions"
+          :multiple="true"
+          :track-selection="trackTopicSelection"
+          card-class="cursor-pointer hover:bg-primary-800"
+        >
+          <!-- Custom card display for search results using chips -->
+          <template #card-content="{ option, selected }">
+            <PrimeChip
+              :label="option.label"
+              class="cursor-pointer"
+              :class="{ 'bg-primary-800': selected }"
+            />
+          </template>
+
+          <!-- Hide standard error display -->
+          <template #error></template>
+        </FormSelectableCardField>
       </div>
 
       <!-- No results message -->
@@ -202,34 +199,55 @@ const suggestedTopics = computed(() => {
       <!-- Suggested topics -->
       <div class="mb-6">
         <h3 class="text-sm font-medium mb-2">Suggested Topics</h3>
-        <div class="flex flex-wrap gap-2">
-          <PrimeChip
-            v-for="topic in suggestedTopics"
-            :key="topic.id"
-            :label="topic.name"
-            class="cursor-pointer hover:bg-primary-800"
-            :class="{ 'bg-primary-800': isTopicSelected($form.topics?.value, topic.id) }"
-            @click="toggleTopic($form, topic.id, topic.name)"
-          />
-        </div>
+        <!-- Use SelectableCardField for suggested topics -->
+        <FormSelectableCardField
+          name="topics"
+          :form="form"
+          :options="suggestedTopicOptions"
+          :multiple="true"
+          :track-selection="trackTopicSelection"
+          card-class="cursor-pointer hover:bg-primary-800"
+        >
+          <!-- Custom chip display -->
+          <template #card-content="{ option, selected }">
+            <PrimeChip
+              :label="option.label"
+              class="cursor-pointer hover:bg-primary-800"
+              :class="{ 'bg-primary-800': selected }"
+            />
+          </template>
+
+          <!-- Hide standard error display -->
+          <template #error></template>
+        </FormSelectableCardField>
       </div>
 
       <!-- Selected topics -->
       <div class="mb-6">
         <h3 class="text-sm font-medium mb-2">
-          Selected Topics ({{ ($form.topics?.value || []).length }})
+          Selected Topics ({{ (form.getFieldState('topics')?.value || []).length }})
         </h3>
         <div
-          v-if="$form.topics?.value?.length > 0"
+          v-if="selectedTopics.length > 0"
           class="flex flex-wrap gap-2"
         >
           <PrimeChip
-            v-for="tag in getSelectedTags($form.topics.value)"
-            :key="tag.id"
-            :label="tag.name"
+            v-for="topic in selectedTopics"
+            :key="topic.value"
+            :label="topic.label"
             class="bg-primary-900 text-primary-100"
             removable
-            @remove="removeTopic($form, tag.id, tag.name)"
+            @remove="
+              () => {
+                const currentTopics = [...(form.getFieldState('topics')?.value || [])]
+                const index = currentTopics.indexOf(topic.value)
+                if (index !== -1) {
+                  currentTopics.splice(index, 1)
+                  form.setFieldValue('topics', currentTopics)
+                  trackTopicSelection(topic.value, topic.label, false)
+                }
+              }
+            "
           />
         </div>
         <p
@@ -239,16 +257,25 @@ const suggestedTopics = computed(() => {
         >
       </div>
 
-      <!-- Validation error -->
-      <PrimeMessage
-        v-if="$form.topics?.invalid && $form.topics?.touched"
-        severity="error"
-        class="mb-4"
+      <!-- Validation error for field -->
+      <PrimeFormField
+        v-slot="field"
+        name="topics"
       >
-        {{ $form.topics.error?.message }}
-      </PrimeMessage>
+        <input
+          type="hidden"
+          v-bind="field.props"
+        />
+        <PrimeMessage
+          v-if="field.invalid && field.touched"
+          severity="error"
+          class="mb-4"
+        >
+          {{ field.error?.message }}
+        </PrimeMessage>
+      </PrimeFormField>
 
-      <!-- Browse all topics section (simplified) -->
+      <!-- Browse all topics section -->
       <div class="mb-6">
         <h3 class="text-sm font-medium mb-2">Browse Popular Topics</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
@@ -261,16 +288,30 @@ const suggestedTopics = computed(() => {
               v-for="tag in group"
               :key="tag.id"
               class="flex items-center p-2 rounded-md cursor-pointer hover:bg-gray-800"
-              :class="{ 'bg-primary-900/40': isTopicSelected($form.topics?.value, tag.id) }"
-              @click="toggleTopic($form, tag.id, tag.name)"
+              :class="{ 'bg-primary-900/40': selectedTopics.some((t) => t.value === tag.id) }"
+              @click="
+                () => {
+                  const currentTopics = [...(form.getFieldState('topics')?.value || [])]
+                  const index = currentTopics.indexOf(tag.id)
+                  if (index === -1) {
+                    currentTopics.push(tag.id)
+                    form.setFieldValue('topics', currentTopics)
+                    trackTopicSelection(tag.id, tag.name, true)
+                  } else {
+                    currentTopics.splice(index, 1)
+                    form.setFieldValue('topics', currentTopics)
+                    trackTopicSelection(tag.id, tag.name, false)
+                  }
+                }
+              "
             >
               <Icon
                 :name="
-                  isTopicSelected($form.topics?.value, tag.id) ? 'mdi:check-circle' : 'mdi:tag'
+                  selectedTopics.some((t) => t.value === tag.id) ? 'mdi:check-circle' : 'mdi:tag'
                 "
                 class="mr-2"
                 :class="
-                  isTopicSelected($form.topics?.value, tag.id)
+                  selectedTopics.some((t) => t.value === tag.id)
                     ? 'text-primary-500'
                     : 'text-gray-400'
                 "
@@ -289,9 +330,9 @@ const suggestedTopics = computed(() => {
           label="Continue"
           icon="mdi:arrow-right"
           icon-pos="right"
-          :disabled="!$form.valid || isLoading"
+          :disabled="!form.valid || isLoading"
         />
       </div>
-    </Form>
+    </PrimeForm>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form } from '@primevue/forms'
+import { useForm } from '@primevue/forms/useform'
 import { ref, computed, onMounted } from 'vue'
 import { useOnboardingStore } from '@/stores/useOnboardingStore'
 import { useCategoryTagStore } from '@/stores/useCategoryTagStore'
@@ -15,6 +15,11 @@ const isLoadingData = ref(true)
 
 // Get all data from the store
 const stepData = computed(() => onboardingStore.stepData)
+
+// Initialize a simple form without validation
+const form = useForm({
+  initialValues: {},
+})
 
 // Load reference data for display
 onMounted(async () => {
@@ -77,7 +82,7 @@ const locationDisplay = computed(() => {
 })
 
 // Handle completion
-async function completeOnboarding() {
+function completeOnboarding(e) {
   isLoading.value = true
 
   try {
@@ -256,7 +261,10 @@ async function completeOnboarding() {
     </div>
 
     <!-- Form for submission -->
-    <Form @submit="completeOnboarding">
+    <PrimeForm
+      :form-control="form"
+      @submit="completeOnboarding"
+    >
       <!-- Finish button -->
       <div class="flex justify-end mt-8">
         <PrimeButton
@@ -267,6 +275,6 @@ async function completeOnboarding() {
           :loading="isLoading"
         />
       </div>
-    </Form>
+    </PrimeForm>
   </div>
 </template>

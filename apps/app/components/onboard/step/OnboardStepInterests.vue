@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { Form } from '@primevue/forms'
+import { useForm } from '@primevue/forms/useform'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import { z } from 'zod'
 import { ref, computed, onMounted } from 'vue'
-import { useOnboardingStore } from '@/stores/useOnboardingStore'
-import { useCategoryTagStore } from '@/stores/useCategoryTagStore'
 
 const emit = defineEmits(['complete'])
 const onboardingStore = useOnboardingStore()
@@ -27,6 +25,22 @@ const initialValues = {
   interests: onboardingStore.stepData.interests || [],
 }
 
+// Initialize form with useForm
+const form = useForm({
+  resolver,
+  initialValues,
+  validateOnValueUpdate: true,
+})
+
+// Format categories for SelectableCardField
+const categoryOptions = computed(() => {
+  return categoryTagStore.categories.map((category) => ({
+    value: category.id,
+    label: category.name,
+    description: category.body || '',
+  }))
+})
+
 // Load categories
 onMounted(async () => {
   isLoading.value = true
@@ -39,38 +53,16 @@ onMounted(async () => {
   }
 })
 
-// Handle form submission
-function handleSubmit(e) {
-  emit('complete', e.values)
-}
-
-// Track category selection
-function trackInterestToggle(categoryId, categoryName, isSelected) {
+// Track category selection for analytics
+function trackInterestSelection(categoryId, categoryName, isSelected) {
   analytics.trackInterestSelect(categoryId, categoryName, isSelected ? 'select' : 'deselect')
 }
 
-// Toggle interest and update form state
-function toggleInterest($form, categoryId, categoryName) {
-  const currentInterests = [...($form.interests?.value || [])]
-  const index = currentInterests.indexOf(categoryId)
-
-  if (index === -1) {
-    // Add to selected
-    currentInterests.push(categoryId)
-    trackInterestToggle(categoryId, categoryName, true)
-  } else {
-    // Remove from selected
-    currentInterests.splice(index, 1)
-    trackInterestToggle(categoryId, categoryName, false)
+// Handle form submission
+function handleSubmit(e) {
+  if (e.valid) {
+    emit('complete', e.values)
   }
-
-  // Update form state
-  $form.setFieldValue('interests', currentInterests)
-}
-
-// Check if a category is selected
-function isInterestSelected(interests, categoryId) {
-  return interests && interests.includes(categoryId)
 }
 </script>
 
@@ -88,79 +80,41 @@ function isInterestSelected(interests, categoryId) {
     </div>
 
     <!-- Categories grid -->
-    <Form
+    <PrimeForm
       v-else
-      v-slot="$form"
-      :resolver="resolver"
-      :initial-values="initialValues"
+      :form-control="form"
       @submit="handleSubmit"
     >
-      <!-- Hidden input for storing the interests array -->
-      <input
-        type="hidden"
+      <!-- Use SelectableCardField for multi-selection of interests -->
+      <FormSelectableCardField
         name="interests"
-      />
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        <PrimeCard
-          v-for="category in categoryTagStore.categories"
-          :key="category.id"
-          :class="{
-            'border-primary-500 bg-primary-900/20': isInterestSelected(
-              $form.interests?.value,
-              category.id,
-            ),
-            'border-gray-700 hover:border-gray-500': !isInterestSelected(
-              $form.interests?.value,
-              category.id,
-            ),
-          }"
-          class="cursor-pointer transition-all hover:shadow-md"
-          @click="toggleInterest($form, category.id, category.name)"
-        >
-          <template #content>
-            <div class="flex items-center gap-3 p-2">
-              <div class="w-6 h-6 flex items-center justify-center">
-                <Icon
-                  :name="
-                    isInterestSelected($form.interests?.value, category.id)
-                      ? 'mdi:check-circle'
-                      : 'mdi:circle-outline'
-                  "
-                  size="24px"
-                  :class="
-                    isInterestSelected($form.interests?.value, category.id)
-                      ? 'text-primary-500'
-                      : 'text-gray-400'
-                  "
-                />
-              </div>
-              <div>
-                <h3 class="text-lg font-medium">{{ category.name }}</h3>
-                <p
-                  v-if="category.body"
-                  class="text-sm text-gray-400"
-                  >{{ category.body }}</p
-                >
-              </div>
-            </div>
-          </template>
-        </PrimeCard>
-      </div>
-
-      <!-- Validation error -->
-      <PrimeMessage
-        v-if="$form.interests?.invalid && $form.interests?.touched"
-        severity="error"
-        class="mb-4"
+        :form="form"
+        :options="categoryOptions"
+        :multiple="true"
+        :track-selection="trackInterestSelection"
       >
-        {{ $form.interests.error?.message }}
-      </PrimeMessage>
-
-      <!-- Selected count info -->
-      <div class="text-sm text-gray-400 mb-4">
-        {{ ($form.interests?.value || []).length }} categories selected
-      </div>
+        <!-- Customize card-content to use check icons -->
+        <template #card-content="{ option, selected }">
+          <div class="flex items-center gap-3 p-2">
+            <div class="w-6 h-6 flex items-center justify-center">
+              <Icon
+                :name="selected ? 'mdi:check-circle' : 'mdi:circle-outline'"
+                size="24px"
+                :class="selected ? 'text-primary-500' : 'text-gray-400'"
+              />
+            </div>
+            <div>
+              <h3 class="text-lg font-medium">{{ option.label }}</h3>
+              <p
+                v-if="option.description"
+                class="text-sm text-gray-400"
+              >
+                {{ option.description }}
+              </p>
+            </div>
+          </div>
+        </template>
+      </FormSelectableCardField>
 
       <!-- Navigation buttons -->
       <div class="flex justify-end mt-6">
@@ -169,9 +123,9 @@ function isInterestSelected(interests, categoryId) {
           label="Continue"
           icon="mdi:arrow-right"
           icon-pos="right"
-          :disabled="!$form.valid || isLoading"
+          :disabled="!form.valid || isLoading"
         />
       </div>
-    </Form>
+    </PrimeForm>
   </div>
 </template>
