@@ -52,9 +52,7 @@ const embedUrl = computed(() => {
       v-else
       :src="url.replace('/uploads/', '')"
       :alt="alt || 'Blog Media'"
-      :width="width"
-      :height="height"
-      class="h-full w-full object-contain"
+      class="h-full w-full object-fit aspect-[3/2]"
     />
   </div>
 </template>

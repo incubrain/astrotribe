@@ -1,38 +1,32 @@
 <script setup lang="ts">
 const route = useRoute()
-const slug = route.params.slug as string
-const category = route.params.category as string
 
 const { categories, validCategories, fetchCategories } = useBlogCategories()
 
 const { width } = useWindowSize()
+
+const { slug, category } = toRefs(route.params)
+
+const ready = computed(() => Boolean(slug?.value && category?.value))
 
 const {
   data: article,
   status,
   error,
 } = await useAsyncData(
-  `article-${category}-${slug}`,
+  `article-${category?.value}-${slug?.value}`,
   async () => {
-    // Include category in key
+    if (!ready.value) return null
+    const post = await queryCollection('blog')
+      .where('stem', '=', `blog/${category?.value}/${slug?.value}`)
+      .first()
 
-    try {
-      const post = await queryCollection('blog')
-        .where('stem', '=', `blog/${category}/${slug}`)
-        .first()
-      console.log('Article query result:', post ? { found: true, stem: post.stem } : 'Not found')
-      // DO NOT fetch author/category here yet
-      return post
-    } catch (e) {
-      console.error('Error fetching core article:', e)
-      // Ensure errors are thrown so status becomes 'error'
-      throw createError({ statusCode: 404, statusMessage: 'Article not found', fatal: true }) // Or handle differently
-    }
+    return post || null
   },
   {
     server: true,
-    key: `article-${category}-${slug}`,
-    watch: [() => route.params.slug, () => route.params.category],
+    immediate: ready.value,
+    watch: [ready],
   },
 )
 
@@ -83,7 +77,6 @@ watch(
         description: newArticle.description,
         ogTitle: newArticle.title,
         ogDescription: newArticle.description,
-        ogImage: newArticle.cover?.url,
       })
     }
   },
@@ -102,13 +95,15 @@ console.log('Article fetch result:', {
   status: status.value,
   hasArticle: !!article.value,
   articleId: article.value?.id,
+  article: article.value,
 })
 </script>
 
 <template>
-  <div>
+  <div class="pt-16">
+    <!-- Loading Spinner -->
     <div
-      v-if="status === 'pending'"
+      v-if="!article && !error"
       class="flex justify-center items-center py-16"
     >
       <Icon
@@ -117,8 +112,9 @@ console.log('Article fetch result:', {
       />
     </div>
 
+    <!-- Error Message -->
     <div
-      v-else-if="status === 'error' && error"
+      v-else-if="error"
       class="py-16 text-center"
     >
       <h1 class="text-3xl font-bold text-gray-700">Article Not Found</h1>
@@ -131,17 +127,15 @@ console.log('Article fetch result:', {
       </NuxtLink>
     </div>
 
+    <!-- Success: Render Article -->
     <div
-      v-else-if="status === 'success' && articleWithRelations"
+      v-else-if="articleWithRelations"
       class="background"
     >
-      <!-- Blog Header with Hero -->
       <BlogArticleHero :article="articleWithRelations" />
-
       <div
         class="padded-x grid grid-cols-[minmax(300px,700px)] justify-center pt-8 xl:grid-cols-[minmax(240px,1fr)_minmax(660px,700px)_minmax(240px,1fr)] xl:gap-8"
       >
-        <!-- Left Sidebar -->
         <div class="w-full xl:col-start-1">
           <BlogArticleToc
             :article="articleWithRelations"
@@ -149,8 +143,6 @@ console.log('Article fetch result:', {
             class="sticky top-24"
           />
         </div>
-
-        <!-- Main Content -->
         <div class="xl:padded-x xl:col-start-2">
           <div class="pb-12">
             <BlogArticleMeta
@@ -165,6 +157,7 @@ console.log('Article fetch result:', {
               />
             </div>
             <BlogArticleShare
+              v-if="article"
               :link="article.path"
               :summary="article.description"
             />
@@ -174,6 +167,7 @@ console.log('Article fetch result:', {
         </div>
       </div>
     </div>
+
     <!-- Related Articles -->
     <div
       v-if="article"

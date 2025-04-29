@@ -1,61 +1,3 @@
-<template>
-  <div class="w-full h-screen flex justify-center items-center bg-gray-900">
-    <div
-      class="max-w-md w-full p-6 rounded-lg border border-gray-800 bg-gray-900/80 flex flex-col items-center"
-    >
-      <div
-        v-if="isLoading"
-        class="text-center"
-      >
-        <Icon
-          name="mdi:loading"
-          class="animate-spin text-primary-500 mb-4"
-          size="50px"
-        />
-        <h2 class="text-xl font-bold text-white mb-2">Authenticating</h2>
-        <p class="text-gray-400">Verifying your credentials...</p>
-      </div>
-
-      <div
-        v-else-if="error"
-        class="text-center"
-      >
-        <Icon
-          name="mdi:alert-circle-outline"
-          class="text-red-500 mb-4"
-          size="50px"
-        />
-        <h2 class="text-xl font-bold text-white mb-2">Authentication Error</h2>
-        <p class="text-red-400 mb-4">{{ errorMessage }}</p>
-        <PrimeButton
-          label="Return to Login"
-          class="w-full"
-          @click="redirectToLogin"
-        />
-      </div>
-
-      <div
-        v-else
-        class="text-center"
-      >
-        <Icon
-          name="mdi:check-circle"
-          class="text-green-500 mb-4"
-          size="50px"
-        />
-        <h2 class="text-xl font-bold text-white mb-2">Success!</h2>
-        <p class="text-gray-400 mb-2">Authentication complete. Redirecting...</p>
-        <div class="w-full bg-gray-800 rounded-full h-2 mb-4">
-          <div
-            class="bg-primary-500 h-2 rounded-full"
-            :style="{ width: `${progressWidth}%` }"
-          ></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useSupabaseClient } from '#imports'
@@ -138,7 +80,7 @@ async function checkOnboardingStatus(userId: string) {
       .from('user_profiles')
       .select('onboarding_completed')
       .eq('id', userId)
-      .single()
+      .single<{ onboarding_completed: boolean }>()
 
     // Determine redirect target
     let finalRedirectUrl = redirectTarget.value
@@ -149,11 +91,69 @@ async function checkOnboardingStatus(userId: string) {
     }
 
     // Redirect user
-    window.location.href = finalRedirectUrl
+    window.location.href = finalRedirectUrl as string
   } catch (err) {
     // If profile check fails, redirect to app URL anyway
     logger.error('Error checking onboarding status', err)
-    window.location.href = redirectTarget.value
+    window.location.href = redirectTarget.value as string
   }
 }
 </script>
+
+<template>
+  <div class="w-full h-screen flex justify-center items-center bg-gray-900">
+    <div
+      class="max-w-md w-full p-6 rounded-lg border border-gray-800 bg-gray-900/80 flex flex-col items-center"
+    >
+      <div
+        v-if="isLoading"
+        class="text-center"
+      >
+        <Icon
+          name="mdi:loading"
+          class="animate-spin text-primary-500 mb-4"
+          size="50px"
+        />
+        <h2 class="text-xl font-bold text-white mb-2">Authenticating</h2>
+        <p class="text-gray-400">Verifying your credentials...</p>
+      </div>
+
+      <div
+        v-else-if="error"
+        class="text-center"
+      >
+        <Icon
+          name="mdi:alert-circle-outline"
+          class="text-red-500 mb-4"
+          size="50px"
+        />
+        <h2 class="text-xl font-bold text-white mb-2">Authentication Error</h2>
+        <p class="text-red-400 mb-4">{{ errorMessage }}</p>
+        <PrimeButton
+          label="Return to Login"
+          class="w-full"
+          @click="redirectToLogin"
+        />
+      </div>
+
+      <div
+        v-else
+        class="text-center"
+      >
+        <Icon
+          name="mdi:check-circle"
+          class="text-green-500 mb-4"
+          size="50px"
+        />
+        <h2 class="text-xl font-bold text-white mb-2">Success!</h2>
+        <p class="text-gray-400 mb-2">Authentication complete. Redirecting...</p>
+        <div class="w-full bg-gray-800 rounded-full h-2 mb-4">
+          <div
+            class="bg-primary-500 h-2 rounded-full"
+            :style="{ width: `${progressWidth}%` }"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

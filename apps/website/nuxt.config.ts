@@ -195,17 +195,13 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/blog': { prerender: true },
     '/blog/category/*': {
-      isr: 3600, // Cache for 1 hour
-      swr: true, // Stale-while-revalidate
+      prerender: true,
     },
     '/blog/category/*/page/*': {
-      isr: 3600, // Cache for 1 hour
-      swr: true, // Stale-while-revalidate
+      prerender: true,
     },
     '/blog/*': {
-      // Individual article routes
-      isr: 3600,
-      swr: true,
+      prerender: true,
     },
 
     '/sitemap.xml': {

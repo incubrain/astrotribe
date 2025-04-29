@@ -84,20 +84,17 @@ const { data: authorData } = await useAsyncData(`author-${props.article.id}`, as
     glow-color="primary"
   >
     <div class="h-full flex flex-col">
-      <div class="h-48 w-full overflow-hidden rounded-t-xl relative z-0">
+      <div class="h-48 w-full overflow-hidden rounded-t-xl relative z-0 aspect-video">
         <BlogMedia
           v-if="article.image"
           :url="`${article.image}.png`"
           :alt="article.image || article.title"
-          :width="400"
-          :height="250"
-          class="h-full w-full object-contain"
         />
         <div
           v-else
           class="h-full w-full bg-primary-950"
         />
-        <div class="absolute bottom-0 left-0 w-full p-2">
+        <div class="absolute bottom-1 left-1 w-full p-2">
           <BlogCatTag
             v-if="displayTags.length > 0 || categoryData"
             :tags="displayTags"
@@ -156,10 +153,7 @@ const { data: authorData } = await useAsyncData(`author-${props.article.id}`, as
 
         <!-- Read more button -->
         <div class="mt-auto pt-2">
-          <NuxtLink
-            :to="getArticleUrl(article)"
-            target="_blank"
-          >
+          <NuxtLink :to="getArticleUrl(article)">
             <PrimeButton
               outlined
               size="small"
