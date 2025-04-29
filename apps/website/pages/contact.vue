@@ -383,7 +383,7 @@
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
     >
       <div class="p-4">
-        <PrimeForm
+        <form
           class="space-y-4"
           @submit.prevent="submitForm(CONTACT_TYPE.CONSULTATION)"
         >
@@ -479,7 +479,7 @@
           >
             Application submitted successfully! We'll get back to you soon.
           </div>
-        </PrimeForm>
+        </form>
       </div>
     </PrimeDialog>
   </div>
@@ -602,6 +602,8 @@ const submitForm = (contact_type: CONTACT_TYPE) => {
     sendForm({
       type: contact_type,
       name: formData.value.name,
+      company: formData.value.company,
+      phone: formData.value.phone,
       email: formData.value.email,
       message: formData.value.message,
       inquiryType: formData.value.inquiryType,

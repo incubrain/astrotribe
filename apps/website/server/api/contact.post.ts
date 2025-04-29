@@ -28,32 +28,39 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
 
     // Initialize Resend with API key
-    const resend = new Resend(config.resendApiKey)
+    //const resend = new Resend(config.resendApiKey)
 
     // Read and validate the form data
 
     const body = await readBody<ContactFormDTO>(event)
     // Send email with Resend
-    const { data, error } = await resend.emails.send({
-      from: `AstronEra <${config.resendFromEmail}>`,
-      to: [config.resendToEmail],
+    // const { data, error } = await resend.emails.send({
+    //   from: `AstronEra <${config.resendFromEmail}>`,
+    //   to: [config.resendToEmail],
+    //   subject: getSubject(body.type),
+    //   html: buildHTML(body),
+    //   // Add reply-to header with the user's email
+    //   replyTo: body.email,
+    // })
+
+    // if (error) {
+    //   console.error('Resend API error:', error)
+    //   throw new Error(error.message)
+    // }
+
+    console.log({
       subject: getSubject(body.type),
       html: buildHTML(body),
       // Add reply-to header with the user's email
       replyTo: body.email,
     })
 
-    if (error) {
-      console.error('Resend API error:', error)
-      throw new Error(error.message)
-    }
-
-    console.log('RESEND MESSAGE SUCCESS', data)
+    // console.log('RESEND MESSAGE SUCCESS', data)
     // Return success response with message ID for tracking
     return {
       success: true,
       message: `Your ${body.type} request has been submitted successfully`,
-      id: data?.id,
+      // id: data?.id,
     }
   } catch (error: any) {
     // Log the error for debugging

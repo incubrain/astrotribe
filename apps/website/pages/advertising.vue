@@ -42,9 +42,12 @@ const submitForm = () => {
     isSubmitting.value = false
 
     sendForm({
-      contact_type: CONTACT_TYPE.ADVERTISMENT,
+      type: CONTACT_TYPE.ADVERTISMENT,
       email: formData.value.email,
       message: formData.value.message,
+      phone: formData.value.phone,
+      company: formData.value.company,
+      name: formData.value.name,
     })
 
     // Show success message
@@ -101,7 +104,7 @@ useHead({
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
     >
       <div class="p-4">
-        <PrimeForm
+        <form
           class="space-y-4"
           @submit.prevent="submitForm"
         >
@@ -186,7 +189,7 @@ useHead({
           >
             Application submitted successfully! We'll get back to you soon.
           </div>
-        </PrimeForm>
+        </form>
       </div>
     </PrimeDialog>
   </div>
