@@ -10,8 +10,8 @@ const route = useRoute()
       <div class="relative z-10">
         <slot />
       </div>
-      <ClientOnly>
-        <IBBackground class="left-0 top-0 z-0 hidden opacity-50 lg:fixed lg:block" />
+      <ClientOnly fallback-tag="div">
+        <IBBackground />
       </ClientOnly>
     </div>
 
