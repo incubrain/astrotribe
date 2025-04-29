@@ -182,6 +182,12 @@ client_id = "env(SUPABASE_AUTH_TWITTER_API_KEY)"
 secret = "env(SUPABASE_AUTH_TWITTER_API_SECRET)"
 redirect_uri = "http://localhost:54321/auth/v1/callback"
 
+[auth.external.google]
+enabled = true
+client_id = "env(SUPABASE_AUTH_GOOGLE_API_KEY)"
+secret = "env(SUPABASE_AUTH_GOOGLE_API_SECRET)"
+redirect_uri = "http://localhost:54321/auth/v1/callback"
+
 
 [analytics]
 enabled = true
