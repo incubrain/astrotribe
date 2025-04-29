@@ -13,6 +13,8 @@ const formData = ref({
   message: '',
 })
 
+const compulsoryFields = ['name', 'email', 'message']
+
 const isModalOpen = ref(false)
 const showSuccessMessage = ref(false)
 const isSubmitting = ref(false)
@@ -27,9 +29,7 @@ const submitForm = () => {
   isSubmitting.value = true
   const toast = useNotification()
 
-  if (
-    Object.keys(formData.value).some((key: any) => !(formData.value as Record<string, any>)[key])
-  ) {
+  if (compulsoryFields.some((field: any) => !(formData.value as Record<string, any>)[field])) {
     toast.error({
       summary: 'Failed to submit form',
       message: 'Please fill in all the required fields',
@@ -57,8 +57,9 @@ const submitForm = () => {
     formData.value = {
       name: '',
       email: '',
-      inquiryType: '',
       message: '',
+      phone: '',
+      company: '',
     }
   }, 1500)
 }

@@ -544,6 +544,7 @@ const submitForm = (contact_type: CONTACT_TYPE) => {
   if (
     Object.keys(formData.value).some((key: any) => !(formData.value as Record<string, any>)[key])
   ) {
+    console.error('Contact Form Error: Incomplete form data')
     toast.error({
       summary: 'Failed to submit form',
       message: 'Please fill in all the required fields',
@@ -562,6 +563,8 @@ const submitForm = (contact_type: CONTACT_TYPE) => {
     })
 
     // Show success message
+    console.log('Sending Message')
+
     toast.success({
       summary: 'Message Sent',
       message: "Your message has been sent! We'll get back to you soon.",

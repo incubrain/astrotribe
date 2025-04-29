@@ -30,8 +30,8 @@ export default defineEventHandler(async (event) => {
     const resend = new Resend(config.resendApiKey)
 
     // Read and validate the form data
-    const body = await readBody<ContactFormDTO>(event)
 
+    const body = await readBody<ContactFormDTO>(event)
     // Send email with Resend
     const { data, error } = await resend.emails.send({
       from: `AstronEra <${config.resendFromEmail}>`,
@@ -47,6 +47,7 @@ export default defineEventHandler(async (event) => {
       throw new Error(error.message)
     }
 
+    console.log('RESEND MESSAGE SUCCESS', data)
     // Return success response with message ID for tracking
     return {
       success: true,

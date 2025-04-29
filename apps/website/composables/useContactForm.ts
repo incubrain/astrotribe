@@ -16,11 +16,12 @@ export const useContactForm = () => {
   const sendForm = async (form: Form) => {
     try {
       isSending.value = true
+      console.log('SENDING MESSAGE')
       const response = await $fetch(`/api/contact`, {
         method: 'POST',
         body: form,
       })
-
+      console.log('MESSAGE SENT SUCCESSFULLY')
       return response
     } catch (error: any) {
       console.error(`Error sending message with contact form`, error)
