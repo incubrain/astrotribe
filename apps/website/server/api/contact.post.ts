@@ -16,6 +16,7 @@ interface ContactFormDTO {
   message: string
   company?: string
   email: string
+  inquiry_type?: string
   phone?: string
   website?: string
   preferredDate?: string | Date
@@ -66,6 +67,9 @@ export default defineEventHandler(async (event) => {
   }
 })
 
+// feedback-smtp.us-east-1.amazonses.com
+// v=spf1 include:amazonses.com ~all
+
 const getSubject = (contact_type: CONTACT_TYPE) => {
   switch (contact_type) {
     case CONTACT_TYPE.CONSULTATION: {
@@ -107,10 +111,10 @@ const buildHTML = (form: ContactFormDTO) => {
       return `
       <h2>General Message</h2>
       <p><strong>From:</strong> ${form.name}</p>
-      <p><strong>Company:</strong> ${form.company}</p>
       <p><strong>Email:</strong> ${form.email}</p>
+      <p><strong>Inquiry Type: ${form.inquiry_type}}</strong>
+      <p><strong>Company:</strong> ${form.company}</p>
       <p><strong>Phone:</strong> ${form.phone || 'Not provided'}</p>
-      <p><strong>Website:</strong> ${form.website || 'Not provided'}</p>
       <h3>Message:</h3>
       <p>${form.message || 'No message provided'}</p>
       `

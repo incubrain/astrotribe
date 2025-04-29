@@ -413,6 +413,32 @@
               />
             </div>
           </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label
+                for="phone"
+                class="block text-sm font-medium"
+                >Phone</label
+              >
+              <PrimeInputText
+                id="phone"
+                v-model="formData.phone"
+                class="w-full"
+              />
+            </div>
+            <div class="space-y-2">
+              <label
+                for="company"
+                class="block text-sm font-medium"
+                >Company</label
+              >
+              <PrimeInputText
+                id="company"
+                v-model="formData.company"
+                class="w-full"
+              />
+            </div>
+          </div>
           <div class="space-y-2">
             <label
               for="message"
@@ -496,6 +522,8 @@ const formData = ref({
   email: '',
   inquiryType: '',
   message: '',
+  phone: '',
+  company: '',
 })
 
 const inquiryOptions = ref([
@@ -541,9 +569,12 @@ const submitForm = (contact_type: CONTACT_TYPE) => {
   isSubmitting.value = true
   const toast = useNotification()
 
-  if (
-    Object.keys(formData.value).some((key: any) => !(formData.value as Record<string, any>)[key])
-  ) {
+  const compulsoryFields =
+    contact_type === CONTACT_TYPE.MESSAGE
+      ? ['name', 'email', 'inquiryType', 'message']
+      : ['name', 'email', 'message']
+
+  if (compulsoryFields.some((field: any) => !(formData.value as Record<string, any>)[field])) {
     console.error('Contact Form Error: Incomplete form data')
     toast.error({
       summary: 'Failed to submit form',
@@ -576,6 +607,8 @@ const submitForm = (contact_type: CONTACT_TYPE) => {
       email: '',
       inquiryType: '',
       message: '',
+      phone: '',
+      company: '',
     }
   }, 1500)
 }
