@@ -25,7 +25,7 @@ const props = defineProps({
 })
 
 // 5. Core Nuxt Composables
-const { $config } = useNuxtApp()
+const config = useRuntimeConfig()
 // 6. Other Composables
 const { y } = useWindowScroll()
 
@@ -246,7 +246,7 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
           <div class="hidden lg:flex items-center gap-2">
             <NuxtLink
               v-ripple
-              :to="$config.public.authURL"
+              :to="config.public.authURL"
             >
               <PrimeButton
                 severity="secondary"
@@ -258,7 +258,7 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
 
             <NuxtLink
               v-ripple
-              :to="`${$config.public.authURL}${$config.public.registerPath}`"
+              :to="`${config.public.authURL}${config.public.registerPath}`"
             >
               <PrimeButton
                 severity="primary"
@@ -380,7 +380,7 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
         <div class="pt-4 border-t border-primary-100/20 flex flex-col gap-2">
           <NuxtLink
             v-ripple
-            :to="$config.public.authURL"
+            :to="config.public.authURL"
             class="w-full"
           >
             <PrimeButton
@@ -393,7 +393,7 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
 
           <NuxtLink
             v-ripple
-            :to="`${$config.public.authURL}${$config.public.registerPath}`"
+            :to="`${config.public.authURL}${config.public.registerPath}`"
             class="w-full"
           >
             <PrimeButton

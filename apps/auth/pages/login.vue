@@ -16,6 +16,8 @@ const resetTurnstile = () => {
   turnstileToken.value = null
 }
 
+const config = useRuntimeConfig()
+
 definePageMeta({
   name: 'Login',
 })
@@ -28,7 +30,7 @@ definePageMeta({
       subtitle: 'Don\'t have an account?',
       label: 'Sign up',
     }"
-    :help-url="`${$config.public.registerPath}`"
+    :help-url="`${config.public.registerPath}`"
   >
     <template #content>
       <div class="w-full flex flex-col gap-4">
