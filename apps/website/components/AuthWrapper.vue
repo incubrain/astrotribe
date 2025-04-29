@@ -71,7 +71,7 @@ const redirectTo = computed(() => {
 const handleAuthAction = async () => {
   isLoading.value = true
   try {
-    const authBaseUrl = config.public.authUrl || 'http://localhost:3009'
+    const authBaseUrl = config.public.authURL || 'http://localhost:3009'
     const authPath = props.mode === 'login' ? '/login' : '/register'
     const encodedRedirect = encodeURIComponent(redirectTo.value)
     const queryParamsObj = {

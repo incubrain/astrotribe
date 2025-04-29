@@ -49,7 +49,16 @@ Robotics controllers completed the extraction late Thursday of the Atomic Clock 
   try {
     const result = await client.query(insertQuery, [featuredImage, JSON.stringify(details)])
     console.log(`✅ Row inserted. Triggered webhooks for ID: ${result.rows[0].id}`)
-    console.log('Check your Mastra server logs to see if the webhook was triggered')
+  const details = {
+    body: 'The Indian Space Research Organisation (ISRO) is preparing for a new lunar mission...',
+  }
+
+  try {
+    const result = await client.query(insertQuery, [
+      JSON.stringify(details),
+      'ISRO is preparing for a lunar mission.',
+    ])
+    console.log(`✅ Row inserted. Triggered webhooks for ID: ${result.rows[0].id}`)
   } catch (error) {
     console.error('❌ Failed to insert row:', error)
   } finally {

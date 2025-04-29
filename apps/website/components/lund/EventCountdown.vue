@@ -5,6 +5,7 @@ import { useAnimation } from '~/composables/useAnimation'
 import { useEvents, type AstronomyEvent } from '~/composables/useEvents'
 import { useAnalytics } from '#imports'
 
+
 const { conf: motionConstants } = useAnimation()
 const { trackUserEngagement, UserEngagementMetric } = useAnalytics()
 
@@ -58,6 +59,7 @@ const selectEvent = (eventId: number) => {
   //   event_name: event.name,
   //   persona: activePersona.value.name,
   // })
+
 }
 
 // Track when users click "View Full Calendar"
@@ -100,6 +102,7 @@ const trackViewFullCalendar = () => {
         dynamic-styling
         class="max-w-3xl mx-auto mb-8"
       />
+
 
       <!-- Recommended persona-specific events -->
       <div

@@ -33,7 +33,7 @@
 
               <form
                 class="space-y-4"
-                @submit.prevent="submitForm"
+                @submit.prevent="submitForm(CONTACT_TYPE.MESSAGE)"
               >
                 <!-- Name Field -->
                 <div class="space-y-2">
@@ -385,7 +385,7 @@
       <div class="p-4">
         <PrimeForm
           class="space-y-4"
-          @submit.prevent="submitForm"
+          @submit.prevent="submitForm(CONTACT_TYPE.CONSULTATION)"
         >
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="space-y-2">
@@ -451,6 +451,7 @@
 <script setup lang="ts">
 const isModalOpen = ref(false)
 const showSuccessMessage = ref(false)
+const { CONTACT_TYPE, sendForm } = useContactForm()
 
 interface ModalConfig {
   header: string
@@ -536,15 +537,34 @@ const faqs = [
 ]
 
 // 11. Methods
-const submitForm = () => {
+const submitForm = (contact_type: CONTACT_TYPE) => {
   isSubmitting.value = true
+  const toast = useNotification()
+
+  if (
+    Object.keys(formData.value).some((key: any) => !(formData.value as Record<string, any>)[key])
+  ) {
+    console.error('Contact Form Error: Incomplete form data')
+    toast.error({
+      summary: 'Failed to submit form',
+      message: 'Please fill in all the required fields',
+    })
+    return
+  }
 
   // Simulate API call
   setTimeout(() => {
     isSubmitting.value = false
 
+    sendForm({
+      contact_type,
+      email: formData.value.email,
+      message: formData.value.message,
+    })
+
     // Show success message
-    const toast = useNotification()
+    console.log('Sending Message')
+
     toast.success({
       summary: 'Message Sent',
       message: "Your message has been sent! We'll get back to you soon.",
@@ -590,5 +610,35 @@ const submitForm = () => {
   background-color: rgba(30, 41, 59, 0.3) !important;
   border-color: rgba(99, 102, 241, 0.2) !important;
   color: rgb(203, 213, 225) !important;
+}
+
+/* Add these styles to your <style> section */
+.p-dialog-mask {
+  /* This prevents the scrollbar from disappearing */
+  overflow-y: scroll;
+  padding-right: 17px; /* Approximate width of a scrollbar */
+}
+
+.p-dialog {
+  margin-right: auto;
+  margin-left: auto;
+  /* Ensures dialog stays centered even with scrollbar present */
+}
+
+/* Change the color of the close button */
+.p-dialog-header-close {
+  color: #94a3b8 !important; /* Light blue-gray that fits your theme */
+}
+
+.p-dialog-header-close:hover {
+  color: white !important;
+  background-color: rgba(99, 102, 241, 0.2) !important;
+}
+
+/* Optional: Add a transition for smoother opening/closing */
+.p-dialog {
+  transition:
+    transform 0.2s,
+    opacity 0.2s;
 }
 </style>
