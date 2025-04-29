@@ -8,7 +8,8 @@ definePageMeta({
 const formData = ref({
   name: '',
   email: '',
-  inquiryType: '',
+  phone: '',
+  company: '',
   message: '',
 })
 
@@ -20,15 +21,33 @@ const openModal = () => (isModalOpen.value = true)
 
 const modalConfig = ref({ header: '', textareaTitle: '', textareaPlaceholder: '' })
 
+const { CONTACT_TYPE, sendForm } = useContactForm()
+
 const submitForm = () => {
   isSubmitting.value = true
+  const toast = useNotification()
+
+  if (
+    Object.keys(formData.value).some((key: any) => !(formData.value as Record<string, any>)[key])
+  ) {
+    toast.error({
+      summary: 'Failed to submit form',
+      message: 'Please fill in all the required fields',
+    })
+    return
+  }
 
   // Simulate API call
   setTimeout(() => {
     isSubmitting.value = false
 
+    sendForm({
+      contact_type: CONTACT_TYPE.ADVERTISMENT,
+      email: formData.value.email,
+      message: formData.value.message,
+    })
+
     // Show success message
-    const toast = useNotification()
     toast.success({
       summary: 'Message Sent',
       message: "Your message has been sent! We'll get back to you soon.",
@@ -107,6 +126,32 @@ useHead({
               <PrimeInputText
                 id="email"
                 v-model="formData.email"
+                class="w-full"
+              />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label
+                for="name"
+                class="block text-sm font-medium"
+                >Phone Number</label
+              >
+              <PrimeInputText
+                id="phone"
+                v-model="formData.phone"
+                class="w-full"
+              />
+            </div>
+            <div class="space-y-2">
+              <label
+                for="company"
+                class="block text-sm font-medium"
+                >Company</label
+              >
+              <PrimeInputText
+                id="company"
+                v-model="formData.company"
                 class="w-full"
               />
             </div>
