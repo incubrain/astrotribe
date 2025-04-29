@@ -557,7 +557,7 @@ const submitForm = (contact_type: CONTACT_TYPE) => {
     isSubmitting.value = false
 
     sendForm({
-      contact_type,
+      type: contact_type,
       email: formData.value.email,
       message: formData.value.message,
     })
