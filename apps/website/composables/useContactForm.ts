@@ -7,10 +7,14 @@ export const useContactForm = () => {
   }
 
   interface Form {
-    contact_type: CONTACT_TYPE
+    type: CONTACT_TYPE
     email: string
+    name: string
     message: string
+    phone?: string
     company?: string
+    inquiryType?: string
+    preferredDate?: Date
   }
 
   const sendForm = async (form: Form) => {

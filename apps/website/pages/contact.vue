@@ -441,6 +441,17 @@
           </div>
           <div class="space-y-2">
             <label
+              for="preferredData"
+              class="block text-sm font-medium"
+              >Preferred Date</label
+            >
+            <PrimeCalendar
+              v-model="formData.preferredDate"
+              id="preferredDate"
+            />
+          </div>
+          <div class="space-y-2">
+            <label
               for="message"
               class="block text-sm font-medium"
               >{{ modalConfig.textareaTitle }}</label
@@ -524,6 +535,7 @@ const formData = ref({
   message: '',
   phone: '',
   company: '',
+  preferredDate: undefined,
 })
 
 const inquiryOptions = ref([
@@ -589,8 +601,11 @@ const submitForm = (contact_type: CONTACT_TYPE) => {
 
     sendForm({
       type: contact_type,
+      name: formData.value.name,
       email: formData.value.email,
       message: formData.value.message,
+      inquiryType: formData.value.inquiryType,
+      preferredDate: formData.value.preferredDate,
     })
 
     // Show success message
@@ -609,6 +624,7 @@ const submitForm = (contact_type: CONTACT_TYPE) => {
       message: '',
       phone: '',
       company: '',
+      preferredDate: undefined,
     }
   }, 1500)
 }
