@@ -4,7 +4,7 @@ import { useOnboardingStore } from '@/stores/useOnboardingStore'
 const onboardingStore = useOnboardingStore()
 const analytics = useOnboardingAnalytics()
 const onboardingApi = useOnboardingApi()
-const { currentStep, totalSteps, isComplete, progressPercentage, isProfessional, shouldSkipStep } =
+const { currentStep, totalSteps, isComplete, progressPercentage, isProfessional } =
   storeToRefs(onboardingStore)
 
 // Handle navigation
@@ -24,11 +24,7 @@ const stepNames = {
 // Initialize onboarding
 onMounted(async () => {
   // Check if onboarding is already completed
-  const {
-    completed,
-    currentStep: savedStep,
-    userType,
-  } = await onboardingApi.checkOnboardingStatus()
+  const { completed, userType } = await onboardingApi.checkOnboardingStatus()
 
   if (completed) {
     // Redirect to home/dashboard if onboarding is already completed
@@ -77,7 +73,7 @@ async function handleComplete(finalData: any) {
 
     if (success) {
       // Track completion
-      analytics.trackOnboardingComplete(onboardingStore.allData)
+      analytics.trackOnboardingComplete(onboardingStore.stepData)
 
       // Redirect to dashboard
       navigateTo('/')
@@ -95,22 +91,15 @@ onBeforeRouteLeave((to, from, next) => {
   }
   next()
 })
+
+definePageMeta({
+  title: 'Onboarding',
+  layout: 'onboarding',
+})
 </script>
 
 <template>
-  <div class="onboarding-container max-w-4xl mx-auto px-4 py-8">
-    <!-- Progress Bar -->
-    <div class="mb-8">
-      <PrimeProgressBar
-        :value="progressPercentage"
-        class="h-2"
-      />
-      <div class="flex justify-between text-sm mt-2 text-gray-500">
-        <span>Step {{ currentStep }} of {{ isProfessional ? totalSteps : totalSteps - 1 }}</span>
-        <span>{{ progressPercentage }}% Complete</span>
-      </div>
-    </div>
-
+  <div class="onboarding-container max-w-4xl mx-auto">
     <!-- Transition between steps -->
     <Transition
       name="slide-fade"
@@ -121,43 +110,36 @@ onBeforeRouteLeave((to, from, next) => {
         class="onboarding-step bg-gray-900/50 rounded-lg p-6 shadow-lg border border-gray-800"
         :class="{ 'pointer-events-none': isNavigating }"
       >
-        <!-- Step 1: User Type -->
         <OnboardStepUserType
           v-if="currentStep === 1"
           @complete="handleStepComplete(1, $event)"
         />
 
-        <!-- Step 2: Professional Details (Conditional) -->
         <OnboardStepProfessionalDetails
-          v-if="currentStep === 2 && !shouldSkipStep(2)"
+          v-if="currentStep === 2 && !onboardingStore.shouldSkipStep(2)"
           @complete="handleStepComplete(2, $event)"
         />
 
-        <!-- Step 3: Interests -->
         <OnboardStepInterests
           v-if="currentStep === 3"
           @complete="handleStepComplete(3, $event)"
         />
 
-        <!-- Step 4: Feature Interests -->
         <OnboardStepFeatures
           v-if="currentStep === 4"
           @complete="handleStepComplete(4, $event)"
         />
 
-        <!-- Step 5: Topics -->
         <OnboardStepTopics
           v-if="currentStep === 5"
           @complete="handleStepComplete(5, $event)"
         />
 
-        <!-- Step 6: Location -->
         <OnboardStepLocation
           v-if="currentStep === 6"
           @complete="handleStepComplete(6, $event)"
         />
 
-        <!-- Step 7: Confirmation -->
         <OnboardStepConfirmation
           v-if="currentStep === 7"
           @complete="handleComplete"
@@ -165,7 +147,6 @@ onBeforeRouteLeave((to, from, next) => {
       </div>
     </Transition>
 
-    <!-- Navigation Buttons -->
     <div class="flex justify-between mt-8">
       <PrimeButton
         v-if="currentStep > 1"

@@ -76,9 +76,15 @@ async function detectLocation() {
     }
 
     const locationData = await response.json()
-    onSelectLocation(locationData)
+    const formattedLocation = formatLocation(locationData)
+
+    // Set the form value
+    // Note: We'll need access to the form ref later
+    selectedLocation.value = locationData
+    return formattedLocation
   } catch (error) {
     console.error('Error detecting location:', error)
+    return null
   } finally {
     isDetectingLocation.value = false
   }
@@ -124,13 +130,10 @@ async function searchLocations(event) {
   }
 }
 
-// Handle location selection
-function onSelectLocation(location) {
-  selectedLocation.value = location
-
-  // Format location data for storage
+// Format location data for storage
+function formatLocation(location) {
   const address = location.address || {}
-  const locationData = {
+  return {
     placeName: location.display_name,
     city: address.city || address.town || address.village || address.hamlet,
     state: address.state,
@@ -139,15 +142,21 @@ function onSelectLocation(location) {
     latitude: parseFloat(location.lat),
     longitude: parseFloat(location.lon),
   }
-
-  // Save to form
-  return locationData
 }
 
 // Handle selected from autocomplete
 function onLocationSelected(event, $form) {
-  const locationData = onSelectLocation(event.value.data)
+  const locationData = formatLocation(event.value.data)
+  selectedLocation.value = event.value.data
   $form.setFieldValue('location', locationData)
+}
+
+// Handle location detection and set form value
+async function handleLocationDetection($form) {
+  const locationData = await detectLocation()
+  if (locationData) {
+    $form.setFieldValue('location', locationData)
+  }
 }
 </script>
 
@@ -171,10 +180,16 @@ function onLocationSelected(event, $form) {
           :loading="isDetectingLocation"
           :disabled="isDetectingLocation"
           outlined
-          @click="detectLocation"
+          @click="handleLocationDetection($form)"
         />
         <p class="text-sm text-gray-400 mt-2"> Or search for your location below. </p>
       </div>
+
+      <!-- Hidden input for location object -->
+      <input
+        type="hidden"
+        name="location"
+      />
 
       <!-- Location search autocomplete -->
       <div class="mb-6">

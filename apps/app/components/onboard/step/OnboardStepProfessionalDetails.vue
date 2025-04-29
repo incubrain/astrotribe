@@ -8,7 +8,6 @@ const emit = defineEmits(['complete'])
 const onboardingStore = useOnboardingStore()
 
 // Define professional details schema
-// Currently set to required, but can be adjusted to optional in the future
 const professionalDetailsSchema = z.object({
   companyName: z
     .string({ required_error: 'Company name is required' })

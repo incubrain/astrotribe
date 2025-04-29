@@ -5,6 +5,7 @@ export default defineEventHandler(async (event) => {
   console.log('fetch bookmark counts endpoint fired')
   try {
     const user = await serverSupabaseUser(event)
+
     if (!user) {
       throw createError({ statusCode: 401, message: 'Unauthorized' })
     }

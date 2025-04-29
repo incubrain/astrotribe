@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form } from '@primevue/forms'
+import { useForm } from '@primevue/forms/useform'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
 import { z } from 'zod'
 import { useOnboardingStore } from '@/stores/useOnboardingStore'
@@ -8,22 +8,33 @@ const emit = defineEmits(['complete'])
 const onboardingStore = useOnboardingStore()
 const analytics = useOnboardingAnalytics()
 
-// Define user type schema
+// Define schema
 const userTypeSchema = z.object({
   userType: z.string({
     required_error: 'Please select how you identify yourself',
   }),
 })
 
-// Create resolver
+// Resolver
 const resolver = zodResolver(userTypeSchema)
 
-// Define initial values from store
+// Initial values
 const initialValues = {
-  userType: onboardingStore.stepData.userType || null,
+  userType: 'hobbyist',
 }
 
-// Define user type options
+// useForm instance
+const form = useForm({
+  resolver,
+  initialValues: initialValues,
+  validateOnValueUpdate: true,
+})
+
+onMounted(() => {
+  form.defineField('userType')
+})
+
+// Options
 const userTypes = [
   {
     value: 'professional',
@@ -49,44 +60,32 @@ const userTypes = [
     icon: 'mdi:school',
     description: 'Studying astronomy or related field',
   },
-  { value: 'other', label: 'Other', icon: 'mdi:account', description: 'None of the above' },
+  {
+    value: 'other',
+    label: 'Other',
+    icon: 'mdi:account',
+    description: 'None of the above',
+  },
 ]
 
-// Handle form submission
+// Utility to set selected value
+function setValue(value: string) {
+  form.setFieldValue('userType', value)
+}
+
+// Utility to get live selected value
+function selectedValue() {
+  return form.getFieldState('userType')?.value
+}
+
+// Submit handler
 function handleSubmit(e) {
-  // Track the selection
-  if (e.values.userType) {
+  if (e.valid) {
     const selectedType = userTypes.find((t) => t.value === e.values.userType)
     if (selectedType) {
       analytics.trackInterestSelect('user_type', selectedType.label)
     }
-  }
-
-  // Complete the step
-  emit('complete', e.values)
-}
-
-// Handle card selection
-function selectUserType(type, formState) {
-  // Create an input change event
-  const changeEvent = {
-    target: {
-      value: type.value,
-    },
-  }
-
-  // Dispatch the change event to a hidden input
-  const hiddenInput = document.getElementById('userTypeInput')
-  if (hiddenInput) {
-    hiddenInput.value = type.value
-    hiddenInput.dispatchEvent(new Event('input', { bubbles: true }))
-    hiddenInput.dispatchEvent(new Event('change', { bubbles: true }))
-  }
-
-  // Track analytics
-  const selectedType = userTypes.find((t) => t.value === type.value)
-  if (selectedType) {
-    analytics.trackInterestSelect('user_type', selectedType.label)
+    emit('complete', e.values)
   }
 }
 </script>
@@ -96,10 +95,8 @@ function selectUserType(type, formState) {
     <h2 class="text-2xl font-bold mb-2">How do you identify yourself?</h2>
     <p class="text-gray-400 mb-6">This helps us personalize your experience.</p>
 
-    <Form
-      v-slot="$form"
-      :resolver="resolver"
-      :initial-values="initialValues"
+    <PrimeForm
+      :form-control="form"
       @submit="handleSubmit"
     >
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
@@ -107,15 +104,15 @@ function selectUserType(type, formState) {
           v-for="type in userTypes"
           :key="type.value"
           :class="{
-            'border-primary-500 bg-primary-900/20': $form.userType?.value === type.value,
-            'border-gray-700 hover:border-gray-500': $form.userType?.value !== type.value,
+            'border-primary-500 bg-primary-500/20': selectedValue() === type.value,
+            'border-gray-700 bg-gray-800/20': selectedValue() !== type.value,
           }"
           class="cursor-pointer transition-all hover:shadow-md"
-          @click="selectUserType(type, $form)"
+          @click="() => setValue(type.value)"
         >
           <template #content>
             <div class="flex items-center gap-3 p-2">
-              <div class="rounded-full p-3 bg-gray-800">
+              <div class="rounded-full flex p-3 bg-gray-800">
                 <Icon
                   :name="type.icon"
                   size="24px"
@@ -130,21 +127,19 @@ function selectUserType(type, formState) {
         </PrimeCard>
       </div>
 
-      <!-- Hidden input to track the selected value -->
-      <PrimeInputText
-        id="userTypeInput"
-        name="userType"
-        type="hidden"
-      />
-
       <!-- Validation error message -->
-      <PrimeMessage
-        v-if="$form.userType?.invalid && $form.userType?.touched"
-        severity="error"
-        class="mb-4"
+      <PrimeFormField
+        v-slot="field"
+        name="userType"
       >
-        {{ $form.userType.error?.message }}
-      </PrimeMessage>
+        <PrimeMessage
+          v-if="field.invalid && field.touched"
+          severity="error"
+          class="mb-4"
+        >
+          {{ field.error?.message }}
+        </PrimeMessage>
+      </PrimeFormField>
 
       <div class="flex justify-end mt-6">
         <PrimeButton
@@ -152,9 +147,9 @@ function selectUserType(type, formState) {
           label="Continue"
           icon="mdi:arrow-right"
           icon-pos="right"
-          :disabled="!$form.valid"
+          :disabled="!form.valid"
         />
       </div>
-    </Form>
+    </PrimeForm>
   </div>
 </template>

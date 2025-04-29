@@ -49,6 +49,7 @@ function trackInterestToggle(categoryId, categoryName, isSelected) {
   analytics.trackInterestSelect(categoryId, categoryName, isSelected ? 'select' : 'deselect')
 }
 
+// Toggle interest and update form state
 function toggleInterest($form, categoryId, categoryName) {
   const currentInterests = [...($form.interests?.value || [])]
   const index = currentInterests.indexOf(categoryId)
@@ -63,7 +64,7 @@ function toggleInterest($form, categoryId, categoryName) {
     trackInterestToggle(categoryId, categoryName, false)
   }
 
-  // Use setFieldValue instead of directly calling onInput/onBlur
+  // Update form state
   $form.setFieldValue('interests', currentInterests)
 }
 
@@ -94,6 +95,12 @@ function isInterestSelected(interests, categoryId) {
       :initial-values="initialValues"
       @submit="handleSubmit"
     >
+      <!-- Hidden input for storing the interests array -->
+      <input
+        type="hidden"
+        name="interests"
+      />
+
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         <PrimeCard
           v-for="category in categoryTagStore.categories"

@@ -62,6 +62,7 @@ function trackFeatureToggle(featureId, featureTitle, isSelected) {
 
 // Handle selecting/deselecting a feature
 function toggleFeature($form, featureId, featureTitle) {
+  console.log('Toggling feature:', $form, featureId, featureTitle)
   const currentFeatures = [...($form.featureInterests?.value || [])]
   const index = currentFeatures.indexOf(featureId)
 
@@ -74,9 +75,6 @@ function toggleFeature($form, featureId, featureTitle) {
     currentFeatures.splice(index, 1)
     trackFeatureToggle(featureId, featureTitle, false)
   }
-
-  // Use setFieldValue instead of directly calling onInput/onBlur
-  $form.setFieldValue('featureInterests', currentFeatures)
 }
 
 // Check if a feature is selected
@@ -113,6 +111,12 @@ const upcomingFeatures = computed(() => {
       :initial-values="initialValues"
       @submit="handleSubmit"
     >
+      <!-- Hidden input for storing the feature interests array -->
+      <input
+        type="hidden"
+        name="featureInterests"
+      />
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <PrimeCard
           v-for="feature in upcomingFeatures"

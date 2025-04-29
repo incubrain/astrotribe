@@ -86,7 +86,7 @@ function toggleTopic($form, tagId, tagName) {
     trackTopicToggle(tagId, tagName, false)
   }
 
-  // Use setFieldValue instead of directly calling onInput/onBlur
+  // Update form value
   $form.setFieldValue('topics', currentTopics)
 }
 
@@ -145,6 +145,12 @@ const suggestedTopics = computed(() => {
       :initial-values="initialValues"
       @submit="handleSubmit"
     >
+      <!-- Hidden input for topics array -->
+      <input
+        type="hidden"
+        name="topics"
+      />
+
       <!-- Search box -->
       <div class="mb-6">
         <label
