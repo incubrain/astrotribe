@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 const CategorySchema = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   body: z.string().nullish(),
   created_at: z.string().optional(),
@@ -9,7 +9,7 @@ const CategorySchema = z.object({
 })
 
 const TagSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   body: z.string().nullish(),
   created_at: z.string().optional(),
@@ -65,12 +65,12 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
   }
 
   const getCategoryName = computed(
-    () => (categoryId: number) =>
+    () => (categoryId: string) =>
       categories.value.find((category) => category.id === categoryId)?.name,
   )
 
   const getTagName = computed(
-    () => (tagId: number) => tags.value.find((tag) => tag.id === tagId)?.name,
+    () => (tagId: string) => tags.value.find((tag) => tag.id === tagId)?.name,
   )
 
   return {
