@@ -364,6 +364,136 @@ const AstroPreset = definePreset(Aura, {
       },
     },
 
+    autocomplete: {
+      colorScheme: {
+        dark: {
+          root: {
+            background: '{surface.200}',
+            filledBackground: '{surface.200}',
+            filledHoverBackground: '{surface.300}',
+            filledFocusBackground: '{surface.300}',
+            borderColor: '{surface.700}',
+            hoverBorderColor: '{primary.500}',
+            focusBorderColor: '{primary.500}',
+            color: '{surface.50}',
+            placeholderColor: '{surface.500}',
+            borderRadius: '0.375rem',
+            paddingX: '0.75rem',
+            paddingY: '0.625rem',
+            focusRing: {
+              width: '2px',
+              style: 'solid',
+              color: 'rgba(44, 120, 181, 0.25)',
+              offset: '1px',
+              shadow: '0 0 0 2px rgba(44, 120, 181, 0.25)',
+            },
+          },
+
+          overlay: {
+            background: '{surface.100}',
+            borderColor: '{surface.300}',
+            color: '{surface.50}',
+            borderRadius: '0.5rem',
+            shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
+          },
+
+          list: {
+            padding: '0.5rem',
+            gap: '0.25rem',
+          },
+
+          option: {
+            color: '{surface.50}',
+            focusBackground: '{primary.800}',
+            selectedBackground: '{primary.700}',
+            selectedFocusBackground: '{primary.600}',
+            focusColor: '{surface.50}',
+            selectedColor: '{surface.50}',
+            selectedFocusColor: '{surface.50}',
+            padding: '0.5rem 0.75rem',
+            borderRadius: '0.375rem',
+          },
+
+          dropdown: {
+            background: '{surface.200}',
+            hoverBackground: '{surface.300}',
+            activeBackground: '{surface.400}',
+            color: '{surface.50}',
+            hoverColor: '{surface.50}',
+            activeColor: '{surface.50}',
+            borderColor: '{surface.700}',
+            hoverBorderColor: '{primary.500}',
+            activeBorderColor: '{primary.500}',
+            focusRing: {
+              width: '2px',
+              style: 'solid',
+              color: 'rgba(44, 120, 181, 0.4)',
+              offset: '2px',
+              shadow: '0 0 0 2px rgba(44, 120, 181, 0.4)',
+            },
+          },
+
+          chip: {
+            focusBackground: '{surface.700}',
+            focusColor: '{surface.0}',
+          },
+
+          emptyMessage: {
+            padding: '0.5rem 0.75rem',
+            color: '{surface.500}',
+          },
+        },
+      },
+    },
+
+    chip: {
+      colorScheme: {
+        dark: {
+          root: {
+            background: '{primary.800}',
+            color: '{surface.50}',
+            borderRadius: '1rem',
+            paddingX: '0.75rem',
+            paddingY: '0.5rem',
+            gap: '0.5rem',
+            transitionDuration: '0.2s',
+          },
+          icon: {
+            color: '{surface.50}',
+            size: '1rem',
+          },
+          removeIcon: {
+            color: '{surface.400}',
+            size: '1rem',
+            focusRing: {
+              width: '{focus.ring.width}',
+              style: '{focus.ring.style}',
+              color: '{focus.ring.color}',
+              offset: '{focus.ring.offset}',
+              shadow: '{form.field.focus.ring.shadow}',
+            },
+          },
+        },
+      },
+    },
+
+    tooltip: {
+      colorScheme: {
+        dark: {
+          root: {
+            background: '{surface.700}',
+            color: '{surface.0}',
+            borderRadius: '0.5rem',
+            padding: '0.5rem 0.75rem',
+            shadow: '0 8px 16px rgba(0, 0, 0, 0.3)',
+            maxWidth: 'none', // overrides `12.5rem` default
+            whiteSpace: 'nowrap',
+            width: 'auto',
+          },
+        },
+      },
+    },
+
     // Button styling improvements
     button: {
       colorScheme: {

@@ -2,16 +2,12 @@
 import type { PropType } from 'vue'
 import { computed, onMounted, watch } from 'vue'
 
+const form = useOnboardingForm()
+
 const props = defineProps({
   // Field name for form binding
   name: {
     type: String,
-    required: true,
-  },
-
-  // Form control instance from useForm()
-  form: {
-    type: Object,
     required: true,
   },
 
@@ -60,72 +56,29 @@ const props = defineProps({
   },
 })
 
-// Define the field on mount and handle cleanup on unmount
-onMounted(() => {
-  if (!props.form.getFieldState(props.name)) {
-    props.form.defineField(props.name)
-  }
-})
-
-// Handle tracking selections if a tracking function is provided
-function trackToggle(value, label, isSelected) {
-  if (props.trackSelection) {
-    props.trackSelection(value, label, isSelected)
-  }
-}
-
-// For multiple selections (array value)
-function toggleMultiple(value, label) {
-  const currentValues = [...(props.form.getFieldState(props.name)?.value || [])]
-  const index = currentValues.indexOf(value)
-
-  if (index === -1) {
-    // Add to selection
-    currentValues.push(value)
-    trackToggle(value, label, true)
-  } else {
-    // Remove from selection
-    currentValues.splice(index, 1)
-    trackToggle(value, label, false)
-  }
-
-  props.form.setFieldValue(props.name, currentValues)
-}
-
-// For single selection (string value)
-function setSingle(value, label) {
-  const currentValue = props.form.getFieldState(props.name)?.value
-
-  // If already selected, track as deselected then selected again (for analytics)
-  if (currentValue === value) {
-    trackToggle(currentValue, label, false)
-  }
-
-  // Set the new value
-  props.form.setFieldValue(props.name, value)
-  trackToggle(value, label, true)
-}
-
-// Check if an option is selected
-function isSelected(value) {
-  const fieldValue = props.form.getFieldState(props.name)?.value
-
+function toggleSelection(value: string) {
+  const currentState = form.getFieldState(props.name)?.value
   if (props.multiple) {
-    return Array.isArray(fieldValue) && fieldValue.includes(value)
+    const list = Array.isArray(currentState) ? [...currentState] : []
+    const idx = list.indexOf(value)
+    if (idx === -1) list.push(value)
+    else list.splice(idx, 1)
+    console.log(`[${props.name}] Toggled multiple selection:`, list)
+    form.setFieldValue(props.name, list)
   } else {
-    return fieldValue === value
+    console.log(`[${props.name}] Toggled selection:`, value)
+    form.setFieldValue(props.name, value)
   }
 }
 
-// Get the field state
-const fieldState = computed(() => {
-  return props.form.getFieldState(props.name)
-})
+function isSelected(value: string) {
+  const current = form.getFieldState(props.name)?.value
+  return props.multiple ? Array.isArray(current) && current.includes(value) : current === value
+}
 </script>
 
 <template>
   <div>
-    <!-- Hidden input to ensure proper form validation -->
     <PrimeFormField
       v-slot="field"
       :name="name"
@@ -134,84 +87,44 @@ const fieldState = computed(() => {
         type="hidden"
         v-bind="field.props"
       />
-
-      <!-- Validation message -->
-      <slot
-        name="error"
-        :field="field"
+      <PrimeMessage
+        v-if="field.invalid && field.touched"
+        severity="error"
+        class="mb-4"
       >
-        <PrimeMessage
-          v-if="field.invalid && field.touched"
-          severity="error"
-          class="mb-4"
-        >
-          {{ field.error?.message }}
-        </PrimeMessage>
-      </slot>
+        {{ field.error?.message }}
+      </PrimeMessage>
     </PrimeFormField>
 
-    <!-- Selectable cards grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
       <PrimeCard
         v-for="option in options"
         :key="option.value"
         :class="[cardClass, isSelected(option.value) ? selectedClass : unselectedClass]"
-        @click="
-          multiple
-            ? toggleMultiple(option.value, option.label)
-            : setSingle(option.value, option.label)
-        "
+        @click="toggleSelection(option.value)"
       >
         <template #content>
-          <slot
-            name="card-content"
-            :option="option"
-            :selected="isSelected(option.value)"
-          >
-            <div class="flex items-center gap-3 p-2">
-              <div
-                v-if="option.icon"
-                class="rounded-full p-3 bg-gray-800"
-              >
-                <Icon
-                  :name="option.icon"
-                  size="24px"
-                />
-              </div>
-              <div
-                v-else-if="multiple"
-                class="w-6 h-6 flex items-center justify-center"
-              >
-                <Icon
-                  :name="isSelected(option.value) ? 'mdi:check-circle' : 'mdi:circle-outline'"
-                  size="24px"
-                  :class="isSelected(option.value) ? 'text-primary-500' : 'text-gray-400'"
-                />
-              </div>
-              <div>
-                <h3 class="text-lg font-medium">{{ option.label }}</h3>
-                <p
-                  v-if="option.description"
-                  class="text-sm text-gray-400"
-                >
-                  {{ option.description }}
-                </p>
-              </div>
+          <div class="flex items-center gap-4">
+            <div
+              v-if="option.icon"
+              class="rounded-full p-3 bg-gray-800 flex"
+            >
+              <Icon
+                :name="option.icon"
+                size="24px"
+              />
             </div>
-          </slot>
+            <div>
+              <h3 class="text-lg font-medium">{{ option.label }}</h3>
+              <p
+                v-if="option.description"
+                class="text-sm text-gray-400"
+                >{{ option.description }}</p
+              >
+            </div>
+          </div>
         </template>
       </PrimeCard>
     </div>
-
-    <!-- Counter for multiple selections -->
-    <div
-      v-if="multiple"
-      class="text-sm text-gray-400 mb-4"
-    >
-      {{ (fieldState?.value || []).length }} items selected
-    </div>
-
-    <!-- Extra slot for custom content -->
-    <slot :field-state="fieldState"></slot>
   </div>
 </template>

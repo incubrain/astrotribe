@@ -1,178 +1,138 @@
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
+  const client = await serverSupabaseClient(event)
+  const user = await serverSupabaseUser(event)
+
+  if (!user) {
+    console.warn('[Onboard] Unauthorized access attempt')
+    throw createError({ statusCode: 401, message: 'Authentication required' })
+  }
+
+  const userId = user.id
+  const body = await readBody(event)
+
+  console.info('[Onboard] Starting onboarding for user:', userId)
+  console.debug('[Onboard] Received data:', JSON.stringify(body, null, 2))
+
+  const { user_type, location, interests = [], topics = [], feature_interests = [] } = body
+
   try {
-    // Get current authenticated user
-    const user = await serverSupabaseUser(event)
+    let addressId: string | null = null
 
-    if (!user) {
-      throw createError({
-        statusCode: 401,
-        message: 'Unauthorized - authentication required',
-      })
-    }
-
-    // Parse request body
-    const body = await readBody(event)
-
-    // Connect to Supabase
-    const client = await serverSupabaseClient(event)
-
-    try {
-      // Start a transaction
-      await client.rpc('begin_transaction')
-
-      // 1. Update onboarding_completed flag in user_profiles
-      const { error: updateError } = await client
-        .from('user_profiles')
-        .update({ onboarding_completed: true })
-        .eq('id', user.id)
-
-      if (updateError) {
-        throw new Error(`Failed to update onboarding status: ${updateError.message}`)
-      }
-
-      // 2. Save any final user type if it was changed
-      if (body.userType) {
-        const { error: userTypeError } = await client
-          .from('user_profiles')
-          .update({ user_type: body.userType })
-          .eq('id', user.id)
-
-        if (userTypeError) {
-          throw new Error(`Failed to save user type: ${userTypeError.message}`)
-        }
-      }
-
-      // 3. Save final interests if provided
-      if (body.interests && Array.isArray(body.interests) && body.interests.length > 0) {
-        // First clear existing interests
-        await client.from('user_categories').delete().eq('user_id', user.id)
-
-        // Then insert new ones
-        const interestRows = body.interests.map((categoryId: string) => ({
-          user_id: user.id,
-          category_id: categoryId,
-        }))
-
-        const { error: interestsError } = await client.from('user_categories').insert(interestRows)
-
-        if (interestsError) {
-          throw new Error(`Failed to save interests: ${interestsError.message}`)
-        }
-      }
-
-      // 4. Save final topics if provided
-      if (body.topics && Array.isArray(body.topics) && body.topics.length > 0) {
-        // First clear existing topics
-        await client.from('user_tags').delete().eq('user_id', user.id)
-
-        // Then insert new ones
-        const topicRows = body.topics.map((tagId: string) => ({
-          user_id: user.id,
-          tag_id: tagId,
-        }))
-
-        const { error: topicsError } = await client.from('user_tags').insert(topicRows)
-
-        if (topicsError) {
-          throw new Error(`Failed to save topics: ${topicsError.message}`)
-        }
-      }
-
-      // 5. Save final feature interests if provided
-      if (
-        body.featureInterests &&
-        Array.isArray(body.featureInterests) &&
-        body.featureInterests.length > 0
-      ) {
-        // First clear existing feature interests
-        await client.from('user_features').delete().eq('user_id', user.id)
-
-        // Then insert new ones
-        const featureRows = body.featureInterests.map((featureId: string) => ({
-          user_id: user.id,
-          feature_id: featureId,
-        }))
-
-        const { error: featuresError } = await client.from('user_features').insert(featureRows)
-
-        if (featuresError) {
-          throw new Error(`Failed to save feature interests: ${featuresError.message}`)
-        }
-      }
-
-      // 6. Save location if provided
-      if (body.location && body.location.countryId) {
-        const location = body.location
-
-        // Check if user already has a primary address
-        const { data: existingAddress } = await client
-          .from('addresses')
-          .select('id')
-          .eq('user_id', user.id)
-          .eq('is_primary', true)
-          .single()
-
-        const addressData = {
-          country_id: location.countryId,
-          city_id: location.cityId,
-          user_id: user.id,
+    // Step 1: Insert Address
+    if (location?.full_address) {
+      console.info('[Onboard] Inserting primary address...')
+      const { data: addressInsert, error: addressError } = await client
+        .from('addresses')
+        .insert({
+          user_id: userId,
+          address_type: 'user',
           is_primary: true,
-          address_type: 'residential',
-        }
+          name: 'Primary Address',
+          full_address: location.full_address,
+          address_line1: location.address_line1,
+          address_line2: location.address_line2,
+          city: location.city,
+          state: location.state,
+          postal_code: location.postal_code,
+          country: location.country,
+          country_code: location.country_code,
+          latitude: location.latitude,
+          longitude: location.longitude,
+        })
+        .select('id')
+        .single()
 
-        let addressResult
-
-        if (existingAddress) {
-          // Update existing address
-          addressResult = await client
-            .from('addresses')
-            .update(addressData)
-            .eq('id', existingAddress.id)
-        } else {
-          // Insert new address
-          addressResult = await client.from('addresses').insert({
-            ...addressData,
-            street1: 'Not provided', // Required field
-            name: 'Primary Address', // Optional but useful
-          })
-        }
-
-        if (addressResult.error) {
-          throw new Error(`Failed to save location: ${addressResult.error.message}`)
-        }
+      if (addressError) {
+        console.error('[Onboard] Failed to insert address:', addressError)
+        throw addressError
       }
 
-      // Commit the transaction
-      await client.rpc('commit_transaction')
+      addressId = addressInsert.id
+      console.info('[Onboard] Address inserted with ID:', addressId)
+    }
 
-      // Log successful completion
-      console.log(`User ${user.id} completed onboarding successfully`)
+    // Step 2: Update user_profiles
+    console.info('[Onboard] Updating user profile...')
+    const profileUpdates: any = {
+      onboarding_completed: true,
+    }
+    if (user_type) profileUpdates.user_type = user_type
+    if (addressId) profileUpdates.primary_address_id = addressId
 
-      return {
-        success: true,
-        message: 'Onboarding completed successfully',
-        timestamp: new Date().toISOString(),
+    const { error: profileError } = await client
+      .from('user_profiles')
+      .update(profileUpdates)
+      .eq('id', userId)
+
+    if (profileError) {
+      console.error('[Onboard] Failed to update user profile:', profileError)
+      throw profileError
+    }
+
+    console.info('[Onboard] User profile updated')
+
+    // Step 3: Interests
+    console.info('[Onboard] Updating user interests...')
+    await client.from('user_categories').delete().eq('user_id', userId)
+    if (interests.length > 0) {
+      const interestRows = interests.map((id: string) => ({
+        user_id: userId,
+        category_id: id,
+      }))
+      const { error } = await client.from('user_categories').insert(interestRows)
+      if (error) {
+        console.error('[Onboard] Failed to insert interests:', error)
+        throw error
       }
-    } catch (transactionError: any) {
-      // Rollback the transaction on any error
-      await client.rpc('rollback_transaction')
-      throw transactionError
-    }
-  } catch (error: any) {
-    console.error('Complete onboarding error:', error)
-
-    if (error.statusCode === 401) {
-      throw createError({
-        statusCode: 401,
-        message: error.message || 'Authentication required',
-      })
+      console.info('[Onboard] Interests saved')
     }
 
+    // Step 4: Topics
+    console.info('[Onboard] Updating user topics...')
+    await client.from('user_tags').delete().eq('user_id', userId)
+    if (topics.length > 0) {
+      const topicRows = topics.map((id: string) => ({
+        user_id: userId,
+        tag_id: id,
+      }))
+      const { error } = await client.from('user_tags').insert(topicRows)
+      if (error) {
+        console.error('[Onboard] Failed to insert topics:', error)
+        throw error
+      }
+      console.info('[Onboard] Topics saved')
+    }
+
+    // Step 5: Feature Interests
+    console.info('[Onboard] Updating user feature interests...')
+    await client.from('user_features').delete().eq('user_id', userId)
+    if (feature_interests.length > 0) {
+      const featureRows = feature_interests.map((id: string) => ({
+        user_id: userId,
+        feature_id: id,
+      }))
+      const { error } = await client.from('user_features').insert(featureRows)
+      if (error) {
+        console.error('[Onboard] Failed to insert feature interests:', error)
+        throw error
+      }
+      console.info('[Onboard] Feature interests saved')
+    }
+
+    console.info('[Onboard] Onboarding completed successfully for user:', userId)
+
+    return {
+      success: true,
+      message: 'Onboarding complete',
+      timestamp: new Date().toISOString(),
+    }
+  } catch (err: any) {
+    console.error('[Onboard] Error completing onboarding for user:', userId, err)
     throw createError({
       statusCode: 500,
-      message: error.message || 'Failed to complete onboarding',
+      message: err.message || 'Failed to complete onboarding',
     })
   }
 })

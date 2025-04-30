@@ -123,10 +123,10 @@ export function useOnboardingAnalytics() {
       if (window.posthog) {
         window.posthog.capture('onboarding_completed', {
           steps_completed: Object.keys(data).length,
-          user_type: data.userType,
+          user_type: data.user_types,
           has_interests: Array.isArray(data.interests) && data.interests.length > 0,
           has_topics: Array.isArray(data.topics) && data.topics.length > 0,
-          has_features: Array.isArray(data.featureInterests) && data.featureInterests.length > 0,
+          has_features: Array.isArray(data.feature_interests) && data.feature_interests.length > 0,
           has_location: !!data.location && Object.keys(data.location).length > 0,
           timestamp: new Date().toISOString(),
         })

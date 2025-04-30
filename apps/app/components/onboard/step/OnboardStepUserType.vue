@@ -1,35 +1,4 @@
 <script setup lang="ts">
-import { useForm } from '@primevue/forms/useform'
-import { zodResolver } from '@primevue/forms/resolvers/zod'
-import { z } from 'zod'
-
-const emit = defineEmits(['complete'])
-const onboardingStore = useOnboardingStore()
-const analytics = useOnboardingAnalytics()
-
-// Define schema
-const userTypeSchema = z.object({
-  userType: z.string({
-    required_error: 'Please select how you identify yourself',
-  }),
-})
-
-// Resolver
-const resolver = zodResolver(userTypeSchema)
-
-// Initial values from store
-const initialValues = {
-  userType: onboardingStore.stepData.userType || '',
-}
-
-// useForm instance
-const form = useForm({
-  resolver,
-  initialValues,
-  validateOnValueUpdate: true,
-})
-
-// Define user type options
 const userTypes = [
   {
     value: 'professional',
@@ -57,20 +26,6 @@ const userTypes = [
   },
   { value: 'other', label: 'Other', icon: 'mdi:account', description: 'None of the above' },
 ]
-
-// Track user type selection for analytics
-function trackUserTypeSelection(value, label, isSelected) {
-  if (isSelected) {
-    analytics.trackInterestSelect('user_type', label)
-  }
-}
-
-// Submit handler
-function handleSubmit(e) {
-  if (e.valid) {
-    emit('complete', e.values)
-  }
-}
 </script>
 
 <template>
@@ -78,28 +33,11 @@ function handleSubmit(e) {
     <h2 class="text-2xl font-bold mb-2">How do you identify yourself?</h2>
     <p class="text-gray-400 mb-6">This helps us personalize your experience.</p>
 
-    <PrimeForm
-      :form-control="form"
-      @submit="handleSubmit"
-    >
-      <!-- Use the reusable SelectableCardField component -->
-      <FormSelectableCardField
-        name="userType"
-        :form="form"
-        :options="userTypes"
-        :multiple="false"
-        :track-selection="trackUserTypeSelection"
-      />
-
-      <div class="flex justify-end mt-6">
-        <PrimeButton
-          type="submit"
-          label="Continue"
-          icon="mdi:arrow-right"
-          icon-pos="right"
-          :disabled="!form.valid"
-        />
-      </div>
-    </PrimeForm>
+    <!-- Use the reusable SelectableCardField component -->
+    <FormSelectableCardField
+      name="user_type"
+      :options="userTypes"
+      :multiple="false"
+    />
   </div>
 </template>

@@ -1,38 +1,16 @@
 <script setup lang="ts">
-import { useForm } from '@primevue/forms/useform'
-import { zodResolver } from '@primevue/forms/resolvers/zod'
-import { z } from 'zod'
 import { ref, computed, onMounted } from 'vue'
+import type { FormInstance } from '@primevue/forms'
+import { useOnboardingStore } from '@/stores/useOnboardingStore'
+import { useCategoryTagStore } from '@/stores/useCategoryTagStore'
 
-const emit = defineEmits(['complete'])
-const onboardingStore = useOnboardingStore()
+defineProps<{ form: FormInstance }>()
+
 const categoryTagStore = useCategoryTagStore()
-const analytics = useOnboardingAnalytics()
 
-// Loading state
 const isLoading = ref(true)
 
-// Define interests schema
-const interestsSchema = z.object({
-  interests: z.array(z.string()).min(1, 'Please select at least one interest'),
-})
-
-// Create resolver
-const resolver = zodResolver(interestsSchema)
-
-// Define initial values from store
-const initialValues = {
-  interests: onboardingStore.stepData.interests || [],
-}
-
-// Initialize form with useForm
-const form = useForm({
-  resolver,
-  initialValues,
-  validateOnValueUpdate: true,
-})
-
-// Format categories for SelectableCardField
+// Options for selectable cards
 const categoryOptions = computed(() => {
   return categoryTagStore.categories.map((category) => ({
     value: category.id,
@@ -41,9 +19,7 @@ const categoryOptions = computed(() => {
   }))
 })
 
-// Load categories
 onMounted(async () => {
-  isLoading.value = true
   try {
     await categoryTagStore.getCategories()
   } catch (error) {
@@ -52,18 +28,6 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
-
-// Track category selection for analytics
-function trackInterestSelection(categoryId, categoryName, isSelected) {
-  analytics.trackInterestSelect(categoryId, categoryName, isSelected ? 'select' : 'deselect')
-}
-
-// Handle form submission
-function handleSubmit(e) {
-  if (e.valid) {
-    emit('complete', e.values)
-  }
-}
 </script>
 
 <template>
@@ -79,21 +43,13 @@ function handleSubmit(e) {
       <PrimeProgressSpinner />
     </div>
 
-    <!-- Categories grid -->
-    <PrimeForm
-      v-else
-      :form-control="form"
-      @submit="handleSubmit"
-    >
-      <!-- Use SelectableCardField for multi-selection of interests -->
+    <!-- Form content -->
+    <div v-else>
       <FormSelectableCardField
         name="interests"
-        :form="form"
         :options="categoryOptions"
         :multiple="true"
-        :track-selection="trackInterestSelection"
       >
-        <!-- Customize card-content to use check icons -->
         <template #card-content="{ option, selected }">
           <div class="flex items-center gap-3 p-2">
             <div class="w-6 h-6 flex items-center justify-center">
@@ -115,17 +71,6 @@ function handleSubmit(e) {
           </div>
         </template>
       </FormSelectableCardField>
-
-      <!-- Navigation buttons -->
-      <div class="flex justify-end mt-6">
-        <PrimeButton
-          type="submit"
-          label="Continue"
-          icon="mdi:arrow-right"
-          icon-pos="right"
-          :disabled="!form.valid || isLoading"
-        />
-      </div>
-    </PrimeForm>
+    </div>
   </div>
 </template>

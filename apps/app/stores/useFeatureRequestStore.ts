@@ -63,12 +63,13 @@ export const useFeatureRequestStore = defineStore('features', () => {
     if (!user) return
 
     const { data } = await useSupabaseClient()
-      .from('feature_votes')
-      .select('feature_id, vote_type')
+      .from('feature_engagements')
+      .select('feature_id, engagement_type')
       .eq('user_id', user.id)
+      .in('engagement_type', ['vote_up', 'vote_down'])
 
     if (data) {
-      userVotes.value = new Map(data.map((vote) => [vote.feature_id, vote.vote_type]))
+      userVotes.value = new Map(data.map((vote) => [vote.feature_id, vote.engagement_type]))
     }
   }
 

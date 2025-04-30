@@ -75,15 +75,15 @@ export default defineEventHandler(async (event) => {
 
     // Format and return the data
     return {
-      userType: profile?.user_type || null,
-      onboardingCompleted: profile?.onboarding_completed || false,
+      user_type: profile?.user_type || null,
+      onboarding_completed: profile?.onboarding_completed || false,
       interests: userCategories?.map((item) => item.category_id) || [],
       topics: userTags?.map((item) => item.tag_id) || [],
-      featureInterests: userFeatures?.map((item) => item.feature_id) || [],
+      feature_interests: userFeatures?.map((item) => item.feature_id) || [],
       location: address
         ? {
-            countryId: address.country_id,
-            cityId: address.city_id,
+            country_id: address.country_id,
+            city_id: address.city_id,
           }
         : null,
     }

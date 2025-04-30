@@ -23,6 +23,7 @@
     "@astronera/crud": "workspace:*",
     "@astronera/referral": "workspace:*",
     "@astronera/supabase": "workspace:*",
+    "@mapbox/search-js-web": "^1.0.0",
     "@nuxt/image": "^1.10.0",
     "@primevue/core": "^4.3.3",
     "@primevue/forms": "^4.3.3",

@@ -88,7 +88,7 @@ const layoutClasses = computed(() => {
       </div>
 
       <!-- Advanced Filters -->
-      <NewsAdvancedFilters />
+      <!-- <NewsAdvancedFilters /> -->
 
       <!-- View Toggle and Sort Controls -->
       <div class="flex items-center justify-between mb-6">

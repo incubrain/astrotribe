@@ -28,17 +28,17 @@ export function useOnboardingValidation() {
   function getFieldsForStep(step: number): string[] {
     switch (step) {
       case 1: // User Type
-        return ['userType']
+        return ['user_type']
       case 2: // Professional Details
-        return ['companyName', 'position', 'industry', 'linkedinUrl']
+        return ['company_name', 'position', 'industry', 'linkedin_url']
       case 3: // Interests
         return ['interests']
       case 4: // Feature Interests
-        return ['featureInterests']
+        return ['feature_interests']
       case 5: // Topics
         return ['topics']
       case 6: // Location
-        return ['countryId', 'cityId']
+        return ['country_id', 'city_id']
       default:
         return []
     }

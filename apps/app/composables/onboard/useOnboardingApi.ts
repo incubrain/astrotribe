@@ -17,12 +17,12 @@ export function useOnboardingApi() {
       return {
         completed: data?.completed || false,
         currentStep: data?.currentStep || 1,
-        userType: data?.userType || null,
+        user_type: data?.user_type || null,
       }
     } catch (err: any) {
       console.error('Error checking onboarding status:', err)
       error.value = err.message || 'Failed to check onboarding status'
-      return { completed: false, currentStep: 1, userType: null }
+      return { completed: false, currentStep: 1, user_type: null }
     } finally {
       isLoading.value = false
     }
@@ -135,3 +135,64 @@ export function useOnboardingApi() {
     updateUserProfile,
   }
 }
+
+// API interactions
+// async function checkOnboardingStatus() {
+//   try {
+//     isLoading.value = true
+//     error.value = null
+
+//     const { data } = await useFetch('/api/onboard/status')
+//     const completed = data.value?.completed || false
+
+//     isComplete.value = completed
+//     return completed
+//   } catch (err: any) {
+//     console.error('Failed to check onboarding status', err)
+//     error.value = err.message || 'Failed to check onboarding status'
+//     return false
+//   } finally {
+//     isLoading.value = false
+//   }
+// }
+
+// async function completeOnboarding() {
+//   try {
+//     isLoading.value = true
+//     error.value = null
+
+//     // Add timeout and retry logic
+//     const response = await $fetch('/api/onboard/complete', {
+//       method: 'POST',
+//       body: {
+//         ...stepData,
+//         completed: true,
+//       },
+//       retry: 3,
+//       retryDelay: 1000,
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       timeout: 10000, // 10 second timeout
+//     })
+
+//     isComplete.value = true
+
+//     // Clear localStorage since onboarding is complete
+//     localStorage.removeItem('onboarding_state')
+
+//     return true
+//   } catch (err: any) {
+//     console.error('Failed to complete onboarding', err)
+
+//     // Add more detailed error information
+//     if (err.response) {
+//       console.error('Response status:', err.response.status)
+//       console.error('Response data:', err.response.data)
+//     }
+//     error.value = err.message || 'Failed to complete onboarding'
+//     return false
+//   } finally {
+//     isLoading.value = false
+//   }
+// }

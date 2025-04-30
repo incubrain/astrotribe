@@ -1,22 +1,13 @@
 <script setup lang="ts">
 import { useOnboardingStore } from '@/stores/useOnboardingStore'
 
-// Core layout elements
 const appName = useRuntimeConfig().public.appName || 'AstronEra'
+
 const onboardingStore = useOnboardingStore()
-const { currentStep, totalSteps, isProfessional } = storeToRefs(onboardingStore)
+const { activeSteps, currentStep, effectiveStepCount, progressPercentage } =
+  storeToRefs(onboardingStore)
 
-// Compute effective total steps (accounting for conditional steps)
-const effectiveStepCount = computed(() => {
-  return isProfessional.value ? totalSteps.value : totalSteps.value - 1
-})
-
-// Compute step progress for the logo animation
-const progressPercentage = computed(() => {
-  return Math.min(100, Math.round((currentStep.value / effectiveStepCount.value) * 100))
-})
-
-// Handle brand click - show tooltip asking to complete onboarding
+// Tooltip toggle for brand logo
 const showBrandTooltip = ref(false)
 const handleBrandClick = () => {
   showBrandTooltip.value = true
@@ -25,7 +16,10 @@ const handleBrandClick = () => {
   }, 3000)
 }
 
-const NAV_HEIGHT = '64px' // Example height of the navigation bar
+const env = useRuntimeConfig().public
+
+const NAV_HEIGHT = '64px'
+const FOOTER_HEIGHT = '40px'
 </script>
 
 <template>
@@ -46,8 +40,8 @@ const NAV_HEIGHT = '64px' // Example height of the navigation bar
           v-tooltip="{
             value: 'Please complete onboarding to continue',
             pt: {
-              root: '!text-nowrap w-full',
-              text: '!font-medium ',
+              root: '!w-fit !whitespace-nowrap !bg-surface-700 !text-surface-0 !rounded-md !px-3 !py-2',
+              text: '!font-medium !text-surface-0',
             },
           }"
           class="relative flex items-center"
@@ -99,8 +93,9 @@ const NAV_HEIGHT = '64px' // Example height of the navigation bar
       </div>
 
       <!-- Exit to Support Link -->
-      <a
-        href="https://support.astronera.com"
+      <NuxtLink
+        :to="`${env.websiteUrl}/contact`"
+        external
         target="_blank"
         class="text-gray-400 hover:text-white text-sm flex items-center gap-1"
       >
@@ -109,7 +104,7 @@ const NAV_HEIGHT = '64px' // Example height of the navigation bar
           size="18px"
         />
         <span class="hidden sm:inline">Need Help?</span>
-      </a>
+      </NuxtLink>
     </header>
 
     <!-- Main Content Area -->
@@ -121,46 +116,35 @@ const NAV_HEIGHT = '64px' // Example height of the navigation bar
         <!-- Onboarding Steps List -->
         <div class="space-y-4">
           <div
-            v-for="step in effectiveStepCount"
-            :key="step"
+            v-for="(label, index) in activeSteps"
+            :key="label"
             class="flex items-center gap-3"
             :class="{
-              'text-white': step === currentStep,
-              'text-gray-400': step !== currentStep,
-              'opacity-50': step > currentStep,
+              'text-white': index + 1 === currentStep,
+              'text-gray-400': index + 1 !== currentStep,
+              'opacity-50': index + 1 > currentStep,
             }"
           >
             <!-- Step number circle -->
             <div
               class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-medium"
               :class="{
-                'bg-primary-500 text-white': step === currentStep,
-                'bg-gray-800': step !== currentStep && step < currentStep,
-                'border border-gray-700': step > currentStep,
+                'bg-primary-500 text-white': index + 1 === currentStep,
+                'bg-gray-800': index + 1 !== currentStep && index + 1 < currentStep,
+                'border border-gray-700': index + 1 > currentStep,
               }"
             >
               <Icon
-                v-if="step < currentStep"
+                v-if="index + 1 < currentStep"
                 name="tabler:check"
                 size="16px"
               />
-              <span v-else>{{ step }}</span>
+              <span v-else>{{ index + 1 }}</span>
             </div>
 
             <!-- Step name -->
             <span class="text-sm">
-              <template v-if="step === 1">User Type</template>
-              <template v-else-if="step === 2 && isProfessional">Professional Details</template>
-              <template v-else-if="step === 2 && !isProfessional">Interests</template>
-              <template v-else-if="step === 3 && isProfessional">Interests</template>
-              <template v-else-if="step === 3 && !isProfessional">Feature Interests</template>
-              <template v-else-if="step === 4 && isProfessional">Feature Interests</template>
-              <template v-else-if="step === 4 && !isProfessional">Topics</template>
-              <template v-else-if="step === 5 && isProfessional">Topics</template>
-              <template v-else-if="step === 5 && !isProfessional">Location</template>
-              <template v-else-if="step === 6 && isProfessional">Location</template>
-              <template v-else-if="step === 6 && !isProfessional">Confirmation</template>
-              <template v-else-if="step === 7">Confirmation</template>
+              <span>{{ label }}</span>
             </span>
           </div>
         </div>
@@ -179,8 +163,8 @@ const NAV_HEIGHT = '64px' // Example height of the navigation bar
 
       <!-- Main Onboarding Content Area -->
       <div
-        class="flex-grow overflow-scroll p-4 md:p-8"
-        :style="{ height: `calc(100vh - ${NAV_HEIGHT})` }"
+        class="flex-grow overflow-y-scroll p-4 md:p-8"
+        :style="{ height: `calc(100vh - ${NAV_HEIGHT} - ${FOOTER_HEIGHT})` }"
       >
         <div class="max-w-4xl mx-auto">
           <slot />
@@ -225,7 +209,10 @@ const NAV_HEIGHT = '64px' // Example height of the navigation bar
     </main>
 
     <!-- Optional Footer (for copyright, privacy links, etc.) -->
-    <footer class="py-3 px-6 border-t border-gray-800 text-xs text-gray-500 text-center">
+    <footer
+      class="py-3 px-6 border-t border-gray-800 text-xs text-gray-500 text-center"
+      :style="{ height: FOOTER_HEIGHT }"
+    >
       <p
         >© {{ new Date().getFullYear() }} {{ appName }} •
         <a

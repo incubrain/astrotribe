@@ -33,8 +33,8 @@ export default defineEventHandler(async (event) => {
     // Return onboarding status
     return {
       completed: data?.onboarding_completed || false,
-      userType: data?.user_type || null,
-      userId: user.id,
+      user_type: data?.user_type || null,
+      user_id: user.id,
     }
   } catch (error: any) {
     console.error('Onboarding status check error:', error)

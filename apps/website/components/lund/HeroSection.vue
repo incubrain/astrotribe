@@ -130,30 +130,6 @@ onMounted(() => {
             class="mb-8"
           />
 
-          <-- <h1
-            v-motion
-            :initial="{ opacity: 0, y: 30 }"
-            :visibleOnce="{
-              opacity: 1,
-              y: 0,
-              transition: { delay: 0.3 },
-            }"
-            class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 transition-colors duration-500 underline underline-offset-8"
-            :class="`text-${activePersona.color}-500 decoration-${activePersona.color}-500`"
-          >
-            {{ currentHeadline }}
-          </h1>
-
-          <p
-            v-motion
-            :initial="{ opacity: 0, y: 30 }"
-            :visibleOnce="{ opacity: 1, y: 0, transition: { delay: 0.2 } }"
-            class="text-xl text-gray-300 mb-8"
-          >
-            Begin your journey and join a community of {{ activePersona.displayName }}s.
-          </p>
-          -->
-
           <!-- CTA buttons -->
           <div
             v-motion

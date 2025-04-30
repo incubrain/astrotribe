@@ -1,38 +1,24 @@
 <script setup lang="ts">
-import { useForm } from '@primevue/forms/useform'
-import { ref, computed, onMounted } from 'vue'
+import type { FormInstance } from '@primevue/forms'
 import { useOnboardingStore } from '@/stores/useOnboardingStore'
 import { useCategoryTagStore } from '@/stores/useCategoryTagStore'
 
-const emit = defineEmits(['complete'])
 const onboardingStore = useOnboardingStore()
 const categoryTagStore = useCategoryTagStore()
-const analytics = useOnboardingAnalytics()
 
-// Loading states
+const form = useOnboardingForm()
+
 const isLoading = ref(false)
 const isLoadingData = ref(true)
 
-// Get all data from the store
 const stepData = computed(() => onboardingStore.stepData)
 
-// Initialize a simple form without validation
-const form = useForm({
-  initialValues: {},
-})
-
-// Load reference data for display
+// Load categories and tags
 onMounted(async () => {
   isLoadingData.value = true
   try {
-    // Load categories and tags if not already loaded
-    if (categoryTagStore.categories.length === 0) {
-      await categoryTagStore.getCategories()
-    }
-
-    if (categoryTagStore.tags.length === 0) {
-      await categoryTagStore.getTags()
-    }
+    if (categoryTagStore.categories.length === 0) await categoryTagStore.getCategories()
+    if (categoryTagStore.tags.length === 0) await categoryTagStore.getTags()
   } catch (error) {
     console.error('Error loading reference data:', error)
   } finally {
@@ -40,9 +26,9 @@ onMounted(async () => {
   }
 })
 
-// Format user type for display
+// Display helpers
 const userTypeLabel = computed(() => {
-  const userTypeMap = {
+  const map = {
     professional: 'Professional',
     hobbyist: 'Hobbyist',
     researcher: 'Researcher',
@@ -50,51 +36,53 @@ const userTypeLabel = computed(() => {
     other: 'Other',
   }
 
-  return userTypeMap[stepData.value.userType || ''] || 'Not specified'
+  return map[stepData.value.user_type as keyof typeof map] || 'Not specified'
 })
 
-// Get selected categories for display
+onMounted(() => {
+  console.group('[Confirm Step]')
+  console.log('Full stepData:', toRaw(onboardingStore.stepData))
+  console.log('Form values (if any):', form.states)
+  console.groupEnd()
+})
+
 const selectedCategories = computed(() => {
-  const categoryIds = stepData.value.interests || []
-  return categoryTagStore.categories
-    .filter((cat) => categoryIds.includes(cat.id))
-    .map((cat) => cat.name)
+  const ids = Array.isArray(stepData.value.interests) ? stepData.value.interests : []
+  return categoryTagStore.categories.filter((c) => ids.includes(c.id)).map((c) => c.name)
 })
 
-// Get selected tags for display
 const selectedTags = computed(() => {
-  const tagIds = stepData.value.topics || []
-  return categoryTagStore.tags.filter((tag) => tagIds.includes(tag.id)).map((tag) => tag.name)
+  const ids = Array.isArray(stepData.value.topics) ? stepData.value.topics : []
+  return categoryTagStore.tags.filter((t) => ids.includes(t.id)).map((t) => t.name)
 })
 
-// Get location display text
 const locationDisplay = computed(() => {
   const location = stepData.value.location
-  if (!location || !location.placeName) {
-    return 'Not specified'
-  }
-
-  if (location.city && location.country) {
-    return `${location.city}, ${location.country}`
-  }
-
-  return location.placeName
+  if (!location || !location.full_address) return 'Not specified'
+  if (location.city && location.country) return `${location.city}, ${location.country}`
+  return location.full_address
 })
 
-// Handle completion
-function completeOnboarding(e) {
-  isLoading.value = true
-
-  try {
-    // Track completion event
-    analytics.trackOnboardingComplete(stepData.value)
-
-    // Complete onboarding
-    emit('complete', stepData.value)
-  } finally {
-    isLoading.value = false
-  }
-}
+const SummaryCard = defineComponent({
+  props: {
+    title: { type: String, required: true },
+    icon: { type: String, required: true },
+  },
+  setup(props, { slots }) {
+    return () =>
+      h('div', { class: 'p-4 bg-gray-800/50 rounded-lg' }, [
+        h('h3', { class: 'text-lg font-medium mb-2 flex items-center' }, [
+          h(resolveComponent('Icon'), {
+            name: props.icon,
+            class: 'mr-2',
+            size: '20px',
+          }),
+          props.title,
+        ]),
+        h('div', {}, slots.default?.()),
+      ])
+  },
+})
 </script>
 
 <template>
@@ -102,7 +90,6 @@ function completeOnboarding(e) {
     <h2 class="text-2xl font-bold mb-2">You're all set!</h2>
     <p class="text-gray-400 mb-6">Review your preferences before completing the setup.</p>
 
-    <!-- Loading state -->
     <div
       v-if="isLoadingData"
       class="flex justify-center my-8"
@@ -110,74 +97,31 @@ function completeOnboarding(e) {
       <PrimeProgressSpinner />
     </div>
 
-    <!-- Summary content -->
     <div
       v-else
       class="space-y-6"
     >
       <!-- User Type -->
-      <div class="p-4 bg-gray-800/50 rounded-lg">
-        <h3 class="text-lg font-medium mb-2 flex items-center">
-          <Icon
-            name="mdi:account"
-            class="mr-2"
-            size="20px"
-          />
-          User Type
-        </h3>
-        <p>{{ userTypeLabel }}</p>
-      </div>
-
-      <!-- Professional Details (if applicable) -->
-      <div
-        v-if="stepData.userType === 'professional' && stepData.professionalDetails"
-        class="p-4 bg-gray-800/50 rounded-lg"
+      <SummaryCard
+        title="User Type"
+        icon="mdi:account"
       >
-        <h3 class="text-lg font-medium mb-2 flex items-center">
-          <Icon
-            name="mdi:briefcase"
-            class="mr-2"
-            size="20px"
-          />
-          Professional Details
-        </h3>
-        <div class="space-y-2">
-          <p v-if="stepData.professionalDetails.companyName">
-            <span class="text-gray-400">Company:</span>
-            {{ stepData.professionalDetails.companyName }}
-          </p>
-          <p v-if="stepData.professionalDetails.position">
-            <span class="text-gray-400">Position:</span> {{ stepData.professionalDetails.position }}
-          </p>
-          <p v-if="stepData.professionalDetails.industry">
-            <span class="text-gray-400">Industry:</span> {{ stepData.professionalDetails.industry }}
-          </p>
-          <p v-if="stepData.professionalDetails.linkedinUrl">
-            <span class="text-gray-400">LinkedIn:</span> linkedin.com/in/{{
-              stepData.professionalDetails.linkedinUrl
-            }}
-          </p>
-        </div>
-      </div>
+        {{ userTypeLabel }}
+      </SummaryCard>
 
       <!-- Interests -->
-      <div class="p-4 bg-gray-800/50 rounded-lg">
-        <h3 class="text-lg font-medium mb-2 flex items-center">
-          <Icon
-            name="mdi:star"
-            class="mr-2"
-            size="20px"
-          />
-          Content Interests
-        </h3>
+      <SummaryCard
+        title="Content Interests"
+        icon="mdi:star"
+      >
         <div
-          v-if="selectedCategories.length > 0"
+          v-if="selectedCategories.length"
           class="flex flex-wrap gap-2"
         >
           <PrimeChip
-            v-for="category in selectedCategories"
-            :key="category"
-            :label="category"
+            v-for="cat in selectedCategories"
+            :key="cat"
+            :label="cat"
           />
         </div>
         <p
@@ -185,20 +129,15 @@ function completeOnboarding(e) {
           class="text-gray-400"
           >No interests selected</p
         >
-      </div>
+      </SummaryCard>
 
       <!-- Topics -->
-      <div class="p-4 bg-gray-800/50 rounded-lg">
-        <h3 class="text-lg font-medium mb-2 flex items-center">
-          <Icon
-            name="mdi:tag-multiple"
-            class="mr-2"
-            size="20px"
-          />
-          Topics
-        </h3>
+      <SummaryCard
+        title="Topics"
+        icon="mdi:tag-multiple"
+      >
         <div
-          v-if="selectedTags.length > 0"
+          v-if="selectedTags.length"
           class="flex flex-wrap gap-2"
         >
           <PrimeChip
@@ -212,24 +151,19 @@ function completeOnboarding(e) {
           class="text-gray-400"
           >No topics selected</p
         >
-      </div>
+      </SummaryCard>
 
       <!-- Feature Interests -->
-      <div class="p-4 bg-gray-800/50 rounded-lg">
-        <h3 class="text-lg font-medium mb-2 flex items-center">
-          <Icon
-            name="mdi:rocket"
-            class="mr-2"
-            size="20px"
-          />
-          Feature Interests
-        </h3>
+      <SummaryCard
+        title="Feature Interests"
+        icon="mdi:rocket"
+      >
         <div
-          v-if="stepData.featureInterests?.length > 0"
+          v-if="stepData.feature_interests?.length"
           class="flex flex-wrap gap-2"
         >
           <PrimeChip
-            v-for="(featureId, index) in stepData.featureInterests"
+            v-for="(fid, index) in stepData.feature_interests"
             :key="index"
             :label="'Feature #' + (index + 1)"
           />
@@ -239,42 +173,19 @@ function completeOnboarding(e) {
           class="text-gray-400"
           >No feature interests selected</p
         >
-      </div>
+      </SummaryCard>
 
       <!-- Location -->
-      <div class="p-4 bg-gray-800/50 rounded-lg">
-        <h3 class="text-lg font-medium mb-2 flex items-center">
-          <Icon
-            name="mdi:map-marker"
-            class="mr-2"
-            size="20px"
-          />
-          Location
-        </h3>
-        <p>{{ locationDisplay }}</p>
-      </div>
+      <SummaryCard
+        title="Location"
+        icon="mdi:map-marker"
+      >
+        {{ locationDisplay }}
+      </SummaryCard>
 
-      <!-- Edit note -->
       <p class="text-sm text-gray-400">
         You can edit these preferences later in your profile settings.
       </p>
     </div>
-
-    <!-- Form for submission -->
-    <PrimeForm
-      :form-control="form"
-      @submit="completeOnboarding"
-    >
-      <!-- Finish button -->
-      <div class="flex justify-end mt-8">
-        <PrimeButton
-          type="submit"
-          label="Start Exploring"
-          icon="mdi:rocket"
-          icon-pos="right"
-          :loading="isLoading"
-        />
-      </div>
-    </PrimeForm>
   </div>
 </template>

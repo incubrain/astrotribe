@@ -190,7 +190,6 @@ const trackFeatureAction = (featureId) => {
     console.error('Error tracking feature action:', error)
   }
 }
-
 </script>
 
 <template>
@@ -226,7 +225,6 @@ const trackFeatureAction = (featureId) => {
         dynamic-styling
         highlight-last-word
       />
-
 
       <!-- Feature Showcase Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -293,6 +291,7 @@ const trackFeatureAction = (featureId) => {
                   v-for="persona in personas.filter(
                     (persona) => persona?.name && feature.personas.includes(persona.name),
                   )"
+                  :key="persona.name"
                   v-tooltip="`Feature available for ${persona.displayName}`"
                   class="align-text-bottom transition-colors duration-500"
                   :name="persona.icon"
