@@ -383,7 +383,7 @@
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
     >
       <div class="p-4">
-        <PrimeForm
+        <form
           class="space-y-4"
           @submit.prevent="submitForm(CONTACT_TYPE.CONSULTATION)"
         >
@@ -412,6 +412,43 @@
                 class="w-full"
               />
             </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label
+                for="phone"
+                class="block text-sm font-medium"
+                >Phone</label
+              >
+              <PrimeInputText
+                id="phone"
+                v-model="formData.phone"
+                class="w-full"
+              />
+            </div>
+            <div class="space-y-2">
+              <label
+                for="company"
+                class="block text-sm font-medium"
+                >Company</label
+              >
+              <PrimeInputText
+                id="company"
+                v-model="formData.company"
+                class="w-full"
+              />
+            </div>
+          </div>
+          <div class="space-y-2">
+            <label
+              for="preferredData"
+              class="block text-sm font-medium"
+              >Preferred Date</label
+            >
+            <PrimeCalendar
+              v-model="formData.preferredDate"
+              id="preferredDate"
+            />
           </div>
           <div class="space-y-2">
             <label
@@ -442,7 +479,7 @@
           >
             Application submitted successfully! We'll get back to you soon.
           </div>
-        </PrimeForm>
+        </form>
       </div>
     </PrimeDialog>
   </div>
@@ -496,6 +533,9 @@ const formData = ref({
   email: '',
   inquiryType: '',
   message: '',
+  phone: '',
+  company: '',
+  preferredDate: undefined,
 })
 
 const inquiryOptions = ref([
@@ -541,9 +581,12 @@ const submitForm = (contact_type: CONTACT_TYPE) => {
   isSubmitting.value = true
   const toast = useNotification()
 
-  if (
-    Object.keys(formData.value).some((key: any) => !(formData.value as Record<string, any>)[key])
-  ) {
+  const compulsoryFields =
+    contact_type === CONTACT_TYPE.MESSAGE
+      ? ['name', 'email', 'inquiryType', 'message']
+      : ['name', 'email', 'message']
+
+  if (compulsoryFields.some((field: any) => !(formData.value as Record<string, any>)[field])) {
     console.error('Contact Form Error: Incomplete form data')
     toast.error({
       summary: 'Failed to submit form',
@@ -557,9 +600,14 @@ const submitForm = (contact_type: CONTACT_TYPE) => {
     isSubmitting.value = false
 
     sendForm({
-      contact_type,
+      type: contact_type,
+      name: formData.value.name,
+      company: formData.value.company,
+      phone: formData.value.phone,
       email: formData.value.email,
       message: formData.value.message,
+      inquiryType: formData.value.inquiryType,
+      preferredDate: formData.value.preferredDate,
     })
 
     // Show success message
@@ -576,6 +624,9 @@ const submitForm = (contact_type: CONTACT_TYPE) => {
       email: '',
       inquiryType: '',
       message: '',
+      phone: '',
+      company: '',
+      preferredDate: undefined,
     }
   }, 1500)
 }
