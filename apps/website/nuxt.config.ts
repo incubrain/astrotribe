@@ -71,7 +71,6 @@ export default defineNuxtConfig({
     '@nuxtjs/mdc',
     'nuxt-security',
     '@nuxtjs/seo', // Must be before @nuxt/content
-    '@nuxt/devtools',
     '@vueuse/nuxt',
     '@nuxt/image',
     '@pinia/nuxt',
@@ -89,6 +88,8 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['stores', 'composables/*', 'utils/*'],
   },
+
+  devtools: { enabled: true },
 
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
