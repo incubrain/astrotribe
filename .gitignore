@@ -107,6 +107,7 @@ output
 **/output/**
 backups
 **/backups/**
+**/*-backup.sql
 
 **/crawler.log
 **/bugger/results

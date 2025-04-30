@@ -14,6 +14,8 @@
     "skipDefaultLibCheck": true
   },
   "scripts": {
+    "dump:data": "supabase db dump -f supabase/data-backup.sql --data-only",
+    "dump:schema": "supabase db dump -f supabase/schema-backup.sql",
     "freesh": "pnpm clean && pnpm init",
     "db:test": "tsx supabase/tests/contents_trigger.ts",
     "init": "supabase start && pnpm db:setup && pnpm prisma:update",
