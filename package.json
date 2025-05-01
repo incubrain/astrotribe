@@ -102,6 +102,7 @@
     "@nestjs/swagger": "^7.1.17",
     "@nestjs/terminus": "^10.2.3",
     "@nestjs/throttler": "^6.3.0",
+    "@nuxt/content": "^3.5.1",
     "@nuxt/eslint": "^0.7.5",
     "@nuxt/fonts": "^0.11.2",
     "@nuxt/icon": "^1.5.1",
