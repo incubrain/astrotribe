@@ -11,7 +11,7 @@ author: ruchira-huchgol
 category: dark-sky-conservation
 image: '/images/blog/posts/why-dark-skies-matter'
 tags:
-  - name: Stargazing
+  - light-pollution
 draft: false
 ---
 

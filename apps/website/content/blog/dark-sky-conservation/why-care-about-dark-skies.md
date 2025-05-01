@@ -11,7 +11,7 @@ author: shweta-kulkarni
 category: dark-sky-conservation
 image: '/images/blog/posts/why-care-about-dark-skies'
 tags:
-  - name: Light Pollution
+  - light-pollution
 draft: false
 ---
 

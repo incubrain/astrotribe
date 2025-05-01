@@ -12,7 +12,7 @@ author: drew-macgibbon
 category: research
 image: '/images/blog/posts/global-research-on-Light-Pollution'
 tags:
-  - name: Light Pollution
+  - light-pollution
 draft: false
 ---
 

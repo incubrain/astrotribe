@@ -12,7 +12,7 @@ author: shweta-kulkarni
 category: dark-sky-conservation
 image: '/images/blog/posts/light-pollution-wildlife-effects'
 tags:
-  - name: Light Pollution
+  - light-pollution
 draft: false
 ---
 

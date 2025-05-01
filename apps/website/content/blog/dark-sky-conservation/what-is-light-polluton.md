@@ -11,7 +11,7 @@ author: shweta-kulkarni
 category: dark-sky-conservation
 image: '/images/blog/posts/what-is-light-pollution'
 tags:
-  - name: Light Pollution
+  - light-pollution
 draft: false
 ---
 

@@ -16,7 +16,7 @@ author: drew-macgibbon
 category: research
 image: '/images/blog/posts/light-Pollution-In-India'
 tags:
-  - name: Light Pollution
+  - light-pollution
 draft: false
 ---
 

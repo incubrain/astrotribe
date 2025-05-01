@@ -10,7 +10,7 @@ author: drew-macgibbon
 category: research
 image: '/images/blog/posts/guardians-of-the-night-sky'
 tags:
-  - name: Light Pollution
+  - light-pollution
 draft: false
 ---
 
