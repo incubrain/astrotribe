@@ -180,7 +180,7 @@ export const useCompaniesStore = defineStore('companies', () => {
             founding_year,
             url,
             is_government,
-            category,
+            category_id,
             keywords,
             job_url,
             created_at,
