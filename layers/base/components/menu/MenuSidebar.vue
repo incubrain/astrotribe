@@ -11,6 +11,7 @@ const props = defineProps({
 })
 
 const route = useRoute()
+
 const {
   isMobile,
   isSidebarOpen,
@@ -67,7 +68,7 @@ watch(
         class="absolute !z-[1000] -right-3 top-24 hidden h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full bg-primary-600 text-gray-300 transition-opacity duration-300 hover:bg-primary-400 group-hover:opacity-100 md:flex"
         :class="['z-[110]', isSidebarOpen ? 'opacity-0' : 'opacity-100']"
         :title="isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'"
-        @click="toggleSidebar"
+        @click="() => toggleSidebar()"
       >
         <Icon
           :name="isSidebarOpen ? 'mdi:chevron-left' : 'mdi:chevron-right'"
