@@ -1,51 +1,59 @@
 <script setup lang="ts">
-import { useBlogCategories } from '~/composables/useBlogCategories'
-
 const route = useRoute()
 const categorySlug = route.params.category as string
 const pageNumber = parseInt(route.params.page as string) || 1
-const { getCategoryInfo, getCategoryImage, validCategories } = useBlogCategories()
+const { getCategoryInfo, getCategoryImage } = useBlogCategories()
 
-// Validate category
-if (!validCategories.value.includes(categorySlug)) {
-  navigateTo('/404')
-}
+// ✅ Fetch categories safely
+const { data: categories, pending: categoriesLoading } = await useAsyncData('categories', () => {
+  return queryCollection('categories').all()
+})
 
-const categoryInfo = getCategoryInfo(categorySlug)
+// ✅ Normalize for matching
+const normalizedCategories = computed(() => [
+  'all',
+  ...(categories.value?.map((c) => c?.stem?.replace(/^categories\//, '')) ?? []),
+])
 
-// Get articles with pagination
+// ✅ Validate category reactively (watch for categories)
+watchEffect(() => {
+  if (!categoriesLoading.value && !normalizedCategories.value.includes(categorySlug)) {
+    console.warn(
+      `Category not valid: "${categorySlug}". Valid categories are:`,
+      normalizedCategories.value,
+    )
+    navigateTo('/404')
+  }
+})
+
+// Category info
+const dbCategorySlug = categorySlug === 'all' ? 'all' : `categories/${categorySlug}`
+const categoryInfo = getCategoryInfo(dbCategorySlug)
+
+// Fetch articles
 const { data: articlesData, pending } = await useAsyncData(
   `articles-${categorySlug}-page-${pageNumber}`,
   async () => {
-    // Base query
     let query = queryCollection('blog').where('draft', '=', false).order('createdAt', 'DESC')
 
-    // Filter by category
     if (categorySlug !== 'all') {
-      // Now we're matching on category ID/slug directly
       query = query.where('category', '=', categorySlug)
     }
 
-    // Pagination
     const postsPerPage = 9
     const skip = (pageNumber - 1) * postsPerPage
-    query = query.skip(skip).limit(postsPerPage)
+    const articles = await query.skip(skip).limit(postsPerPage).all()
 
-    // Execute query
-    const articles = await query.all()
-
-    // Get total count for pagination
-    let countQuery = queryCollection('blog').where('draft', '=', false)
+    const countQuery = queryCollection('blog').where('draft', '=', false)
 
     if (categorySlug !== 'all') {
-      countQuery = countQuery.where('category', '=', categorySlug)
+      countQuery.where('category', '=', categorySlug)
     }
 
     const totalArticles = await countQuery.count()
-    const totalPages = Math.ceil(totalArticles / postsPerPage)
+    const totalPages = Math.max(1, Math.ceil(totalArticles / postsPerPage))
 
-    // Validate page number
-    if (pageNumber > totalPages && totalPages > 0) {
+    if (pageNumber > totalPages) {
       navigateTo(`/blog/category/${categorySlug}${totalPages > 1 ? `/page/${totalPages}` : ''}`)
     }
 

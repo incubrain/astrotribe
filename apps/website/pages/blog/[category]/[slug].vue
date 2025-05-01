@@ -1,13 +1,19 @@
 <script setup lang="ts">
 const route = useRoute()
 
-const { categories, validCategories, fetchCategories } = useBlogCategories()
-
 const { width } = useWindowSize()
 
 const { slug, category } = toRefs(route.params)
 
 const ready = computed(() => Boolean(slug?.value && category?.value))
+
+const {
+  data: categories,
+  pending: categoriesLoading,
+  error: categoriesError,
+} = await useAsyncData('categories', () => {
+  return queryCollection('categories').all()
+})
 
 const {
   data: article,
@@ -62,10 +68,6 @@ const articleWithRelations = computed(() => {
     authorData: authorData.value || null,
     categoryData: categoryData.value || null,
   }
-})
-
-onMounted(async () => {
-  await fetchCategories()
 })
 
 watch(

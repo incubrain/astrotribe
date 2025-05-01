@@ -1,25 +1,23 @@
 <script setup lang="ts">
-import { useBlogCategories } from '~/composables/useBlogCategories'
-
 const route = useRoute()
 const categorySlug = route.params.category as string
 const pageNumber = parseInt(route.params.page as string) || 1
-const { getCategoryInfo, getCategoryImage, validCategories, fetchCategories } = useBlogCategories()
+const { getCategoryInfo, getCategoryImage } = useBlogCategories()
 
-// Fetch categories first
-await fetchCategories()
+// Fetch categories safely in-context
+const { data: categories, pending: categoriesLoading } = await useAsyncData('categories', () => {
+  return queryCollection('categories').all()
+})
 
-// Normalize the category slug from the database for comparison
+// Normalized categories
 const normalizedValidCategories = computed(() => {
   return [
     'all',
-    ...validCategories.value
-      .filter((slug) => slug !== 'all')
-      .map((slug) => slug.replace('categories/', '')),
+    ...(categories.value?.map((cat) => cat?.stem?.replace(/^categories\//, '') || '') ?? []),
   ]
 })
 
-// Validate category against normalized slugs
+// Validate category
 if (!normalizedValidCategories.value.includes(categorySlug)) {
   console.warn(
     `Category not valid: "${categorySlug}". Valid categories are:`,
@@ -28,31 +26,28 @@ if (!normalizedValidCategories.value.includes(categorySlug)) {
   navigateTo('/404')
 }
 
-// When getting the category info, we need to add the prefix back
+// Prepare db slug
 const dbCategorySlug = categorySlug === 'all' ? 'all' : `categories/${categorySlug}`
+
+// Get category info (helper)
 const categoryInfo = getCategoryInfo(dbCategorySlug)
 
-// Get articles for this category with pagination
+// Fetch articles with pagination
 const { data: articlesData, pending } = await useAsyncData(
   `articles-${categorySlug}-page-${pageNumber}`,
   async () => {
-    // Base query
     let query = queryCollection('blog').where('draft', '=', false).order('createdAt', 'DESC')
 
-    // Filter by category - use the plain category slug (without prefix)
     if (categorySlug !== 'all') {
       query = query.where('category', '=', categorySlug)
     }
 
-    // Pagination with 21 posts per page
     const postsPerPage = 21
     const skip = (pageNumber - 1) * postsPerPage
-    query = query.skip(skip).limit(postsPerPage)
 
-    // Execute query
-    const articles = await query.all()
+    const articles = await query.skip(skip).limit(postsPerPage).all()
 
-    // Get total count for pagination
+    // Get total count
     let countQuery = queryCollection('blog').where('draft', '=', false)
 
     if (categorySlug !== 'all') {
@@ -60,10 +55,10 @@ const { data: articlesData, pending } = await useAsyncData(
     }
 
     const totalArticles = await countQuery.count()
-    const totalPages = Math.ceil(totalArticles / postsPerPage)
+    const totalPages = Math.max(1, Math.ceil(totalArticles / postsPerPage))
 
     // Validate page number
-    if (pageNumber > totalPages && totalPages > 0) {
+    if (pageNumber > totalPages) {
       navigateTo(`/blog/category/${categorySlug}${totalPages > 1 ? `/page/${totalPages}` : ''}`)
     }
 
@@ -75,7 +70,7 @@ const { data: articlesData, pending } = await useAsyncData(
   },
 )
 
-// SEO
+// SEO meta
 useSeoMeta({
   title: `${categoryInfo.title}${pageNumber > 1 ? ` - Page ${pageNumber}` : ''}`,
   description: categoryInfo.description,
@@ -86,7 +81,6 @@ useSeoMeta({
 
 <template>
   <div>
-    <!-- Hero banner -->
     <CommonHero
       :img="{
         src: getCategoryImage(categorySlug),
@@ -94,29 +88,22 @@ useSeoMeta({
         width: 1080,
         height: 720,
       }"
-      :title="{
-        main: categoryInfo.title,
-        subtitle: categoryInfo.description,
-      }"
+      :title="{ main: categoryInfo.title, subtitle: categoryInfo.description }"
       position="center"
       invert
     />
 
-    <!-- Filter bar -->
     <div class="wrapper py-4 lg:pt-12">
       <BlogFilter />
     </div>
 
-    <!-- Blog banner (replaces sidebar) -->
     <BlogBanner />
 
-    <!-- Articles list with 3-column layout -->
     <BlogArticleList
       :articles="articlesData?.articles || []"
-      :is-loading="pending"
+      :is-loading="pending || categoriesLoading"
     />
 
-    <!-- Pagination - now showing 21 per page -->
     <Pagination
       v-if="articlesData"
       :current-page="pageNumber"

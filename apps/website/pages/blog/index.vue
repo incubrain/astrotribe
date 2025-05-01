@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBlogCategories } from '~/composables/useBlogCategories'
 
 // Get featured posts if any
 const { data: featuredPosts, pending: loadingFeatured } = await useAsyncData(
