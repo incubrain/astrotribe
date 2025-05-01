@@ -15,8 +15,6 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   // todo:med - merge currentUser and profile into one, store all required data everything in their session
   // assign Posthog identify
 
-  console.log('user', user.value)
-
   const profile = computed(() => ({
     id: user.value?.id,
     given_name: user.value?.user_metadata?.given_name,

@@ -733,34 +733,168 @@ const AstroPreset = definePreset(Aura, {
       },
     },
 
-    // DataTable styling
+    // Add this to your theme.ts file in the components section
+
+    // Updated DataTable and Paginator theme styling
+
     datatable: {
       colorScheme: {
         dark: {
           root: {
             transitionDuration: '0.2s',
-            borderColor: '{surface.300}',
+            borderColor: '#053966', // Use explicit color to ensure it's applied
+            borderRadius: '8px',
+            background: '#001932', // Base background (surface.0)
+            borderWidth: '1px',
           },
           header: {
-            background: '{surface.200}',
-            color: '{surface.950}',
-            borderColor: '{surface.300}',
-            padding: '0.75rem 1rem',
+            background: '#022e55', // surface.800
+            color: '#cce3f5', // surface.50/primary.100
+            borderColor: '#053966', // primary.700
+            padding: '1rem',
+            borderTopLeftRadius: '8px',
+            borderTopRightRadius: '8px',
           },
           headerCell: {
-            background: '{surface.200}',
-            color: '{surface.950}',
+            background: '#022e55', // surface.800
+            color: '#cce3f5', // primary.100
+            borderColor: '#053966', // primary.700
+            padding: '0.75rem 1rem',
+          },
+          headerContent: {
+            fontWeight: '600',
           },
           columnTitle: {
             fontWeight: '600',
+            color: '#cce3f5', // primary.100
+          },
+          columnFilter: {
+            margin: '0.5rem 0 0 0',
+          },
+          filterOverlay: {
+            background: '#01223f', // surface.900
+            border: '1px solid #053966', // primary.700
+            borderRadius: '8px',
+            padding: '0.5rem',
           },
           row: {
-            background: '{surface.100}',
-            hoverBackground: '{surface.200}',
+            background: '#001932', // surface.0/surface.950
+            hoverBackground: '#053966', // primary.700
+            borderColor: 'rgba(5, 57, 102, 0.3)', // semi-transparent primary.700
+            color: '#cce3f5', // primary.100
+            padding: '0.75rem 1rem',
           },
           bodyCell: {
+            background: 'transparent',
+            color: '#cce3f5', // primary.100
+            borderColor: 'rgba(5, 57, 102, 0.3)', // semi-transparent primary.700
             padding: '0.75rem 1rem',
-            borderColor: '{surface.300}',
+          },
+          stripedRow: {
+            odd: {
+              background: '{surface.0}',
+              hoverBackground: '#053966', // primary.700
+            },
+            even: {
+              background: '#01223f', // surface.900
+              hoverBackground: '#053966', // primary.700
+            },
+          },
+          footer: {
+            background: '#022e55', // surface.800
+            color: '#cce3f5', // primary.100
+            borderColor: '#053966', // primary.700
+            padding: '0.75rem 1rem',
+            borderBottomLeftRadius: '8px',
+            borderBottomRightRadius: '8px',
+          },
+          paginator: {
+            background: '#022e55', // surface.800
+            color: '#cce3f5', // primary.100
+            borderColor: '#053966', // primary.700
+            padding: '0.5rem',
+            borderBottomLeftRadius: '8px',
+            borderBottomRightRadius: '8px',
+          },
+          sortIcon: {
+            color: '#66aae0', // primary.300
+            hoverColor: '#99c7eb', // primary.200
+          },
+          sortBadge: {
+            background: '#085eaa', // primary.600
+            color: '#ffffff', // white
+            minWidth: '1.5rem',
+            height: '1.5rem',
+          },
+          emptyMessage: {
+            color: '#99c7eb', // primary.200
+            padding: '1rem',
+          },
+          loadingMessage: {
+            color: '#99c7eb', // primary.200
+            padding: '1rem',
+          },
+          scroller: {
+            background: 'transparent',
+          },
+          gridlines: {
+            horizontal: {
+              color: 'rgba(5, 57, 102, 0.3)', // semi-transparent primary.700
+            },
+            vertical: {
+              color: 'rgba(5, 57, 102, 0.2)', // more transparent primary.700
+            },
+          },
+          resizeHelper: {
+            background: '#2c78b5', // primary.500
+          },
+          reorderIndicator: {
+            background: '#2c78b5', // primary.500
+          },
+        },
+      },
+    },
+
+    paginator: {
+      colorScheme: {
+        dark: {
+          root: {
+            background: '#022e55', // surface.800
+            color: '#cce3f5', // primary.100
+            padding: '0.5rem 1rem',
+            gap: '0.5rem',
+            borderRadius: '0 0 8px 8px',
+            borderWidth: '1px 0 0 0',
+            borderColor: '#053966', // primary.700
+            transitionDuration: '0.2s',
+          },
+          navButton: {
+            background: 'transparent',
+            hoverBackground: '#053966', // primary.700
+            selectedBackground: '#085eaa', // primary.600
+            color: '#66aae0', // primary.300
+            hoverColor: '#99c7eb', // primary.200
+            selectedColor: '#cce3f5', // primary.100
+            width: '2.5rem',
+            height: '2.5rem',
+            borderRadius: '50%',
+            focusRing: {
+              width: '2px',
+              style: 'solid',
+              color: 'rgba(44, 120, 181, 0.4)', // semi-transparent primary.500
+              offset: '2px',
+              shadow: '0 0 0 2px rgba(44, 120, 181, 0.4)', // semi-transparent primary.500
+            },
+          },
+          currentPageReport: {
+            color: '#66aae0', // primary.300
+          },
+          jumpToPageInput: {
+            maxWidth: '3rem',
+            background: '#01223f', // surface.900
+            color: '#cce3f5', // primary.100
+            borderColor: '#053966', // primary.700
+            borderRadius: '4px',
           },
         },
       },

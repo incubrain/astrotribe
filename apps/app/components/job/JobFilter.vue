@@ -221,6 +221,36 @@ const onClickOutside = (event: MouseEvent) => {
   })
 }
 
+const locationInputValue = computed({
+  get() {
+    return filters.value.location.value?.value ?? ''
+  },
+  set(newValue) {
+    // Optional: you could also search options here and set selected option if needed
+    filters.value.location.value = { key: newValue, value: newValue }
+  },
+})
+
+const companyInputValue = computed({
+  get() {
+    return filters.value.company.value?.value ?? ''
+  },
+  set(newValue) {
+    // Optional: you could also search options here and set selected option if needed
+    filters.value.company.value = { key: newValue, value: newValue }
+  },
+})
+
+const typeInputValue = computed({
+  get() {
+    return filters.value.type.value?.value ?? ''
+  },
+  set(newValue) {
+    // Optional: you could also search options here and set selected option if needed
+    filters.value.type.value = { key: newValue, value: newValue }
+  },
+})
+
 // Add and remove event listener
 onMounted(() => {
   document.addEventListener('click', onClickOutside)
@@ -232,9 +262,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div class="space-y-4 relative z-50">
     <!-- Card with improved filter UI -->
-    <div class="bg-primary-900/40 backdrop-blur-sm rounded-xl border border-primary-800/30 p-4 overflow-hidden">
+    <div
+      class="bg-primary-900/40 backdrop-blur-sm rounded-xl border border-primary-800/30 p-4 overflow-visible"
+    >
       <div class="flex flex-col lg:flex-row gap-4">
         <!-- Quick filters -->
         <div class="flex-grow">
@@ -283,7 +315,7 @@ onUnmounted(() => {
               class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"
             />
             <input
-              v-model="filters.location.value"
+              v-model="locationInputValue"
               type="text"
               class="pl-10 w-full py-2 bg-primary-900/50 text-white rounded-lg border-none focus:ring-primary-500 transition-all hover:bg-primary-800/50"
               placeholder="Search location..."
@@ -294,7 +326,7 @@ onUnmounted(() => {
           <div
             v-if="dropDownInputs.location.showSuggestions"
             :ref="(ref) => (dropDownInputs.location.ref = ref)"
-            class="absolute z-10 mt-1 w-full bg-primary-900/90 rounded-lg shadow-lg border border-primary-800/30 py-1 max-h-[200px] overflow-y-auto backdrop-blur-md"
+            class="absolute z-50 mt-1 w-full bg-primary-900/90 rounded-lg shadow-lg border border-primary-800/30 py-1 max-h-[200px] overflow-y-auto backdrop-blur-md"
           >
             <button
               :key="'location_all'"
@@ -334,7 +366,7 @@ onUnmounted(() => {
               class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"
             />
             <input
-              v-model="filters.company.value"
+              v-model="companyInputValue"
               type="text"
               class="pl-10 w-full py-2 bg-primary-900/50 text-white rounded-lg border-none focus:ring-primary-500 transition-all hover:bg-primary-800/50"
               placeholder="Search company..."
@@ -385,7 +417,7 @@ onUnmounted(() => {
               class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"
             />
             <input
-              v-model="filters.type.value"
+              v-model="typeInputValue"
               type="text"
               class="pl-10 w-full py-2 bg-primary-900/50 text-white rounded-lg border-none focus:ring-primary-500 transition-all hover:bg-primary-800/50"
               placeholder="Select type..."

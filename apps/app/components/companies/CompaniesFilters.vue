@@ -357,25 +357,6 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-
-      <!-- Year range filter -->
-      <div class="mt-4">
-        <label class="block text-xs font-medium mb-1 text-gray-400">Founding Year Range</label>
-        <div class="px-4">
-          <PrimeSlider
-            v-model="yearRange"
-            :min="minYear"
-            :max="maxYear"
-            :step="1"
-            :range="true"
-            class="mt-4"
-          />
-          <div class="flex justify-between mt-2 text-xs text-gray-400">
-            <span>{{ yearRange[0] }}</span>
-            <span>{{ yearRange[1] }}</span>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>

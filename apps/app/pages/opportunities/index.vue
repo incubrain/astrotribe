@@ -253,15 +253,13 @@ onMounted(() => {
       class="relative w-full py-16 flex flex-col items-center justify-center bg-primary-900/30 border-b border-primary-800/30"
     >
       <div class="container mx-auto text-center px-4">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
-          Find Your Next Space Career Opportunity
-        </h1>
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4"> Career Opportunities </h1>
         <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
           Explore job openings in space technology, astronomy, and related fields.
         </p>
 
         <!-- Search input -->
-        <div class="max-w-2xl mx-auto mb-8">
+        <div class="max-w-3xl mx-auto mb-8 w-full">
           <FuzzySearch
             v-model="searchQuery"
             :data="jobs"
@@ -270,32 +268,6 @@ onMounted(() => {
             class="w-full"
             @results="handleSearchResults"
           />
-        </div>
-
-        <!-- Top locations quick filters -->
-        <div
-          v-if="topLocations.length"
-          class="flex flex-wrap justify-center gap-2"
-        >
-          <div class="text-gray-400 font-medium flex items-center">
-            <Icon
-              name="heroicons:map-pin"
-              class="w-4 h-4 mr-1"
-            />
-            <span>Top locations:</span>
-          </div>
-          <button
-            v-for="location in topLocations"
-            :key="location.normalized"
-            class="px-3 py-1 bg-primary-800/50 hover:bg-primary-700/50 border border-primary-700/30 rounded-full text-sm text-gray-300 transition-colors"
-            @click="
-              ((filters.location.value = { key: location.normalized, value: location.name }),
-              handleChangeFilters())
-            "
-          >
-            {{ location.name }}
-            <span class="text-xs text-gray-400 ml-1">({{ location.count }})</span>
-          </button>
         </div>
       </div>
     </div>
@@ -310,31 +282,6 @@ onMounted(() => {
         @clear-filters="clearAllFilters"
       />
 
-      <!-- Recent searches if available -->
-      <div
-        v-if="jobStorage.recentSearches.value.length"
-        class="bg-primary-900/30 rounded-lg p-4 mb-4"
-      >
-        <h3 class="text-sm text-gray-400 mb-2">Recent searches:</h3>
-        <div class="flex flex-wrap gap-2">
-          <button
-            v-for="term in jobStorage.recentSearches.value"
-            :key="term"
-            class="px-3 py-1 bg-primary-800/50 hover:bg-primary-700/50 border border-primary-700/30 rounded-full text-xs text-gray-300 transition-colors"
-            @click="searchQuery = term"
-          >
-            {{ term }}
-          </button>
-          <button
-            v-if="jobStorage.recentSearches.value.length"
-            class="text-xs text-gray-400 hover:text-gray-300 underline"
-            @click="jobStorage.clearRecentSearches()"
-          >
-            Clear history
-          </button>
-        </div>
-      </div>
-
       <!-- Job statistics bar -->
       <div class="bg-primary-900/30 rounded-lg p-4 mb-4 flex justify-between items-center">
         <div class="text-gray-300">
@@ -345,20 +292,6 @@ onMounted(() => {
             >for "<span class="text-primary-400">{{ searchQuery }}</span
             >"</span
           >
-        </div>
-
-        <!-- Recently viewed jobs dropdown -->
-        <div
-          v-if="jobStorage.recentlyViewedJobs.value.length"
-          class="relative"
-        >
-          <PrimeSelect
-            v-model="selectedRecentJob"
-            :options="jobStorage.recentlyViewedJobs.value"
-            option-label="title"
-            placeholder="Recently viewed jobs"
-            class="w-56"
-          />
         </div>
       </div>
 
