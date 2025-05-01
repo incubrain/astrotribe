@@ -67,3 +67,6 @@ BEGIN
   END IF;
 END;
 $$;
+
+
+ALTER TABLE public.tags ADD COLUMN IF NOT EXISTS pending_review boolean DEFAULT false;
