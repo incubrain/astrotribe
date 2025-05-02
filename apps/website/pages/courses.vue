@@ -51,7 +51,7 @@ const filteredCourses = computed(() => {
 })
 
 // Stats for the counter section
-const stats = [{ value: courses.length, label: 'Courses', icon: 'i-lucide-book-open' }]
+const stats = [{ value: courses.value.length, label: 'Courses', icon: 'i-lucide-book-open' }]
 
 // Format description to show only first paragraph
 const formatDescription = (description: string) => {
@@ -81,10 +81,10 @@ onMounted(() => {
   <div>
     <!-- Hero Section -->
     <IBImageHero
-      img="{ src: '/images/courses/courses-hero.jpg', alt: 'AstronEra Courses' }"
+      :img="{ src: '/images/hero-image.jpg', alt: 'AstronEra Courses' }"
       :title="{
-        main: 'Explore Our Astronomy Courses',
-        sub: 'Learn, discover, and grow with expert-led courses',
+        main: 'Explore Our Courses',
+        subtitle: 'Learn, discover, and grow with expert-led courses',
       }"
       fit="cover"
       object-position="center"
@@ -93,7 +93,8 @@ onMounted(() => {
     <!-- Stats Counter Section -->
     <div class="bg-slate-900">
       <div class="wrapper py-12">
-        <div class="grid grid-cols-2 gap-6 md:grid-cols-4">
+        <!-- <div class="grid grid-cols-2 gap-6 md:grid-cols-4"> -->
+        <div class="flex justify-center">
           <div
             v-for="(stat, index) in stats"
             :key="index"
@@ -102,11 +103,6 @@ onMounted(() => {
             :enter="{ ...conf.fadeUp.enter, transition: { delay: 0.1 * index } }"
             class="flex flex-col items-center justify-center text-center"
           >
-            <div
-              class="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-blue-600/20"
-            >
-              <div :class="[stat.icon, 'text-3xl text-blue-400']"></div>
-            </div>
             <div class="mt-2 flex flex-col">
               <span
                 class="text-3xl font-bold text-white"
@@ -214,10 +210,6 @@ onMounted(() => {
                 <div class="flex flex-wrap items-center justify-between">
                   <!-- Instructor & Ratings -->
                   <div class="mb-4 md:mb-0">
-                    <div class="flex items-center mb-1">
-                      <div class="i-lucide-user mr-2 text-slate-400"></div>
-                      <span>{{ course?.visible_instructors[0]?.name }}</span>
-                    </div>
                     <div class="flex items-center">
                       <div class="flex">
                         <div
