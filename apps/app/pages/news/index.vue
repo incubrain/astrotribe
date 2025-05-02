@@ -58,10 +58,6 @@ const layoutClasses = computed(() => {
       <!-- Top Ad Banner -->
       <!-- <AdsBanner v-if="topBannerAd" :ad="topBannerAd" /> -->
 
-      <!-- Category Filters -->
-      <NewsFilterBar class="p-4" />
-
-      <!-- Trending Topics -->
       <div
         class="bg-primary-900/40 backdrop-blur-sm border border-primary-800/30 rounded-xl p-4 lg:p-8 mb-6"
       >
@@ -87,8 +83,9 @@ const layoutClasses = computed(() => {
         </UiHorizontalScroll>
       </div>
 
-      <!-- Advanced Filters -->
-      <!-- <NewsAdvancedFilters /> -->
+      <!-- Category Filters -->
+      <NewsFilterBar class="p-4" />
+
 
       <!-- View Toggle and Sort Controls -->
       <div class="flex items-center justify-between mb-6">

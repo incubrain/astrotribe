@@ -19,11 +19,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen text-white py-8">
+  <div class="min-h-screen text-white ">
     <!-- Main Content -->
-    <div class="wrapper mx-auto">
+    <FeedTitle title="Astronomy Events" />
+
+    <div class="wrapper mx-auto py-8">
       <!-- Page Title -->
-      <FeedTitle title="Astronomy Events" />
 
       <!-- Calendar Component -->
       <EventCalendar

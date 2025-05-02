@@ -63,6 +63,20 @@ const filteredEvents = computed(() =>
   }),
 )
 
+const pastDaysLimit = ref(10)
+const orderedEvents = computed(() => {
+  const today = new Date()
+  const pastLimit = new Date(today)
+  pastLimit.setDate(pastLimit.getDate() - pastDaysLimit.value)
+
+  return filteredEvents.value
+    .filter((event) => {
+      const eventDate = new Date(event.date)
+      return eventDate >= pastLimit
+    })
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+})
+
 const upcomingEvents = computed(() => {
   const today = new Date()
   return filteredEvents.value
@@ -224,25 +238,14 @@ onMounted(() => {
   <div class="min-h-screen text-white">
     <!-- Main Content -->
     <main>
-      <!-- Page Title -->
-      <div class="relative mb-6 rounded-xl overflow-hidden">
-        <div class="relative z-10 py-24 px-6 text-center">
-          <h1
-            class="text-4xl md:text-5xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-primary-300 to-purple-300"
-          >
-            March 2025
-          </h1>
-          <p class="text-xl text-blue-100">Monthly Calendar Astronomical Events</p>
-        </div>
-      </div>
-
       <!-- Toolbar -->
+
       <div
-        class="mb-6 bg-primary-900/40 backdrop-blur-md border border-primary-800/20 rounded-lg p-4"
+        class="mb-6 bg-primary-900/40 backdrop-blur-md border border-primary-800/20 rounded-lg p-4 max-w-full"
       >
         <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
           <!-- Search -->
-          <div class="relative w-full md:w-64">
+          <div class="relative w-full md:min-w-64">
             <input
               v-model="searchQuery"
               type="text"
@@ -257,52 +260,63 @@ onMounted(() => {
           </div>
 
           <!-- Category Filters -->
-          <div class="flex flex-wrap gap-2 justify-center">
-            <div
-              v-for="category in props.categories"
-              :key="category.name"
-              :class="[
-                'flex items-center gap-1 px-3 py-1.5 rounded-full cursor-pointer transition-all duration-300',
-                activeFilters.includes(category.name)
-                  ? `bg-${category.color}-${category.colorIntensity}/30 text-${category.color}-${parseInt(category.colorIntensity) - 100}`
-                  : 'bg-primary-900/30 text-gray-400',
-              ]"
-              @click="toggleFilter(category.name)"
-            >
-              <Icon
-                :name="category.icon"
-                size="16px"
-                :class="
-                  activeFilters.includes(category.name)
-                    ? `text-${category.color}-${category.colorIntensity}`
-                    : ''
-                "
-              />
-              <span class="text-sm">{{ category.name }}</span>
-            </div>
-          </div>
 
           <!-- View Switcher -->
-          <div class="flex items-center gap-2 border-l border-primary-800/30 pl-4">
+          <div class="flex items-center gap-2 border-l border-primary-800/30 pl-4 shrink-0">
             <PrimeButton
-              icon="i-lucide-calendar"
               rounded
               text
               :severity="viewMode === 'month' ? 'primary' : 'secondary'"
               aria-label="Month view"
               @click="viewMode = 'month'"
-            />
+            >
+              <Icon
+                name="i-lucide-calendar"
+                size="24px"
+              />
+            </PrimeButton>
             <PrimeButton
-              icon="i-lucide-list"
               rounded
               text
               :severity="viewMode === 'list' ? 'primary' : 'secondary'"
               aria-label="List view"
               @click="viewMode = 'list'"
-            />
+            >
+              <Icon
+                name="i-lucide-grid"
+                size="24px"
+              />
+            </PrimeButton>
           </div>
         </div>
       </div>
+
+      <UiHorizontalScroll>
+        <div class="inline-flex gap-2 py-1 px-2">
+          <div
+            v-for="category in props.categories"
+            :key="category.name"
+            :class="[
+              'flex items-center gap-1 px-3 py-1.5 rounded-full cursor-pointer transition-all duration-300 whitespace-nowrap',
+              activeFilters.includes(category.name)
+                ? `bg-${category.color}-${category.colorIntensity}/30 text-${category.color}-${parseInt(category.colorIntensity) - 100}`
+                : 'bg-primary-900/30 text-gray-400',
+            ]"
+            @click="toggleFilter(category.name)"
+          >
+            <Icon
+              :name="category.icon"
+              size="16px"
+              :class="
+                activeFilters.includes(category.name)
+                  ? `text-${category.color}-${category.colorIntensity}`
+                  : ''
+              "
+            />
+            <span class="text-sm">{{ category.name }}</span>
+          </div>
+        </div>
+      </UiHorizontalScroll>
 
       <!-- Upcoming Highlights -->
       <div class="mb-6">
@@ -474,7 +488,7 @@ onMounted(() => {
           class="bg-primary-900/20 rounded-lg p-4"
         >
           <div
-            v-if="filteredEvents.length === 0"
+            v-if="orderedEvents.length === 0"
             class="text-center py-8 text-gray-400"
           >
             No events found for the selected filters.
@@ -484,7 +498,7 @@ onMounted(() => {
             class="space-y-2"
           >
             <div
-              v-for="event in filteredEvents"
+              v-for="event in orderedEvents"
               :key="`list-${event.id}`"
               class="bg-primary-900/40 rounded-lg p-3 hover:bg-primary-800/40 transition-colors cursor-pointer"
               @click="openEventDetails(event, $event)"
@@ -493,7 +507,7 @@ onMounted(() => {
                 <div class="flex gap-3 items-start">
                   <div
                     :class="[
-                      'p-2 rounded-full',
+                      'p-2 rounded-full flex',
                       `bg-${getCategoryColor(event.category)}-${getCategoryIntensity(event.category)}/30`,
                     ]"
                   >
@@ -508,7 +522,7 @@ onMounted(() => {
                     <p class="text-sm text-gray-400 mt-1">{{ event.description }}</p>
                   </div>
                 </div>
-                <div class="text-sm text-right">
+                <div class="text-sm text-right flex-shrink-0 w-24">
                   <div class="font-medium">{{ formatDate(event.date) }}</div>
                   <div
                     v-if="event.time"
