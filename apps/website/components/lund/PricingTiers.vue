@@ -190,7 +190,6 @@ onMounted(async () => {
         class="max-w-3xl mx-auto"
       >
         <div class="flex items-center justify-center gap-3 pt-6">
-
           <!-- Monthly Button -->
           <PrimeToggleButton
             :model-value="!isAnnualBilling"
@@ -344,7 +343,7 @@ onMounted(async () => {
             ]"
             coming-soon
             button-text="Join Waitlist"
-            :button-disabled="true"
+            @action="trackCtaClick('join')"
           />
         </div>
       </div>

@@ -43,17 +43,19 @@ const defaultDescription = [
             </div>
 
             <div class="mt-6 flex justify-end">
-              <PrimeButton
-                size="small"
-                severity="secondary"
-                outlined
-              >
-                Learn More
-                <Icon
-                  name="mdi:arrow-right"
-                  class="ml-2"
-                />
-              </PrimeButton>
+              <NuxtLink to="/blog/dark-sky-conservation/what-is-light-pollution">
+                <PrimeButton
+                  size="small"
+                  severity="secondary"
+                  outlined
+                >
+                  Learn More
+                  <Icon
+                    name="mdi:arrow-right"
+                    class="ml-2"
+                  />
+                </PrimeButton>
+              </NuxtLink>
             </div>
           </LandingGlass>
         </div>
