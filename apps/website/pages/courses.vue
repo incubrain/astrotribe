@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import courses from './courses.json'
+import allCourses from './courses.json'
 
 definePageMeta({
   name: 'Courses',
@@ -15,9 +15,11 @@ const filters = ref({
   sort: 'newest', // 'newest', 'highest-rated', 'popular'
 })
 
+const courses = computed(() => allCourses.filter((course) => course.is_published))
+
 // Computed property for filtered courses
 const filteredCourses = computed(() => {
-  let result = [...courses]
+  let result = [...courses.value]
 
   // Apply search filter
   if (filters.value.search) {
@@ -236,7 +238,7 @@ onMounted(() => {
                       v-if="course?.published_time"
                       class="mb-2 text-xs text-slate-400"
                     >
-                      {{ formatDate(course.published_time) }}
+                      Published On: {{ formatDate(course.published_time) }}
                     </p>
                     <NuxtLink
                       :to="course.url"
