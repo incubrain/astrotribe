@@ -358,7 +358,13 @@ export default defineNuxtConfig({
       theme: AstroTheme,
     },
   },
-
+  security: {
+    headers: {
+      contentSecurityPolicy: {
+        'img-src': ["'self'", 'data:', 'https://img-c.udemycdn.com'],
+      },
+    },
+  },
   // security: {
   //   headers: {
   //     contentSecurityPolicy: {
