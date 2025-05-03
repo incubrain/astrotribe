@@ -1,5 +1,4 @@
 export const usePopup = (trackingId: string) => {
-  const { trackEvent } = usePopupTracking()
   const isVisible = ref(false)
   const timeoutId: NodeJS.Timeout | null = null
 
@@ -26,19 +25,16 @@ export const usePopup = (trackingId: string) => {
 
   const handleView = async () => {
     if (trackingId) {
-      await trackEvent(trackingId, 'view')
     }
   }
 
   const handleClick = async () => {
     if (trackingId) {
-      await trackEvent(trackingId, 'click')
     }
   }
 
   const handleDismiss = async () => {
     if (trackingId) {
-      await trackEvent(trackingId, 'dismiss')
     }
     hide()
   }
