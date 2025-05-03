@@ -21,7 +21,7 @@ const percentage = computed(() =>
 <template>
   <div
     v-if="show"
-    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative min-h-[400px]"
   >
     <slot />
     <div
