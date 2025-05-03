@@ -1,7 +1,6 @@
 {
-  "typescript.tsserver.log": "verbose",
+  "typescript.tsserver.log": "off",
   "typescript.tsserver.enableTracing": true,
-  "typescript.tsserver.trace": "messages",
   // Keep existing Prettier settings
   "prettier.requireConfig": true,
   "prettier.resolveGlobalModules": true,
