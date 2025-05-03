@@ -30,17 +30,19 @@ defineProps<{
           </div>
 
           <div class="flex justify-end">
-            <PrimeButton
-              size="small"
-              severity="secondary"
-              outlined
-            >
-              Learn more
-              <Icon
-                name="mdi:arrow-right"
-                class="ml-2"
-              />
-            </PrimeButton>
+            <NuxtLink to="blog/dark-sky-conservation/saving-the-stars">
+              <PrimeButton
+                size="small"
+                severity="secondary"
+                outlined
+              >
+                Learn more
+                <Icon
+                  name="mdi:arrow-right"
+                  class="ml-2"
+                />
+              </PrimeButton>
+            </NuxtLink>
           </div>
         </div>
       </IBGlass>
@@ -73,17 +75,19 @@ defineProps<{
           </div>
 
           <div class="flex justify-end mt-4">
-            <PrimeButton
-              size="small"
-              severity="secondary"
-              outlined
-            >
-              Learn more
-              <Icon
-                name="mdi:arrow-right"
-                class="ml-2"
-              />
-            </PrimeButton>
+            <NuxtLink to="blog/dark-sky-conservation/reducing-light-pollution">
+              <PrimeButton
+                size="small"
+                severity="secondary"
+                outlined
+              >
+                Learn more
+                <Icon
+                  name="mdi:arrow-right"
+                  class="ml-2"
+                />
+              </PrimeButton>
+            </NuxtLink>
           </div>
         </div>
       </IBGlass>

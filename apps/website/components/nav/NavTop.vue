@@ -263,7 +263,7 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
               <PrimeButton
                 severity="primary"
                 class="px-4 py-2 bg-primary-600 hover:bg-primary-700"
-                label="Join AstronEra"
+                label="Sign Up"
               />
             </NuxtLink>
           </div>
@@ -399,7 +399,7 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
             <PrimeButton
               severity="primary"
               class="w-full"
-              label="Join AstronEra"
+              label="Sign Up"
             />
           </NuxtLink>
         </div>

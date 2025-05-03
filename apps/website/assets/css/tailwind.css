@@ -22,5 +22,10 @@
 }
 
 @layer utilities {
+  .p-overflow-hidden {
+    overflow: auto;
+    overflow-x: hidden;
+  }
+
   /* Add app-specific utility classes */
 }

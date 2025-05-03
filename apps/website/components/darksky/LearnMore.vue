@@ -97,7 +97,8 @@ const { conf } = useAnimation()
               class="mt-4 pt-2 border-t border-primary-800/50"
             >
               <NuxtLink
-                :to="`/blog/darksky-conservation/${card.blogSlug}`"
+                :to="`/blog/dark-sky-conservation/${card.blogSlug}`"
+                target="_blank"
                 class="flex items-center text-primary-400 hover:text-primary-300 transition-colors"
               >
                 Read more

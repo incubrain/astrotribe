@@ -249,6 +249,16 @@ export const PAGES: PageInfo[] = [
     parentKey: 'blog',
     lastModified: new Date().toISOString(),
   },
+  // Blog pages
+  {
+    key: 'courses',
+    title: 'Courses',
+    description: 'AstronEra Courses',
+    path: '/courses',
+    sitemap: 'main',
+    priority: 0.9,
+    icon: 'i-mdi-book-open-outline',
+  },
 
   // Policy pages
   {

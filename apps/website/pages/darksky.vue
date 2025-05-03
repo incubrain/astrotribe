@@ -520,21 +520,21 @@ const helpfulResources: Resource[] = [
     title: 'Dark Sky Friendly Lighting',
     description:
       'Comprehensive guide to selecting outdoor lighting fixtures that minimize light pollution while maintaining functionality.',
-    url: 'https://www.darksky.org/our-work/lighting/lighting-for-industry/',
+    url: 'https://darksky.org/resources/what-is-light-pollution/light-pollution-solutions/lighting/',
     icon: 'mdi:lightbulb',
   },
   {
     title: 'Sky Quality Measurement',
     description:
       'Tools and techniques for measuring local light pollution levels and tracking changes over time.',
-    url: 'https://www.darksky.org/our-work/conservation/idsp/become-a-dark-sky-place/sky-quality-survey/',
+    url: 'https://darksky.org/resources/guides-and-how-tos/how-to-conduct-a-night-sky-quality-survey/',
     icon: 'mdi:brightness-7',
   },
   {
     title: 'Educational Materials',
     description:
       'Resources for teachers, community leaders, and parents to educate others about light pollution and dark sky preservation.',
-    url: 'https://www.darksky.org/our-work/grassroots-advocacy/resources/public-outreach-materials/',
+    url: 'https://darksky.org/resources/materials-for-educators/',
     icon: 'mdi:school',
   },
 ]
