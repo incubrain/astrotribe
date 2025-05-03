@@ -282,7 +282,7 @@ onMounted(() => {
         </h1>
 
         <div class="overflow-visible w-full max-w-2xl mx-auto">
-          <PlanetModel
+          <IBPlanetModel
             :planet-id="selectedPlanet"
             :auto-rotate="true"
             @model-loaded="handleModelLoaded"

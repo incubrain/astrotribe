@@ -86,7 +86,7 @@ const { conf } = useAnimation()
             <div
               class="relative w-full max-w-xs aspect-square rounded-full overflow-hidden bg-primary-900/30 border border-primary-600/20"
             >
-              <PlanetModel
+              <IBPlanetModel
                 planet-id="jupiter"
                 :auto-rotate="true"
               />

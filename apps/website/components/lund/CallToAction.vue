@@ -207,7 +207,7 @@ onMounted(() => {
             class="relative w-full max-w-sm aspect-square rounded-full overflow-hidden bg-primary-900/30 shadow-2xl transition-colors duration-700"
             :class="`border border-${componentColor}-600/20 shadow-${componentColor}-600/20`"
           >
-            <PlanetModel
+            <IBPlanetModel
               planet-id="jupiter"
               :auto-rotate="true"
             />
