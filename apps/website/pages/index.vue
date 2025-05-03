@@ -105,13 +105,16 @@ onMounted(() => {
         id="cta"
         class="my-24"
       />
-      <PopupContainer class="flex justify-center">
+      <PopupContainer>
         <IBImage :img="{ src: '/workshop/astronomy-workshop.jpeg' }" />
-        <NuxtLink
-          to="https://rzp.io/rzp/AstronEraSpaceWorkshop"
-          target="_blank"
-          ><PrimeButton>Register Now</PrimeButton></NuxtLink
-        >
+        <div class="flex justify-center mt-4">
+          <NuxtLink
+            to="https://rzp.io/rzp/AstronEraSpaceWorkshop"
+            target="_blank"
+          >
+            <PrimeButton>Register Now</PrimeButton>
+          </NuxtLink>
+        </div>
       </PopupContainer>
     </main>
 
