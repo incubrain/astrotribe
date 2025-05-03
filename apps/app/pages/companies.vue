@@ -5,17 +5,24 @@ definePageMeta({ name: 'Companies' })
 
 // Use our new store
 const companiesStore = useCompaniesStore()
+
 const {
   loading,
   error,
   companies,
   filteredCompanies,
-  viewMode,
   filters,
   selectedCompany,
   showDetailModal,
   recentlyViewedCompaniesData,
 } = storeToRefs(companiesStore)
+
+const { limitedItems, lastRowItems, showPaywall, totalCount, remainingItems, viewMode } =
+  useFeatureLimit({
+    feature: 'COMPANIES',
+    contentType: 'companies',
+    items: filteredCompanies,
+  })
 
 // Initialize filter options
 const searchQuery = ref('')
@@ -161,10 +168,7 @@ const showSkeletonGrid = computed(() => loading.value)
           </div>
 
           <!-- View mode toggle -->
-          <CompaniesViewToggle
-            v-model="viewMode"
-            @update:model-value="companiesStore.setViewMode"
-          />
+          <ViewToggle />
         </div>
       </div>
     </div>
@@ -174,10 +178,8 @@ const showSkeletonGrid = computed(() => loading.value)
       name="fade"
       mode="out-in"
     >
-      <!-- Loading skeleton -->
       <CompaniesSkeleton v-if="showSkeletonGrid" />
 
-      <!-- Main grid/list view -->
       <div v-else>
         <div
           v-if="filteredCompanies.length === 0"
@@ -197,37 +199,43 @@ const showSkeletonGrid = computed(() => loading.value)
           </div>
         </div>
 
-        <!-- Grid view -->
-        <div
-          v-else-if="viewMode === 'grid'"
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        <ViewWrapper
+          :show-paywall="showPaywall"
+          :items-shown="limitedItems.length"
+          feature="COMPANIES"
+          :total="totalCount"
         >
-          <CompanyCard
-            v-for="company in filteredCompanies"
-            :key="company.id"
-            :company="company"
-            mode="grid"
-            @view="viewCompanyDetails"
-            @tag="addTagFilter"
-          />
-        </div>
+          <template #items>
+            <CompanyCard
+              v-for="company in limitedItems"
+              :key="company.id"
+              :company="company"
+              :mode="viewMode"
+              @view="viewCompanyDetails"
+              @tag="addTagFilter"
+            />
+          </template>
 
-        <!-- List view -->
-        <div
-          v-else
-          class="space-y-4"
-        >
-          <CompanyCard
-            v-for="company in filteredCompanies"
-            :key="company.id"
-            :company="company"
-            mode="list"
-            @view="viewCompanyDetails"
-            @tag="addTagFilter"
-          />
-        </div>
+          <template #last-row-items>
+            <CompanyCard
+              v-for="company in lastRowItems"
+              :key="`last-rown-${company.id}`"
+              :company="company"
+              :mode="viewMode"
+              @view="viewCompanyDetails"
+              @tag="addTagFilter"
+            />
+          </template>
+        </ViewWrapper>
       </div>
     </Transition>
+
+    <FeatureCTA
+      v-if="showPaywall"
+      feature="COMPANIES"
+      :remaining="remainingItems"
+      :show="showPaywall"
+    />
 
     <!-- Company detail modal -->
     <CompanyDetailView

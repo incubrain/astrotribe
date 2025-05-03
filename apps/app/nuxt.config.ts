@@ -87,7 +87,7 @@ export default defineNuxtConfig({
 
   experimental: {
     asyncContext: true,
-    debugModuleMutation: false,
+    // debugModuleMutation: false,
   },
 
   compatibilityDate: '2025-01-09',

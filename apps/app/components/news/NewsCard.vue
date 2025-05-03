@@ -86,11 +86,14 @@ const primaryCategory = computed(() => {
 const sourceName = computed(() => {
   if (props.news.details?.source_name) return props.news.details.source_name
 
-  // Try to extract from URL
+  // Try to extract from URL (SAFE STRING ONLY)
   if (props.news.url) {
     try {
-      const url = new URL(props.news.url)
-      return url.hostname.replace('www.', '')
+      const hostname = props.news.url
+        .replace(/^https?:\/\//, '')
+        .replace(/^www\./, '')
+        .split('/')[0]
+      return hostname
     } catch {
       return 'Source'
     }
@@ -305,17 +308,17 @@ const imageSource = computed(() => props.news.featured_image || fallbackImage)
           </h3>
           <div
             v-if="summaryText"
-            class="flex-grow overflow-y-auto"
+            class="flex-grow overflow-y-scroll overflow-x-hidden"
           >
-            <p class="text-sm text-gray-300 leading-relaxed">
+            <p class="text-sm text-gray-300 leading-relaxed break-words">
               {{ summaryText }}
             </p>
           </div>
           <div
             v-else
-            class="flex-grow overflow-y-auto"
+            class="flex-grow overflow-y-scroll overflow-x-hidden"
           >
-            <p class="text-sm text-gray-300 leading-relaxed">
+            <p class="text-sm text-gray-300 leading-relaxed break-words">
               {{ news.description }}
             </p>
           </div>

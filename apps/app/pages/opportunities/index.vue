@@ -13,6 +13,20 @@ import { formatDate, formatEmploymentType } from '~/utils/jobFormatters'
 const currentUser = useCurrentUser()
 const { profile } = storeToRefs(currentUser)
 
+// Get feature limit info using the same composable as companies page
+const {
+  limitedItems,
+  lastRowItems,
+  showPaywall,
+  totalCount,
+  remainingItems,
+  viewMode: featureViewMode,
+} = useFeatureLimit({
+  feature: 'JOB_LISTINGS',
+  contentType: 'jobs',
+  items: computed(() => jobs.value),
+})
+
 // User access level check
 const isUserBasic = profile.value.user_plan === 'free'
 const showDialog = ref(isUserBasic)
@@ -107,9 +121,6 @@ const jobs = computed(
   },
   { deep: true },
 )
-
-// Location grouping for filter options
-const { locationFilterOptions, topLocations, recommendedLocations } = useLocationGrouping(jobs)
 
 // Initialize filter options
 watch(
@@ -221,7 +232,7 @@ const handleSortChange = (payload: { sort: string; order: boolean }) => {
 
 // Load more jobs with infinite scroll
 const handleLoadMore = async () => {
-  if (isLoadingMore.value || isUserBasic) return
+  if (isLoadingMore.value || showPaywall.value) return
 
   isLoadingMore.value = true
   try {
@@ -233,8 +244,6 @@ const handleLoadMore = async () => {
   }
 }
 
-const selectedRecentJob = ref(null)
-
 // Track initial component load
 onMounted(() => {
   // Load saved preferences
@@ -243,11 +252,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    :class="{ 'h-full overflow-hidden blur-sm pointer-events-none': isUserBasic }"
-    @wheel="(event) => isUserBasic && event.preventDefault()"
-    @touchmove="(event) => isUserBasic && event.preventDefault()"
-  >
+  <div>
     <!-- Hero Section with search -->
     <div
       class="relative w-full py-16 flex flex-col items-center justify-center bg-primary-900/30 border-b border-primary-800/30"
@@ -286,6 +291,7 @@ onMounted(() => {
       <div class="bg-primary-900/30 rounded-lg p-4 mb-4 flex justify-between items-center">
         <div class="text-gray-300">
           <span class="font-medium">{{ jobs.length }}</span> opportunities found
+          <span v-if="showPaywall"> (showing {{ limitedItems.length }}) </span>
           <span
             v-if="searchQuery"
             class="ml-1"
@@ -300,21 +306,43 @@ onMounted(() => {
         name="fade"
         mode="out-in"
       >
-        <IBInfiniteScroll
-          :threshold="1400"
-          :disabled="isUserBasic"
-          @update:scroll-end="handleLoadMore"
+        <!-- Loading state -->
+        <div
+          v-if="isLoadingInitial || isLoadingJobs"
+          class="py-8"
         >
-          <JobListing
-            :jobs="jobs"
-            :loading="isLoadingInitial || isLoadingJobs"
-            :view-mode="viewMode"
-            @filter-tag="addTagFilter"
-          />
+          <JobListingSkeleton :count="10" />
+        </div>
+
+        <div v-else>
+          <ViewWrapper
+            :show-paywall="showPaywall"
+            :items-shown="limitedItems.length"
+            feature="JOB_LISTINGS"
+            :total="totalCount"
+          >
+            <template #items>
+              <JobCard
+                v-for="job in limitedItems"
+                :key="job.id"
+                :job="job"
+                class="job-card-item"
+              />
+            </template>
+
+            <template #last-row-items>
+              <JobCard
+                v-for="job in lastRowItems"
+                :key="job.id"
+                :job="job"
+                class="job-card-item"
+              />
+            </template>
+          </ViewWrapper>
 
           <!-- Loading indicator for infinite scroll -->
           <div
-            v-if="isLoadingMore && !isUserBasic"
+            v-if="isLoadingMore && !showPaywall"
             class="flex justify-center py-8"
           >
             <Icon
@@ -322,93 +350,16 @@ onMounted(() => {
               class="w-8 h-8 text-primary-500 animate-spin"
             />
           </div>
-        </IBInfiniteScroll>
+        </div>
       </Transition>
+
+      <!-- Feature CTA -->
+      <FeatureCTA
+        v-if="showPaywall"
+        feature="JOB_LISTINGS"
+        :remaining="remainingItems"
+        :show="showPaywall"
+      />
     </div>
   </div>
-
-  <!-- Pro upgrade dialog -->
-  <PrimeDialog
-    v-model:visible="showDialog"
-    :modal="true"
-    header="🚀 Upgrade Your Plan"
-    class="w-[80vw] md:w-[30vw] rounded-md"
-  >
-    <div class="flex flex-col items-center gap-4 p-6 text-center">
-      <!-- Upgrade Icon -->
-      <Icon
-        name="mdi:crown"
-        size="48px"
-        class="text-yellow-500"
-      />
-
-      <!-- Upgrade Message -->
-      <h3 class="text-lg font-semibold text-white"> Unlock Premium Features! </h3>
-      <p class="text-white text-sm">
-        Upgrade your plan to access all job opportunities and premium insights.
-      </p>
-
-      <!-- Buttons -->
-      <div class="flex gap-3 mt-4">
-        <NuxtLink to="/settings/payments">
-          <PrimeButton
-            severity="success"
-            class="px-6 py-2 flex items-center gap-2"
-          >
-            <Icon
-              name="mdi:star"
-              size="20px"
-              class="text-yellow-400"
-            />
-            Upgrade Now
-          </PrimeButton>
-        </NuxtLink>
-      </div>
-    </div>
-  </PrimeDialog>
 </template>
-
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-/* Map styles */
-.leaflet-container {
-  width: 100% !important;
-  height: 100% !important;
-  filter: grayscale(100%) brightness(105%) contrast(90%);
-}
-
-/* Hide map controls */
-.leaflet-control-container {
-  display: none;
-}
-
-/* Hide marker shadow */
-.leaflet-shadow-pane {
-  display: none;
-}
-
-/* Entry animation for elements */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-slide-up {
-  animation: slideUp 0.5s ease-out forwards;
-}
-</style>

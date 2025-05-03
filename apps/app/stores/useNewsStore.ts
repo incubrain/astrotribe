@@ -10,17 +10,17 @@ export type NewsSource = {
 }
 
 export type NewsDateRange = {
-  start: Date | null
-  end: Date | null
+  start: string | null
+  end: string | null
 }
 
-export interface NewsFilters {
-  category: NewsCategory
-  sources: string[]
-  dateRange: NewsDateRange
-  tags: string[]
-  searchQuery: string
-}
+const filters = ref<NewsFilters>({
+  category: 'all',
+  sources: [],
+  dateRange: { start: null, end: null },
+  tags: [],
+  searchQuery: '',
+})
 
 export const useNewsStore = defineStore('news', () => {
   // State
@@ -30,7 +30,7 @@ export const useNewsStore = defineStore('news', () => {
   const trending = ref<string[]>([])
   const hasMore = ref(true)
   const page = ref(1)
-  const pageSize = ref(12)
+  const pageSize = ref(20)
 
   // Filters
   const filters = ref<NewsFilters>({
@@ -82,8 +82,13 @@ export const useNewsStore = defineStore('news', () => {
     if (filters.value.dateRange.start || filters.value.dateRange.end) {
       filtered = filtered.filter((item) => {
         const itemDate = new Date(item.published_at)
-        const startOk = !filters.value.dateRange.start || itemDate >= filters.value.dateRange.start
-        const endOk = !filters.value.dateRange.end || itemDate <= filters.value.dateRange.end
+        const startDate = filters.value.dateRange.start
+          ? new Date(filters.value.dateRange.start)
+          : null
+        const endDate = filters.value.dateRange.end ? new Date(filters.value.dateRange.end) : null
+
+        const startOk = !startDate || itemDate >= startDate
+        const endOk = !endDate || itemDate <= endDate
         return startOk && endOk
       })
     }
@@ -129,11 +134,13 @@ export const useNewsStore = defineStore('news', () => {
           category: filters.value.category !== 'all' ? filters.value.category : undefined,
           sources: filters.value.sources.length ? filters.value.sources.join(',') : undefined,
           tags: filters.value.tags.length ? filters.value.tags.join(',') : undefined,
-          startDate: filters.value.dateRange.start?.toISOString(),
-          endDate: filters.value.dateRange.end?.toISOString(),
+          startDate: filters.value.dateRange.start || undefined,
+          endDate: filters.value.dateRange.end || undefined,
           search: filters.value.searchQuery || undefined,
         },
       })
+
+      console.log('FETCHING NEWS RESPONSE', response)
 
       const newItems = response.data || []
 
@@ -211,8 +218,11 @@ export const useNewsStore = defineStore('news', () => {
     fetchNews(true)
   }
 
-  const setDateRange = (range: NewsDateRange) => {
-    filters.value.dateRange = range
+  const setDateRange = (range: { start: Date | null; end: Date | null }) => {
+    filters.value.dateRange = {
+      start: range.start ? range.start.toISOString() : null,
+      end: range.end ? range.end.toISOString() : null,
+    }
     fetchNews(true)
   }
 
@@ -244,6 +254,12 @@ export const useNewsStore = defineStore('news', () => {
   const init = async () => {
     await Promise.all([fetchNews(true), fetchSources(), fetchTags(), fetchTrending()])
   }
+
+  onMounted(async () => {
+    if (!news.value.length) {
+      await init()
+    }
+  })
 
   return {
     // State

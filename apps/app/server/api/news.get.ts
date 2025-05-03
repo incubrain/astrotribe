@@ -18,6 +18,17 @@ export default defineEventHandler(async (event) => {
     const from = (page - 1) * pageSize
     const to = from + pageSize - 1
 
+    console.log('Fetching news with filters:', {
+      page,
+      pageSize,
+      category,
+      sources,
+      tags,
+      startDate,
+      endDate,
+      search,
+    })
+
     // Get Supabase client
     const client = await serverSupabaseClient(event)
 
@@ -69,7 +80,10 @@ export default defineEventHandler(async (event) => {
     // We'll fetch all matching the above filters and then filter in-memory
     const { data, error } = await newsQuery
 
+    console.log('Fetched news data:', data)
+
     if (error) {
+      console.error('Error fetching news:', error)
       throw error
     }
 
