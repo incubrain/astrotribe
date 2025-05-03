@@ -455,6 +455,9 @@ onUnmounted(() => {
             </button>
           </div>
         </div>
+        <div class="flex items-end">
+          <ViewToggle />
+        </div>
       </div>
     </div>
   </div>

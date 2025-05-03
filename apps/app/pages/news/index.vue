@@ -81,7 +81,7 @@ console.log('NEWS DATA:', limitedItems.value, lastRowItems.value, hasNews.value,
           <span v-if="showPaywall"> (showing {{ limitedItems.length }}) </span>
         </div>
 
-        <NewsViewToggle />
+        <ViewToggle />
       </div>
 
       <!-- News Content -->

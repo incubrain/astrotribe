@@ -1,10 +1,14 @@
 <script setup lang="ts">
 const viewStore = useViewModeStore()
 
-const toggle = (viewMode: string) => {
-  const newViewMode = viewMode === 'grid' ? 'list' : 'grid'
+const toggle = () => {
+  const newViewMode = viewStore.viewMode === 'grid' ? 'list' : 'grid'
   viewStore.setViewMode(newViewMode)
 }
+
+const getNextViewMode = computed(() => {
+  return viewStore.viewMode === 'grid' ? 'list' : 'grid'
+})
 
 const viewOptions = {
   grid: {
@@ -22,13 +26,14 @@ const viewOptions = {
 
 <template>
   <button
-    class="p-2 rounded-lg bg-primary-900/50 border border-primary-800/30 hover:bg-primary-800/50 transition-colors"
-    :title="viewOptions[viewStore.viewMode].title"
-    @click="toggle(viewOptions[viewStore.viewMode].id)"
+    class="p-2 rounded-lg bg-primary-900/50 border border-primary-800/30 hover:bg-primary-800/50 transition-colors flex"
+    :title="viewOptions[getNextViewMode].title"
+    @click="toggle"
   >
     <Icon
-      :name="viewOptions[viewStore.viewMode].icon"
-      class="w-5 h-5 text-primary-300"
+      :name="viewOptions[getNextViewMode].icon"
+      class="text-primary-300"
+      size="24px"
     />
   </button>
 </template>

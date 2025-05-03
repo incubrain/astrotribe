@@ -10,20 +10,15 @@ const props = defineProps({
   },
 })
 
-const {
-  categories,
-  getCategoryIcon,
-  getCategoryColor,
-  getCategoryIntensity,
-  getCategoryClass,
-  getCategoryTextColor,
-} = useEventCategories()
+const viewModeStore = useViewModeStore()
+const { viewMode } = storeToRefs(viewModeStore)
+
+const { categories } = useEventCategories()
 
 // STATE
 const currentDate = ref(new Date())
 const searchQuery = ref('')
 const activeFilters = ref(categories.map((c) => c.name))
-const viewMode = ref('month')
 
 // Event Dialogs
 const selectedEvent = ref<AstronomyEvent | null>(null)
@@ -41,11 +36,6 @@ const showAllEventsForDay = (date) => {
 const dayEventsDate = ref(null)
 
 const dayEvents = ref([])
-
-const lastEventTrigger = ref(null)
-const lastDayEventTrigger = ref(null)
-
-// Provide category utility functions to all descendant components
 
 // COMPUTED
 const filteredEvents = computed(() =>
@@ -118,10 +108,7 @@ onMounted(() => {
 <template>
   <div class="min-h-screen text-white">
     <main>
-      <EventToolbar
-        v-model:search-query="searchQuery"
-        v-model:view-mode="viewMode"
-      />
+      <EventToolbar v-model:search-query="searchQuery" />
 
       <EventCategories
         :categories="categories"
@@ -142,7 +129,7 @@ onMounted(() => {
         />
 
         <EventCalendarGrid
-          v-if="viewMode === 'month'"
+          v-if="viewMode === 'grid'"
           :current-date="currentDate"
           :filtered-events="filteredEvents"
           @open-event="openEventDetails"

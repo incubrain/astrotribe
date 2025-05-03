@@ -4,10 +4,6 @@ defineProps({
     type: String,
     required: true,
   },
-  viewMode: {
-    type: String,
-    required: true,
-  },
 })
 
 const emit = defineEmits(['update:searchQuery', 'update:viewMode'])
@@ -44,30 +40,7 @@ const updateViewMode = (mode) => {
 
       <!-- View Switcher -->
       <div class="flex items-center gap-2 border-l border-primary-800/30 pl-4 shrink-0">
-        <PrimeButton
-          rounded
-          text
-          :severity="viewMode === 'month' ? 'primary' : 'secondary'"
-          aria-label="Month view"
-          @click="updateViewMode('month')"
-        >
-          <Icon
-            name="i-lucide-calendar"
-            size="24px"
-          />
-        </PrimeButton>
-        <PrimeButton
-          rounded
-          text
-          :severity="viewMode === 'list' ? 'primary' : 'secondary'"
-          aria-label="List view"
-          @click="updateViewMode('list')"
-        >
-          <Icon
-            name="i-lucide-grid"
-            size="24px"
-          />
-        </PrimeButton>
+        <ViewToggle />
       </div>
     </div>
   </div>
