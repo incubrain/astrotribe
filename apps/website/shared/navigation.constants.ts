@@ -124,7 +124,7 @@ export const PAGES: PageInfo[] = [
     path: '/projects/astrotribe',
     sitemap: 'main',
     priority: 0.7,
-    icon: '',
+    icon: 'i-mdi-account-multiple-outline',
     parentKey: 'darksky-section',
     lastModified: new Date().toISOString(),
   },
@@ -135,7 +135,7 @@ export const PAGES: PageInfo[] = [
     path: '/projects/astrotribe/ladakh-2024',
     sitemap: 'main',
     priority: 0.7,
-    icon: '',
+    icon: 'i-mdi-mountain',
     parentKey: 'astrotribe',
     lastModified: new Date().toISOString(),
   },
@@ -146,7 +146,7 @@ export const PAGES: PageInfo[] = [
     path: '/projects/astrotribe/nashik-2023',
     sitemap: 'main',
     priority: 0.7,
-    icon: '',
+    icon: 'i-mdi-forest',
     parentKey: 'astrotribe',
     lastModified: new Date().toISOString(),
   },
@@ -330,7 +330,7 @@ export const FOOTER_SECTIONS = [
     label: 'Dark Skies',
     icon: 'material-symbols:nightlight',
     // We can override which children to show in the footer
-    //showKeys: ['dark-sky-conference-2023'],
+    // showKeys: ['dark-sky-conference-2023'],
   },
   {
     key: 'blog',
@@ -360,7 +360,7 @@ export function getPolicyPageKeys(): string[] {
 
 interface NavItem {
   key: string
-  label: string
+  label: string | undefined
   icon: string | undefined
   visible: boolean
   disabled: boolean
