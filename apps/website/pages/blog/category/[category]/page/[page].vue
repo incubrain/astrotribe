@@ -2,11 +2,15 @@
 const route = useRoute()
 const categorySlug = route.params.category as string
 const pageNumber = parseInt(route.params.page as string) || 1
-const { getCategoryInfo, getCategoryImage } = useBlogCategories()
 
 // ✅ Fetch categories safely
-const { data: categories, pending: categoriesLoading } = await useAsyncData('categories', () => {
+const { data: rawCategories, pending: categoriesLoading } = await useAsyncData('categories', () => {
   return queryCollection('categories').all()
+})
+
+const blogCategories = computed(() => {
+  if (categoriesLoading.value || !rawCategories.value) return null
+  return useBlogCategories(rawCategories)
 })
 
 // ✅ Normalize for matching
@@ -28,7 +32,9 @@ watchEffect(() => {
 
 // Category info
 const dbCategorySlug = categorySlug === 'all' ? 'all' : `categories/${categorySlug}`
-const categoryInfo = getCategoryInfo(dbCategorySlug)
+const getCategoryInfo = computed(() => blogCategories.value?.getCategoryInfo)
+const getCategoryImage = computed(() => blogCategories.value?.getCategoryImage)
+const categories = computed(() => blogCategories.value?.categories)
 
 // Fetch articles
 const { data: articlesData, pending } = await useAsyncData(
@@ -67,10 +73,10 @@ const { data: articlesData, pending } = await useAsyncData(
 
 // SEO
 useSeoMeta({
-  title: `${categoryInfo.title} - Page ${pageNumber}`,
-  description: categoryInfo.description,
-  ogTitle: `${categoryInfo.title} - Page ${pageNumber} - AstronEra Blog`,
-  ogDescription: categoryInfo.description,
+  title: `${getCategoryInfo.value?.title} - Page ${pageNumber}`,
+  description: getCategoryInfo.value?.description,
+  ogTitle: `${getCategoryInfo.value?.title} - Page ${pageNumber} - AstronEra Blog`,
+  ogDescription: getCategoryInfo.value?.description,
 })
 </script>
 
@@ -78,14 +84,14 @@ useSeoMeta({
   <div>
     <CommonHero
       :img="{
-        src: getCategoryImage(categorySlug),
-        alt: `${categoryInfo.title} Hero Image`,
+        src: getCategoryImage?.(categorySlug) || '/images/blog/categories/fallback.webp',
+        alt: `${getCategoryInfo?.title} Hero Image`,
         width: 1080,
         height: 720,
       }"
       :title="{
-        main: categoryInfo.title,
-        subtitle: categoryInfo.description,
+        main: getCategoryInfo?.title,
+        subtitle: getCategoryInfo?.description,
       }"
       position="center"
       invert

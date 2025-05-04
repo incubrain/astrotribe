@@ -1,8 +1,14 @@
 // composables/useBlogCategories.ts
 import { ref, computed } from 'vue'
 
-export function useBlogCategories() {
-  const categories = ref<any[]>([])
+interface BlogCategory {
+  stem: string
+  name: string
+  description?: string
+}
+
+export function useBlogCategories(initialCategories: Ref<BlogCategory[] | null>) {
+  const categories = ref<BlogCategory[]>(initialCategories.value || [])
   const isLoading = ref(false)
   const error = ref<Error | null>(null)
 
@@ -11,10 +17,11 @@ export function useBlogCategories() {
     return ['all', ...categories.value.map((cat) => cat?.stem?.replace(/^categories\//, '') || '')]
   })
 
-  // Get category info by slug
   const getCategoryInfo = (slug: string) => {
     const normalizedSlug = slug.startsWith('categories/') ? slug : `categories/${slug}`
     const category = categories.value.find((cat) => cat?.stem === normalizedSlug)
+
+    console.log('getCategoryInfo', slug, category)
 
     if (!category && slug === 'all') {
       return {
@@ -41,7 +48,7 @@ export function useBlogCategories() {
   }
 
   return {
-    categories: computed(() => categories.value),
+    categories,
     validCategories,
     isLoading,
     error,

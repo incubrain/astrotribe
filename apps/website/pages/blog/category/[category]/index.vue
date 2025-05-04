@@ -2,15 +2,18 @@
 const route = useRoute()
 const categorySlug = route.params.category as string
 const pageNumber = parseInt(route.params.page as string) || 1
-const { getCategoryInfo, getCategoryImage } = useBlogCategories()
 
 // Fetch categories safely in-context
-const { data: categories, pending: categoriesLoading } = await useAsyncData('categories', () => {
+const { data: rawCategories, pending: categoriesLoading } = await useAsyncData('categories', () => {
   return queryCollection('categories').all()
 })
 
+console.log('rawCategories', rawCategories)
+
+const { getCategoryInfo, getCategoryImage, categories } = useBlogCategories(rawCategories)
+
 // Normalized categories
-const normalizedValidCategories = computed(() => {
+/* const normalizedValidCategories = computed(() => {
   return [
     'all',
     ...(categories.value?.map((cat) => cat?.stem?.replace(/^categories\//, '') || '') ?? []),
@@ -24,7 +27,7 @@ if (!normalizedValidCategories.value.includes(categorySlug)) {
     normalizedValidCategories.value,
   )
   navigateTo('/404')
-}
+} */
 
 // Prepare db slug
 const dbCategorySlug = categorySlug === 'all' ? 'all' : `categories/${categorySlug}`

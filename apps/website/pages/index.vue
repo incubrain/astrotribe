@@ -107,7 +107,7 @@ onMounted(() => {
       />
       <PopupContainer>
         <IBImage :img="{ src: '/workshop/astronomy-workshop.jpeg' }" />
-        <div class="flex justify-center mt-4">
+        <div class="flex justify-center my-4">
           <NuxtLink
             to="https://rzp.io/rzp/AstronEraSpaceWorkshop"
             target="_blank"
