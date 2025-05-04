@@ -1,13 +1,18 @@
 <template>
   <div
+    v-if="!isMobile"
     ref="container"
-    class="fixed top-0 left-0 w-screen h-screen bg-black z-0"
+    class="fixed inset-0 bg-black z-0 overflow-hidden"
   ></div>
 </template>
 
 <script setup lang="ts">
+import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import * as THREE from 'three'
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smaller('lg')
 
 defineOptions({ name: 'StarfieldBackground' })
 

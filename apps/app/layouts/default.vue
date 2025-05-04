@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const { appLinks } = usePages()
 const showPrelaunchMessage = useCookie<boolean>('frontiers_message', { default: () => true })
-
 </script>
 
 <template>
@@ -13,7 +12,7 @@ const showPrelaunchMessage = useCookie<boolean>('frontiers_message', { default: 
         class="w-full h-full pb-[var(--mobi-bottom-nav-height)] lg:pb-0 relative flex flex-col rounded-lg overflow-hidden"
       >
         <NavAppTop />
-        <div class="overflow-y-scroll h-full foreground">
+        <div class="overflow-y-auto overflow-x-hidden h-full foreground">
           <div class="h-full">
             <slot />
           </div>
