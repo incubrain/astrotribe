@@ -12,23 +12,6 @@ console.log('rawCategories', rawCategories)
 
 const { getCategoryInfo, getCategoryImage, categories } = useBlogCategories(rawCategories)
 
-// Normalized categories
-/* const normalizedValidCategories = computed(() => {
-  return [
-    'all',
-    ...(categories.value?.map((cat) => cat?.stem?.replace(/^categories\//, '') || '') ?? []),
-  ]
-})
-
-// Validate category
-if (!normalizedValidCategories.value.includes(categorySlug)) {
-  console.warn(
-    `Category not valid: "${categorySlug}". Valid categories are:`,
-    normalizedValidCategories.value,
-  )
-  navigateTo('/404')
-} */
-
 // Prepare db slug
 const dbCategorySlug = categorySlug === 'all' ? 'all' : `categories/${categorySlug}`
 
@@ -96,7 +79,7 @@ useSeoMeta({
       invert
     />
 
-    <div class="wrapper py-4 lg:pt-12">
+    <div class="wrapper py-4 pt-12">
       <BlogFilter />
     </div>
 

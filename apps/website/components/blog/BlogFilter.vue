@@ -9,7 +9,7 @@ const formatCategory = (cat: string) => useChangeCase(cat, 'capitalCase').value
 </script>
 
 <template>
-  <div class="flex gap-2">
+  <IBHorizontalScroll>
     <NuxtLink
       v-for="cat in BLOG_CATEGORIES"
       :key="`astronera-blog-${cat}`"
@@ -20,8 +20,8 @@ const formatCategory = (cat: string) => useChangeCase(cat, 'capitalCase').value
         :outlined="selectedCategory === cat ? false : true"
         :label="formatCategory(cat)"
         size="small"
-        class="cursor-pointer"
+        class="cursor-pointer text-nowrap"
       />
     </NuxtLink>
-  </div>
+  </IBHorizontalScroll>
 </template>

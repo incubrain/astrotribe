@@ -72,7 +72,7 @@ onUnmounted(() => {
     <!-- Scroll content -->
     <div
       ref="containerRef"
-      class="overflow-x-auto hide-scrollbar py-2"
+      class="overflow-x-auto hide-scrollbar py-2 flex flex-row gap-2"
     >
       <slot></slot>
     </div>

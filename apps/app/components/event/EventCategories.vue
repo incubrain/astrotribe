@@ -14,7 +14,7 @@ const emit = defineEmits(['toggle-filter'])
 </script>
 
 <template>
-  <UiHorizontalScroll>
+  <IBHorizontalScroll>
     <div class="inline-flex gap-2 py-1 px-2">
       <div
         v-for="category in categories"
@@ -39,5 +39,5 @@ const emit = defineEmits(['toggle-filter'])
         <span class="text-sm">{{ category.name }}</span>
       </div>
     </div>
-  </UiHorizontalScroll>
+  </IBHorizontalScroll>
 </template>

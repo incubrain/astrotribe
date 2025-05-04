@@ -57,7 +57,7 @@ console.log('NEWS DATA:', limitedItems.value, lastRowItems.value, hasNews.value,
           <h3 class="text-lg font-semibold">Trending Topics</h3>
         </div>
 
-        <UiHorizontalScroll>
+        <IBHorizontalScroll>
           <div class="flex gap-3 py-1">
             <button
               v-for="topic in trendingTopics"
@@ -68,7 +68,7 @@ console.log('NEWS DATA:', limitedItems.value, lastRowItems.value, hasNews.value,
               {{ topic }}
             </button>
           </div>
-        </UiHorizontalScroll>
+        </IBHorizontalScroll>
       </div>
 
       <!-- Category Filters -->
