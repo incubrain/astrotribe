@@ -14,6 +14,7 @@
     text-wrap: balance;
     color: var(--p-primary-color-text);
     font-family: 'Orbitron', sans-serif;
+    font-display: swap;
   }
 }
 

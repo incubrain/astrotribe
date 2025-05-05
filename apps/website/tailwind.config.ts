@@ -13,6 +13,7 @@ export default {
         space: ['Orbitron', 'sans-serif'],
         typed: ['Railway', 'sans-serif'],
       },
+      fontDisplay: 'swap',
       fontSize: {
         '6xl': '4rem', // 64px
         '7xl': '5rem', // 80px
@@ -27,5 +28,4 @@ export default {
     resolve(currentDir, './composables/**/*.{vue,ts}'),
     '../../theme/**/*.{js,css}',
   ],
-
 } satisfies Config
