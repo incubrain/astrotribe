@@ -358,43 +358,6 @@ export default defineNuxtConfig({
       theme: AstroTheme,
     },
   },
-  security: {
-    headers: {
-      contentSecurityPolicy: {
-        'img-src': [
-          "'self'",
-          'data:',
-          'https://www.youtube.com',
-          'https://i.ytimg.com', // Thumbnails and images
-          'https://img.youtube.com', // Legacy thumbnails
-          'https://img-c.udemycdn.com',
-          'https://astronera.org',
-        ],
-        'frame-src': [
-          'https://www.youtube.com',
-          'https://www.youtube-nocookie.com',
-          'https://astronera.org', // Privacy-enhanced mode
-        ],
-        'media-src': [
-          'https://www.youtube.com',
-          'https://astronera.org',
-          'https://*.googlevideo.com', // Actual video content is streamed from this
-        ],
-        'script-src': [
-          "'self'",
-          'https://www.youtube.com',
-          'https://astronera.org',
-          'https://s.ytimg.com', // YouTube player scripts
-        ],
-        'connect-src': [
-          "'self'",
-          'https://www.youtube.com',
-          'https://astronera.org',
-          'https://*.googlevideo.com', // Sometimes needed for video streaming
-        ],
-      },
-    },
-  },
   // security: {
   //   headers: {
   //     contentSecurityPolicy: {
