@@ -5,7 +5,7 @@ export interface PageInfo {
   description: string
   path: string
   icon?: string
-  sitemap: 'main' | 'blog' | 'policies'
+  sitemap: 'main' | 'blog' | 'courses' | 'policies'
   priority?: number
   lastModified?: string
   parentKey?: string // For hierarchical structure
@@ -249,15 +249,15 @@ export const PAGES: PageInfo[] = [
     parentKey: 'blog',
     lastModified: new Date().toISOString(),
   },
-  // Blog pages
+  // Courses page
   {
     key: 'courses',
     title: 'Courses',
     description: 'AstronEra Courses',
     path: '/courses',
-    sitemap: 'main',
+    sitemap: 'courses',
     priority: 0.9,
-    icon: 'i-mdi-book-open-outline',
+    icon: 'i-mdi-school-outline',
   },
 
   // Policy pages
@@ -446,6 +446,19 @@ export function getNavigation() {
           disabled: false,
         })),
       ],
+    })
+  }
+
+  // Add courses as a direct link without subitems
+  const coursesPage = PAGES.find((page) => page.key === 'courses')
+  if (coursesPage) {
+    navItems.push({
+      key: coursesPage.key,
+      label: coursesPage.title,
+      icon: coursesPage.icon,
+      visible: true,
+      disabled: false,
+      url: coursesPage.path,
     })
   }
 
