@@ -359,52 +359,6 @@ export default defineNuxtConfig({
     },
   },
 
-  security: {
-    headers: {
-      contentSecurityPolicy: {
-        'default-src': ["'self'"],
-        'script-src': [
-          "'self'",
-          '*.vimeo.com',
-          'https://www.youtube.com',
-          'https://s.ytimg.com',
-          'https://astronera.org',
-        ],
-        'style-src': ["'self'", '*.vimeo.com', 'https://fonts.googleapis.com'],
-        'font-src': ["'self'", 'https://fonts.gstatic.com'],
-        'img-src': [
-          "'self'",
-          'data:',
-          '*.vimeo.com',
-          'https://www.youtube.com',
-          'https://i.ytimg.com',
-          'https://img.youtube.com',
-          'https://img-c.udemycdn.com',
-          'https://astronera.org',
-        ],
-        'frame-src': [
-          '*.vimeo.com',
-          'https://www.youtube.com',
-          'https://www.youtube-nocookie.com',
-          'https://astronera.org',
-        ],
-        'media-src': [
-          "'self'",
-          '*.vimeo.com',
-          'https://*.googlevideo.com',
-          'https://astronera.org',
-        ],
-        'connect-src': [
-          "'self'",
-          '*.vimeo.com',
-          'https://astronera.org',
-          'https://www.youtube.com',
-          'https://*.googlevideo.com',
-        ],
-      },
-    },
-  },
-
   // security: {
   //   headers: {
   //     contentSecurityPolicy: {
