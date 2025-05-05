@@ -341,7 +341,7 @@
         </div>
       </div>
       <!-- Full-Width Call to Action Section -->
-      <IBGlass
+      <!-- <IBGlass
         hover-effect="glow"
         glow-color="purple"
         gradient="mixed"
@@ -372,7 +372,7 @@
             Book a Call
           </PrimeButton>
         </div>
-      </IBGlass>
+      </IBGlass> -->
     </div>
     <PrimeDialog
       v-model:visible="isModalOpen"
