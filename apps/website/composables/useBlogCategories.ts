@@ -8,7 +8,7 @@ interface BlogCategory {
 }
 
 export function useBlogCategories(initialCategories: Ref<BlogCategory[] | null>) {
-  const categories = ref<BlogCategory[]>(initialCategories.value || [])
+  const categories = computed(() => initialCategories.value || [])
   const isLoading = ref(false)
   const error = ref<Error | null>(null)
 

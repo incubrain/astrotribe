@@ -56,6 +56,14 @@ const { data: articlesData, pending } = await useAsyncData(
   },
 )
 
+watchEffect(() => {
+  console.log('rawCategories updated:', rawCategories.value)
+})
+
+watchEffect(() => {
+  console.log('computed categories updated:', categories.value)
+})
+
 // SEO meta
 useSeoMeta({
   title: `${categoryInfo.title}${pageNumber > 1 ? ` - Page ${pageNumber}` : ''}`,

@@ -13,6 +13,14 @@ const blogCategories = computed(() => {
   return useBlogCategories(rawCategories)
 })
 
+watchEffect(() => {
+  console.log('rawCategories updated:', rawCategories.value)
+})
+
+watchEffect(() => {
+  console.log('computed categories updated:', categories.value)
+})
+
 // ✅ Normalize for matching
 const normalizedCategories = computed(() => [
   'all',
