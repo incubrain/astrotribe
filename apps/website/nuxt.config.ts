@@ -361,7 +361,32 @@ export default defineNuxtConfig({
   security: {
     headers: {
       contentSecurityPolicy: {
-        'img-src': ["'self'", 'data:', 'https://www.youtube.com', 'https://img-c.udemycdn.com'],
+        'img-src': [
+          "'self'",
+          'data:',
+          'https://www.youtube.com',
+          'https://i.ytimg.com', // Thumbnails and images
+          'https://img.youtube.com', // Legacy thumbnails
+          'https://img-c.udemycdn.com',
+        ],
+        'frame-src': [
+          'https://www.youtube.com',
+          'https://www.youtube-nocookie.com', // Privacy-enhanced mode
+        ],
+        'media-src': [
+          'https://www.youtube.com',
+          'https://*.googlevideo.com', // Actual video content is streamed from this
+        ],
+        'script-src': [
+          "'self'",
+          'https://www.youtube.com',
+          'https://s.ytimg.com', // YouTube player scripts
+        ],
+        'connect-src': [
+          "'self'",
+          'https://www.youtube.com',
+          'https://*.googlevideo.com', // Sometimes needed for video streaming
+        ],
       },
     },
   },
