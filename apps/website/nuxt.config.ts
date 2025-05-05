@@ -361,7 +361,7 @@ export default defineNuxtConfig({
   security: {
     headers: {
       contentSecurityPolicy: {
-        'img-src': ["'self'", 'data:', 'https://img-c.udemycdn.com'],
+        'img-src': ["'self'", 'data:', 'https://www.youtube.com', 'https://img-c.udemycdn.com'],
       },
     },
   },
