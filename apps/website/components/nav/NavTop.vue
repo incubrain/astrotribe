@@ -146,10 +146,11 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
             :key="item.key"
             class="relative group"
           >
+            <!-- Direct link without dropdown -->
             <NuxtLink
               v-if="!item.items || !item.items.length"
               :to="item.url || '/'"
-              class="px-3 py-2 rounded-md text-white font-medium hover:bg-primary-50/50 hover:text-primary-600 transition-colors duration-300"
+              class="block px-3 py-2 rounded-md text-white font-medium hover:bg-primary-50/50 hover:text-primary-600 transition-colors duration-300"
             >
               <div class="flex items-center gap-1">
                 <Icon
@@ -160,9 +161,10 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
               </div>
             </NuxtLink>
 
+            <!-- Item with dropdown -->
             <button
               v-else
-              class="px-3 py-2 rounded-md text-white font-medium hover:bg-primary-50/50 hover:text-primary-600 transition-colors duration-300"
+              class="block px-3 py-2 rounded-md text-white font-medium hover:bg-primary-50/50 hover:text-primary-600 transition-colors duration-300"
             >
               <div class="flex items-center gap-1">
                 <Icon
@@ -293,8 +295,23 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
           :key="item.key"
           class="mobile-nav-item"
         >
-          <!-- Main nav item with dropdown toggle -->
+          <!-- Main nav item with dropdown toggle or direct link -->
+          <NuxtLink
+            v-if="!item.items || !item.items.length"
+            :to="item.url || '/'"
+            class="block px-3 py-2 rounded-md text-white font-medium cursor-pointer"
+          >
+            <div class="flex items-center gap-2">
+              <Icon
+                :name="item.icon"
+                size="20"
+              />
+              <span>{{ item.label }}</span>
+            </div>
+          </NuxtLink>
+
           <div
+            v-else
             class="px-3 py-2 rounded-md text-white font-medium cursor-pointer"
             @click="toggleMobileSubMenu(index, 'main')"
           >
@@ -324,13 +341,24 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
               :key="subItem.key"
             >
               <!-- Level 1 item with potential level 2 dropdown -->
+              <NuxtLink
+                v-if="!subItem.items || !subItem.items.length"
+                :to="subItem.url || '/'"
+                class="flex items-center px-3 py-2 rounded-md text-white text-sm cursor-pointer"
+              >
+                <div class="flex items-center gap-2">
+                  <Icon
+                    :name="subItem.icon"
+                    size="20"
+                  />
+                  <span>{{ subItem.label }}</span>
+                </div>
+              </NuxtLink>
+
               <div
+                v-else
                 class="flex items-center justify-between px-3 py-2 rounded-md text-white text-sm cursor-pointer"
-                @click="
-                  subItem.items && subItem.items.length
-                    ? toggleMobileSubMenu(`${index}-${subIndex}`, 'sub')
-                    : navigateTo(subItem.url || '/')
-                "
+                @click="toggleMobileSubMenu(`${index}-${subIndex}`, 'sub')"
               >
                 <div class="flex items-center gap-2">
                   <Icon
@@ -340,7 +368,6 @@ function toggleMobileSubMenu(index: number | string, level: 'main' | 'sub') {
                   <span>{{ subItem.label }}</span>
                 </div>
                 <Icon
-                  v-if="subItem.items && subItem.items.length"
                   :name="
                     expandedSubItems[`${index}-${subIndex}`]
                       ? 'i-mdi-chevron-up'

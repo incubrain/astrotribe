@@ -11,7 +11,6 @@ const { conf, animateCounter } = useAnimation()
 // Filter options
 const filters = ref({
   search: '',
-  paid: 'all', // 'all', 'free', 'paid'
   sort: 'newest', // 'newest', 'highest-rated', 'popular'
 })
 
@@ -29,13 +28,6 @@ const filteredCourses = computed(() => {
         course.title.toLowerCase().includes(searchTerm) ||
         course.headline.toLowerCase().includes(searchTerm),
     )
-  }
-
-  // Apply paid/free filter
-  if (filters.value.paid === 'free') {
-    result = result.filter((course) => !course.is_paid)
-  } else if (filters.value.paid === 'paid') {
-    result = result.filter((course) => course.is_paid)
   }
 
   // Apply sorting
@@ -141,16 +133,6 @@ onMounted(() => {
               <div class="i-lucide-search text-slate-400"></div>
             </div>
           </div>
-
-          <!-- Filter Dropdown -->
-          <select
-            v-model="filters.paid"
-            class="rounded-lg border border-slate-700 bg-slate-800 py-2 px-4 text-white"
-          >
-            <option value="all">All Courses</option>
-            <option value="free">Free Courses</option>
-            <option value="paid">Paid Courses</option>
-          </select>
 
           <!-- Sort Dropdown -->
           <select
