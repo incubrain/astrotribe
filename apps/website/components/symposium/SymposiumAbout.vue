@@ -24,7 +24,7 @@
       </ul>
       <IBImage
         :img="{
-          src: '/symposium/light_pollution_map.jpeg',
+          src: '/symposium/light-pollution-map.jpeg',
           alt: 'https://djlorenz.github.io/astronomy/lp2022/',
         }"
       />
@@ -51,7 +51,7 @@
       <div class="flex justify-center gap-2 flex-col md:flex-row">
         <IBImage
           :img="{
-            src: 'symposium/before_and_after_germany.jpeg',
+            src: 'symposium/before-and-after-germany.jpeg',
             alt: 'https://www.instagram.com/darksky_intl?igsh=MWJqOGV1dGNrbGZ1OQ==',
             width: '500',
             height: '500',
@@ -59,7 +59,7 @@
         />
         <IBImage
           :img="{
-            src: 'symposium/before_and_after_wales.jpeg',
+            src: 'symposium/before-and-after-wales.jpeg',
             width: '360',
             height: '360',
           }"
@@ -77,7 +77,7 @@
       >
       <IBImage
         :img="{
-          src: 'symposium/five_principals_for_lighting.jpeg',
+          src: 'symposium/five-principals-for-lighting.jpeg',
         }"
       />
     </CommonTitle>

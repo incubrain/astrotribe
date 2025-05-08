@@ -8,13 +8,13 @@
  */
 
 import { loadConfig } from './config'
-import { ensureMcpServerConfigured } from './utils/server_check'
+import { ensureMcpServerConfigured } from './utils/server-check'
 import * as mcp from './mcp'
 import * as navigator from './navigator'
 import * as logger from './logger'
 import * as reporter from './reporter'
 import * as interactor from './interactor'
-import { showNotification } from './vscode_integration'
+import { showNotification } from './vscode-integration'
 
 /**
  * Run modes for the debugger

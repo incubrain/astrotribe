@@ -1,5 +1,5 @@
 import type { DebuggerConfig, Route } from '../types'
-import { getMcpServerUrl } from '../vscode_integration'
+import { getMcpServerUrl } from '../vscode-integration'
 import testRoutes from './routes.json'
 
 /**

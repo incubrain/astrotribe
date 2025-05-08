@@ -15,7 +15,7 @@ import {
   closeVsCodeIntegration, 
   testMcpServerConnection,
   isRunningInVSCode
-} from './vscode_integration'
+} from './vscode-integration'
 
 // Store the server process
 let serverProcess: ChildProcess | null = null

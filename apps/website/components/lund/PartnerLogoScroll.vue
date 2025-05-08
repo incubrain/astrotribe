@@ -15,19 +15,19 @@ const { activePersona, personaStyles, isResearcher, isCommunicator, isEnthusiast
 const allPartners = [
   {
     name: 'NASA',
-    image: 'logos/nasa_logo.svg',
+    image: 'logos/nasa-logo.svg',
     type: 'agency',
     personas: ['researcher', 'sci-commer', 'enthusiast'],
   },
   {
     name: 'ESA',
-    image: 'logos/esa_logo.png',
+    image: 'logos/esa-logo.png',
     type: 'agency',
     personas: ['researcher', 'sci-commer', 'enthusiast'],
   },
   {
     name: 'ISRO',
-    image: 'logos/isro_logo.png',
+    image: 'logos/isro-logo.png',
     type: 'agency',
     personas: ['researcher', 'sci-commer', 'enthusiast'],
   },
@@ -51,38 +51,38 @@ const allPartners = [
   },
   {
     name: 'AAAS',
-    image: 'logos/aaas_logo.png',
+    image: 'logos/aaas-logo.png',
     type: 'publisher',
     personas: ['researcher', 'sci-commer'],
   },
   {
     name: 'Google Scholar',
-    image: 'logos/google_scholar_logo.png',
+    image: 'logos/google-scholar-logo.png',
     type: 'data',
     personas: ['researcher'],
   },
   {
     name: 'IEEE',
-    image: 'logos/ieee_logo.png',
+    image: 'logos/ieee-logo.png',
     type: 'publisher',
     personas: ['researcher'],
   },
   {
     name: 'JAXA',
-    image: 'logos/jaxa_logo.png',
+    image: 'logos/jaxa-logo.png',
     type: 'agency',
     personas: ['researcher', 'sci-commer', 'enthusiast'],
   },
   // Additional sources
   {
     name: 'Space.com',
-    image: 'logos/space_com_logo.png',
+    image: 'logos/space-com-logo.png',
     type: 'media',
     personas: ['sci-commer', 'enthusiast'],
   },
   {
     name: 'SETI Institute',
-    image: 'logos/seti_logo.png',
+    image: 'logos/seti-logo.png',
     type: 'agency',
     personas: ['researcher', 'enthusiast'],
   },
@@ -97,18 +97,18 @@ const filteredPartners = computed(() => {
 
 // AI technology partners - don't filter these
 const aiTechnologies = [
-  { name: 'Claude AI', image: 'partners/claude_ai_icon.png' },
-  { name: 'Google Gemini', image: 'partners/google_gemini_icon.png' },
-  { name: 'Grok', image: 'partners/grok_icon.png' },
-  { name: 'Hugging Face', image: 'partners/huggingface_icon.png' },
-  { name: 'Mistral AI', image: 'partners/mistral_ai_icon.png' },
-  { name: 'OpenAI', image: 'partners/openai_icon.png' },
-  { name: 'Claude AI', image: 'partners/claude_ai_icon.png' },
-  { name: 'Google Gemini', image: 'partners/google_gemini_icon.png' },
-  { name: 'Grok', image: 'partners/grok_icon.png' },
-  { name: 'Hugging Face', image: 'partners/huggingface_icon.png' },
-  { name: 'Mistral AI', image: 'partners/mistral_ai_icon.png' },
-  { name: 'OpenAI', image: 'partners/openai_icon.png' },
+  { name: 'Claude AI', image: 'partners/claude-ai-icon.png' },
+  { name: 'Google Gemini', image: 'partners/google-gemini-icon.png' },
+  { name: 'Grok', image: 'partners/grok-icon.png' },
+  { name: 'Hugging Face', image: 'partners/huggingface-icon.png' },
+  { name: 'Mistral AI', image: 'partners/mistral-ai-icon.png' },
+  { name: 'OpenAI', image: 'partners/openai-icon.png' },
+  { name: 'Claude AI', image: 'partners/claude-ai-icon.png' },
+  { name: 'Google Gemini', image: 'partners/google-gemini-icon.png' },
+  { name: 'Grok', image: 'partners/grok-icon.png' },
+  { name: 'Hugging Face', image: 'partners/huggingface-icon.png' },
+  { name: 'Mistral AI', image: 'partners/mistral-ai-icon.png' },
+  { name: 'OpenAI', image: 'partners/openai-icon.png' },
 ]
 
 // Set up testimonials carousel with auto-scroll (fastest)

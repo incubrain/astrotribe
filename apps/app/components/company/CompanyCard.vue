@@ -38,7 +38,7 @@ const emit = defineEmits<{
 }>()
 
 const isHovered = ref(false)
-const fallbackImage = '/images/companies_fallback.png'
+const fallbackImage = '/images/companies-fallback.png'
 const image = ref(props.company.logo_url || fallbackImage)
 
 // Method to change the image source to the fallback

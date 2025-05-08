@@ -136,10 +136,10 @@ const openJobs = ref([
             class="w-32 h-32 rounded-full overflow-hidden bg-primary-800/50 flex items-center justify-center mb-4"
           >
             <img
-              :src="company.logo_url || '/images/companies_fallback.png'"
+              :src="company.logo_url || '/images/companies-fallback.png'"
               :alt="company.name"
               class="w-full h-full object-contain"
-              @error="$event.target.src = '/images/companies_fallback.png'"
+              @error="$event.target.src = '/images/companies-fallback.png'"
             />
           </div>
 

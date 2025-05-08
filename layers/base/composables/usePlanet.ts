@@ -37,7 +37,7 @@ export const PLANETS: Record<string, PlanetConfig> = {
     axialTilt: 7.25,
     moons: 0,
     hasRings: false,
-    texturePath: '/textures/sun_map.jpg',
+    texturePath: '/textures/sun-map.jpg',
     color: '#FDB813',
     isStar: true,
     emissive: true,
@@ -53,7 +53,7 @@ export const PLANETS: Record<string, PlanetConfig> = {
     axialTilt: 0.03,
     moons: 0,
     hasRings: false,
-    texturePath: '/textures/mercury_map.jpg',
+    texturePath: '/textures/mercury-map.jpg',
     color: '#A5A5A5',
   },
   venus: {
@@ -66,7 +66,7 @@ export const PLANETS: Record<string, PlanetConfig> = {
     axialTilt: 177.3,
     moons: 0,
     hasRings: false,
-    texturePath: '/textures/venus_map.jpg',
+    texturePath: '/textures/venus-map.jpg',
     color: '#E6C073',
   },
   earth: {
@@ -79,7 +79,7 @@ export const PLANETS: Record<string, PlanetConfig> = {
     axialTilt: 23.4,
     moons: 1,
     hasRings: false,
-    texturePath: '/textures/earth_map.jpg',
+    texturePath: '/textures/earth-map.jpg',
     color: '#3D85C6',
   },
   mars: {
@@ -92,7 +92,7 @@ export const PLANETS: Record<string, PlanetConfig> = {
     axialTilt: 25.2,
     moons: 2,
     hasRings: false,
-    texturePath: '/textures/mars_map.jpg',
+    texturePath: '/textures/mars-map.jpg',
     color: '#CC4125',
   },
   jupiter: {
@@ -105,7 +105,7 @@ export const PLANETS: Record<string, PlanetConfig> = {
     axialTilt: 3.1,
     moons: 95, // Updated from previous count
     hasRings: true, // Jupiter has faint rings
-    texturePath: '/textures/jupiter_map.jpg',
+    texturePath: '/textures/jupiter-map.jpg',
     color: '#E07E38',
   },
   saturn: {
@@ -118,8 +118,8 @@ export const PLANETS: Record<string, PlanetConfig> = {
     axialTilt: 26.7,
     moons: 145, // 145 named, 270+ confirmed
     hasRings: true,
-    texturePath: '/textures/saturn_map.jpg',
-    ringsTexturePath: '/textures/saturn_rings.png',
+    texturePath: '/textures/saturn-map.jpg',
+    ringsTexturePath: '/textures/saturn-rings.png',
     color: '#D4B46A',
   },
   uranus: {
@@ -132,7 +132,7 @@ export const PLANETS: Record<string, PlanetConfig> = {
     axialTilt: 97.8, // Extreme tilt
     moons: 28, // Updated from 27
     hasRings: true, // Uranus has faint rings
-    texturePath: '/textures/uranus_map.jpg',
+    texturePath: '/textures/uranus-map.jpg',
     color: '#5CACCE',
   },
   neptune: {
@@ -145,7 +145,7 @@ export const PLANETS: Record<string, PlanetConfig> = {
     axialTilt: 28.3,
     moons: 16, // Updated from 14
     hasRings: true, // Neptune has faint rings
-    texturePath: '/textures/neptune_map.jpg',
+    texturePath: '/textures/neptune-map.jpg',
     color: '#3953A4',
   },
 }

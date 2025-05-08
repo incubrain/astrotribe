@@ -14,7 +14,7 @@ const message = `Hi, I’m Tara the Firefly—your quirky little mascot for savi
     <IBImage
       class="h-auto flex-shrink-0"
       :img="{
-        src: '/images/mascot_tara.png',
+        src: '/images/mascot-tara.png',
         alt: 'Tara the Firefly',
         height: 200,
       }"

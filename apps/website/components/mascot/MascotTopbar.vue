@@ -55,7 +55,7 @@ onMounted(() => {
         <div class="flex items-center gap-4">
           <div class="overflow-visible min-w-20 min-h-20 relative z-[100]">
             <NuxtImg
-              src="/images/mascot_tara.png"
+              src="/images/mascot-tara.png"
               alt="Tara the Firefly Mascot"
               class="object-contain absolute min-w-[260px] min-h-[260px] -left-[130px] -top-[100px] z-[1000]"
             />

@@ -30,7 +30,7 @@ const props = defineProps({
 
 const currentlyOpen = ref(false)
 
-const fallbackImage = '/images/companies_fallback.png'; // The fallback image
+const fallbackImage = '/images/companies-fallback.png'; // The fallback image
 
 // Define a ref to hold the image source
 const image = ref(props.company.logo_url);

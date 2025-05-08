@@ -5,18 +5,18 @@
     "sdgs": [
       {
         "title": "SDG 4: Quality Education",
-        "image": "project/sdg_4.jpeg"
+        "image": "project/sdg-4.jpeg"
       },
       {
         "title": "SDG 8: Decent Work and Economic Growth",
-        "image": "project/sdg_8.jpeg"
+        "image": "project/sdg-8.jpeg"
       },
       {
         "title": "SDG 10: Reduced Inequalities",
-        "image": "project/sdg_10.jpeg"
+        "image": "project/sdg-10.jpeg"
       }
     ],
-    "logos": ["project/astrotribe_logo(2).jpeg", "project/astrotribe_logo.jpeg"],
+    "logos": ["project/astrotribe-logo(2).jpeg", "project/astrotribe-logo.jpeg"],
     "joinUs": "Astrotribe is more than just astronomy - it's about building a self-sustaining Astro-Tourism network, raising awareness about light pollution, and preserving the pristine dark skies of tribal regions. Join us in the Cosmic Journey!"
   },
   "about": {
@@ -74,7 +74,7 @@
       "about": "Eklavya Model Residential School (EMRS) Ajmer Saundane is situated on the outskirts of Satana, Nashik district, Maharashtra—a region rich in cultural heritage and home to numerous indigenous tribal communities residing in its mountains and valleys. Located near the Maharashtra-Madhya Pradesh border, this area has significant potential for astro-tourism.EMRS Ajmer Saundane has proven to be an ideal partner for this initiative, demonstrating how astronomy education and astro-tourism can empower tribal students with knowledge, skills, and financial independence",
       "evaluation": {
         "title": "Evaluation",
-        "image": "project/astrotribe_ratings.jpeg",
+        "image": "project/astrotribe-ratings.jpeg",
         "text": "I  am fascinated by astronomy and the vastness of the Universe. I love to watch through the telescope and would love to show others the wonders of the universe. I am very interested in rockets, and satellites. I am really curious about how space and space technologies work. I love computers and one day I hope I can learn to use my knowledge to work in the field of astronomy."
       },
       "achievements": {
@@ -163,8 +163,8 @@
       },
       "evaluation": {
         "images": [
-          "project/astrotribe_questionnaire_1.jpeg",
-          "project/astrotribe_questionnaire_2.jpeg"
+          "project/astrotribe-questionnaire-1.jpeg",
+          "project/astrotribe-questionnaire-2.jpeg"
         ],
         "items": [
           {

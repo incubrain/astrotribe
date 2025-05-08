@@ -50,7 +50,7 @@ libs/debugger/
 │   │   └── routes.json  # Predefined application routes
 │   ├── utils/
 │   │   ├── interaction.ts # Element interaction functions
-│   │   ├── server_check.ts # VS Code MCP server check
+│   │   ├── server-check.ts # VS Code MCP server check
 │   │   ├── snapshot.ts    # Snapshot/screenshot functions
 │   │   └── storage.ts     # File storage utilities
 │   ├── index.ts         # Main entry point
@@ -60,7 +60,7 @@ libs/debugger/
 │   ├── navigator.ts     # Navigation functions for login/routes
 │   ├── reporter.ts      # Report generation and formatting
 │   ├── types.ts         # Type definitions
-│   └── vscode_integration.ts # VS Code specific functionality
+│   └── vscode-integration.ts # VS Code specific functionality
 ├── output/              # Generated reports
 ├── playwright-test/     # Test scripts
 ├── tests/               # Integration tests
@@ -147,7 +147,7 @@ The debugger generates a Markdown report at the configured output path with:
 To extend the debugger with new functionality:
 
 1. Add new utility functions to the appropriate module
-2. Update the VS Code integration in `vscode_integration.ts` if needed
+2. Update the VS Code integration in `vscode-integration.ts` if needed
 3. Modify the main flow in `index.ts` to use the new functionality
 
 ## Troubleshooting

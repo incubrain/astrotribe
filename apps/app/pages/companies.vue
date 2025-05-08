@@ -118,10 +118,10 @@ const showSkeletonGrid = computed(() => loading.value)
               class="w-16 h-16 bg-primary-900/50 rounded-full flex items-center justify-center mb-2 overflow-hidden"
             >
               <img
-                :src="company.logo_url || '/images/companies_fallback.png'"
+                :src="company.logo_url || '/images/companies-fallback.png'"
                 :alt="company.name"
                 class="w-full h-full object-contain p-2"
-                @error="$event.target.src = '/images/companies_fallback.png'"
+                @error="$event.target.src = '/images/companies-fallback.png'"
               />
             </div>
             <h4 class="font-medium text-sm line-clamp-2">{{ company.name }}</h4>

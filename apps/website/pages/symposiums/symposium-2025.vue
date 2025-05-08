@@ -124,7 +124,7 @@ onBeforeUnmount(() => {
               <div class="rounded-lg overflow-hidden">
                 <IBImage
                   :img="{
-                    src: '/symposium/light_pollution_map.jpeg',
+                    src: '/symposium/light-pollution-map.jpeg',
                     alt: 'Light pollution map showing global distribution',
                   }"
                   class="w-full"
@@ -157,7 +157,7 @@ onBeforeUnmount(() => {
                 <div class="rounded-lg overflow-hidden">
                   <IBImage
                     :img="{
-                      src: 'symposium/before_and_after_germany.jpeg',
+                      src: 'symposium/before-and-after-germany.jpeg',
                       alt: 'Before and after image of light pollution reduction in Germany',
                     }"
                     class="w-full h-full object-cover"
@@ -166,7 +166,7 @@ onBeforeUnmount(() => {
                 <div class="rounded-lg overflow-hidden">
                   <IBImage
                     :img="{
-                      src: 'symposium/before_and_after_wales.jpeg',
+                      src: 'symposium/before-and-after-wales.jpeg',
                       alt: 'Before and after image of light pollution reduction in Wales',
                     }"
                     class="w-full h-full object-cover"
@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
               <div class="rounded-lg overflow-hidden mt-4">
                 <IBImage
                   :img="{
-                    src: 'symposium/five_principals_for_lighting.jpeg',
+                    src: 'symposium/five-principals-for-lighting.jpeg',
                     alt: 'Five principles for responsible lighting',
                   }"
                   class="w-full"
@@ -242,13 +242,13 @@ onBeforeUnmount(() => {
                 class="relative aspect-[3/4] w-full overflow-hidden rounded-lg border border-primary-700/30 shadow-lg mb-4"
               >
                 <iframe
-                  src="/symposium/idsps_symposium_report.pdf#page=1&zoom=FitH&toolbar=0&navpanes=0&scrollbar=0"
+                  src="/symposium/idsps-symposium-report.pdf#page=1&zoom=FitH&toolbar=0&navpanes=0&scrollbar=0"
                   frameborder="0"
                   class="w-full h-full blur-sm pointer-events-none"
                 ></iframe>
                 <div class="absolute inset-0 flex items-center justify-center">
                   <a
-                    href="/symposium/idsps_symposium_report.pdf"
+                    href="/symposium/idsps-symposium-report.pdf"
                     download="IDSPS_Symposium_Report.pdf"
                   >
                     <PrimeButton
@@ -269,13 +269,13 @@ onBeforeUnmount(() => {
                 class="relative aspect-[3/4] w-full overflow-hidden rounded-lg border border-primary-700/30 shadow-lg mb-4"
               >
                 <iframe
-                  src="/symposium/brochure_symposium_2025.pdf#page=1&zoom=FitH&toolbar=0&navpanes=0&scrollbar=0"
+                  src="/symposium/brochure-symposium-2025.pdf#page=1&zoom=FitH&toolbar=0&navpanes=0&scrollbar=0"
                   frameborder="0"
                   class="w-full h-full blur-sm pointer-events-none"
                 ></iframe>
                 <div class="absolute inset-0 flex items-center justify-center">
                   <a
-                    href="/symposium/brochure_symposium_2025.pdf"
+                    href="/symposium/brochure-symposium-2025.pdf"
                     download="IDSPS_Symposium_Brochure.pdf"
                   >
                     <PrimeButton
