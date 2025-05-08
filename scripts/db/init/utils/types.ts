@@ -45,7 +45,7 @@ export type ContentStatus =
 export type ContentType =
   | 'news'
   | 'events'
-  | 'jobs'
+  | 'opportunities'
   | 'research'
   | 'companies'
   | 'contact'

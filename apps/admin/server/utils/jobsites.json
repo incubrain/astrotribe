@@ -107,7 +107,7 @@
     "url": "https://recruitment.skao.int",
     "listingUrl": "https://recruitment.skao.int/vacancies.html#filter=p_web_site_id%3D6435%26p_published_to%3DWWW%26p_language%3DDEFAULT%26p_direct%3DY%26p_format%3DMOBILE%26p_include_exclude_from_list%3DN%26p_search%3D",
     "selectors": {
-      "jobContainer": "#jobs_list .jobCard",
+      "jobContainer": "#jobs_list .OpportunityCard",
       "title": ".card-title a",
       "location": "li:contains(\"Job Location\") .jovalue",
       "employment_type": "li:contains(\"Contract Type\") .jovalue",

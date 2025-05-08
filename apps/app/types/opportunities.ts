@@ -2,7 +2,7 @@
  * Job-related type definitions
  */
 
-export interface Job {
+export interface Opportunity {
   id: string
   contents_id?: string
   title: string
@@ -38,7 +38,7 @@ export interface Job {
   employmentType?: string // Formatted version
 }
 
-export interface JobFilter {
+export interface OpportunityFilter {
   location: {
     value: any
     options: any[]
@@ -55,18 +55,8 @@ export interface JobFilter {
   minSalary?: number
 }
 
-export interface JobSortOption {
+export interface OpportunitySortOption {
   value: string
   label: string
   icon: string
 }
-
-export const DEFAULT_JOB_SORT_OPTIONS: JobSortOption[] = [
-  { value: 'published_at', label: 'Publication Date', icon: 'mdi:calendar' },
-  { value: 'title', label: 'Title', icon: 'mdi:sort-alphabetical-ascending' },
-  { value: 'hot_score', label: 'Relevance', icon: 'mdi:fire' },
-  { value: 'salary', label: 'Salary', icon: 'mdi:currency-usd' },
-  { value: 'expires_at', label: 'Deadline', icon: 'mdi:clock-outline' },
-]
-
-export type JobViewMode = 'grid' | 'list'

@@ -13,7 +13,7 @@ const emit = defineEmits<{
 }>()
 
 const { data: tags } = useAsyncData('tags', () => {
-  return queryCollection('jobs').select('tags').all()
+  return queryCollection('opportunities').select('tags').all()
 })
 
 const showAllTags = ref(false)

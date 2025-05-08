@@ -75,10 +75,10 @@ export const FEATURES = {
       },
     ],
   },
-  JOB_LISTINGS: {
-    key: 'JOB_LISTINGS',
+  OPPORTUNITY_LISTINGS: {
+    key: 'OPPORTUNITY_LISTINGS',
     display: {
-      name: 'Jobs',
+      name: 'Opportunities',
       brandedName: 'ExoTalent™ Network',
       description: 'Space industry career opportunities',
       tagline: 'Access global space industry career opportunities',
@@ -163,9 +163,7 @@ export const FEATURE_KEY_MAP = Object.fromEntries(
   Object.entries(FEATURES).map(([key, value]) => [value.key, key]),
 )
 
-export const FEATURE_KEY_LIST = Object.values(FEATURES).map(
-  (feature) => feature.key,
-)
+export const FEATURE_KEY_LIST = Object.values(FEATURES).map((feature) => feature.key)
 
 export const GLOBAL_BENEFITS = [
   {

@@ -47,7 +47,7 @@ export async function seedContents(pool: Pool, count: number) {
         'news',
         'research',
         'newsletters',
-        'jobs',
+        'opportunities',
         'companies',
         'contact',
         'people',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import type { Job } from '~/types/jobs'
+import type { Job } from '~/types/opportunities'
 
 // Props
 const props = defineProps<{
@@ -53,7 +53,7 @@ const companyDomain = computed(() => {
 // Track recent views if component is mounted
 onMounted(() => {
   if (import.meta.client) {
-    const jobStore = useJobStore()
+    const jobStore = useOpportunityStore()
     jobStore.addToRecentlyViewedJobs?.(props.job)
   }
 })
@@ -210,7 +210,7 @@ const isAboutToExpire = computed(() => {
 
       <!-- View details button -->
       <NuxtLink
-        :to="job.url || `/jobs/${job.id}`"
+        :to="job.url || `/opportunities/${job.id}`"
         :target="job.url ? '_blank' : '_self'"
         class="mt-4 inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 bg-primary-700 hover:bg-primary-600 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:ring-offset-2 focus:ring-offset-primary-900"
       >

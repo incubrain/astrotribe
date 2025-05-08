@@ -55,7 +55,7 @@ const close = () => {
 const active = ref('about')
 const tabs = [
   { key: 'about', label: 'About', icon: 'mdi:information-outline' },
-  { key: 'jobs', label: 'Jobs', icon: 'mdi:briefcase-outline' },
+  { key: 'opportunities', label: 'Opportunities', icon: 'mdi:briefcase-outline' },
   { key: 'news', label: 'News', icon: 'mdi:newspaper-variant-outline' },
   { key: 'social', label: 'Social', icon: 'mdi:account-group-outline' },
 ]
@@ -309,7 +309,7 @@ const openJobs = ref([
 
           <!-- Jobs tab -->
           <div
-            v-else-if="active === 'jobs'"
+            v-else-if="active === 'opportunities'"
             class="space-y-6"
           >
             <div class="flex items-center justify-between mb-4">

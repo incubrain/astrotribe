@@ -1,40 +1,40 @@
 <script setup lang="ts">
-import { parseJobDescription, calculateDaysToDeadline, formatSalary } from '~/utils/jobFormatters'
-import type { Job } from '~/types/jobs'
+import { parseOpportunityDescription, calculateDaysToDeadline, formatSalary } from '~/utils/opportunityFormatters'
+import type { Opportunity } from '~/types/opportunities'
 
-// Route parameters and job data loading
+// Route parameters and opportunity data loading
 const route = useRoute()
-const jobId = computed(() => route.params.slug as string)
+const opportunityId = computed(() => route.params.slug as string)
 const loading = ref(true)
 const error = ref(null)
-const job = ref<Job | null>(null)
+const opportunity = ref<Opportunity | null>(null)
 
-// Format job salary
+// Format opportunity salary
 const formattedSalary = computed(() => {
-  if (!job.value?.salary) return ''
-  return formatSalary(job.value.salary, 'EUR')
+  if (!opportunity.value?.salary) return ''
+  return formatSalary(opportunity.value.salary, 'EUR')
 })
 
 // Formatted publication date
 const formattedDate = computed(() => {
-  if (!job.value?.published_at) return ''
+  if (!opportunity.value?.published_at) return ''
   return new Intl.DateTimeFormat('en-US', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
-  }).format(new Date(job.value.published_at))
+  }).format(new Date(opportunity.value.published_at))
 })
 
-// Parse job description
+// Parse opportunity description
 const parsedDescription = computed(() => {
-  if (!job.value?.description) return null
-  return parseJobDescription(job.value.description)
+  if (!opportunity.value?.description) return null
+  return parseOpportunityDescription(opportunity.value.description)
 })
 
 // Deadline status
 const daysToDeadline = computed(() => {
-  if (!job.value?.expires_at) return null
-  return calculateDaysToDeadline(job.value.expires_at)
+  if (!opportunity.value?.expires_at) return null
+  return calculateDaysToDeadline(opportunity.value.expires_at)
 })
 
 // Cache for coordinates
@@ -61,7 +61,7 @@ const getCoordinates = async (address: string) => {
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`,
       {
         headers: {
-          'User-Agent': 'JobBoard/1.0', // Identifying for the API
+          'User-Agent': 'OpportunityBoard/1.0', // Identifying for the API
         },
       },
     )
@@ -82,12 +82,12 @@ const getCoordinates = async (address: string) => {
   }
 }
 
-// Reactive coordinates based on job location
+// Reactive coordinates based on opportunity location
 const mapCenter = ref([48.8566, 2.3522]) // Note: Leaflet uses [lat, lng]
 
-// Extract tags from job description
+// Extract tags from opportunity description
 const extractedTags = computed(() => {
-  if (!job.value?.description) return []
+  if (!opportunity.value?.description) return []
   // This is a simple extraction - ideally you'd use a more sophisticated approach
   const commonKeywords = [
     'JavaScript',
@@ -118,9 +118,9 @@ const extractedTags = computed(() => {
   ]
 
   const tags: string[] = []
-  if (job.value.description) {
+  if (opportunity.value.description) {
     commonKeywords.forEach((keyword) => {
-      if (job.value?.description?.toLowerCase().includes(keyword.toLowerCase())) {
+      if (opportunity.value?.description?.toLowerCase().includes(keyword.toLowerCase())) {
         tags.push(keyword)
       }
     })
@@ -129,40 +129,40 @@ const extractedTags = computed(() => {
   return tags.slice(0, 6) // Limit to 6 tags
 })
 
-// Similar jobs (placeholder - in a real implementation, you'd fetch related jobs from API)
-const similarJobs = ref([])
+// Similar opportunities (placeholder - in a real implementation, you'd fetch related opportunities from API)
+const similarOpportunities = ref([])
 
-// Fetch job data
-const fetchJob = async () => {
+// Fetch opportunity data
+const fetchOpportunity = async () => {
   loading.value = true
   error.value = null
 
   try {
     // In a real implementation, you'd fetch this from your API
     // For this example, we're using dummy data
-    const response = await $fetch(`/api/jobs/${jobId.value}`)
+    const response = await $fetch(`/api/opportunities/${opportunityId.value}`)
 
-    job.value = response
+    opportunity.value = response
 
-    // Once we have job data, update coordinates based on location
-    if (job.value && job.value.location) {
-      const coords = await getCoordinates(job.value.location)
+    // Once we have opportunity data, update coordinates based on location
+    if (opportunity.value && opportunity.value.location) {
+      const coords = await getCoordinates(opportunity.value.location)
       mapCenter.value = coords
     }
 
-    // Fetch similar jobs
+    // Fetch similar opportunities
     // This would be a real API call in your implementation
-    // similarJobs.value = await $fetch(`/api/jobs/similar/${jobId.value}`);
+    // similarOpportunities.value = await $fetch(`/api/opportunities/similar/${opportunityId.value}`);
   } catch (e) {
-    console.error('Error fetching job:', e)
+    console.error('Error fetching opportunity:', e)
     error.value = e
   } finally {
     loading.value = false
   }
 }
 
-// Update job data when route changes
-watch(() => route.params.slug, fetchJob, { immediate: true })
+// Update opportunity data when route changes
+watch(() => route.params.slug, fetchOpportunity, { immediate: true })
 
 // Map configuration
 const zoom = ref(13)
@@ -178,12 +178,12 @@ const handleMapReady = () => {
   }, 500)
 }
 
-// Track viewed jobs in localStorage
+// Track viewed opportunities in localStorage
 onMounted(() => {
   if (import.meta.client) {
-    const { addToRecentlyViewedJobs } = useJobStore()
-    if (jobId.value) {
-      addToRecentlyViewedJobs(jobId.value)
+    const { addToRecentlyViewedOpportunities } = useOpportunityStore()
+    if (opportunityId.value) {
+      addToRecentlyViewedOpportunities(opportunityId.value)
     }
   }
 })
@@ -192,29 +192,29 @@ onMounted(() => {
 <template>
   <div class="min-h-screen container mx-auto mt-6 md:mt-12">
     <!-- Loading skeleton -->
-    <JobDetailSkeleton v-if="isLoading" />
+    <OpportunityDetailSkeleton v-if="isLoading" />
 
     <!-- Error state -->
     <div
       v-else-if="error"
       class="p-8 bg-red-500/10 rounded-lg border border-red-500/20 text-center"
     >
-      <h2 class="text-xl font-semibold mb-2">Error loading job</h2>
-      <p class="text-gray-400">Unable to load job details. Please try again later.</p>
+      <h2 class="text-xl font-semibold mb-2">Error loading opportunity</h2>
+      <p class="text-gray-400">Unable to load opportunity details. Please try again later.</p>
       <NuxtLink
         to="/opportunities"
         class="inline-block mt-4 px-4 py-2 bg-primary-700 rounded-lg"
       >
-        Back to Jobs
+        Back to Opportunities
       </NuxtLink>
     </div>
 
-    <!-- Job details when data is loaded -->
+    <!-- Opportunity details when data is loaded -->
     <div
-      v-else-if="job"
+      v-else-if="opportunity"
       class="relative"
     >
-      <!-- Job header with subtle gradient -->
+      <!-- Opportunity header with subtle gradient -->
       <div class="relative h-[400px] rounded-t-lg overflow-hidden">
         <!-- Map background -->
         <client-only>
@@ -262,13 +262,13 @@ onMounted(() => {
             <NuxtLink
               to="/opportunities"
               class="hover:text-primary-400 transition-colors"
-              >Jobs</NuxtLink
+              >Opportunities</NuxtLink
             >
             <Icon
               name="heroicons:chevron-right"
               class="w-4 h-4"
             />
-            <span class="text-white">{{ job.title }}</span>
+            <span class="text-white">{{ opportunity.title }}</span>
           </div>
 
           <div class="grid lg:grid-cols-2 gap-12 items-start">
@@ -278,27 +278,27 @@ onMounted(() => {
                 <span
                   class="px-3 backdrop-blur-sm py-1 bg-primary-900/50 border border-primary-700/30 text-primary-400 rounded-full text-sm font-medium"
                 >
-                  {{ job.location }}
+                  {{ opportunity.location }}
                 </span>
 
                 <!-- Deadline indicator for application -->
                 <SharedDeadlineIndicator
-                  v-if="job.expires_at"
-                  :deadline="job.expires_at"
+                  v-if="opportunity.expires_at"
+                  :deadline="opportunity.expires_at"
                   size="md"
                 />
 
                 <!-- Employment type badge -->
                 <span
-                  v-if="job.employmentType"
+                  v-if="opportunity.employmentType"
                   class="px-3 backdrop-blur-sm py-1 bg-primary-900/50 border border-primary-700/30 text-gray-300 rounded-full text-sm font-medium"
                 >
-                  {{ job.employmentType }}
+                  {{ opportunity.employmentType }}
                 </span>
               </div>
 
               <h1 class="text-4xl font-bold text-white leading-tight">
-                {{ job.title }}
+                {{ opportunity.title }}
               </h1>
 
               <div class="flex flex-wrap items-center gap-6 text-gray-300">
@@ -309,10 +309,10 @@ onMounted(() => {
                     name="heroicons:building-office-2"
                     class="w-5 h-5 text-primary-400"
                   />
-                  <span class="font-medium">{{ job.company }}</span>
+                  <span class="font-medium">{{ opportunity.company }}</span>
                 </div>
                 <div
-                  v-if="job.salary"
+                  v-if="opportunity.salary"
                   class="flex items-center gap-3 bg-primary-900/50 border border-primary-800/30 px-4 py-2 rounded-xl backdrop-blur-sm"
                 >
                   <Icon
@@ -329,7 +329,7 @@ onMounted(() => {
                   name="heroicons:calendar"
                   class="w-4 h-4"
                 />
-                <span>Posted <SharedTimeAgo :date="job.published_at" /></span>
+                <span>Posted <SharedTimeAgo :date="opportunity.published_at" /></span>
               </div>
             </div>
 
@@ -369,7 +369,7 @@ onMounted(() => {
       <!-- Main content -->
       <div class="max-w-6xl mx-auto px-4 py-12">
         <div class="grid lg:grid-cols-3 gap-8">
-          <!-- Job description -->
+          <!-- Opportunity description -->
           <div class="lg:col-span-2 space-y-6">
             <!-- Tags -->
             <div class="flex flex-wrap gap-2 mb-6">
@@ -455,10 +455,10 @@ onMounted(() => {
 
             <!-- Fallback for unparsed description -->
             <div
-              v-else-if="job.description"
+              v-else-if="opportunity.description"
               class="prose prose-lg prose-invert max-w-none bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8"
             >
-              <div v-html="job.description"></div>
+              <div v-html="opportunity.description"></div>
             </div>
           </div>
 
@@ -475,10 +475,10 @@ onMounted(() => {
 
                 <div class="relative">
                   <h2 class="text-xl font-semibold text-white mb-4">
-                    {{ job.company }}
+                    {{ opportunity.company }}
                   </h2>
                   <p class="text-gray-400 mb-6">
-                    Leading company in its sector, {{ job.company }} constantly innovates to create
+                    Leading company in its sector, {{ opportunity.company }} constantly innovates to create
                     the best technological solutions.
                   </p>
                   <div class="space-y-4">
@@ -494,7 +494,7 @@ onMounted(() => {
                         name="heroicons:globe-europe-africa"
                         class="w-5 h-5 text-primary-400"
                       />
-                      <span>{{ job.location }}</span>
+                      <span>{{ opportunity.location }}</span>
                     </div>
                     <div class="flex items-center gap-3 text-sm">
                       <Icon
@@ -519,7 +519,7 @@ onMounted(() => {
 
               <!-- Share -->
               <div class="bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8">
-                <h2 class="text-lg font-semibold text-white mb-4">Share this job</h2>
+                <h2 class="text-lg font-semibold text-white mb-4">Share this opportunity</h2>
                 <div class="grid grid-cols-3 gap-4">
                   <button
                     v-for="(network, i) in ['linkedin', 'twitter', 'facebook']"
@@ -540,24 +540,24 @@ onMounted(() => {
                 </div>
               </div>
 
-              <!-- Similar jobs -->
+              <!-- Similar opportunities -->
               <div
-                v-if="similarJobs.length"
+                v-if="similarOpportunities.length"
                 class="bg-primary-900/20 border border-primary-800/30 rounded-2xl p-8"
               >
-                <h2 class="text-lg font-semibold text-white mb-4">Similar jobs</h2>
+                <h2 class="text-lg font-semibold text-white mb-4">Similar opportunities</h2>
                 <div class="space-y-4">
                   <div
-                    v-for="similarJob in similarJobs"
-                    :key="similarJob.id"
+                    v-for="similarOpportunity in similarOpportunities"
+                    :key="similarOpportunity.id"
                     class="p-4 border border-primary-800/30 rounded-xl hover:bg-primary-800/20 transition-colors"
                   >
-                    <h3 class="font-medium text-white mb-1">{{ similarJob.title }}</h3>
-                    <p class="text-sm text-gray-400 mb-2">{{ similarJob.company }}</p>
+                    <h3 class="font-medium text-white mb-1">{{ similarOpportunity.title }}</h3>
+                    <p class="text-sm text-gray-400 mb-2">{{ similarOpportunity.company }}</p>
                     <div class="flex justify-between items-center">
-                      <span class="text-xs text-gray-500">{{ similarJob.location }}</span>
+                      <span class="text-xs text-gray-500">{{ similarOpportunity.location }}</span>
                       <NuxtLink
-                        :to="`/opportunities/${similarJob.id}`"
+                        :to="`/opportunities/${similarOpportunity.id}`"
                         class="text-primary-400 text-sm"
                         >View</NuxtLink
                       >

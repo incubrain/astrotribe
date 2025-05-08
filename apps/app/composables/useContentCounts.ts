@@ -7,16 +7,16 @@ export const useContentCounts = () => {
 
   // Weekly counts
   const weeklyNewsTotal = ref(0)
-  const weeklyJobsTotal = ref(0)
+  const weeklyOpportunitiesTotal = ref(0)
 
   // Total counts
   const newsTotal = ref(0)
-  const jobsTotal = ref(0)
+  const opportunitiesTotal = ref(0)
   const companiesTotal = ref(0)
 
   // Total items across all content types
   const fullTotal = computed(() => {
-    return newsTotal.value + jobsTotal.value + companiesTotal.value
+    return newsTotal.value + opportunitiesTotal.value + companiesTotal.value
   })
 
   const isLoading = ref(true)
@@ -34,9 +34,9 @@ export const useContentCounts = () => {
       // Fetch both weekly and total counts in parallel
       const [
         weeklyNewsResult,
-        weeklyJobsResult,
+        weeklyOpportunitiesResult,
         totalNewsResult,
-        totalJobsResult,
+        totalOpportunitiesResult,
         companiesResult,
       ] = await Promise.all([
         // Weekly news count
@@ -48,7 +48,10 @@ export const useContentCounts = () => {
           .is('deleted_at', null),
 
         // Weekly jobs count
-        supabase.from('jobs').select('id', { count: 'exact' }).gte('created_at', getSevenDaysAgo()),
+        supabase
+          .from('opportunities')
+          .select('id', { count: 'exact' })
+          .gte('created_at', getSevenDaysAgo()),
 
         // Total news count
         supabase
@@ -58,7 +61,7 @@ export const useContentCounts = () => {
           .is('deleted_at', null),
 
         // Total jobs count
-        supabase.from('jobs').select('id', { count: 'exact' }),
+        supabase.from('opportunities').select('id', { count: 'exact' }),
 
         // Companies count
         supabase.from('companies').select('id', { count: 'exact' }),
@@ -66,19 +69,19 @@ export const useContentCounts = () => {
 
       // Update reactive state with counts
       weeklyNewsTotal.value = weeklyNewsResult.count || 0
-      weeklyJobsTotal.value = weeklyJobsResult.count || 0
+      weeklyOpportunitiesTotal.value = weeklyOpportunitiesResult.count || 0
       newsTotal.value = totalNewsResult.count || 0
-      jobsTotal.value = totalJobsResult.count || 0
+      opportunitiesTotal.value = totalOpportunitiesResult.count || 0
       companiesTotal.value = companiesResult.count || 0
 
       console.log('Content counts updated:', {
         weekly: {
           news: weeklyNewsTotal.value,
-          jobs: weeklyJobsTotal.value,
+          jobs: weeklyOpportunitiesTotal.value,
         },
         total: {
           news: newsTotal.value,
-          jobs: jobsTotal.value,
+          jobs: opportunitiesTotal.value,
           companies: companiesTotal.value,
           all: fullTotal.value,
         },
@@ -106,11 +109,11 @@ export const useContentCounts = () => {
         icon: 'mdi:rss',
       },
       {
-        text: `Explore ${formatNumber(jobsTotal.value)}+ space career listings`,
+        text: `Explore ${formatNumber(opportunitiesTotal.value)}+ space career listings`,
         icon: 'mdi:briefcase-search',
       },
       {
-        text: `Receive ${formatNumber(weeklyJobsTotal.value)}+ new jobs weekly`,
+        text: `Receive ${formatNumber(weeklyOpportunitiesTotal.value)}+ new jobs weekly`,
         icon: 'mdi:briefcase-plus',
       },
     ]
@@ -128,7 +131,7 @@ export const useContentCounts = () => {
         return 'mars'
       case 'COMPANIES':
         return 'jupiter'
-      case 'JOB_LISTINGS':
+      case 'OPPORTUNITY_LISTINGS':
         return 'saturn'
       case 'EVENTS':
         return 'neptune'
@@ -141,14 +144,14 @@ export const useContentCounts = () => {
     switch (type) {
       case 'news':
         return newsTotal.value
-      case 'jobs':
-        return jobsTotal.value
+      case 'opportunities':
+        return opportunitiesTotal.value
       case 'companies':
         return companiesTotal.value
       case 'weekly_news':
         return weeklyNewsTotal.value
-      case 'weekly_jobs':
-        return weeklyJobsTotal.value
+      case 'weekly_opportunities':
+        return weeklyOpportunitiesTotal.value
       default:
         return 0
     }
@@ -159,11 +162,11 @@ export const useContentCounts = () => {
   return {
     // Weekly counts
     weeklyNewsTotal,
-    weeklyJobsTotal,
+    weeklyOpportunitiesTotal,
 
     // Total counts
     newsTotal,
-    jobsTotal,
+    opportunitiesTotal,
     companiesTotal,
     fullTotal,
 

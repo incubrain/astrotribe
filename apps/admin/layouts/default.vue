@@ -124,8 +124,8 @@ const adminLinks = ref([
       },
       {
         id: 83,
-        label: 'Jobs',
-        slug: '/jobs',
+        label: 'Opportunities',
+        slug: '/opportunities',
         icon: 'mdi:worker',
       },
     ],

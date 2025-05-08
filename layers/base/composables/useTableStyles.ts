@@ -1,7 +1,7 @@
 // Create this in a composable file like useTableStyles.ts
 
 import { computed } from 'vue'
-import type { Job } from '~/types/jobs'
+import type { Job } from '~/types/opportunities'
 
 export const useTableStyles = () => {
   /**

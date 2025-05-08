@@ -3,7 +3,7 @@
  */
 import { ref, watch } from 'vue'
 
-export interface JobFilter {
+export interface OpportunityFilter {
   location: { value: any; options: any[] }
   company: { value: any; options: any[] }
   type: { value: any; options: any[] }
@@ -20,9 +20,9 @@ export interface ViewPreference {
   mode: 'grid' | 'list'
 }
 
-export function useJobStore() {
+export function useOpportunityStore() {
   // Filter preferences
-  const filters = ref<JobFilter>({
+  const filters = ref<OpportunityFilter>({
     location: { value: '', options: [] },
     company: { value: '', options: [] },
     type: { value: '', options: [] },
@@ -52,7 +52,7 @@ export function useJobStore() {
   const loadPreferences = () => {
     try {
       // Load filters
-      const savedFilters = localStorage.getItem('job_filters')
+      const savedFilters = localStorage.getItem('opportunity_filters')
       if (savedFilters) {
         filters.value = JSON.parse(savedFilters)
       }
@@ -92,7 +92,7 @@ export function useJobStore() {
    */
   const saveFilters = () => {
     try {
-      localStorage.setItem('job_filters', JSON.stringify(filters.value))
+      localStorage.setItem('opportunity_filters', JSON.stringify(filters.value))
     } catch (error: any) {
       console.error('Error saving filters to localStorage:', error)
     }
@@ -210,7 +210,7 @@ export function useJobStore() {
 
     // Clear localStorage
     try {
-      localStorage.removeItem('job_filters')
+      localStorage.removeItem('opportunity_filters')
       localStorage.removeItem('job_sort_preference')
       localStorage.removeItem('job_view_preference')
     } catch (error: any) {
@@ -230,7 +230,7 @@ export function useJobStore() {
     }
 
     try {
-      localStorage.removeItem('job_filters')
+      localStorage.removeItem('opportunity_filters')
     } catch (error: any) {
       console.error('Error removing filters from localStorage:', error)
     }

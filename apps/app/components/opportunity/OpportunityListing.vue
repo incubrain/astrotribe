@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
-import type { Job } from '~/types/jobs'
+import type { Job } from '~/types/opportunities'
 
 interface Props {
   jobs: Job[]
@@ -157,12 +157,12 @@ const clearFilters = () => {
         :class="[containerClass, { 'opacity-50': loading }]"
       >
         <template v-if="loading">
-          <JobCardSkeleton
+          <OpportunityCardSkeleton
             v-for="index in 6"
             :key="`skeleton-${index}`"
           />
         </template>
-        <JobCard
+        <OpportunityCard
           v-for="job in sortedJobs"
           v-else
           :key="job.id"
@@ -341,7 +341,7 @@ const clearFilters = () => {
 
       <template #fallback>
         <div :class="containerClass">
-          <JobCardSkeleton
+          <OpportunityCardSkeleton
             v-for="index in 6"
             :key="`skeleton-${index}`"
           />

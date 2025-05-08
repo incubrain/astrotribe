@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, type Ref } from 'vue'
-import type { JobFilter } from '~/types/jobs'
+import type { OpportunityFilter } from '~/types/opportunities'
 
 interface Option {
   label: string
@@ -16,14 +16,14 @@ interface Options {
 }
 
 interface Props {
-  modelValue: JobFilter
+  modelValue: OpportunityFilter
   changeFilters: () => void
 }
 
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: JobFilter): void
+  (e: 'update:modelValue', value: OpportunityFilter): void
   (e: 'removeTag', tag: string): void
   (e: 'clearFilters'): void
 }>()

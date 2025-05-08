@@ -2548,7 +2548,7 @@ export type Database = {
       content_type:
         | 'news'
         | 'events'
-        | 'jobs'
+        | 'opportunities'
         | 'research'
         | 'companies'
         | 'contact'

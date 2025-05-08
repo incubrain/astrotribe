@@ -1,21 +1,21 @@
 <script setup lang="ts">
 definePageMeta({
   layoutTransition: false,
-  name: 'Jobs',
+  name: 'Opportunities',
 })
 
 const message = ref('Scraper is Idle')
 
 const scrape = async () => {
   try {
-    message.value = 'Scraping Jobs'
-    await $fetch('/api/jobs', {
+    message.value = 'Scraping Opportunities'
+    await $fetch('/api/opportunities', {
       method: 'POST',
     })
     message.value = 'Scraper is Idle'
   } catch (error: any) {
-    message.value = `Error Scraping Jobs ${error}`
-    console.error('Error Scraping Jobs', error)
+    message.value = `Error Scraping Opportunities ${error}`
+    console.error('Error Scraping Opportunities', error)
   }
 }
 </script>
@@ -25,7 +25,7 @@ const scrape = async () => {
     <div class="bg-black">
       <h3>{{ message }}</h3>
     </div>
-    <PrimeButton @click="scrape"> Scrape Jobs </PrimeButton>
+    <PrimeButton @click="scrape"> Scrape Opportunities </PrimeButton>
   </div>
 </template>
 

@@ -201,7 +201,9 @@ export async function runSeeders() {
       ),
     )
 
-    await checkAndSeed(client, 'jobs', () => seed.seedJobs(client, companyIds, config.counts.jobs))
+    await checkAndSeed(client, 'opportunities', () =>
+      seed.seedOpportunities(client, companyIds, config.counts.jobs),
+    )
 
     await checkAndSeed(client, 'follows', () => seed.seedFollows(client, userIds, companyIds))
 

@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { Prisma } from '@prisma/client';
-import Decimal from 'decimal.js';
+import { z } from 'zod'
+import { Prisma } from '@prisma/client'
+import Decimal from 'decimal.js'
 
 /////////////////////////////////////////
 // HELPER FUNCTIONS
@@ -9,13 +9,19 @@ import Decimal from 'decimal.js';
 // JSON
 //------------------------------------------------------
 
-export type NullableJsonInput = Prisma.JsonValue | null | 'JsonNull' | 'DbNull' | Prisma.NullTypes.DbNull | Prisma.NullTypes.JsonNull;
+export type NullableJsonInput =
+  | Prisma.JsonValue
+  | null
+  | 'JsonNull'
+  | 'DbNull'
+  | Prisma.NullTypes.DbNull
+  | Prisma.NullTypes.JsonNull
 
 export const transformJsonNull = (v?: NullableJsonInput) => {
-  if (!v || v === 'DbNull') return Prisma.DbNull;
-  if (v === 'JsonNull') return Prisma.JsonNull;
-  return v;
-};
+  if (!v || v === 'DbNull') return Prisma.DbNull
+  if (v === 'JsonNull') return Prisma.JsonNull
+  return v
+}
 
 export const JsonValueSchema: z.ZodType<Prisma.JsonValue> = z.lazy(() =>
   z.union([
@@ -25,17 +31,17 @@ export const JsonValueSchema: z.ZodType<Prisma.JsonValue> = z.lazy(() =>
     z.literal(null),
     z.record(z.lazy(() => JsonValueSchema.optional())),
     z.array(z.lazy(() => JsonValueSchema)),
-  ])
-);
+  ]),
+)
 
-export type JsonValueType = z.infer<typeof JsonValueSchema>;
+export type JsonValueType = z.infer<typeof JsonValueSchema>
 
 export const NullableJsonValue = z
   .union([JsonValueSchema, z.literal('DbNull'), z.literal('JsonNull')])
   .nullable()
-  .transform((v) => transformJsonNull(v));
+  .transform((v) => transformJsonNull(v))
 
-export type NullableJsonValueType = z.infer<typeof NullableJsonValue>;
+export type NullableJsonValueType = z.infer<typeof NullableJsonValue>
 
 export const InputJsonValueSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() =>
   z.union([
@@ -45,10 +51,10 @@ export const InputJsonValueSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() 
     z.object({ toJSON: z.function(z.tuple([]), z.any()) }),
     z.record(z.lazy(() => z.union([InputJsonValueSchema, z.literal(null)]))),
     z.array(z.lazy(() => z.union([InputJsonValueSchema, z.literal(null)]))),
-  ])
-);
+  ]),
+)
 
-export type InputJsonValueType = z.infer<typeof InputJsonValueSchema>;
+export type InputJsonValueType = z.infer<typeof InputJsonValueSchema>
 
 // DECIMAL
 //------------------------------------------------------
@@ -60,291 +66,1172 @@ export const DecimalJsLikeSchema: z.ZodType<Prisma.DecimalJsLike> = z.object({
   toFixed: z.function(z.tuple([]), z.string()),
 })
 
-export const DECIMAL_STRING_REGEX = /^(?:-?Infinity|NaN|-?(?:0[bB][01]+(?:\.[01]+)?(?:[pP][-+]?\d+)?|0[oO][0-7]+(?:\.[0-7]+)?(?:[pP][-+]?\d+)?|0[xX][\da-fA-F]+(?:\.[\da-fA-F]+)?(?:[pP][-+]?\d+)?|(?:\d+|\d*\.\d+)(?:[eE][-+]?\d+)?))$/;
+export const DECIMAL_STRING_REGEX =
+  /^(?:-?Infinity|NaN|-?(?:0[bB][01]+(?:\.[01]+)?(?:[pP][-+]?\d+)?|0[oO][0-7]+(?:\.[0-7]+)?(?:[pP][-+]?\d+)?|0[xX][\da-fA-F]+(?:\.[\da-fA-F]+)?(?:[pP][-+]?\d+)?|(?:\d+|\d*\.\d+)(?:[eE][-+]?\d+)?))$/
 
-export const isValidDecimalInput =
-  (v?: null | string | number | Prisma.DecimalJsLike): v is string | number | Prisma.DecimalJsLike => {
-    if (v === undefined || v === null) return false;
-    return (
-      (typeof v === 'object' && 'd' in v && 'e' in v && 's' in v && 'toFixed' in v) ||
-      (typeof v === 'string' && DECIMAL_STRING_REGEX.test(v)) ||
-      typeof v === 'number'
-    )
-  };
+export const isValidDecimalInput = (
+  v?: null | string | number | Prisma.DecimalJsLike,
+): v is string | number | Prisma.DecimalJsLike => {
+  if (v === undefined || v === null) return false
+  return (
+    (typeof v === 'object' && 'd' in v && 'e' in v && 's' in v && 'toFixed' in v) ||
+    (typeof v === 'string' && DECIMAL_STRING_REGEX.test(v)) ||
+    typeof v === 'number'
+  )
+}
 
 /////////////////////////////////////////
 // ENUMS
 /////////////////////////////////////////
 
-export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCommitted','RepeatableRead','Serializable']);
-
-export const AdDailyMetricsScalarFieldEnumSchema = z.enum(['id','variant_id','date','views','clicks','created_at','updated_at']);
-
-export const AdPackagesScalarFieldEnumSchema = z.enum(['id','name','position','active','created_at','updated_at','description','price','features','expected_ctr','avg_roi','view_frequency']);
-
-export const AdVariantsScalarFieldEnumSchema = z.enum(['id','ad_id','content','is_control','active','created_at','updated_at','performance_metrics']);
-
-export const AddressesScalarFieldEnumSchema = z.enum(['id','street1','street2','city_id','country_id','name','user_id','is_primary','address_type','created_at','updated_at','company_id']);
-
-export const AdsScalarFieldEnumSchema = z.enum(['id','company_id','package_id','start_date','end_date','active','created_at','updated_at']);
-
-export const AstronomyEventsScalarFieldEnumSchema = z.enum(['created_at','title','category','date','time','description','id']);
-
-export const BlacklistedDomainsScalarFieldEnumSchema = z.enum(['id','created_at','url','reason']);
-
-export const BlacklistedUrlsScalarFieldEnumSchema = z.enum(['id','url','reason','created_at','company_id']);
-
-export const BlockedIpsScalarFieldEnumSchema = z.enum(['id','ip_address','blocked_at','blocked_until','failed_attempts','reason','created_at','updated_at']);
-
-export const BookmarkFoldersScalarFieldEnumSchema = z.enum(['id','user_id','name','color','parent_id','is_default','is_favorite','position','created_at','updated_at']);
-
-export const BookmarksScalarFieldEnumSchema = z.enum(['id','user_id','content_id','content_type','created_at','folder_id','metadata','updated_at']);
-
-export const BusinessDomainsScalarFieldEnumSchema = z.enum(['id','name','slug','description','parent_id','created_at','updated_at']);
-
-export const CategoriesScalarFieldEnumSchema = z.enum(['id','created_at','updated_at','body','name','document_id','locale','published_at']);
-
-export const CategorizedUrlsScalarFieldEnumSchema = z.enum(['id','domain_id','confidence','categorizer_version','created_at','found_on','url','priority']);
-
-export const CircuitBreakerStatesScalarFieldEnumSchema = z.enum(['id','job_name','state','failure_count','last_failure','last_success','created_at','updated_at']);
-
-export const CitiesScalarFieldEnumSchema = z.enum(['id','name','country_id','state']);
-
-export const CommentsScalarFieldEnumSchema = z.enum(['id','content','user_id','content_id','content_type','parent_comment_id','created_at','updated_at']);
-
-export const CompaniesScalarFieldEnumSchema = z.enum(['name','description','logo_url','url','social_media_id','scrape_frequency','category_id','created_at','updated_at','founding_year','is_government','category','failed_count','is_english','scrape_rating','id','scraped_at','content_status','keywords','job_url']);
-
-export const CompanyContactsScalarFieldEnumSchema = z.enum(['id','contact_id','created_at','updated_at','company_id']);
-
-export const CompanyEmployeesScalarFieldEnumSchema = z.enum(['role','job_description','start_date','end_date','status','access_level','created_at','updated_at','company_id','user_id','id']);
-
-export const CompanyExtrasScalarFieldEnumSchema = z.enum(['id','updated_at','created_at','url','success','category','level','company_id','body','found_count','review']);
-
-export const CompanyMetricsScalarFieldEnumSchema = z.enum(['id','crawl_id','company_id','metric_id','timestamp','value']);
-
-export const ContactsScalarFieldEnumSchema = z.enum(['id','title','is_primary','email','contact_type','privacy_level','user_id','created_at','updated_at','phone','company_id']);
-
-export const ContentCategoriesScalarFieldEnumSchema = z.enum(['content_id','category_id','is_primary']);
-
-export const ContentSourceVisitsScalarFieldEnumSchema = z.enum(['id','content_id','user_id','created_at']);
-
-export const ContentSourcesScalarFieldEnumSchema = z.enum(['id','url','content_type','scrape_frequency','created_at','updated_at','refreshed_at','has_failed','failed_count','priority','hash','scraped_at','expected_count','company_id','rss_urls']);
-
-export const ContentStatusesScalarFieldEnumSchema = z.enum(['id','content_id','notes','created_at','content_status']);
-
-export const ContentTagsScalarFieldEnumSchema = z.enum(['content_id','tag_id']);
-
-export const ContentsScalarFieldEnumSchema = z.enum(['id','content_type','title','created_at','updated_at','url','hot_score','rss_url']);
-
-export const CountriesScalarFieldEnumSchema = z.enum(['id','name','code','code_3']);
-
-export const CustomerPaymentsScalarFieldEnumSchema = z.enum(['id','user_id','subscription_id','payment_provider_id','external_payment_id','external_order_id','amount','currency','status','method','description','fee','tax','error_code','error_description','acquirer_data','notes','created_at','order_id','invoice_id','international','amount_refunded','amount_transferred','refund_status','captured','bank','wallet','vpa','error_source','error_step','error_reason']);
-
-export const CustomerProcessedWebhooksScalarFieldEnumSchema = z.enum(['id','event_id','event_type','processed_at']);
-
-export const CustomerRefundsScalarFieldEnumSchema = z.enum(['id','payment_id','external_refund_id','amount','status','speed_processed','speed_requested','notes','created_at','currency','receipt','acquirer_data','batch_id']);
-
-export const CustomerSubscriptionOffersScalarFieldEnumSchema = z.enum(['id','plan_id','is_active','created_at','updated_at','discount','discount_type','discount_period','already_discounted','expiry_date']);
-
-export const CustomerSubscriptionPlansScalarFieldEnumSchema = z.enum(['id','external_plan_id','name','description','interval','interval_type','monthly_amount','annual_amount','currency','features','is_active','created_at','updated_at']);
-
-export const CustomerSubscriptionsScalarFieldEnumSchema = z.enum(['id','user_id','plan_id','payment_provider_id','external_subscription_id','status','quantity','current_start','current_end','ended_at','cancel_at_period_end','total_count','paid_count','remaining_count','auth_attempts','notes','created_at','updated_at','type','charge_at','start_at','end_at','customer_notify','expire_by','short_url','has_scheduled_changes','change_scheduled_at','source','offer_id','pause_initiated_by','cancel_initiated_by']);
-
-export const EmbeddingReviewsScalarFieldEnumSchema = z.enum(['id','created_at','updated_at','agent_review','human_review','notes']);
-
-export const ErrorLogsScalarFieldEnumSchema = z.enum(['id','service_name','error_type','severity','message','stack_trace','metadata','context','user_id','request_id','correlation_id','environment','created_at','error_hash','error_pattern','is_new_pattern','github_repo','related_errors','frequency_data','domain']);
-
-export const FeatureRequestsScalarFieldEnumSchema = z.enum(['id','title','description','status','created_at','updated_at','downvotes','engagement_score','priority_score','upvotes']);
-
-export const FeatureVotesScalarFieldEnumSchema = z.enum(['id','feature_id','user_id','vote_type','feedback','created_at','updated_at']);
-
-export const FeedCategoriesScalarFieldEnumSchema = z.enum(['id','created_at','feed_id','category_id']);
-
-export const FeedSourcesScalarFieldEnumSchema = z.enum(['id','feed_id','created_at','content_source_id']);
-
-export const FeedbacksScalarFieldEnumSchema = z.enum(['id','user_id','page_identifier','rating','feedback_type','message','created_at','updated_at','device_info','resolution_comment','feedback_status']);
-
-export const FeedsScalarFieldEnumSchema = z.enum(['id','created_at','name','user_id']);
-
-export const FollowsScalarFieldEnumSchema = z.enum(['id','followed_id','followed_entity','created_at','user_id']);
-
-export const JobsScalarFieldEnumSchema = z.enum(['id','contents_id','title','company_id','location','description','published_at','expires_at','scraped_at','updated_at','created_at','content_status','content_source_id','url','hash','employment_type','metadata']);
-
-export const MetricDefinitionsScalarFieldEnumSchema = z.enum(['id','name','description','category','type','unit','is_dimensional']);
-
-export const NewsScalarFieldEnumSchema = z.enum(['created_at','updated_at','title','body','category_id','author','description','featured_image','has_summary','published_at','url','hash','id','company_id','failed_count','scrape_frequency','scraped_at','content_status','keywords','content_source_id']);
-
-export const NewsSummariesScalarFieldEnumSchema = z.enum(['id','news_id','summary','version','is_current','created_at','updated_at','complexity_level']);
-
-export const NewsTagsScalarFieldEnumSchema = z.enum(['id','tag_id','news_id']);
-
-export const NewslettersScalarFieldEnumSchema = z.enum(['id','title','frequency','start_date','end_date','generated_content','created_at','updated_at','content_status']);
-
-export const PaymentProvidersScalarFieldEnumSchema = z.enum(['id','name','is_active','created_at','updated_at']);
-
-export const PlanPermissionsScalarFieldEnumSchema = z.enum(['id','plan','feature']);
-
-export const ReferralsScalarFieldEnumSchema = z.enum(['id','referrer_code','visitor_id','created_at','converted_at','referral_status','conversion_value','user_agent','ip_address','landing_page','utm_source','utm_medium','utm_campaign','device_type','browser','country_code','region','is_suspicious','security_flags','validation_attempts','last_failed_attempt','client_fingerprint']);
-
-export const ReferrerBlocksScalarFieldEnumSchema = z.enum(['id','referrer_code','blocked_at','blocked_by','reason','is_permanent','created_at','updated_at']);
-
-export const ResearchScalarFieldEnumSchema = z.enum(['created_at','updated_at','published_at','title','version','id','abstract','keywords','month','year','abstract_url','category','doi_url','figure_count','has_embedding','page_count','pdf_url','published_in','table_count','comments','is_flagged','authors','summary','content_status','affiliations']);
-
-export const ResearchEmbeddingsScalarFieldEnumSchema = z.enum(['id','research_id','chunk','url','created_at','is_flagged','updated_at','embedding_review_id']);
-
-export const ResponsesScalarFieldEnumSchema = z.enum(['id','search_id','output','upvotes','downvotes','created_at']);
-
-export const RoleHierarchyScalarFieldEnumSchema = z.enum(['parent_role','child_role']);
-
-export const RolePermissionsScalarFieldEnumSchema = z.enum(['id','role','table_name','conditions','permissions','cached_permissions','inherit_from','last_updated']);
-
-export const RolePermissionsMaterializedScalarFieldEnumSchema = z.enum(['role','permissions','last_updated']);
-
-export const ScoringWeightsScalarFieldEnumSchema = z.enum(['id','name','weight','description','updated_at']);
-
-export const SearchesScalarFieldEnumSchema = z.enum(['id','input','created_at','tokens_used','user_ids']);
-
-export const SocialMediaScalarFieldEnumSchema = z.enum(['id','facebook_url','twitter_url','linkedin_url','instagram_url','youtube_url','created_at','updated_at']);
-
-export const SpiderMetricsScalarFieldEnumSchema = z.enum(['id','crawl_id','metric_id','timestamp','value']);
-
-export const StrapiMigrationsScalarFieldEnumSchema = z.enum(['id','name','time']);
-
-export const StrapiMigrationsInternalScalarFieldEnumSchema = z.enum(['id','name','time']);
-
-export const TableMaintenanceLogScalarFieldEnumSchema = z.enum(['id','operation','detail','logged_at']);
-
-export const TableStatisticsScalarFieldEnumSchema = z.enum(['table_name','row_count','table_size','index_size','live_tuples','dead_tuples','last_vacuum','last_analyze','estimated_bloat_ratio','buffer_cache_hit_ratio','index_usage','seq_scan_count','index_scan_count','capture_time']);
-
-export const TagsScalarFieldEnumSchema = z.enum(['id','body','name','document_id','locale','published_at','created_at','updated_at']);
-
-export const UserMetricsScalarFieldEnumSchema = z.enum(['id','user_id','total_votes','upvote_count','downvote_count','vote_accuracy','current_streak','best_streak','today_vote_count','total_reading_time','last_vote_date','points','points_breakdown','interaction_stats','achievements','titles','multipliers','current_level','current_xp','xp_to_next_level','created_at','updated_at']);
-
-export const UserProfilesScalarFieldEnumSchema = z.enum(['id','email','given_name','surname','username','dob','gender_id','created_at','updated_at','last_seen','avatar','introduction','followed_count','followers_count','plan','role','is_active']);
-
-export const VotesScalarFieldEnumSchema = z.enum(['id','content_type','content_id','user_id','vote_type','created_at']);
-
-export const WorkflowsScalarFieldEnumSchema = z.enum(['id','name','status','metadata','started_at','completed_at','created_at','updated_at']);
-
-export const UsersScalarFieldEnumSchema = z.enum(['id']);
-
-export const Security_metricsScalarFieldEnumSchema = z.enum(['time_bucket','total_attempts','suspicious_attempts','unique_ips','unique_referrers','high_attempt_count','max_attempts']);
-
-export const Error_frequencyScalarFieldEnumSchema = z.enum(['service_name','error_type','severity','time_bucket','error_count']);
-
-export const Error_statsScalarFieldEnumSchema = z.enum(['calls','mean_exec_time','max_exec_time','rows','query','queryid','toplevel']);
-
-export const Recent_errorsScalarFieldEnumSchema = z.enum(['id','created_at','service_name','error_type','severity','message','metadata']);
-
-export const Slow_query_patternsScalarFieldEnumSchema = z.enum(['query_id','occurrence_count','avg_exec_time','max_exec_time','first_seen','last_seen']);
-
-export const Error_metricsScalarFieldEnumSchema = z.enum(['time_bucket','service_name','error_type','severity','error_count']);
-
-export const SortOrderSchema = z.enum(['asc','desc']);
-
-export const JsonNullValueInputSchema = z.enum(['JsonNull',]).transform((value) => (value === 'JsonNull' ? Prisma.JsonNull : value));
-
-export const NullableJsonNullValueInputSchema = z.enum(['DbNull','JsonNull',]).transform((value) => value === 'JsonNull' ? Prisma.JsonNull : value === 'DbNull' ? Prisma.DbNull : value);
-
-export const QueryModeSchema = z.enum(['default','insensitive']);
-
-export const NullsOrderSchema = z.enum(['first','last']);
-
-export const JsonNullValueFilterSchema = z.enum(['DbNull','JsonNull','AnyNull',]).transform((value) => value === 'JsonNull' ? Prisma.JsonNull : value === 'DbNull' ? Prisma.JsonNull : value === 'AnyNull' ? Prisma.AnyNull : value);
-
-export const AccessLevelSchema = z.enum(['viewer','editor','admin','super_admin']);
+export const TransactionIsolationLevelSchema = z.enum([
+  'ReadUncommitted',
+  'ReadCommitted',
+  'RepeatableRead',
+  'Serializable',
+])
+
+export const AdDailyMetricsScalarFieldEnumSchema = z.enum([
+  'id',
+  'variant_id',
+  'date',
+  'views',
+  'clicks',
+  'created_at',
+  'updated_at',
+])
+
+export const AdPackagesScalarFieldEnumSchema = z.enum([
+  'id',
+  'name',
+  'position',
+  'active',
+  'created_at',
+  'updated_at',
+  'description',
+  'price',
+  'features',
+  'expected_ctr',
+  'avg_roi',
+  'view_frequency',
+])
+
+export const AdVariantsScalarFieldEnumSchema = z.enum([
+  'id',
+  'ad_id',
+  'content',
+  'is_control',
+  'active',
+  'created_at',
+  'updated_at',
+  'performance_metrics',
+])
+
+export const AddressesScalarFieldEnumSchema = z.enum([
+  'id',
+  'street1',
+  'street2',
+  'city_id',
+  'country_id',
+  'name',
+  'user_id',
+  'is_primary',
+  'address_type',
+  'created_at',
+  'updated_at',
+  'company_id',
+])
+
+export const AdsScalarFieldEnumSchema = z.enum([
+  'id',
+  'company_id',
+  'package_id',
+  'start_date',
+  'end_date',
+  'active',
+  'created_at',
+  'updated_at',
+])
+
+export const AstronomyEventsScalarFieldEnumSchema = z.enum([
+  'created_at',
+  'title',
+  'category',
+  'date',
+  'time',
+  'description',
+  'id',
+])
+
+export const BlacklistedDomainsScalarFieldEnumSchema = z.enum(['id', 'created_at', 'url', 'reason'])
+
+export const BlacklistedUrlsScalarFieldEnumSchema = z.enum([
+  'id',
+  'url',
+  'reason',
+  'created_at',
+  'company_id',
+])
+
+export const BlockedIpsScalarFieldEnumSchema = z.enum([
+  'id',
+  'ip_address',
+  'blocked_at',
+  'blocked_until',
+  'failed_attempts',
+  'reason',
+  'created_at',
+  'updated_at',
+])
+
+export const BookmarkFoldersScalarFieldEnumSchema = z.enum([
+  'id',
+  'user_id',
+  'name',
+  'color',
+  'parent_id',
+  'is_default',
+  'is_favorite',
+  'position',
+  'created_at',
+  'updated_at',
+])
+
+export const BookmarksScalarFieldEnumSchema = z.enum([
+  'id',
+  'user_id',
+  'content_id',
+  'content_type',
+  'created_at',
+  'folder_id',
+  'metadata',
+  'updated_at',
+])
+
+export const BusinessDomainsScalarFieldEnumSchema = z.enum([
+  'id',
+  'name',
+  'slug',
+  'description',
+  'parent_id',
+  'created_at',
+  'updated_at',
+])
+
+export const CategoriesScalarFieldEnumSchema = z.enum([
+  'id',
+  'created_at',
+  'updated_at',
+  'body',
+  'name',
+  'document_id',
+  'locale',
+  'published_at',
+])
+
+export const CategorizedUrlsScalarFieldEnumSchema = z.enum([
+  'id',
+  'domain_id',
+  'confidence',
+  'categorizer_version',
+  'created_at',
+  'found_on',
+  'url',
+  'priority',
+])
+
+export const CircuitBreakerStatesScalarFieldEnumSchema = z.enum([
+  'id',
+  'job_name',
+  'state',
+  'failure_count',
+  'last_failure',
+  'last_success',
+  'created_at',
+  'updated_at',
+])
+
+export const CitiesScalarFieldEnumSchema = z.enum(['id', 'name', 'country_id', 'state'])
+
+export const CommentsScalarFieldEnumSchema = z.enum([
+  'id',
+  'content',
+  'user_id',
+  'content_id',
+  'content_type',
+  'parent_comment_id',
+  'created_at',
+  'updated_at',
+])
+
+export const CompaniesScalarFieldEnumSchema = z.enum([
+  'name',
+  'description',
+  'logo_url',
+  'url',
+  'social_media_id',
+  'scrape_frequency',
+  'category_id',
+  'created_at',
+  'updated_at',
+  'founding_year',
+  'is_government',
+  'category',
+  'failed_count',
+  'is_english',
+  'scrape_rating',
+  'id',
+  'scraped_at',
+  'content_status',
+  'keywords',
+  'job_url',
+])
+
+export const CompanyContactsScalarFieldEnumSchema = z.enum([
+  'id',
+  'contact_id',
+  'created_at',
+  'updated_at',
+  'company_id',
+])
+
+export const CompanyEmployeesScalarFieldEnumSchema = z.enum([
+  'role',
+  'job_description',
+  'start_date',
+  'end_date',
+  'status',
+  'access_level',
+  'created_at',
+  'updated_at',
+  'company_id',
+  'user_id',
+  'id',
+])
+
+export const CompanyExtrasScalarFieldEnumSchema = z.enum([
+  'id',
+  'updated_at',
+  'created_at',
+  'url',
+  'success',
+  'category',
+  'level',
+  'company_id',
+  'body',
+  'found_count',
+  'review',
+])
+
+export const CompanyMetricsScalarFieldEnumSchema = z.enum([
+  'id',
+  'crawl_id',
+  'company_id',
+  'metric_id',
+  'timestamp',
+  'value',
+])
+
+export const ContactsScalarFieldEnumSchema = z.enum([
+  'id',
+  'title',
+  'is_primary',
+  'email',
+  'contact_type',
+  'privacy_level',
+  'user_id',
+  'created_at',
+  'updated_at',
+  'phone',
+  'company_id',
+])
+
+export const ContentCategoriesScalarFieldEnumSchema = z.enum([
+  'content_id',
+  'category_id',
+  'is_primary',
+])
+
+export const ContentSourceVisitsScalarFieldEnumSchema = z.enum([
+  'id',
+  'content_id',
+  'user_id',
+  'created_at',
+])
+
+export const ContentSourcesScalarFieldEnumSchema = z.enum([
+  'id',
+  'url',
+  'content_type',
+  'scrape_frequency',
+  'created_at',
+  'updated_at',
+  'refreshed_at',
+  'has_failed',
+  'failed_count',
+  'priority',
+  'hash',
+  'scraped_at',
+  'expected_count',
+  'company_id',
+  'rss_urls',
+])
+
+export const ContentStatusesScalarFieldEnumSchema = z.enum([
+  'id',
+  'content_id',
+  'notes',
+  'created_at',
+  'content_status',
+])
+
+export const ContentTagsScalarFieldEnumSchema = z.enum(['content_id', 'tag_id'])
+
+export const ContentsScalarFieldEnumSchema = z.enum([
+  'id',
+  'content_type',
+  'title',
+  'created_at',
+  'updated_at',
+  'url',
+  'hot_score',
+  'rss_url',
+])
+
+export const CountriesScalarFieldEnumSchema = z.enum(['id', 'name', 'code', 'code_3'])
+
+export const CustomerPaymentsScalarFieldEnumSchema = z.enum([
+  'id',
+  'user_id',
+  'subscription_id',
+  'payment_provider_id',
+  'external_payment_id',
+  'external_order_id',
+  'amount',
+  'currency',
+  'status',
+  'method',
+  'description',
+  'fee',
+  'tax',
+  'error_code',
+  'error_description',
+  'acquirer_data',
+  'notes',
+  'created_at',
+  'order_id',
+  'invoice_id',
+  'international',
+  'amount_refunded',
+  'amount_transferred',
+  'refund_status',
+  'captured',
+  'bank',
+  'wallet',
+  'vpa',
+  'error_source',
+  'error_step',
+  'error_reason',
+])
+
+export const CustomerProcessedWebhooksScalarFieldEnumSchema = z.enum([
+  'id',
+  'event_id',
+  'event_type',
+  'processed_at',
+])
+
+export const CustomerRefundsScalarFieldEnumSchema = z.enum([
+  'id',
+  'payment_id',
+  'external_refund_id',
+  'amount',
+  'status',
+  'speed_processed',
+  'speed_requested',
+  'notes',
+  'created_at',
+  'currency',
+  'receipt',
+  'acquirer_data',
+  'batch_id',
+])
+
+export const CustomerSubscriptionOffersScalarFieldEnumSchema = z.enum([
+  'id',
+  'plan_id',
+  'is_active',
+  'created_at',
+  'updated_at',
+  'discount',
+  'discount_type',
+  'discount_period',
+  'already_discounted',
+  'expiry_date',
+])
+
+export const CustomerSubscriptionPlansScalarFieldEnumSchema = z.enum([
+  'id',
+  'external_plan_id',
+  'name',
+  'description',
+  'interval',
+  'interval_type',
+  'monthly_amount',
+  'annual_amount',
+  'currency',
+  'features',
+  'is_active',
+  'created_at',
+  'updated_at',
+])
+
+export const CustomerSubscriptionsScalarFieldEnumSchema = z.enum([
+  'id',
+  'user_id',
+  'plan_id',
+  'payment_provider_id',
+  'external_subscription_id',
+  'status',
+  'quantity',
+  'current_start',
+  'current_end',
+  'ended_at',
+  'cancel_at_period_end',
+  'total_count',
+  'paid_count',
+  'remaining_count',
+  'auth_attempts',
+  'notes',
+  'created_at',
+  'updated_at',
+  'type',
+  'charge_at',
+  'start_at',
+  'end_at',
+  'customer_notify',
+  'expire_by',
+  'short_url',
+  'has_scheduled_changes',
+  'change_scheduled_at',
+  'source',
+  'offer_id',
+  'pause_initiated_by',
+  'cancel_initiated_by',
+])
+
+export const EmbeddingReviewsScalarFieldEnumSchema = z.enum([
+  'id',
+  'created_at',
+  'updated_at',
+  'agent_review',
+  'human_review',
+  'notes',
+])
+
+export const ErrorLogsScalarFieldEnumSchema = z.enum([
+  'id',
+  'service_name',
+  'error_type',
+  'severity',
+  'message',
+  'stack_trace',
+  'metadata',
+  'context',
+  'user_id',
+  'request_id',
+  'correlation_id',
+  'environment',
+  'created_at',
+  'error_hash',
+  'error_pattern',
+  'is_new_pattern',
+  'github_repo',
+  'related_errors',
+  'frequency_data',
+  'domain',
+])
+
+export const FeatureRequestsScalarFieldEnumSchema = z.enum([
+  'id',
+  'title',
+  'description',
+  'status',
+  'created_at',
+  'updated_at',
+  'downvotes',
+  'engagement_score',
+  'priority_score',
+  'upvotes',
+])
+
+export const FeatureVotesScalarFieldEnumSchema = z.enum([
+  'id',
+  'feature_id',
+  'user_id',
+  'vote_type',
+  'feedback',
+  'created_at',
+  'updated_at',
+])
+
+export const FeedCategoriesScalarFieldEnumSchema = z.enum([
+  'id',
+  'created_at',
+  'feed_id',
+  'category_id',
+])
+
+export const FeedSourcesScalarFieldEnumSchema = z.enum([
+  'id',
+  'feed_id',
+  'created_at',
+  'content_source_id',
+])
+
+export const FeedbacksScalarFieldEnumSchema = z.enum([
+  'id',
+  'user_id',
+  'page_identifier',
+  'rating',
+  'feedback_type',
+  'message',
+  'created_at',
+  'updated_at',
+  'device_info',
+  'resolution_comment',
+  'feedback_status',
+])
+
+export const FeedsScalarFieldEnumSchema = z.enum(['id', 'created_at', 'name', 'user_id'])
+
+export const FollowsScalarFieldEnumSchema = z.enum([
+  'id',
+  'followed_id',
+  'followed_entity',
+  'created_at',
+  'user_id',
+])
+
+export const JobsScalarFieldEnumSchema = z.enum([
+  'id',
+  'contents_id',
+  'title',
+  'company_id',
+  'location',
+  'description',
+  'published_at',
+  'expires_at',
+  'scraped_at',
+  'updated_at',
+  'created_at',
+  'content_status',
+  'content_source_id',
+  'url',
+  'hash',
+  'employment_type',
+  'metadata',
+])
+
+export const MetricDefinitionsScalarFieldEnumSchema = z.enum([
+  'id',
+  'name',
+  'description',
+  'category',
+  'type',
+  'unit',
+  'is_dimensional',
+])
+
+export const NewsScalarFieldEnumSchema = z.enum([
+  'created_at',
+  'updated_at',
+  'title',
+  'body',
+  'category_id',
+  'author',
+  'description',
+  'featured_image',
+  'has_summary',
+  'published_at',
+  'url',
+  'hash',
+  'id',
+  'company_id',
+  'failed_count',
+  'scrape_frequency',
+  'scraped_at',
+  'content_status',
+  'keywords',
+  'content_source_id',
+])
+
+export const NewsSummariesScalarFieldEnumSchema = z.enum([
+  'id',
+  'news_id',
+  'summary',
+  'version',
+  'is_current',
+  'created_at',
+  'updated_at',
+  'complexity_level',
+])
+
+export const NewsTagsScalarFieldEnumSchema = z.enum(['id', 'tag_id', 'news_id'])
+
+export const NewslettersScalarFieldEnumSchema = z.enum([
+  'id',
+  'title',
+  'frequency',
+  'start_date',
+  'end_date',
+  'generated_content',
+  'created_at',
+  'updated_at',
+  'content_status',
+])
+
+export const PaymentProvidersScalarFieldEnumSchema = z.enum([
+  'id',
+  'name',
+  'is_active',
+  'created_at',
+  'updated_at',
+])
+
+export const PlanPermissionsScalarFieldEnumSchema = z.enum(['id', 'plan', 'feature'])
+
+export const ReferralsScalarFieldEnumSchema = z.enum([
+  'id',
+  'referrer_code',
+  'visitor_id',
+  'created_at',
+  'converted_at',
+  'referral_status',
+  'conversion_value',
+  'user_agent',
+  'ip_address',
+  'landing_page',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'device_type',
+  'browser',
+  'country_code',
+  'region',
+  'is_suspicious',
+  'security_flags',
+  'validation_attempts',
+  'last_failed_attempt',
+  'client_fingerprint',
+])
+
+export const ReferrerBlocksScalarFieldEnumSchema = z.enum([
+  'id',
+  'referrer_code',
+  'blocked_at',
+  'blocked_by',
+  'reason',
+  'is_permanent',
+  'created_at',
+  'updated_at',
+])
+
+export const ResearchScalarFieldEnumSchema = z.enum([
+  'created_at',
+  'updated_at',
+  'published_at',
+  'title',
+  'version',
+  'id',
+  'abstract',
+  'keywords',
+  'month',
+  'year',
+  'abstract_url',
+  'category',
+  'doi_url',
+  'figure_count',
+  'has_embedding',
+  'page_count',
+  'pdf_url',
+  'published_in',
+  'table_count',
+  'comments',
+  'is_flagged',
+  'authors',
+  'summary',
+  'content_status',
+  'affiliations',
+])
+
+export const ResearchEmbeddingsScalarFieldEnumSchema = z.enum([
+  'id',
+  'research_id',
+  'chunk',
+  'url',
+  'created_at',
+  'is_flagged',
+  'updated_at',
+  'embedding_review_id',
+])
+
+export const ResponsesScalarFieldEnumSchema = z.enum([
+  'id',
+  'search_id',
+  'output',
+  'upvotes',
+  'downvotes',
+  'created_at',
+])
+
+export const RoleHierarchyScalarFieldEnumSchema = z.enum(['parent_role', 'child_role'])
+
+export const RolePermissionsScalarFieldEnumSchema = z.enum([
+  'id',
+  'role',
+  'table_name',
+  'conditions',
+  'permissions',
+  'cached_permissions',
+  'inherit_from',
+  'last_updated',
+])
+
+export const RolePermissionsMaterializedScalarFieldEnumSchema = z.enum([
+  'role',
+  'permissions',
+  'last_updated',
+])
+
+export const ScoringWeightsScalarFieldEnumSchema = z.enum([
+  'id',
+  'name',
+  'weight',
+  'description',
+  'updated_at',
+])
+
+export const SearchesScalarFieldEnumSchema = z.enum([
+  'id',
+  'input',
+  'created_at',
+  'tokens_used',
+  'user_ids',
+])
+
+export const SocialMediaScalarFieldEnumSchema = z.enum([
+  'id',
+  'facebook_url',
+  'twitter_url',
+  'linkedin_url',
+  'instagram_url',
+  'youtube_url',
+  'created_at',
+  'updated_at',
+])
+
+export const SpiderMetricsScalarFieldEnumSchema = z.enum([
+  'id',
+  'crawl_id',
+  'metric_id',
+  'timestamp',
+  'value',
+])
+
+export const StrapiMigrationsScalarFieldEnumSchema = z.enum(['id', 'name', 'time'])
+
+export const StrapiMigrationsInternalScalarFieldEnumSchema = z.enum(['id', 'name', 'time'])
+
+export const TableMaintenanceLogScalarFieldEnumSchema = z.enum([
+  'id',
+  'operation',
+  'detail',
+  'logged_at',
+])
+
+export const TableStatisticsScalarFieldEnumSchema = z.enum([
+  'table_name',
+  'row_count',
+  'table_size',
+  'index_size',
+  'live_tuples',
+  'dead_tuples',
+  'last_vacuum',
+  'last_analyze',
+  'estimated_bloat_ratio',
+  'buffer_cache_hit_ratio',
+  'index_usage',
+  'seq_scan_count',
+  'index_scan_count',
+  'capture_time',
+])
+
+export const TagsScalarFieldEnumSchema = z.enum([
+  'id',
+  'body',
+  'name',
+  'document_id',
+  'locale',
+  'published_at',
+  'created_at',
+  'updated_at',
+])
+
+export const UserMetricsScalarFieldEnumSchema = z.enum([
+  'id',
+  'user_id',
+  'total_votes',
+  'upvote_count',
+  'downvote_count',
+  'vote_accuracy',
+  'current_streak',
+  'best_streak',
+  'today_vote_count',
+  'total_reading_time',
+  'last_vote_date',
+  'points',
+  'points_breakdown',
+  'interaction_stats',
+  'achievements',
+  'titles',
+  'multipliers',
+  'current_level',
+  'current_xp',
+  'xp_to_next_level',
+  'created_at',
+  'updated_at',
+])
+
+export const UserProfilesScalarFieldEnumSchema = z.enum([
+  'id',
+  'email',
+  'given_name',
+  'surname',
+  'username',
+  'dob',
+  'gender_id',
+  'created_at',
+  'updated_at',
+  'last_seen',
+  'avatar',
+  'introduction',
+  'followed_count',
+  'followers_count',
+  'plan',
+  'role',
+  'is_active',
+])
+
+export const VotesScalarFieldEnumSchema = z.enum([
+  'id',
+  'content_type',
+  'content_id',
+  'user_id',
+  'vote_type',
+  'created_at',
+])
+
+export const WorkflowsScalarFieldEnumSchema = z.enum([
+  'id',
+  'name',
+  'status',
+  'metadata',
+  'started_at',
+  'completed_at',
+  'created_at',
+  'updated_at',
+])
+
+export const UsersScalarFieldEnumSchema = z.enum(['id'])
+
+export const Security_metricsScalarFieldEnumSchema = z.enum([
+  'time_bucket',
+  'total_attempts',
+  'suspicious_attempts',
+  'unique_ips',
+  'unique_referrers',
+  'high_attempt_count',
+  'max_attempts',
+])
+
+export const Error_frequencyScalarFieldEnumSchema = z.enum([
+  'service_name',
+  'error_type',
+  'severity',
+  'time_bucket',
+  'error_count',
+])
+
+export const Error_statsScalarFieldEnumSchema = z.enum([
+  'calls',
+  'mean_exec_time',
+  'max_exec_time',
+  'rows',
+  'query',
+  'queryid',
+  'toplevel',
+])
+
+export const Recent_errorsScalarFieldEnumSchema = z.enum([
+  'id',
+  'created_at',
+  'service_name',
+  'error_type',
+  'severity',
+  'message',
+  'metadata',
+])
+
+export const Slow_query_patternsScalarFieldEnumSchema = z.enum([
+  'query_id',
+  'occurrence_count',
+  'avg_exec_time',
+  'max_exec_time',
+  'first_seen',
+  'last_seen',
+])
+
+export const Error_metricsScalarFieldEnumSchema = z.enum([
+  'time_bucket',
+  'service_name',
+  'error_type',
+  'severity',
+  'error_count',
+])
+
+export const SortOrderSchema = z.enum(['asc', 'desc'])
+
+export const JsonNullValueInputSchema = z
+  .enum(['JsonNull'])
+  .transform((value) => (value === 'JsonNull' ? Prisma.JsonNull : value))
+
+export const NullableJsonNullValueInputSchema = z
+  .enum(['DbNull', 'JsonNull'])
+  .transform((value) =>
+    value === 'JsonNull' ? Prisma.JsonNull : value === 'DbNull' ? Prisma.DbNull : value,
+  )
+
+export const QueryModeSchema = z.enum(['default', 'insensitive'])
+
+export const NullsOrderSchema = z.enum(['first', 'last'])
+
+export const JsonNullValueFilterSchema = z
+  .enum(['DbNull', 'JsonNull', 'AnyNull'])
+  .transform((value) =>
+    value === 'JsonNull'
+      ? Prisma.JsonNull
+      : value === 'DbNull'
+        ? Prisma.JsonNull
+        : value === 'AnyNull'
+          ? Prisma.AnyNull
+          : value,
+  )
+
+export const AccessLevelSchema = z.enum(['viewer', 'editor', 'admin', 'super_admin'])
 
 export type AccessLevelType = `${z.infer<typeof AccessLevelSchema>}`
 
-export const AddressTypeSchema = z.enum(['residential','headquarters','office','factory','lab','warehouse','research','retail','showroom','branch']);
+export const AddressTypeSchema = z.enum([
+  'residential',
+  'headquarters',
+  'office',
+  'factory',
+  'lab',
+  'warehouse',
+  'research',
+  'retail',
+  'showroom',
+  'branch',
+])
 
 export type AddressTypeType = `${z.infer<typeof AddressTypeSchema>}`
 
-export const AppPlanEnumSchema = z.enum(['free','basic','intermediate','premium','enterprise','custom']);
+export const AppPlanEnumSchema = z.enum([
+  'free',
+  'basic',
+  'intermediate',
+  'premium',
+  'enterprise',
+  'custom',
+])
 
 export type AppPlanEnumType = `${z.infer<typeof AppPlanEnumSchema>}`
 
-export const AppRoleEnumSchema = z.enum(['guest','user','astroguide','mentor','moderator','tenant_member','tenant_admin','tenant_super_admin','admin','super_admin','service_role']);
+export const AppRoleEnumSchema = z.enum([
+  'guest',
+  'user',
+  'astroguide',
+  'mentor',
+  'moderator',
+  'tenant_member',
+  'tenant_admin',
+  'tenant_super_admin',
+  'admin',
+  'super_admin',
+  'service_role',
+])
 
 export type AppRoleEnumType = `${z.infer<typeof AppRoleEnumSchema>}`
 
-export const ComplexityLevelSchema = z.enum(['beginner','intermediate','expert','undefined']);
+export const ComplexityLevelSchema = z.enum(['beginner', 'intermediate', 'expert', 'undefined'])
 
 export type ComplexityLevelType = `${z.infer<typeof ComplexityLevelSchema>}`
 
-export const ContactTypeSchema = z.enum(['personal','company','professional','recruitment','founder']);
+export const ContactTypeSchema = z.enum([
+  'personal',
+  'company',
+  'professional',
+  'recruitment',
+  'founder',
+])
 
 export type ContactTypeType = `${z.infer<typeof ContactTypeSchema>}`
 
-export const ContentStatusSchema = z.enum(['draft','pending_agent_action','pending_agent_review','pending_human_review','pending_relevance_check','irrelevant','scheduled','unpublished','archived','published','failed','pending_crawl','scraped','outdated','updated','new']);
+export const ContentStatusSchema = z.enum([
+  'draft',
+  'pending_agent_action',
+  'pending_agent_review',
+  'pending_human_review',
+  'pending_relevance_check',
+  'irrelevant',
+  'scheduled',
+  'unpublished',
+  'archived',
+  'published',
+  'failed',
+  'pending_crawl',
+  'scraped',
+  'outdated',
+  'updated',
+  'new',
+])
 
 export type ContentStatusType = `${z.infer<typeof ContentStatusSchema>}`
 
-export const ContentTypeSchema = z.enum(['news','events','jobs','research','companies','contact','people','newsletters','unknown']);
+export const ContentTypeSchema = z.enum([
+  'news',
+  'events',
+  'opportunities',
+  'research',
+  'companies',
+  'contact',
+  'people',
+  'newsletters',
+  'unknown',
+])
 
 export type ContentTypeType = `${z.infer<typeof ContentTypeSchema>}`
 
-export const DiscountPeriodSchema = z.enum(['yearly','monthly','once']);
+export const DiscountPeriodSchema = z.enum(['yearly', 'monthly', 'once'])
 
 export type DiscountPeriodType = `${z.infer<typeof DiscountPeriodSchema>}`
 
-export const DiscountTypeSchema = z.enum(['percentage','flat']);
+export const DiscountTypeSchema = z.enum(['percentage', 'flat'])
 
 export type DiscountTypeType = `${z.infer<typeof DiscountTypeSchema>}`
 
-export const ErrorSeveritySchema = z.enum(['low','medium','high','critical']);
+export const ErrorSeveritySchema = z.enum(['low', 'medium', 'high', 'critical'])
 
 export type ErrorSeverityType = `${z.infer<typeof ErrorSeveritySchema>}`
 
-export const ErrorTypeSchema = z.enum(['UPLOAD_ERROR','CONNECTION_ERROR','AUTHENTICATION_ERROR','VALIDATION_ERROR','NOT_FOUND_ERROR','SERVER_ERROR','NETWORK_ERROR','DATABASE_ERROR','UNKNOWN_ERROR','SLOW_QUERY','ERROR_SPIKE','AUTH_ERROR','TABLE_ERROR','TABLE_OPERATION']);
+export const ErrorTypeSchema = z.enum([
+  'UPLOAD_ERROR',
+  'CONNECTION_ERROR',
+  'AUTHENTICATION_ERROR',
+  'VALIDATION_ERROR',
+  'NOT_FOUND_ERROR',
+  'SERVER_ERROR',
+  'NETWORK_ERROR',
+  'DATABASE_ERROR',
+  'UNKNOWN_ERROR',
+  'SLOW_QUERY',
+  'ERROR_SPIKE',
+  'AUTH_ERROR',
+  'TABLE_ERROR',
+  'TABLE_OPERATION',
+])
 
 export type ErrorTypeType = `${z.infer<typeof ErrorTypeSchema>}`
 
-export const FeedbackStatusSchema = z.enum(['new','under_review','backlog','working_on','resolved','rejected','deferred']);
+export const FeedbackStatusSchema = z.enum([
+  'new',
+  'under_review',
+  'backlog',
+  'working_on',
+  'resolved',
+  'rejected',
+  'deferred',
+])
 
 export type FeedbackStatusType = `${z.infer<typeof FeedbackStatusSchema>}`
 
-export const FeedbackTypeSchema = z.enum(['bug_report','feature_request','user_interface_issue','performance_issue','documentation']);
+export const FeedbackTypeSchema = z.enum([
+  'bug_report',
+  'feature_request',
+  'user_interface_issue',
+  'performance_issue',
+  'documentation',
+])
 
 export type FeedbackTypeType = `${z.infer<typeof FeedbackTypeSchema>}`
 
-export const FollowedEntitySchema = z.enum(['company','user']);
+export const FollowedEntitySchema = z.enum(['company', 'user'])
 
 export type FollowedEntityType = `${z.infer<typeof FollowedEntitySchema>}`
 
-export const JobPrioritySchema = z.enum(['critical','high','normal','low']);
+export const JobPrioritySchema = z.enum(['critical', 'high', 'normal', 'low'])
 
 export type JobPriorityType = `${z.infer<typeof JobPrioritySchema>}`
 
-export const JobStatusSchema = z.enum(['created','active','completed','failed','cancelled','expired']);
+export const JobStatusSchema = z.enum([
+  'created',
+  'active',
+  'completed',
+  'failed',
+  'cancelled',
+  'expired',
+])
 
 export type JobStatusType = `${z.infer<typeof JobStatusSchema>}`
 
-export const NewsImportanceLevelSchema = z.enum(['high','medium','low']);
+export const NewsImportanceLevelSchema = z.enum(['high', 'medium', 'low'])
 
 export type NewsImportanceLevelType = `${z.infer<typeof NewsImportanceLevelSchema>}`
 
-export const NewsRelationTypeSchema = z.enum(['source','topic','mention']);
+export const NewsRelationTypeSchema = z.enum(['source', 'topic', 'mention'])
 
 export type NewsRelationTypeType = `${z.infer<typeof NewsRelationTypeSchema>}`
 
-export const PrioritySchema = z.enum(['very_low','low','medium','high','critical']);
+export const PrioritySchema = z.enum(['very_low', 'low', 'medium', 'high', 'critical'])
 
 export type PriorityType = `${z.infer<typeof PrioritySchema>}`
 
-export const PrivacyLevelSchema = z.enum(['private','connected','public']);
+export const PrivacyLevelSchema = z.enum(['private', 'connected', 'public'])
 
 export type PrivacyLevelType = `${z.infer<typeof PrivacyLevelSchema>}`
 
-export const ReferralStatusSchema = z.enum(['pending','converted','abandoned']);
+export const ReferralStatusSchema = z.enum(['pending', 'converted', 'abandoned'])
 
 export type ReferralStatusType = `${z.infer<typeof ReferralStatusSchema>}`
 
-export const ScrapeFrequencySchema = z.enum(['four_times_daily','twice_daily','daily','twice_weekly','weekly','bi_weekly','monthly','quarterly','biannual','annually','never']);
+export const ScrapeFrequencySchema = z.enum([
+  'four_times_daily',
+  'twice_daily',
+  'daily',
+  'twice_weekly',
+  'weekly',
+  'bi_weekly',
+  'monthly',
+  'quarterly',
+  'biannual',
+  'annually',
+  'never',
+])
 
 export type ScrapeFrequencyType = `${z.infer<typeof ScrapeFrequencySchema>}`
 
-export const UserStatusSchema = z.enum(['online','offline']);
+export const UserStatusSchema = z.enum(['online', 'offline'])
 
 export type UserStatusType = `${z.infer<typeof UserStatusSchema>}`
 
@@ -386,11 +1273,25 @@ export const AdPackagesSchema = z.object({
   created_at: z.coerce.date().nullable(),
   updated_at: z.coerce.date().nullable(),
   description: z.string(),
-  price: z.instanceof(Prisma.Decimal, { message: "Field 'price' must be a Decimal. Location: ['Models', 'AdPackages']"}),
+  price: z.instanceof(Prisma.Decimal, {
+    message: "Field 'price' must be a Decimal. Location: ['Models', 'AdPackages']",
+  }),
   features: z.string().array(),
-  expected_ctr: z.instanceof(Prisma.Decimal, { message: "Field 'expected_ctr' must be a Decimal. Location: ['Models', 'AdPackages']"}).nullable(),
-  avg_roi: z.instanceof(Prisma.Decimal, { message: "Field 'avg_roi' must be a Decimal. Location: ['Models', 'AdPackages']"}).nullable(),
-  view_frequency: z.instanceof(Prisma.Decimal, { message: "Field 'view_frequency' must be a Decimal. Location: ['Models', 'AdPackages']"}).nullable(),
+  expected_ctr: z
+    .instanceof(Prisma.Decimal, {
+      message: "Field 'expected_ctr' must be a Decimal. Location: ['Models', 'AdPackages']",
+    })
+    .nullable(),
+  avg_roi: z
+    .instanceof(Prisma.Decimal, {
+      message: "Field 'avg_roi' must be a Decimal. Location: ['Models', 'AdPackages']",
+    })
+    .nullable(),
+  view_frequency: z
+    .instanceof(Prisma.Decimal, {
+      message: "Field 'view_frequency' must be a Decimal. Location: ['Models', 'AdPackages']",
+    })
+    .nullable(),
 })
 
 export type AdPackages = z.infer<typeof AdPackagesSchema>
@@ -625,7 +1526,9 @@ export type Categories = z.infer<typeof CategoriesSchema>
 export const CategorizedUrlsSchema = z.object({
   id: z.string(),
   domain_id: z.string(),
-  confidence: z.instanceof(Prisma.Decimal, { message: "Field 'confidence' must be a Decimal. Location: ['Models', 'CategorizedUrls']"}),
+  confidence: z.instanceof(Prisma.Decimal, {
+    message: "Field 'confidence' must be a Decimal. Location: ['Models', 'CategorizedUrls']",
+  }),
   categorizer_version: z.string(),
   created_at: z.coerce.date().nullable(),
   found_on: z.string(),
@@ -967,13 +1870,23 @@ export const CustomerPaymentsSchema = z.object({
   payment_provider_id: z.number().int(),
   external_payment_id: z.string(),
   external_order_id: z.string().nullable(),
-  amount: z.instanceof(Prisma.Decimal, { message: "Field 'amount' must be a Decimal. Location: ['Models', 'CustomerPayments']"}),
+  amount: z.instanceof(Prisma.Decimal, {
+    message: "Field 'amount' must be a Decimal. Location: ['Models', 'CustomerPayments']",
+  }),
   currency: z.string(),
   status: z.string(),
   method: z.string().nullable(),
   description: z.string().nullable(),
-  fee: z.instanceof(Prisma.Decimal, { message: "Field 'fee' must be a Decimal. Location: ['Models', 'CustomerPayments']"}).nullable(),
-  tax: z.instanceof(Prisma.Decimal, { message: "Field 'tax' must be a Decimal. Location: ['Models', 'CustomerPayments']"}).nullable(),
+  fee: z
+    .instanceof(Prisma.Decimal, {
+      message: "Field 'fee' must be a Decimal. Location: ['Models', 'CustomerPayments']",
+    })
+    .nullable(),
+  tax: z
+    .instanceof(Prisma.Decimal, {
+      message: "Field 'tax' must be a Decimal. Location: ['Models', 'CustomerPayments']",
+    })
+    .nullable(),
   error_code: z.string().nullable(),
   error_description: z.string().nullable(),
   acquirer_data: JsonValueSchema.nullable(),
@@ -982,8 +1895,18 @@ export const CustomerPaymentsSchema = z.object({
   order_id: z.string().nullable(),
   invoice_id: z.string().nullable(),
   international: z.boolean().nullable(),
-  amount_refunded: z.instanceof(Prisma.Decimal, { message: "Field 'amount_refunded' must be a Decimal. Location: ['Models', 'CustomerPayments']"}).nullable(),
-  amount_transferred: z.instanceof(Prisma.Decimal, { message: "Field 'amount_transferred' must be a Decimal. Location: ['Models', 'CustomerPayments']"}).nullable(),
+  amount_refunded: z
+    .instanceof(Prisma.Decimal, {
+      message:
+        "Field 'amount_refunded' must be a Decimal. Location: ['Models', 'CustomerPayments']",
+    })
+    .nullable(),
+  amount_transferred: z
+    .instanceof(Prisma.Decimal, {
+      message:
+        "Field 'amount_transferred' must be a Decimal. Location: ['Models', 'CustomerPayments']",
+    })
+    .nullable(),
   refund_status: z.string().nullable(),
   captured: z.boolean().nullable(),
   bank: z.string().nullable(),
@@ -1023,7 +1946,9 @@ export const CustomerRefundsSchema = z.object({
   id: z.number().int(),
   payment_id: z.number().int(),
   external_refund_id: z.string(),
-  amount: z.instanceof(Prisma.Decimal, { message: "Field 'amount' must be a Decimal. Location: ['Models', 'CustomerRefunds']"}),
+  amount: z.instanceof(Prisma.Decimal, {
+    message: "Field 'amount' must be a Decimal. Location: ['Models', 'CustomerRefunds']",
+  }),
   status: z.string(),
   speed_processed: z.string().nullable(),
   speed_requested: z.string().nullable(),
@@ -1052,7 +1977,12 @@ export const CustomerSubscriptionOffersSchema = z.object({
   is_active: z.boolean(),
   created_at: z.coerce.date().nullable(),
   updated_at: z.coerce.date().nullable(),
-  discount: z.instanceof(Prisma.Decimal, { message: "Field 'discount' must be a Decimal. Location: ['Models', 'CustomerSubscriptionOffers']"}).nullable(),
+  discount: z
+    .instanceof(Prisma.Decimal, {
+      message:
+        "Field 'discount' must be a Decimal. Location: ['Models', 'CustomerSubscriptionOffers']",
+    })
+    .nullable(),
   already_discounted: z.boolean().nullable(),
   expiry_date: z.coerce.date().nullable(),
 })
@@ -1073,8 +2003,14 @@ export const CustomerSubscriptionPlansSchema = z.object({
   description: z.string().nullable(),
   interval: z.number().int(),
   interval_type: z.string(),
-  monthly_amount: z.instanceof(Prisma.Decimal, { message: "Field 'monthly_amount' must be a Decimal. Location: ['Models', 'CustomerSubscriptionPlans']"}),
-  annual_amount: z.instanceof(Prisma.Decimal, { message: "Field 'annual_amount' must be a Decimal. Location: ['Models', 'CustomerSubscriptionPlans']"}),
+  monthly_amount: z.instanceof(Prisma.Decimal, {
+    message:
+      "Field 'monthly_amount' must be a Decimal. Location: ['Models', 'CustomerSubscriptionPlans']",
+  }),
+  annual_amount: z.instanceof(Prisma.Decimal, {
+    message:
+      "Field 'annual_amount' must be a Decimal. Location: ['Models', 'CustomerSubscriptionPlans']",
+  }),
   currency: z.string(),
   features: JsonValueSchema.nullable(),
   is_active: z.boolean().nullable(),
@@ -1490,7 +2426,11 @@ export const ReferralsSchema = z.object({
   visitor_id: z.string(),
   created_at: z.coerce.date().nullable(),
   converted_at: z.coerce.date().nullable(),
-  conversion_value: z.instanceof(Prisma.Decimal, { message: "Field 'conversion_value' must be a Decimal. Location: ['Models', 'Referrals']"}).nullable(),
+  conversion_value: z
+    .instanceof(Prisma.Decimal, {
+      message: "Field 'conversion_value' must be a Decimal. Location: ['Models', 'Referrals']",
+    })
+    .nullable(),
   user_agent: z.string().nullable(),
   ip_address: z.string().nullable(),
   landing_page: z.string().nullable(),
@@ -1832,7 +2772,11 @@ export const UserMetricsSchema = z.object({
   total_votes: z.number().int().nullable(),
   upvote_count: z.number().int().nullable(),
   downvote_count: z.number().int().nullable(),
-  vote_accuracy: z.instanceof(Prisma.Decimal, { message: "Field 'vote_accuracy' must be a Decimal. Location: ['Models', 'UserMetrics']"}).nullable(),
+  vote_accuracy: z
+    .instanceof(Prisma.Decimal, {
+      message: "Field 'vote_accuracy' must be a Decimal. Location: ['Models', 'UserMetrics']",
+    })
+    .nullable(),
   current_streak: z.number().int().nullable(),
   best_streak: z.number().int().nullable(),
   today_vote_count: z.number().int().nullable(),

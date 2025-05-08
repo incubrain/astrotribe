@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useViewModeStore } from '~/stores/useViewModeStore'
 import { useFeatureLimit } from '~/composables/useFeatureLimit'
 
-type ContentType = 'news' | 'jobs' | 'companies'
+type ContentType = 'news' | 'opportunities' | 'companies'
 
 interface Options<T> {
   feature: string

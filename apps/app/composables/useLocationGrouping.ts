@@ -18,7 +18,7 @@ export interface CountryGroup {
 // Allow for defining a job type or using any
 type Job = any
 
-export function useLocationGrouping(jobs: Job[] | Ref<Job[]>) {
+export function useLocationGrouping(jobs: Job[] | Ref<Opportunity[]>) {
   const jobsRef = isRef(jobs) ? jobs : ref(jobs)
 
   /**

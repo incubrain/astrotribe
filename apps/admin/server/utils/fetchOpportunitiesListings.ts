@@ -1,13 +1,13 @@
 import * as cheerio from 'cheerio'
 import { chromium } from 'playwright'
-import jobSites from './jobsites.json'
+import opportunitiesSites from './opportunitiessites.json'
 
 interface Company {
   name?: string
-  jobs: JobListing[]
+  opportunitiess: OpportunitiesListing[]
 }
 
-interface JobListing {
+interface OpportunitiesListing {
   title: string
   location: string
   employment_type: string
@@ -19,12 +19,12 @@ interface JobListing {
   url: string
 }
 
-interface JobSite {
+interface OpportunitiesSite {
   name: string
   url: string
   listingUrl: string
   selectors: {
-    jobContainer: string
+    opportunitiesContainer: string
     title: string
     location: string
     employment_type: string
@@ -97,35 +97,35 @@ async function fetchPageWithJS(url: string): Promise<cheerio.CheerioAPI | null> 
   return null
 }
 
-async function fetchJobDetails(job: JobListing, site: JobSite): Promise<JobListing | null> {
+async function fetchOpportunitiesDetails(opportunities: OpportunitiesListing, site: OpportunitiesSite): Promise<OpportunitiesListing | null> {
   try {
-    const $ = await fetchPageWithJS(job.url)
+    const $ = await fetchPageWithJS(opportunities.url)
 
     if (!$) return null
 
-    job.title = job.title || cleanText($(site.selectors.title).text())
-    job.publish_date =
-      job.publish_date || formatDate(cleanText($(site.selectors.publish_date).text()))
-    job.deadline = job.deadline || formatDate(cleanText($(site.selectors.deadline).text()))
-    job.department = job.department || cleanText($(site.selectors.department).text())
-    job.description = job.description || cleanText($(site.selectors.description).text())
-    job.salary = job.salary || cleanText($(site.selectors.salary).text())
+    opportunities.title = opportunities.title || cleanText($(site.selectors.title).text())
+    opportunities.publish_date =
+      opportunities.publish_date || formatDate(cleanText($(site.selectors.publish_date).text()))
+    opportunities.deadline = opportunities.deadline || formatDate(cleanText($(site.selectors.deadline).text()))
+    opportunities.department = opportunities.department || cleanText($(site.selectors.department).text())
+    opportunities.description = opportunities.description || cleanText($(site.selectors.description).text())
+    opportunities.salary = opportunities.salary || cleanText($(site.selectors.salary).text())
   } catch (error: any) {
-    console.error(`Error fetching job details for ${job.url}:`, error)
+    console.error(`Error fetching opportunities details for ${opportunities.url}:`, error)
   }
-  return job
+  return opportunities
 }
 
-async function fetchJobListings(site: JobSite): Promise<Company> {
+async function fetchOpportunitiesListings(site: OpportunitiesSite): Promise<Company> {
   try {
     const $ = await fetchPageWithJS(site.listingUrl)
     console.log(`Scraping ${site.listingUrl}`)
     let hasAllProps = false
-    let jobs: JobListing[] = []
+    let opportunitiess: OpportunitiesListing[] = []
 
-    if (!$) return { name: site.name, jobs: [] }
+    if (!$) return { name: site.name, opportunitiess: [] }
 
-    $(site.selectors.jobContainer).each((_, element) => {
+    $(site.selectors.opportunitiesContainer).each((_, element) => {
       const title = cleanText($(element).find(site.selectors.title).first().text())
       const publish_date = formatDate(cleanText($(site.selectors.publish_date).text()))
       const location = cleanText($(element).find(site.selectors.location).first().text())
@@ -154,7 +154,7 @@ async function fetchJobListings(site: JobSite): Promise<Company> {
         url,
       ].every((value) => value)
 
-      jobs.push({
+      opportunitiess.push({
         title,
         location,
         department,
@@ -168,18 +168,18 @@ async function fetchJobListings(site: JobSite): Promise<Company> {
     })
 
     if (!hasAllProps) {
-      jobs = (await Promise.all(jobs.map((job) => fetchJobDetails(job, site)))).filter(
-        (job): job is JobListing => !!job,
+      opportunitiess = (await Promise.all(opportunitiess.map((opportunities) => fetchOpportunitiesDetails(opportunities, site)))).filter(
+        (opportunities): opportunities is OpportunitiesListing => !!opportunities,
       )
     }
 
-    return { name: site.name, jobs }
+    return { name: site.name, opportunitiess }
   } catch (error: any) {
-    console.error(`Error fetching job listings from ${site.name}:`, error)
-    return { name: site.name, jobs: [] }
+    console.error(`Error fetching opportunities listings from ${site.name}:`, error)
+    return { name: site.name, opportunitiess: [] }
   }
 }
 
-export async function scrapeJobs(): Promise<Company[]> {
-  return Promise.all((jobSites as JobSite[]).map(fetchJobListings))
+export async function scrapeOpportunitiess(): Promise<Company[]> {
+  return Promise.all((opportunitiesSites as OpportunitiesSite[]).map(fetchOpportunitiesListings))
 }

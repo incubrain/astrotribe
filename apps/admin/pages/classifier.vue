@@ -7,7 +7,7 @@ definePageMeta({
 const contentTypes = [
   { label: 'News', value: 'news' },
   { label: 'Events', value: 'events' },
-  { label: 'Jobs', value: 'jobs' },
+  { label: 'Opportunities', value: 'opportunities' },
   { label: 'Research', value: 'research' },
   { label: 'Companies', value: 'companies' },
   { label: 'Unknown', value: 'unknown' },

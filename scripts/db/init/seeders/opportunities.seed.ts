@@ -3,7 +3,11 @@ import type { Pool } from 'pg'
 import { bulkInsert, generateUUID } from '../utils'
 import type { ContentStatus } from '../utils/types'
 
-export async function seedJobs(pool: Pool, companyIds: string[] = [], count: number = 100) {
+export async function seedOpportunities(
+  pool: Pool,
+  companyIds: string[] = [],
+  count: number = 100,
+) {
   // First, check if we have enough content entries
   let contentsIds: string[] = []
   try {
@@ -117,6 +121,6 @@ export async function seedJobs(pool: Pool, companyIds: string[] = [], count: num
     return job
   })
 
-  await bulkInsert(pool, 'jobs', jobs)
+  await bulkInsert(pool, 'opportunities', jobs)
   return jobs
 }

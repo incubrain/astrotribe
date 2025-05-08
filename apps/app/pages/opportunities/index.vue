@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
-import type { Job, JobFilter } from '~/types/jobs'
+import type { Opportunity, OpportunityFilter } from '~/types/opportunities'
 import {
   applyFilters,
   getUniqueLocations,
   getUniqueEmploymentTypes,
   getUniqueCompanies,
-} from '~/utils/jobFilters'
-import { formatDate, formatEmploymentType } from '~/utils/jobFormatters'
+} from '~/utils/opportunityFilters'
+import { formatDate, formatEmploymentType } from '~/utils/opportunityFormatters'
 
 // Current user data
 const currentUser = useCurrentUser()
@@ -22,9 +22,9 @@ const {
   remainingItems,
   viewMode: featureViewMode,
 } = useFeatureLimit({
-  feature: 'JOB_LISTINGS',
-  contentType: 'jobs',
-  items: computed(() => jobs.value),
+  feature: 'OPPORTUNITY_LISTINGS',
+  contentType: 'opportunities',
+  items: computed(() => opportunities.value),
 })
 
 // User access level check
@@ -35,14 +35,14 @@ const showDialog = ref(isUserBasic)
 const isLoadingInitial = ref(true)
 const isLoadingMore = ref(false)
 
-// Fetch job filter options
-const { store: jobFiltersStore } = useSelectData('job_filters', {
+// Fetch opportunity filter options
+const { store: opportunityFiltersStore } = useSelectData('opportunity_filters', {
   columns: '*',
   initialFetch: true,
-  storeKey: 'jobsFilters',
+  storeKey: 'opportunitiesFilters',
 })
 
-const { items: jobFilterItems } = storeToRefs(jobFiltersStore)
+const { items: opportunityFilterItems } = storeToRefs(opportunityFiltersStore)
 
 // Search functionality
 const searchQuery = ref('')
@@ -53,12 +53,12 @@ const searchFuseOptions = {
   shouldSort: true,
 }
 
-// Job storage composable for preferences
-const jobStorage = useJobStore()
+// Opportunity storage composable for preferences
+const opportunitiesstorage = useOpportunityStore()
 
 // Initialize filters from stored preferences or defaults
-const filters = ref<JobFilter>(
-  jobStorage.filters.value || {
+const filters = ref<OpportunityFilter>(
+  opportunitiesstorage.filters.value || {
     location: { value: '', options: [] },
     company: { value: '', options: [] },
     type: { value: '', options: [] },
@@ -67,14 +67,14 @@ const filters = ref<JobFilter>(
 )
 
 // View mode (grid or list)
-const viewMode = ref<'grid' | 'list'>(jobStorage.viewPreference.value.mode || 'grid')
+const viewMode = ref<'grid' | 'list'>(opportunitiesstorage.viewPreference.value.mode || 'grid')
 
 // Sort preferences
-const sortBy = ref(jobStorage.sortPreference.value.sortBy || 'published_at')
-const sortAscending = ref(jobStorage.sortPreference.value.isAscending || false)
+const sortBy = ref(opportunitiesstorage.sortPreference.value.sortBy || 'published_at')
+const sortAscending = ref(opportunitiesstorage.sortPreference.value.isAscending || false)
 
-// Fetch jobs with filtering and sorting
-const { store, loadMore, changeFilters } = useSelectData('jobs', {
+// Fetch opportunities with filtering and sorting
+const { store, loadMore, changeFilters } = useSelectData('opportunities', {
   columns: '*, companies(name)',
   orderBy: {
     column: sortBy.value,
@@ -86,15 +86,15 @@ const { store, loadMore, changeFilters } = useSelectData('jobs', {
     limit: 20,
   },
   initialFetch: true,
-  storeKey: 'jobsFeed',
+  storeKey: 'opportunitiesFeed',
 })
 
-const { items: rawJobs, isSelecting: isLoadingJobs } = storeToRefs(store)
+const { items: rawOpportunities, isSelecting: isLoadingOpportunities } = storeToRefs(store)
 
-// Format and process job data
-const jobs = computed(
+// Format and process opportunity data
+const opportunities = computed(
   () => {
-    const formattedJobs = rawJobs.value.map((item) => {
+    const formattedOpportunities = rawOpportunities.value.map((item) => {
       // Format dates for display
       const publishedAt = item.published_at && formatDate(item.published_at)
       const expiresAt = item.expires_at && formatDate(item.expires_at)
@@ -114,28 +114,28 @@ const jobs = computed(
     // Apply any additional filters from search results
     if (searchQuery.value && searchResults.value?.length) {
       const searchIds = new Set(searchResults.value.map((result) => result.id))
-      return formattedJobs.filter((job) => searchIds.has(job.id))
+      return formattedOpportunities.filter((opportunity) => searchIds.has(opportunity.id))
     }
 
-    return formattedJobs
+    return formattedOpportunities
   },
   { deep: true },
 )
 
 // Initialize filter options
 watch(
-  jobs,
-  (newJobs) => {
-    if (!newJobs?.length) return
+  opportunities,
+  (newOpportunities) => {
+    if (!newOpportunities?.length) return
 
     // Get unique locations
-    const locations = getUniqueLocations(newJobs)
+    const locations = getUniqueLocations(newOpportunities)
 
     // Get unique companies
-    const companies = getUniqueCompanies(newJobs)
+    const companies = getUniqueCompanies(newOpportunities)
 
     // Get unique employment types
-    const types = getUniqueEmploymentTypes(newJobs)
+    const types = getUniqueEmploymentTypes(newOpportunities)
 
     // Update filter options
     filters.value.location.options = locations.map((location) => ({
@@ -148,8 +148,8 @@ watch(
       value: formatEmploymentType(type),
     }))
 
-    // Save to job storage
-    jobStorage.filters.value = filters.value
+    // Save to opportunity storage
+    opportunitiesstorage.filters.value = filters.value
 
     // Hide initial loading state
     isLoadingInitial.value = false
@@ -163,7 +163,7 @@ const handleSearchResults = (results: FuseResult<any>[]) => {
 
   // Add search term to recent searches
   if (searchQuery.value) {
-    jobStorage.addToRecentSearches(searchQuery.value)
+    opportunitiesstorage.addToRecentSearches(searchQuery.value)
   }
 }
 
@@ -176,7 +176,7 @@ const handleChangeFilters = () => {
   })
 
   // Save filters to storage
-  jobStorage.filters.value = filters.value
+  opportunitiesstorage.filters.value = filters.value
 }
 
 // Add tag filter
@@ -201,15 +201,15 @@ const removeTagFilter = (tag: string) => {
 
 // Clear all filters
 const clearAllFilters = () => {
-  jobStorage.resetFilters()
-  filters.value = jobStorage.filters.value
+  opportunitiesstorage.resetFilters()
+  filters.value = opportunitiesstorage.filters.value
   handleChangeFilters()
 }
 
 // Toggle view mode
 const toggleViewMode = () => {
   viewMode.value = viewMode.value === 'grid' ? 'list' : 'grid'
-  jobStorage.viewPreference.value.mode = viewMode.value
+  opportunitiesstorage.viewPreference.value.mode = viewMode.value
 }
 
 // Handle sort change
@@ -224,13 +224,13 @@ const handleSortChange = (payload: { sort: string; order: boolean }) => {
   })
 
   // Save sort preference
-  jobStorage.sortPreference.value = {
+  opportunitiesstorage.sortPreference.value = {
     sortBy: sortBy.value,
     isAscending: sortAscending.value,
   }
 }
 
-// Load more jobs with infinite scroll
+// Load more opportunities with infinite scroll
 const handleLoadMore = async () => {
   if (isLoadingMore.value || showPaywall.value) return
 
@@ -238,7 +238,7 @@ const handleLoadMore = async () => {
   try {
     await loadMore()
   } catch (error: any) {
-    console.error('Error loading more jobs:', error)
+    console.error('Error loading more opportunities:', error)
   } finally {
     isLoadingMore.value = false
   }
@@ -247,7 +247,7 @@ const handleLoadMore = async () => {
 // Track initial component load
 onMounted(() => {
   // Load saved preferences
-  jobStorage.loadPreferences()
+  opportunitiesstorage.loadPreferences()
 })
 </script>
 
@@ -260,16 +260,16 @@ onMounted(() => {
       <div class="container mx-auto text-center px-4">
         <h1 class="text-4xl md:text-5xl font-bold text-white mb-4"> Career Opportunities </h1>
         <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-          Explore job openings in space technology, astronomy, and related fields.
+          Explore opportunity openings in space technology, astronomy, and related fields.
         </p>
 
         <!-- Search input -->
         <div class="max-w-3xl mx-auto mb-8 w-full">
           <FuzzySearch
             v-model="searchQuery"
-            :data="jobs"
+            :data="opportunities"
             :fuse-options="searchFuseOptions"
-            placeholder="Search jobs by title, company, skills..."
+            placeholder="Search opportunities by title, company, skills..."
             class="w-full"
             @results="handleSearchResults"
           />
@@ -280,17 +280,17 @@ onMounted(() => {
     <!-- Main content -->
     <div class="flex flex-col gap-2 max-w-7xl mx-auto px-4 py-8">
       <!-- Enhanced filter section -->
-      <JobFilter
+      <OpportunityFilter
         v-model="filters"
         :change-filters="handleChangeFilters"
         @remove-tag="removeTagFilter"
         @clear-filters="clearAllFilters"
       />
 
-      <!-- Job statistics bar -->
+      <!-- Opportunity statistics bar -->
       <div class="bg-primary-900/30 rounded-lg p-4 mb-4 flex justify-between items-center">
         <div class="text-gray-300">
-          <span class="font-medium">{{ jobs.length }}</span> opportunities found
+          <span class="font-medium">{{ opportunities.length }}</span> opportunities found
           <span v-if="showPaywall"> (showing {{ limitedItems.length }}) </span>
           <span
             v-if="searchQuery"
@@ -301,41 +301,41 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Job listings with infinite scroll -->
+      <!-- Opportunity listings with infinite scroll -->
       <Transition
         name="fade"
         mode="out-in"
       >
         <!-- Loading state -->
         <div
-          v-if="isLoadingInitial || isLoadingJobs"
+          v-if="isLoadingInitial || isLoadingOpportunities"
           class="py-8"
         >
-          <JobListingSkeleton :count="10" />
+          <OpportunityListingSkeleton :count="10" />
         </div>
 
         <div v-else>
           <ViewWrapper
             :show-paywall="showPaywall"
             :items-shown="limitedItems.length"
-            feature="JOB_LISTINGS"
+            feature="OPPORTUNITY_LISTINGS"
             :total="totalCount"
           >
             <template #items>
-              <JobCard
-                v-for="job in limitedItems"
-                :key="job.id"
-                :job="job"
-                class="job-card-item"
+              <OpportunityCard
+                v-for="opportunity in limitedItems"
+                :key="opportunity.id"
+                :opportunity="opportunity"
+                class="opportunity-card-item"
               />
             </template>
 
             <template #last-row-items>
-              <JobCard
-                v-for="job in lastRowItems"
-                :key="job.id"
-                :job="job"
-                class="job-card-item"
+              <OpportunityCard
+                v-for="opportunity in lastRowItems"
+                :key="opportunity.id"
+                :opportunity="opportunity"
+                class="opportunity-card-item"
               />
             </template>
           </ViewWrapper>
@@ -356,7 +356,7 @@ onMounted(() => {
       <!-- Feature CTA -->
       <FeatureCTA
         v-if="showPaywall"
-        feature="JOB_LISTINGS"
+        feature="OPPORTUNITY_LISTINGS"
         :remaining="remainingItems"
         :show="showPaywall"
       />
