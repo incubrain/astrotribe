@@ -31,8 +31,7 @@ export const formatTimeWithZone = (date: Date) => {
 export const getContentStatusFlow = (entityType: string) => {
   const commonStatuses = [
     'draft',
-    'pending_agent_review',
-    'pending_human_review',
+    'pending_review',
     'published',
     'archived',
   ] as const
@@ -40,7 +39,7 @@ export const getContentStatusFlow = (entityType: string) => {
   // Add entity-specific statuses
   switch (entityType) {
     case 'news':
-      return [...commonStatuses, 'pending_relevance_check', 'scraped', 'outdated', 'updated']
+      return [...commonStatuses, 'pending_review', 'scraped', 'archived', 'processing']
     case 'research':
       return [...commonStatuses, 'pending_crawl', 'irrelevant']
     default:

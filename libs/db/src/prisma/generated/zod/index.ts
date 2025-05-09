@@ -1085,10 +1085,7 @@ export type ContactTypeType = `${z.infer<typeof ContactTypeSchema>}`
 
 export const ContentStatusSchema = z.enum([
   'draft',
-  'pending_agent_action',
-  'pending_agent_review',
-  'pending_human_review',
-  'pending_relevance_check',
+  'pending_review',
   'irrelevant',
   'scheduled',
   'unpublished',
@@ -1098,7 +1095,7 @@ export const ContentStatusSchema = z.enum([
   'pending_crawl',
   'scraped',
   'outdated',
-  'updated',
+  'processing',
   'new',
 ])
 

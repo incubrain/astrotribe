@@ -9,7 +9,7 @@ const {
   refresh,
 } = await useSelectData<User>('user_profiles', {
   columns: 'id, given_name, surname, avatar, email, created_at, updated_at',
-  filters: { content_status: { eq: 'pending_agent_action' } },
+  filters: { content_status: { eq: 'pending_review' } },
   orderBy: { column: 'created_at', ascending: false },
   initialFetch: true,
   pagination: { page: 1, limit: 20 },

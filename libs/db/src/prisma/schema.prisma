@@ -1672,10 +1672,7 @@ enum ContactType {
 /// @client.name="content_status"
 enum ContentStatus {
   draft
-  pending_agent_action
-  pending_agent_review
-  pending_human_review
-  pending_relevance_check
+  pending_review
   irrelevant
   scheduled
   unpublished

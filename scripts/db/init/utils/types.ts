@@ -27,10 +27,7 @@ export type AppRole =
 export type ContactType = 'personal' | 'company' | 'professional' | 'recruitment' | 'founder'
 export type ContentStatus =
   | 'draft'
-  | 'pending_agent_action'
-  | 'pending_agent_review'
-  | 'pending_human_review'
-  | 'pending_relevance_check'
+  | 'pending_review'
   | 'irrelevant'
   | 'scheduled'
   | 'unpublished'
@@ -39,7 +36,7 @@ export type ContentStatus =
   | 'failed'
   | 'pending_crawl'
   | 'scraped'
-  | 'outdated'
+  | 'archived'
   | 'updated'
   | 'new'
 export type ContentType =
