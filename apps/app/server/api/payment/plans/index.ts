@@ -5,8 +5,6 @@ export default defineEventHandler(async (event) => {
   const { apiURL } = useRuntimeConfig().public
   const supabase = await serverSupabaseClient(event)
 
-  console.log(apiURL, 'API URL')
-
   try {
     const {
       data: { session },

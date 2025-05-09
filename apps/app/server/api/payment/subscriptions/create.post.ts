@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
       notes: { user_id, ...notes },
     })
 
-    const response = await $fetch(`${apiURL}/api/v1/payments/subscriptions`, {
+    const response = await $fetch(`${apiURL}/v1/payments/subscriptions`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${session.access_token}`,

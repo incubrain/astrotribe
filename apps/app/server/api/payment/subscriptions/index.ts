@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
       throw new Error('No authentication session found')
     }
 
-    const response = await $fetch(`${apiURL}/api/v1/payments/subscriptions`, {
+    const response = await $fetch(`${apiURL}/v1/payments/subscriptions`, {
       headers: {
         Authorization: `Bearer ${session.access_token}`,
       },
