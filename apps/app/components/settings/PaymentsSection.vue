@@ -161,8 +161,8 @@ const plans = computed<PlanConfig>(() =>
               period: item.interval_type,
               price:
                 item.interval_type === 'monthly'
-                  ? item.monthly_amount.d / 100
-                  : item.annual_amount.d / 100,
+                  ? item.monthly_amount / 100
+                  : item.annual_amount / 100,
               razorPayConfig,
             }
           }),
