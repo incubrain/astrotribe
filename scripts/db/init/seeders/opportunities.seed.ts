@@ -113,9 +113,9 @@ export async function seedOpportunities(
       job.company_id = faker.helpers.arrayElement(companyIds)
     }
 
-    // Add content_source_id if available
+    // Add source_id if available
     if (contentSourceIds.length > 0) {
-      job.content_source_id = faker.helpers.arrayElement(contentSourceIds)
+      job.source_id = faker.helpers.arrayElement(contentSourceIds)
     }
 
     return job

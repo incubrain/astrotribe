@@ -582,12 +582,7 @@ export const FeedCategoriesScalarFieldEnumSchema = z.enum([
   'category_id',
 ])
 
-export const FeedSourcesScalarFieldEnumSchema = z.enum([
-  'id',
-  'feed_id',
-  'created_at',
-  'content_source_id',
-])
+export const FeedSourcesScalarFieldEnumSchema = z.enum(['id', 'feed_id', 'created_at', 'source_id'])
 
 export const FeedbacksScalarFieldEnumSchema = z.enum([
   'id',
@@ -626,7 +621,7 @@ export const JobsScalarFieldEnumSchema = z.enum([
   'updated_at',
   'created_at',
   'content_status',
-  'content_source_id',
+  'source_id',
   'url',
   'hash',
   'employment_type',
@@ -663,7 +658,7 @@ export const NewsScalarFieldEnumSchema = z.enum([
   'scraped_at',
   'content_status',
   'keywords',
-  'content_source_id',
+  'source_id',
 ])
 
 export const NewsSummariesScalarFieldEnumSchema = z.enum([
@@ -2183,7 +2178,7 @@ export const FeedSourcesSchema = z.object({
   id: z.bigint(),
   feed_id: z.string().nullable(),
   created_at: z.coerce.date(),
-  content_source_id: z.bigint().nullable(),
+  source_id: z.bigint().nullable(),
 })
 
 export type FeedSources = z.infer<typeof FeedSourcesSchema>
@@ -2264,7 +2259,7 @@ export const JobsSchema = z.object({
   scraped_at: z.coerce.date().nullable(),
   updated_at: z.coerce.date().nullable(),
   created_at: z.coerce.date().nullable(),
-  content_source_id: z.bigint().nullable(),
+  source_id: z.bigint().nullable(),
   url: z.string(),
   hash: z.bigint().nullable(),
   employment_type: JsonValueSchema.nullable(),
@@ -2319,7 +2314,7 @@ export const NewsSchema = z.object({
   failed_count: z.number().int().nullable(),
   scraped_at: z.coerce.date().nullable(),
   keywords: JsonValueSchema.nullable(),
-  content_source_id: z.bigint().nullable(),
+  source_id: z.bigint().nullable(),
 })
 
 export type News = z.infer<typeof NewsSchema>

@@ -52,7 +52,7 @@ export async function seedFeedSources(
   interface FeedSource {
     id: string
     feed_id: string
-    content_source_id: string
+    source_id: string
     created_at: Date
   }
 
@@ -72,7 +72,7 @@ export async function seedFeedSources(
         feedSources.push({
           id: generateUUID(),
           feed_id: feedId,
-          content_source_id: sourceId,
+          source_id: sourceId,
           created_at: faker.date.past(),
         })
       }

@@ -13,7 +13,7 @@ export interface FeedSourceModel extends BaseModel {
 
   created_at: Date
 
-  content_source_id?: string
+  source_id?: string
 
   feeds?: FeedModel
 

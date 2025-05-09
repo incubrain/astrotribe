@@ -16,7 +16,7 @@ export async function seedContentSources(pool: Pool, count: number) {
       'quarterly',
       'never',
     ] as ScrapeFrequency[]),
-    last_scraped_at: faker.date.past(),
+    scraped_at: faker.date.past(),
     is_active: faker.datatype.boolean(),
     created_at: faker.date.past(),
     updated_at: faker.date.recent(),

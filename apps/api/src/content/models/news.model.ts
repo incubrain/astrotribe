@@ -26,7 +26,7 @@ export interface NewsModel extends BaseModel {
   content_status: ContentStatus
   keywords?: Record<string, any>
   score?: number
-  content_source_id?: string
+  source_id?: string
   content_sources?: ContentSourceModel
   news: NewsModel[]
   categories?: CategoryModel[]

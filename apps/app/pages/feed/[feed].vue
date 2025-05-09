@@ -19,7 +19,7 @@ const { store: categoriesStore, isSelecting: isLoadingCategories } = useSelectDa
 )
 
 const { store: sourcesStore, isSelecting: isLoadingSources } = useSelectData('feed_sources', {
-  columns: 'id, feed_id, content_source_id, content_sources(id, url, content_type)',
+  columns: 'id, feed_id, source_id, content_sources(id, url, content_type)',
   filters: { feed_id: { eq: feedId.value } },
   orderBy: { column: 'created_at', ascending: false },
   initialFetch: true,

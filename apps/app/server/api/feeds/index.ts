@@ -48,28 +48,24 @@ export default defineEventHandler(async (event: H3Event) => {
 
         // Insert categories
         if (selectedCategories.length) {
-          const { error: categoriesError } = await client
-            .from('feed_categories')
-            .insert(
-              selectedCategories.map((category: Category) => ({
-                feed_id,
-                category_id: category.id,
-              })),
-            )
+          const { error: categoriesError } = await client.from('feed_categories').insert(
+            selectedCategories.map((category: Category) => ({
+              feed_id,
+              category_id: category.id,
+            })),
+          )
 
           if (categoriesError) throw categoriesError
         }
 
         // Insert sources - Updated to work with new content_sources table
         if (selectedSourceIds.size) {
-          const { error: sourcesError } = await client
-            .from('feed_sources')
-            .insert(
-              Array.from(selectedSourceIds).map((sourceId) => ({
-                feed_id,
-                content_source_id: sourceId,
-              })),
-            )
+          const { error: sourcesError } = await client.from('feed_sources').insert(
+            Array.from(selectedSourceIds).map((sourceId) => ({
+              feed_id,
+              source_id: sourceId,
+            })),
+          )
 
           if (sourcesError) throw sourcesError
         }
@@ -97,11 +93,11 @@ export default defineEventHandler(async (event: H3Event) => {
     try {
       // First, get the feed's sources and categories
       const [{ data: sources }, { data: categories }] = await Promise.all([
-        client.from('feed_sources').select('content_source_id').eq('feed_id', feed_id),
+        client.from('feed_sources').select('source_id').eq('feed_id', feed_id),
         client.from('feed_categories').select('category_id').eq('feed_id', feed_id),
       ])
 
-      const sourceIds = sources?.map((s) => s.content_source_id) || []
+      const sourceIds = sources?.map((s) => s.source_id) || []
       const categoryIds = categories?.map((c) => c.category_id) || []
 
       // Now query the unified contents table with the appropriate filters

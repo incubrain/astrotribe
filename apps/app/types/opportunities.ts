@@ -20,7 +20,7 @@ export interface Opportunity {
   hash?: number
   metadata?: any
   employment_type?: string
-  content_source_id?: string
+  source_id?: string
   salary?: number
   tags?: string[]
   hot_score?: number
