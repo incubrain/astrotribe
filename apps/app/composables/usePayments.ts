@@ -5,6 +5,8 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
   const supabase = useSupabaseClient()
   const isLoading = ref(false)
   const error = ref(null)
+  const config = useRuntimeConfig()
+  console.log(config)
   const currentUser = useCurrentUser()
   const { profile } = storeToRefs(currentUser)
 
@@ -47,7 +49,7 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     const start_at = oldSubscription?.[0]?.current_end
 
     try {
-      const response = await $fetch(`/api/payment/${provider}/subscriptions/create`, {
+      const response = await $fetch(`${config.public.apiURL}/v1/payments/subscriptions/create`, {
         method: 'POST',
         body: {
           plan_id,
@@ -89,7 +91,7 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     error.value = null
 
     try {
-      const response = await $fetch(`/api/payment/${provider}/plans`)
+      const response = await $fetch(`${config.public.apiURL}/v1/payments/plans`)
 
       return response
     } catch (error: any) {
@@ -104,7 +106,7 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     error.value = null
 
     try {
-      const response = await $fetch(`/api/payment/${provider}/subscriptions`, {
+      const response = await $fetch(`${config.public.apiURL}/v1/payments/subscriptions`, {
         query: { ...(query ? query : {}), user_id: profile.value.id },
       })
 
