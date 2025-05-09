@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
       notes: { user_id, ...notes },
     })
 
-    const { meta, success } = await $fetch(`${apiURL}/api/v1/payments/subscriptions`, {
+    const response = await $fetch(`${apiURL}/api/v1/payments/subscriptions`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${session.access_token}`,
@@ -77,8 +77,7 @@ export default defineEventHandler(async (event) => {
       },
     })
 
-    if (!success) console.error('Create Subscription', meta)
-    return subscription
+    if (response?.items) return response.items
   } catch (error: any) {
     console.error('Failed to create subscription', {
       error,

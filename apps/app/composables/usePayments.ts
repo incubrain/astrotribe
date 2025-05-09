@@ -1,37 +1,9 @@
-import { ref } from 'vue'
-import { useRuntimeConfig } from '#app'
+const isLoading = ref(false)
+const error = ref(null)
+const currentUser = useCurrentUser()
+const { profile } = storeToRefs(currentUser)
 
-export const usePayments = (provider: 'razorpay' | 'stripe') => {
-  const supabase = useSupabaseClient()
-  const isLoading = ref(false)
-  const error = ref(null)
-  const config = useRuntimeConfig()
-  console.log(config)
-  const currentUser = useCurrentUser()
-  const { profile } = storeToRefs(currentUser)
-
-  const initializePayment = async (options: any) => {
-    isLoading.value = true
-    error.value = null
-
-    try {
-      if (provider === 'razorpay') {
-        const razorpay = new (window as any).Razorpay({
-          key: 'rzp_test_lV0OE0NDIg6Hr6',
-          ...options,
-        })
-        razorpay.open()
-      } else if (provider === 'stripe') {
-        // Placeholder for Stripe implementation
-        console.log('Stripe payment initialization', options)
-      }
-    } catch (error: any) {
-      console.error(`Error initializing payment with ${provider}:`, error)
-    } finally {
-      isLoading.value = false
-    }
-  }
-
+export const usePayments = () => {
   const createOrder = async (plan: Record<string, any>) => {
     isLoading.value = true
     error.value = null
@@ -49,7 +21,7 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     const start_at = oldSubscription?.[0]?.current_end
 
     try {
-      const response = await $fetch(`${config.public.apiURL}/v1/payments/subscriptions/create`, {
+      const response = await $fetch(`/api/payment/subscriptions/create`, {
         method: 'POST',
         body: {
           plan_id,
@@ -57,13 +29,12 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
           start_at: start_at && new Date(start_at).getTime() / 1000,
           user_id: profile.value.id,
           total_count,
-          provider,
         },
       })
 
       return response
     } catch (error: any) {
-      console.error(`Error creating order with ${provider}:`, error)
+      console.error(`Error creating order`, error)
     } finally {
       isLoading.value = false
     }
@@ -74,13 +45,13 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     error.value = null
 
     try {
-      const response = await $fetch(`/api/payment/${provider}/verify-payment`, {
+      const response = await $fetch(`/api/payment/verify-payment`, {
         method: 'POST',
         body: paymentData,
       })
       return response
     } catch (error: any) {
-      console.error(`Error verifying payment with ${provider}:`, error)
+      console.error(`Error verifying payment`, error)
     } finally {
       isLoading.value = false
     }
@@ -91,11 +62,11 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     error.value = null
 
     try {
-      const response = await $fetch(`${config.public.apiURL}/v1/payments/plans`)
+      const response = await $fetch(`/api/payment/plans`)
 
       return response
     } catch (error: any) {
-      console.error(`Error verifying payment with ${provider}:`, error)
+      console.error(`Error verifying payment`, error)
     } finally {
       isLoading.value = false
     }
@@ -106,7 +77,7 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     error.value = null
 
     try {
-      const response = await $fetch(`${config.public.apiURL}/v1/payments/subscriptions`, {
+      const response = await $fetch(`/api/payment/subscriptions`, {
         query: { ...(query ? query : {}), user_id: profile.value.id },
       })
 
@@ -114,7 +85,7 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
 
       return response
     } catch (error: any) {
-      console.error(`Error verifying payment with ${provider}:`, error)
+      console.error(`Error verifying payment`, error)
     } finally {
       isLoading.value = false
     }
@@ -123,7 +94,6 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
   return {
     isLoading,
     error,
-    initializePayment,
     createOrder,
     verifyPayment,
     fetchPlans,
