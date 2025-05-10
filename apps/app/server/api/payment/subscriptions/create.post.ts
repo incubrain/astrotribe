@@ -53,27 +53,30 @@ export default defineEventHandler(async (event) => {
       body: {
         external_subscription_id: subscription.id,
         status: subscription.status,
-        current_start:
-          subscription.current_start && new Date(subscription.current_start * 1000).toISOString(),
-        current_end:
-          subscription.current_end && new Date(subscription.current_end * 1000).toISOString(),
+        ...(subscription.current_start && {
+          current_start: new Date(subscription.current_start * 1000).toISOString(),
+        }),
+        ...(subscription.current_end && {
+          current_end: new Date(subscription.current_end * 1000).toISOString(),
+        }),
         quantity: subscription.quantity,
         total_count: subscription.total_count,
         paid_count: subscription.paid_count,
         remaining_count: subscription.remaining_count,
-        charge_at: subscription.charge_at && new Date(subscription.charge_at * 1000).toISOString(),
-        start_at: subscription.start_at && new Date(subscription.start_at * 1000).toISOString(),
-        end_at: subscription.end_at && new Date(subscription.end_at * 1000).toISOString(),
+        ...(subscription.charge_at && {
+          charge_at: new Date(subscription.charge_at * 1000).toISOString(),
+        }),
+        ...(subscription.start_at && {
+          start_at: new Date(subscription.start_at * 1000).toISOString(),
+        }),
+
+        ...(subscription.end_at && {
+          end_at: new Date(subscription.end_at * 1000).toISOString(),
+        }),
         notes: subscription.notes,
-        payment_providers: {
-          connect: { id: payment_provider_id },
-        },
-        customer_subscription_plans: {
-          connect: { id: plan_id },
-        },
-        user_profiles: {
-          connect: { id: user_id },
-        },
+        payment_provider_id: payment_provider_id,
+        plan_id,
+        user_id,
       },
     })
 
