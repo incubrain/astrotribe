@@ -133,7 +133,7 @@ const createSubscription = async () => {
   const subscription = await razorpay.createOrder({
     plan_id: props.plan.id,
     external_plan_id: props.plan.external_plan_id,
-    total_count: props.plan.interval === 'monthly' ? 1200 : 100,
+    total_count: props.plan.interval === 'monthly' ? 360 : 30,
   })
 
   if (subscription.start_at > Date.now() / 1000) {
