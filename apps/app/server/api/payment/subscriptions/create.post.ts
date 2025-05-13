@@ -74,8 +74,8 @@ export default defineEventHandler(async (event) => {
           end_at: new Date(subscription.end_at * 1000).toISOString(),
         }),
         notes: subscription.notes,
-        payment_provider_id: payment_provider_id,
-        plan_id,
+        payment_provider_id: `${payment_provider_id}`,
+        plan_id: `${plan_id}`,
         user_id,
       },
     })

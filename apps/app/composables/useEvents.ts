@@ -21,7 +21,8 @@ export const useEvents = () => {
 
   // Only create a new socket if one doesn't exist
   if (!socketInstance) {
-    socketInstance = io(`${useRuntimeConfig().public.apiURL}/event`, {
+    socketInstance = io(`${useRuntimeConfig().public.apiURL}`, {
+      path: '/events',
       transports: ['websocket'],
       reconnection: true,
       reconnectionDelay: 1000,
