@@ -72,6 +72,10 @@ export default defineNuxtConfig({
         'connect-src': [
           ...localUrls,
           "'self'",
+          'ws://localhost:3001',
+          'wss://localhost:3001',
+          'ws://api.astronera.org',
+          'wss://api.astronera.org',
           'https:',
           'http://localhost:3000',
           'http://localhost:8080',
