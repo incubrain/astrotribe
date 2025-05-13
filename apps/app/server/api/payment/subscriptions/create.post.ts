@@ -80,7 +80,11 @@ export default defineEventHandler(async (event) => {
       },
     })
 
-    if (response?.items) return response.items
+    if (response?.items) {
+      return response.items
+    } else {
+      return response
+    }
   } catch (error: any) {
     console.error('Failed to create subscription', {
       error,

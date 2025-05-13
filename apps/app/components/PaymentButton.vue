@@ -136,7 +136,7 @@ const createSubscription = async () => {
     total_count: props.plan.interval === 'monthly' ? 360 : 30,
   })
 
-  if (subscription.start_at > Date.now() / 1000) {
+  if (subscription?.start_at > Date.now() / 1000) {
     razorpayOptions.value.subscriptionStartsLater = true
   }
   razorpayOptions.value.subscription_id = subscription.id

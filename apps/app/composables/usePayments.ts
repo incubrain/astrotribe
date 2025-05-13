@@ -26,7 +26,9 @@ export const usePayments = () => {
         body: {
           plan_id,
           external_plan_id,
-          start_at: start_at && new Date(start_at).getTime() / 1000,
+          ...(start_at && {
+            start_at: new Date(start_at * 1000).toISOString(),
+          }),
           user_id: profile.value.id,
           total_count,
         },

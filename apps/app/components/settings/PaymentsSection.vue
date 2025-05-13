@@ -8,7 +8,7 @@ const loading = ref(true)
 
 const { profile } = storeToRefs(currentUser)
 
-const razorpay = usePayments('razorpay')
+const razorpay = usePayments()
 const { lastEvent, isConnected } = useEvents()
 const subscriptions = ref([])
 
@@ -26,18 +26,18 @@ watch(lastEvent, async (event) => {
   if (event?.module !== 'subscription') return
 
   if (event?.type === 'created') {
-    if (!subscriptions.value.some((item) => item.id === event.data.id)) {
-      const subscription = event.data
+    const subscription = event.data
+    const existingIndex =
+      subscriptions.value?.findIndex((item) => item.id === subscription.id) ?? -1
+
+    if (existingIndex === -1) {
+      // Add new subscription to the beginning of the array
       subscriptions.value = subscriptions.value?.length
-        ? [subscription.data, ...subscriptions.value]
-        : [subscription.data]
+        ? [subscription, ...subscriptions.value]
+        : [subscription]
     } else {
-      subscriptions.value = subscriptions.value.map((sub) => {
-        if (sub.id === event.data.id) {
-          return event.data
-        }
-        return sub
-      })
+      // Replace existing subscription
+      subscriptions.value[existingIndex] = subscription
     }
   }
 
