@@ -1,9 +1,8 @@
-const isLoading = ref(false)
-const error = ref(null)
-const currentUser = useCurrentUser()
-const { profile } = storeToRefs(currentUser)
-
 export const usePayments = () => {
+  const isLoading = ref(false)
+  const error = ref(null)
+  const currentUser = useCurrentUser()
+  const { profile } = storeToRefs(currentUser)
   const createOrder = async (plan: Record<string, any>) => {
     isLoading.value = true
     error.value = null
