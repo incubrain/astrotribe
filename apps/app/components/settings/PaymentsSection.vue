@@ -5,6 +5,7 @@ import { onMounted } from 'vue'
 
 const currentUser = useCurrentUser()
 const loading = ref(true)
+const confirmingSubscription = ref(false)
 
 const { profile } = storeToRefs(currentUser)
 
@@ -24,6 +25,8 @@ const triggerConfetti = () => {
 
 watch(lastEvent, async (event) => {
   if (event?.module !== 'subscription') return
+
+  confirmingSubscription.value = false
 
   if (event?.type === 'created') {
     const subscription = event.data
@@ -181,6 +184,7 @@ const plans = computed<PlanConfig>(() =>
 
 const handlePaymentSuccess = (response: any) => {
   // Handle successful payment
+  confirmingSubscription.value = true
   console.log('Payment successful:', response)
 }
 
@@ -367,5 +371,19 @@ onMounted(async () => {
     >
       <PrimeProgressSpinner />
     </div>
+    <PrimeDialog
+      :closable="false"
+      :draggable="false"
+      v-model:visible="confirmingSubscription"
+      modal
+      class="bg-white"
+    >
+      <template #header>
+        <div class="flex flex-col justify-center items-center gap-4">
+          <h2 class="text-black">Confirming Subscription</h2>
+          <PrimeProgressSpinner />
+        </div>
+      </template>
+    </PrimeDialog>
   </div>
 </template>
