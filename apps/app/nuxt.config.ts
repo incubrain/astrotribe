@@ -37,7 +37,6 @@ const privateKeys = [
   'openaiOrg',
   'scraperKey',
   'razorpayKey',
-  'razorpaySecret',
 ] as const
 
 const currentDir = dirname(fileURLToPath(import.meta.url))

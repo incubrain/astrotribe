@@ -29,7 +29,7 @@ interface Props {
   notes?: Record<string, string>
 }
 
-const razorpay = usePayments('razorpay')
+const razorpay = usePayments()
 const toast = useNotification()
 
 const props = withDefaults(defineProps<Props>(), {

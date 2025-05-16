@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
       },
     })
 
-    if (response?.items) return response.items
+    if ((response as Record<string, any>)?.items) return (response as Record<string, any>).items
   } catch (error: any) {
     console.error('Get Subscriptions', error)
     return error
