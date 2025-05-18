@@ -32,14 +32,22 @@ DROP VIEW IF EXISTS public.job_filters;
 
 -- Drop non-table constraints first
 ALTER TABLE public.contents DROP CONSTRAINT IF EXISTS contents_url_key;
-ALTER TABLE public.domain_relationships DROP CONSTRAINT IF EXISTS domain_relationships_source_domain_root_id_fkey;
-ALTER TABLE public.domain_relationships DROP CONSTRAINT IF EXISTS domain_relationships_source_url_id_target_url_id_key;
-ALTER TABLE public.domain_relationships DROP CONSTRAINT IF EXISTS domain_relationships_target_domain_root_id_fkey;
 ALTER TABLE public.opportunities DROP CONSTRAINT IF EXISTS opportunities_contents_id_fkey;
 ALTER TABLE public.opportunities DROP CONSTRAINT IF EXISTS opportunities_contents_id_key;
 ALTER TABLE public.content_sources DROP CONSTRAINT IF EXISTS content_sources_parser_type_check;
-ALTER TABLE public.domain_relationships DROP CONSTRAINT IF EXISTS domain_relationships_source_url_id_fkey;
-ALTER TABLE public.domain_relationships DROP CONSTRAINT IF EXISTS domain_relationships_target_url_id_fkey;
+
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'domain_relationships') THEN
+    ALTER TABLE public.domain_relationships DROP CONSTRAINT IF EXISTS domain_relationships_source_domain_root_id_fkey;
+    ALTER TABLE public.domain_relationships DROP CONSTRAINT IF EXISTS domain_relationships_source_url_id_target_url_id_key;
+    ALTER TABLE public.domain_relationships DROP CONSTRAINT IF EXISTS domain_relationships_target_domain_root_id_fkey;
+    ALTER TABLE public.domain_relationships DROP CONSTRAINT IF EXISTS domain_relationships_source_url_id_fkey;
+    ALTER TABLE public.domain_relationships DROP CONSTRAINT IF EXISTS domain_relationships_target_url_id_fkey;
+  END IF;
+END $$;
+
+
 
 -- Drop indexes that aren't tied to constraints
 DROP INDEX IF EXISTS public.contents_url_key;
@@ -57,6 +65,7 @@ DROP INDEX IF EXISTS public.opportunities_contents_id_key;
 
 -- Drop table with CASCADE to automatically handle related constraints and indexes
 DROP TABLE IF EXISTS public.domain_url_processing_history CASCADE;
+DROP TABLE IF EXISTS public.domain_relationships CASCADE;
 
 -- ============================================
 -- 2. ENUM MIGRATION
@@ -72,7 +81,7 @@ ALTER TYPE public.content_status RENAME TO content_status__old_version_to_be_dro
 CREATE TYPE public.content_status AS ENUM (
   'pending_crawl', 'scraped', 'processing', 'indexing', 
   'pending_review', 'irrelevant', 'retracted', 'draft', 
-  'scheduled', 'published', 'archived', 'failed', 'flagged', 'unpublished'
+  'scheduled', 'published', 'archived', 'failed', 'flagged', 'unpublished', 'crawled'
 );
 
 -- Update tables to use new enum
@@ -116,13 +125,16 @@ CREATE UNIQUE INDEX contents_url_uri_unique ON public.contents USING btree (url,
 ALTER TABLE public.contents ADD CONSTRAINT contents_url_uri_unique UNIQUE USING INDEX contents_url_uri_unique;
 
 -- Modify domain_relationships table
-ALTER TABLE public.domain_relationships 
-  DROP COLUMN IF EXISTS source_domain_root_id,
-  DROP COLUMN IF EXISTS target_domain_root_id,
-  ADD COLUMN target_company_id uuid NOT NULL,
-  ALTER COLUMN source_company_id SET NOT NULL,
-  ALTER COLUMN source_url_id DROP NOT NULL,
-  ALTER COLUMN target_url_id DROP NOT NULL;
+
+CREATE TABLE IF NOT EXISTS public.domain_relationships (
+  id uuid NOT NULL DEFAULT extensions.gen_random_uuid(),
+  source_company_id uuid NOT NULL,
+  source_url_id uuid,
+  target_url_id uuid,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  target_company_id uuid NOT NULL
+);
 
 -- Create unique constraint on source/target company
 CREATE UNIQUE INDEX domain_relationships_source_company_id_target_company_id_key 
@@ -376,6 +388,16 @@ FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 COMMENT ON TABLE public.research IS 'Research papers and academic publications';
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.research TO anon, authenticated, service_role;
 
+-- 
+
+-- Needed for directional link analysis
+CREATE INDEX IF NOT EXISTS idx_dr_source_url ON public.domain_relationships(source_url_id);
+CREATE INDEX IF NOT EXISTS idx_dr_target_url ON public.domain_relationships(target_url_id);
+
+-- If you're querying recent relationships
+CREATE INDEX IF NOT EXISTS idx_dr_created_at ON public.domain_relationships(created_at DESC);
+
+
 -- ============================================
 -- 5. RESTORE CONSTRAINTS ON EXISTING TABLES
 -- ============================================
@@ -411,22 +433,6 @@ FROM public.opportunities j
 JOIN public.companies c ON c.id = j.company_id
 ORDER BY c.name, j.company_id, j.location, j.employment_type;
 
--- Function to find sites to crawl
-CREATE OR REPLACE FUNCTION public.get_sites_to_crawl(fetch_limit integer)
-RETURNS SETOF public.companies
-LANGUAGE sql
-AS $function$
-  SELECT *
-  FROM public.companies c
-  WHERE
-    c.url IS NOT NULL
-    AND c.url != ''
-    AND (c.content_status IS NULL OR c.content_status != 'pending_crawl')
-    AND public.should_rescrape(c.scrape_frequency::text, c.scraped_at::timestamp with time zone, now()::timestamp with time zone)
-  ORDER BY COALESCE(c.scraped_at, '1970-01-01'::timestamp) ASC
-  LIMIT fetch_limit
-$function$;
-
 -- Function to determine if site should be rescraped
 CREATE OR REPLACE FUNCTION public.should_rescrape(
   frequency text, 
@@ -451,6 +457,22 @@ AS $function$
       or frequency = 'annually'       and last_scraped < reference_time - interval '1 year'
       or frequency = 'never'
     )
+$function$;
+
+-- Function to find sites to crawl
+CREATE OR REPLACE FUNCTION public.get_sites_to_crawl(fetch_limit integer)
+RETURNS SETOF public.companies
+LANGUAGE sql
+AS $function$
+  SELECT *
+  FROM public.companies c
+  WHERE
+    c.url IS NOT NULL
+    AND c.url != ''
+    AND (c.content_status IS NULL OR c.content_status != 'pending_crawl')
+    AND public.should_rescrape(c.scrape_frequency::text, c.scraped_at::timestamp with time zone, now()::timestamp with time zone)
+  ORDER BY COALESCE(c.scraped_at, '1970-01-01'::timestamp) ASC
+  LIMIT fetch_limit
 $function$;
 
 -- Webhook determination function

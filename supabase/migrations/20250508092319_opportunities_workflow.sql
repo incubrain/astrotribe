@@ -110,15 +110,3 @@ create or replace view "public"."job_filters" as  SELECT DISTINCT j.location,
    FROM (public.opportunities j
      JOIN public.companies c ON ((c.id = j.company_id)))
   ORDER BY c.name, j.company_id, j.location, j.employment_type;
-
-
--- Needed for directional link analysis
-CREATE INDEX IF NOT EXISTS idx_dr_source_url ON public.domain_relationships(source_url_id);
-CREATE INDEX IF NOT EXISTS idx_dr_target_url ON public.domain_relationships(target_url_id);
-
--- Needed for domain-level aggregation
-CREATE INDEX IF NOT EXISTS idx_dr_source_domain ON public.domain_relationships(source_domain_root_id);
-CREATE INDEX IF NOT EXISTS idx_dr_target_domain ON public.domain_relationships(target_domain_root_id);
-
--- If you're querying recent relationships
-CREATE INDEX IF NOT EXISTS idx_dr_created_at ON public.domain_relationships(created_at DESC);
