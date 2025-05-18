@@ -31,8 +31,6 @@ export async function seedCompanies(pool: Pool, count: number) {
   }
 
   const companies = Array.from({ length: count }, () => {
-    // Generate keywords as a properly formatted JSONB array
-    const keywordsArray = faker.helpers.multiple(() => faker.word.sample(), { count: 5 })
     // Base company object
     const company: any = {
       id: generateUUID(),
@@ -52,10 +50,7 @@ export async function seedCompanies(pool: Pool, count: number) {
       updated_at: faker.date.recent(),
       founding_year: faker.number.int({ min: 1900, max: 2023 }),
       is_government: faker.datatype.boolean(),
-      failed_count: faker.number.int({ min: 0, max: 5 }),
-      is_english: faker.datatype.boolean(),
       content_status: faker.helpers.arrayElement(['draft', 'published', 'archived']),
-      keywords: JSON.stringify(keywordsArray), // Properly format as JSON string for JSONB
       job_url: faker.internet.url(),
     }
 

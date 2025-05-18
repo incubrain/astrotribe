@@ -67,11 +67,6 @@ export async function runSeeders() {
 
     await checkAndSeed(client, 'user_metrics', () => seed.seedUserMetrics(client, userIds))
 
-    // 1. Seed reference data and system tables first (no dependencies)
-    const countries = await checkAndSeed(client, 'countries', () => seed.seedCountries(client))
-
-    const cities = await checkAndSeed(client, 'cities', () => seed.seedCities(client))
-
     // Seed astronomy events (no dependencies)
     await checkAndSeed(client, 'astronomy_events', () =>
       seed.seedAstronomyEvents(client, config.counts.astronomyEvents),
@@ -230,8 +225,6 @@ export async function runSeeders() {
     await checkAndSeed(client, 'addresses', () =>
       seed.seedAddresses(
         client,
-        cities.map((c: any) => c.id),
-        countries.map((c: any) => c.id),
         companyIds,
         userIds,
       ),
@@ -258,10 +251,6 @@ export async function runSeeders() {
     )
 
     const featureRequestIds = featureRequests.map((f) => f.id)
-
-    await checkAndSeed(client, 'feature_votes', () =>
-      seed.seedFeatureVotes(client, userIds, featureRequestIds),
-    )
 
     // 14. Seed feeds and feed categories
     const feeds = await checkAndSeed(client, 'feeds', () => seed.seedFeeds(client, userIds))

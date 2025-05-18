@@ -429,7 +429,7 @@ INSERT INTO "public"."categories" ("created_at", "body", "name", "updated_at", "
 -- Data for Name: content_sources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."content_sources" ("url", "content_type", "scrape_frequency", "created_at", "updated_at", "has_failed", "failed_count", "priority", "company_id", "id", "last_scraped_at", "name", "item_count", "parser_type") VALUES
+INSERT INTO "public"."content_sources" ("url", "content_type", "scrape_frequency", "created_at", "updated_at", "has_failed", "failed_count", "priority", "company_id", "id", "scraped_at", "name", "item_count", "parser_type") VALUES
 	('https://www.mdpi.com/rss/journal/astronomy', 'research', 'weekly', '2025-04-04 11:12:18.808663+00', '2025-04-30 14:39:57.874531+00', false, 0, 'medium', NULL, '051afa97-a001-4a86-b361-da1c8e0c5734', '2025-04-30 14:39:57.874531+00', 'MDPI Astronomy', 62, 'rss'),
 	('https://www.skyfeedblog.com/feed/', 'news', 'daily', '2025-04-04 11:12:18.808663+00', '2025-04-30 14:37:40.415827+00', false, 0, 'medium', NULL, '5e3d0cc3-8e37-4186-922e-33cd079a2700', '2025-04-30 14:37:40.415827+00', 'SkyFeed Blog', 10, 'rss'),
 	('https://www.sierraspace.com/news/feed/', 'news', 'daily', '2025-04-04 11:12:18.808663+00', '2025-04-30 14:37:41.819214+00', false, 0, 'medium', NULL, '76c90644-91ac-438b-9b1b-bd8524631495', '2025-04-30 14:37:41.819214+00', 'Sierra Space', 0, 'rss'),
@@ -9984,10 +9984,10 @@ INSERT INTO "public"."feed_categories" ("created_at", "feed_id", "category_id_ol
 
 
 --
--- Data for Name: jobs; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: opportunities; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."jobs" ("id", "contents_id", "title", "company_id", "location", "description", "published_at", "expires_at", "scraped_at", "updated_at", "created_at", "content_status", "url", "hash", "metadata", "employment_type", "content_source_id") VALUES
+INSERT INTO "public"."opportunities" ("id", "content_id", "title", "company_id", "location", "description", "published_at", "expires_at", "checked_at", "updated_at", "created_at", "content_status", "url", "change_hash", "metadata", "employment_type", "source_id") VALUES
 	('56926d7e-e29e-46aa-b547-1924b27fe569', '6322592b-58e2-48a5-9823-40bf756289ac', 'Mission Design Engineer', 'f8163e79-949a-48a8-a7c1-8c01205baa27', 'Bangalore South, India', '', '2025-02-01 00:00:00+00', NULL, '2025-03-04 04:39:41.826703+00', '2025-03-17 06:05:15.359465+00', '2025-03-04 04:39:41.826703+00', 'draft', 'https://galaxeye.zohorecruit.in/jobs/Careers/41319000002533001/Mission-Design-Engineer?source=CareerSite', NULL, NULL, 'Full time', NULL),
 	('8da0c740-7b41-493e-a81d-943cb95f974a', '774cfcec-33d5-4542-b4db-4c03fcc894cb', 'Marketing Intern', 'f8163e79-949a-48a8-a7c1-8c01205baa27', 'Bangalore South, India', '', NULL, NULL, '2025-03-04 04:39:41.828745+00', '2025-03-17 06:05:15.359465+00', '2025-03-04 04:39:41.828745+00', 'draft', 'https://galaxeye.zohorecruit.in/jobs/Careers/41319000006235213/Marketing-Intern?source=CareerSite', NULL, NULL, 'Temporary', NULL),
 	('121395f8-d30d-4ff9-a594-d399644c08bf', '783a0e7a-8a6a-41e5-a5d3-b20e07ed8293', 'Bid Manager', 'f8163e79-949a-48a8-a7c1-8c01205baa27', 'Bengaluru, India', '', NULL, NULL, '2025-03-04 04:39:41.772653+00', '2025-03-17 06:05:15.359465+00', '2025-03-04 04:39:41.772653+00', 'draft', 'https://galaxeye.zohorecruit.in/jobs/Careers/41319000004551013/Bid-Manager?source=CareerSite', NULL, NULL, 'Full time', NULL),

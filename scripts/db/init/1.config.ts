@@ -34,18 +34,6 @@ export interface DatabaseConfig {
 
   // Reference data for seeding
   referenceData: {
-    countries: Array<{
-      id: number
-      name: string
-      code: string
-      code_3: string
-    }>
-    cities: Array<{
-      id: number
-      name: string
-      country_id: number
-      state: string | null
-    }>
     categories: string[]
   }
 }
@@ -78,20 +66,6 @@ export const databaseConfig: DatabaseConfig = {
   },
 
   referenceData: {
-    countries: [
-      { id: 1, name: 'United States', code: 'US', code_3: 'USA' },
-      { id: 2, name: 'United Kingdom', code: 'GB', code_3: 'GBR' },
-      { id: 3, name: 'Canada', code: 'CA', code_3: 'CAN' },
-      { id: 4, name: 'Australia', code: 'AU', code_3: 'AUS' },
-      { id: 5, name: 'Germany', code: 'DE', code_3: 'DEU' },
-    ],
-    cities: [
-      { id: 1, name: 'New York', country_id: 1, state: 'NY' },
-      { id: 2, name: 'London', country_id: 2, state: null },
-      { id: 3, name: 'Toronto', country_id: 3, state: 'ON' },
-      { id: 4, name: 'Sydney', country_id: 4, state: 'NSW' },
-      { id: 5, name: 'Berlin', country_id: 5, state: null },
-    ],
     categories: [
       'Technology',
       'Healthcare',

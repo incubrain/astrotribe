@@ -36,8 +36,6 @@ function categorizeTable(tableName: string, schemas: any[]): string {
   if (
     [
       'categories',
-      'cities',
-      'countries',
       'tags',
       'content_categories',
       'content_tags',
@@ -72,7 +70,6 @@ function categorizeTable(tableName: string, schemas: any[]): string {
       'feedbacks',
       'user_followers',
       'feature_requests',
-      'feature_votes',
     ].includes(tableName)
   ) {
     return 'user_content_tables'

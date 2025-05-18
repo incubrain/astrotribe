@@ -37,8 +37,6 @@ export async function seedContacts(pool: Pool, userIds: string[]) {
       console.warn('Error fetching enum values, using defaults')
     }
 
-   
-
     // Generate contacts using the valid enum values
     const contacts = userIds.flatMap((userId, idx) =>
       Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, (_, innerIdx) => ({

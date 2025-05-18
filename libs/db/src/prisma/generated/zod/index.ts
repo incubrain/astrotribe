@@ -278,12 +278,10 @@ export const CompaniesScalarFieldEnumSchema = z.enum([
   'is_government',
   'category',
   'failed_count',
-  'is_english',
   'scrape_rating',
   'id',
   'scraped_at',
   'content_status',
-  'keywords',
   'job_url',
 ])
 
@@ -657,7 +655,6 @@ export const NewsScalarFieldEnumSchema = z.enum([
   'scrape_frequency',
   'scraped_at',
   'content_status',
-  'keywords',
   'source_id',
 ])
 
@@ -740,7 +737,6 @@ export const ResearchScalarFieldEnumSchema = z.enum([
   'version',
   'id',
   'abstract',
-  'keywords',
   'month',
   'year',
   'abstract_url',
@@ -1609,11 +1605,9 @@ export const CompaniesSchema = z.object({
   is_government: z.boolean().nullable(),
   category: z.string().nullable(),
   failed_count: z.number().int().nullable(),
-  is_english: z.boolean().nullable(),
   scrape_rating: z.number().int().nullable(),
   id: z.string(),
   scraped_at: z.coerce.date().nullable(),
-  keywords: JsonValueSchema.nullable(),
   job_url: z.string().nullable(),
 })
 
@@ -2310,7 +2304,6 @@ export const NewsSchema = z.object({
   company_id: z.string().nullable(),
   failed_count: z.number().int().nullable(),
   scraped_at: z.coerce.date().nullable(),
-  keywords: JsonValueSchema.nullable(),
   source_id: z.bigint().nullable(),
 })
 
@@ -2478,7 +2471,6 @@ export const ResearchSchema = z.object({
   version: z.number().int().nullable(),
   id: z.string(),
   abstract: z.string().nullable(),
-  keywords: z.string().nullable(),
   month: z.string().nullable(),
   year: z.string().nullable(),
   abstract_url: z.string(),

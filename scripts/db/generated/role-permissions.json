@@ -4,8 +4,6 @@
       "description": "Read-only reference data accessible to all users. Contains foundational data that rarely changes and requires no user interaction.",
       "tables": [
         "categories",
-        "cities",
-        "countries",
         "tags",
         "content_tags",
         "metric_definitions"

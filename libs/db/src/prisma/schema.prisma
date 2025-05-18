@@ -410,7 +410,6 @@ model Companies {
   id               String            @id @unique(map: "companies_id_key1") @db.Uuid
   scraped_at       DateTime?         @db.Timestamptz(6)
   content_status   ContentStatus     @default(draft)
-  keywords         Json?
   job_url          String?
   addresses        Addresses[]
   ads              Ads[]
@@ -1030,7 +1029,6 @@ model News {
   scrape_frequency  ScrapeFrequency @default(daily)
   scraped_at        DateTime?       @default(now()) @db.Timestamptz(6)
   content_status    ContentStatus   @default(draft)
-  keywords          Json?
   content_source_id BigInt?
   content_sources   ContentSources? @relation(fields: [content_source_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   categories        Categories?     @relation(fields: [category_id], references: [id], map: "public_news_category_id_fkey")
@@ -1171,7 +1169,6 @@ model Research {
   version             Int?                @db.SmallInt
   id                  String              @id @default(dbgenerated("extensions.gen_random_uuid()")) @db.Uuid
   abstract            String?
-  keywords            String?
   month               String?             @db.VarChar
   year                String?             @db.VarChar
   abstract_url        String              @unique(map: "research_url_key")
