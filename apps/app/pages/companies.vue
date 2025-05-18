@@ -27,7 +27,7 @@ const { limitedItems, lastRowItems, showPaywall, totalCount, remainingItems, vie
 // Initialize filter options
 const searchQuery = ref('')
 const searchFuseOptions = {
-  keys: ['name', 'description', 'category', 'keywords', 'city', 'country'],
+  keys: ['name', 'description', 'category', 'city', 'country'],
   threshold: 0.3,
   shouldSort: true,
 }

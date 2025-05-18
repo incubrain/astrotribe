@@ -34,7 +34,7 @@ onMounted(() => {
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <!-- Welcome Card -->
       <div
-        class="bg-gray-900/50 flex flex-col rounded-xl p-6 border border-gray-800 md:col-span-2 xl:col-span-1 xl:row-span-2"
+        class="bg-gray-900/50 flex flex-col rounded-xl p-6 border border-gray-800 md:col-span-2 xl:col-span-3 xl:row-span-2"
       >
         <div class="space-y-4">
           <div class="flex items-center justify-between">
@@ -49,13 +49,13 @@ onMounted(() => {
               <span class="text-blue-400 font-medium">Level {{ currentLevel }}</span>
             </div>
           </div>
-          <FeatureRanking class="mt-4" />
+          <FeatureRanking />
         </div>
-        <Feedback />
       </div>
+      <Feedback />
 
       <!-- Stats Grid -->
-      <MetricStatCard
+      <!-- <MetricStatCard
         title="Total Votes"
         :value="totalVotes"
         icon="game-icons:trophy"
@@ -99,12 +99,12 @@ onMounted(() => {
             </p>
           </div>
         </template>
-      </MetricStatCard>
+      </MetricStatCard> -->
 
       <EventUpcomingLink class="xl:col-start-3 xl:row-start-3" />
 
       <!-- Achievements Section -->
-      <div
+      <!-- <div
         class="bg-gray-900/50 rounded-xl p-6 border border-gray-800 md:col-span-2 xl:col-span-1 xl:col-start-3 xl:row-start-1 xl:row-span-2"
       >
         <div class="space-y-6">
@@ -125,7 +125,6 @@ onMounted(() => {
             <span class="text-orange-400 font-medium">{{ currentStreak }} Day Streak!</span>
           </div>
 
-          <!-- Recent Achievements -->
           <div class="space-y-4">
             <div
               v-for="achievement in recentAchievements"
@@ -154,6 +153,7 @@ onMounted(() => {
           </NuxtLink>
         </div>
       </div>
+      -->
     </div>
 
     <!-- Bottom Stats Row -->

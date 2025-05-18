@@ -24,7 +24,6 @@ export interface NewsModel extends BaseModel {
   scrape_frequency: ScrapeFrequency
   scraped_at?: Date
   content_status: ContentStatus
-  keywords?: Record<string, any>
   score?: number
   source_id?: string
   content_sources?: ContentSourceModel

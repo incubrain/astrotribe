@@ -47,7 +47,7 @@ const speakers = [
         urging simplicity to combat climate change's impact.`,
     },
     avatar: 'sonam-wangchuk',
-    featured: true,
+    is_featured: true,
     inPerson: true,
   },
   {
@@ -74,7 +74,7 @@ const speakers = [
         is a common heritage for all.`,
     },
     avatar: 'connie-walker',
-    featured: true,
+    is_featured: true,
     inPerson: false,
   },
   {
@@ -110,7 +110,7 @@ const speakers = [
         implementable solutions to address the issue of light pollution.`,
     },
     avatar: 'neethu-george',
-    featured: false,
+    is_featured: false,
     inPerson: true,
   },
   {
@@ -128,7 +128,7 @@ const speakers = [
         students and young researchers.`,
     },
     avatar: 'bhakti-mithagri',
-    featured: false,
+    is_featured: false,
     inPerson: true,
   },
   {
@@ -149,7 +149,7 @@ const speakers = [
         initiatives.`,
     },
     avatar: 'anita-gupta',
-    featured: true,
+    is_featured: true,
     inPerson: false,
   },
   {
@@ -173,7 +173,7 @@ const speakers = [
         socio-economic development and preserving indigenous roots and knowledge of the night sky.`,
     },
     avatar: 'maria-alejandra-diaz',
-    featured: false,
+    is_featured: false,
     inPerson: false,
   },
   {
@@ -203,7 +203,7 @@ const speakers = [
     },
     avatar: 'priya-hasan',
     inPerson: false,
-    featured: true,
+    is_featured: true,
   },
   {
     given_name: 'Vedvrat',
@@ -226,7 +226,7 @@ const speakers = [
         `,
     },
     avatar: 'vedvrat-bedekar',
-    featured: false,
+    is_featured: false,
     inPerson: false,
   },
   {
@@ -249,7 +249,7 @@ const speakers = [
         `,
     },
     avatar: 'david-ault',
-    featured: false,
+    is_featured: false,
     inPerson: false,
   },
   {
@@ -274,7 +274,7 @@ const speakers = [
     },
     avatar: 'samyukta-manikumar',
     inPerson: false,
-    featured: true,
+    is_featured: true,
   },
   {
     given_name: 'Upasana',
@@ -295,7 +295,7 @@ const speakers = [
         hindering scientific research.
         `,
     },
-    featured: false,
+    is_featured: false,
     inPerson: true,
   },
   {
@@ -317,7 +317,7 @@ const speakers = [
         `,
     },
     avatar: 'dinesh-nisang',
-    featured: false,
+    is_featured: false,
     inPerson: true,
   },
   {
@@ -341,7 +341,7 @@ const speakers = [
         `,
     },
     avatar: 'exodus-chun-long-sit',
-    featured: false,
+    is_featured: false,
     inPerson: false,
   },
   {
@@ -368,7 +368,7 @@ const speakers = [
         emphasize how cost-effective experiments can be implemented in undergraduate labs.
         `,
     },
-    featured: false,
+    is_featured: false,
     inPerson: false,
   },
   {
@@ -394,7 +394,7 @@ const speakers = [
         `,
     },
     avatar: 'kiran-kulkarni',
-    featured: true,
+    is_featured: true,
     inPerson: true,
   },
   {
@@ -415,7 +415,7 @@ const speakers = [
         `,
     },
     avatar: 'amshu-cr',
-    featured: false,
+    is_featured: false,
     inPerson: false,
   },
   {
@@ -442,7 +442,7 @@ const speakers = [
         `,
     },
     avatar: 'albert-forson',
-    featured: false,
+    is_featured: false,
     inPerson: false,
   },
   {
@@ -465,7 +465,7 @@ const speakers = [
         `,
     },
     avatar: 'aishwarya-khade',
-    featured: false,
+    is_featured: false,
     inPerson: true,
   },
   {
@@ -478,7 +478,7 @@ const speakers = [
       description: 'Cancelled due to technical issues',
     },
     avatar: 'hossein-khezri',
-    featured: false,
+    is_featured: false,
     inPerson: false,
   },
   {
@@ -515,14 +515,14 @@ const speakers = [
         with astronomical knowledge and skills for economic sustainability in the region.`,
     },
     avatar: 'shweta-kulkarni',
-    featured: true,
+    is_featured: true,
     inPerson: true,
   },
 ] as SpeakerType[]
 
-const filterSpeakers = (featured: boolean, toSort = false) => {
+const filterSpeakers = (is_featured: boolean, toSort = false) => {
   return speakers
-    .filter((s: Speaker): boolean | undefined => s.featured === featured)
+    .filter((s: Speaker): boolean | undefined => s.is_featured === is_featured)
     .sort((a: Speaker, b: Speaker) => {
       if (!toSort) return 0
       if (a.given_name < b.given_name) {
@@ -554,7 +554,7 @@ const filterSpeakers = (featured: boolean, toSort = false) => {
         v-for="speaker in filterSpeakers(true)"
         :key="speaker.given_name"
         :speaker="speaker"
-        featured
+        is-featured
       />
       <ConferenceSpeakerCard
         v-for="speaker in filterSpeakers(false, true)"

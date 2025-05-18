@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
-import type { Job } from '~/types/opportunities'
+import type { Opportunity } from '~/types/opportunities'
 
 interface Props {
-  jobs: Job[]
+  opportunities: Opportunity[]
   loading?: boolean
   viewMode?: 'grid' | 'list'
 }
@@ -36,11 +36,11 @@ const toggleViewMode = () => {
   emit('viewModeChange', newMode)
 }
 
-// Sort jobs to show featured ones first
-const sortedJobs = computed(() => {
-  return [...props.jobs].sort((a, b) => {
-    if (a.featured && !b.featured) return -1
-    if (!a.featured && b.featured) return 1
+// Sort opportunities to show featured ones first
+const sortedOpportunities = computed(() => {
+  return [...props.opportunities].sort((a, b) => {
+    if (a.is_featured && !b.is_featured) return -1
+    if (!a.is_featured && b.is_featured) return 1
     return 0
   })
 })
@@ -48,7 +48,7 @@ const sortedJobs = computed(() => {
 // Empty state message
 const emptyStateMessage = computed(() => {
   if (props.loading) return 'Loading job opportunities...'
-  if (!props.jobs.length) return 'No job opportunities match your criteria'
+  if (!props.opportunities.length) return 'No job opportunities match your criteria'
   return ''
 })
 
@@ -123,7 +123,7 @@ const clearFilters = () => {
 
     <!-- Empty State -->
     <div
-      v-if="emptyStateMessage && !jobs.length"
+      v-if="emptyStateMessage && !opportunities.length"
       class="flex flex-col items-center justify-center py-12 text-center"
     >
       <div class="bg-primary-900/50 p-8 rounded-xl border border-primary-800/30 w-full max-w-md">
@@ -139,7 +139,7 @@ const clearFilters = () => {
         </div>
         <h3 class="text-xl font-medium mb-2">{{ emptyStateMessage }}</h3>
         <p
-          v-if="!loading && !jobs.length"
+          v-if="!loading && !opportunities.length"
           class="text-gray-400"
         >
           Try adjusting your filters or search criteria
@@ -150,7 +150,7 @@ const clearFilters = () => {
     <!-- Grid View -->
     <ClientOnly>
       <TransitionGroup
-        v-if="(!emptyStateMessage || jobs.length) && currentViewMode === 'grid'"
+        v-if="(!emptyStateMessage || opportunities.length) && currentViewMode === 'grid'"
         id="job-list"
         name="job-cards"
         tag="div"
@@ -163,10 +163,10 @@ const clearFilters = () => {
           />
         </template>
         <OpportunityCard
-          v-for="job in sortedJobs"
+          v-for="opportunity in sortedOpportunities"
           v-else
-          :key="job.id"
-          :job="job"
+          :key="opportunity.id"
+          :opportunity="opportunity"
           class="job-card-item"
           @filter-tag="emit('filterTag', $event)"
         />
@@ -180,7 +180,7 @@ const clearFilters = () => {
         <PrimeDataTable
           v-model:filters="filters"
           v-model:first="first"
-          :value="sortedJobs"
+          :value="sortedOpportunities"
           :rows="rows"
           :loading="loading"
           paginator
@@ -229,13 +229,13 @@ const clearFilters = () => {
 
           <!-- Featured Status Template -->
           <PrimeColumn
-            field="featured"
+            field="id_featured"
             header="Featured"
             style="width: 6rem"
           >
             <template #body="{ data }">
               <PrimeTag
-                v-if="data.featured"
+                v-if="data.is_featured"
                 severity="info"
                 value="Featured"
               />
@@ -315,7 +315,7 @@ const clearFilters = () => {
                   rounded
                   text
                   severity="primary"
-                  @click="$router.push(`/jobs/${data.id}`)"
+                  @click="$router.push(`/opportunities/${data.id}`)"
                 />
               </div>
             </template>

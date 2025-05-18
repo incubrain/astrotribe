@@ -19,7 +19,6 @@ interface Props {
     logo_url: string
     url: string
     is_government: boolean
-    keywords: Array<string>
     category?: string
     city?: string
     country?: string

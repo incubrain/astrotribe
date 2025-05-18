@@ -16,7 +16,7 @@ const speakerSchema = z.object({
   abstract,
   avatar: z.string(),
   inPerson: z.boolean().optional(),
-  featured: z.boolean().optional(),
+  is_featured: z.boolean().optional(),
 })
 
 export type SpeakerType = z.infer<typeof speakerSchema>

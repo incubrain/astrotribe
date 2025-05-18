@@ -44,7 +44,7 @@ export function useOpportunityStore() {
   const recentSearches = ref<string[]>([])
 
   // Recently viewed job IDs
-  const recentlyViewedJobs = ref<string[]>([])
+  const recentlyViewedOpportunities = ref<string[]>([])
 
   /**
    * Load all preferences from localStorage
@@ -75,10 +75,10 @@ export function useOpportunityStore() {
         recentSearches.value = JSON.parse(savedSearches)
       }
 
-      // Load recently viewed jobs
-      const savedViewedJobs = localStorage.getItem('job_recently_viewed')
-      if (savedViewedJobs) {
-        recentlyViewedJobs.value = JSON.parse(savedViewedJobs)
+      // Load recently viewed opportunities
+      const savedViewedOpportunities = localStorage.getItem('job_recently_viewed')
+      if (savedViewedOpportunities) {
+        recentlyViewedOpportunities.value = JSON.parse(savedViewedOpportunities)
       }
     } catch (error: any) {
       console.error('Error loading preferences from localStorage:', error)
@@ -161,27 +161,27 @@ export function useOpportunityStore() {
   }
 
   /**
-   * Add a job ID to recently viewed jobs
+   * Add a job ID to recently viewed opportunities
    * @param jobId Job ID
-   * @param maxItems Maximum number of recently viewed jobs to store
+   * @param maxItems Maximum number of recently viewed opportunities to store
    */
-  const addToRecentlyViewedJobs = (jobId: string, maxItems: number = 10) => {
+  const addToRecentlyViewedOpportunities = (jobId: string, maxItems: number = 10) => {
     if (!jobId) return
 
     // Remove job if it already exists
-    const updatedViewedJobs = recentlyViewedJobs.value.filter((id) => id !== jobId)
+    const updatedViewedOpportunities = recentlyViewedOpportunities.value.filter((id) => id !== jobId)
 
     // Add new job at the beginning
-    updatedViewedJobs.unshift(jobId)
+    updatedViewedOpportunities.unshift(jobId)
 
     // Keep only up to maxItems
-    recentlyViewedJobs.value = updatedViewedJobs.slice(0, maxItems)
+    recentlyViewedOpportunities.value = updatedViewedOpportunities.slice(0, maxItems)
 
     // Save to localStorage
     try {
-      localStorage.setItem('job_recently_viewed', JSON.stringify(recentlyViewedJobs.value))
+      localStorage.setItem('job_recently_viewed', JSON.stringify(recentlyViewedOpportunities.value))
     } catch (error: any) {
-      console.error('Error saving recently viewed jobs to localStorage:', error)
+      console.error('Error saving recently viewed opportunities to localStorage:', error)
     }
   }
 
@@ -266,7 +266,7 @@ export function useOpportunityStore() {
     sortPreference,
     viewPreference,
     recentSearches,
-    recentlyViewedJobs,
+    recentlyViewedOpportunities,
 
     // Methods
     loadPreferences,
@@ -275,7 +275,7 @@ export function useOpportunityStore() {
     saveViewPreference,
     addToRecentSearches,
     clearRecentSearches,
-    addToRecentlyViewedJobs,
+    addToRecentlyViewedOpportunities,
     resetAllPreferences,
     resetFilters,
   }

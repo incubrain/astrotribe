@@ -1,16 +1,16 @@
 // Create this in a composable file like useTableStyles.ts
 
 import { computed } from 'vue'
-import type { Job } from '~/types/opportunities'
+import type { Opportunity } from '~/types/index'
 
 export const useTableStyles = () => {
   /**
    * Dynamic row class function for DataTable
    * Applies special styling for featured items based on theme tokens
    */
-  const getRowClass = (data: Job) => {
+  const getRowClass = (data: Opportunity) => {
     return {
-      'featured-row': data.featured,
+      'featured-row': data.is_featured,
     }
   }
 

@@ -8,7 +8,7 @@ const speakers = [
     She also co-leads the promotion of New Zealand’s journey to become a dark sky nation and has spoken at Dark Sky conferences and workshops around the world.
     She is currently the immediate past president and Fellow of the Royal Astronomical Society of New Zealand (RASNZ) and is a co-founder of the Aotearoa Astrotourism Academy, a non-profit that promotes dark skies and the education of astronomy (integrating indigenous astronomy) through the provision of nationwide immersion training courses for those seeking a solid foundation of knowledge and practical skills to pursue astronomy and astrotourism. `,
     avatar: 'nalayini-bitro-davis',
-    featured: true,
+    is_featured: true,
   },
   {
     given_name: 'Dan',
@@ -18,7 +18,7 @@ const speakers = [
     After a rather liberating experience at the Glastonbury Festival, he changed careers and now works for the South Downs National Park Authority and has done for the last 15 years.
     Starting from a conservation volunteer, he is lead ranger for the Wealden Heaths and the dark skies officer for the park. At the Park, he was instrumental in developing and submitting Moore’s’ Reserve Dark Sky Places application in May 2016.`,
     avatar: 'dan-oakley',
-    featured: true,
+    is_featured: true,
   },
   {
     given_name: 'Yana',
@@ -29,7 +29,7 @@ const speakers = [
     Currently pursuing a Ph.D. at the University of Ghent (Belgium) as part of the Horizon EU PLAN-B project she is  working on the development of the legal and policy framework for recognising light pollution as an environmental concern.
     As a scientific coordinator of the PLAN-B project, she leads the project's efforts towards a better understanding of light and noise pollution impacts and the development of the most effective solutions for their mitigation.`,
     avatar: 'yana-yakushina',
-    featured: true,
+    is_featured: true,
   },
   {
     given_name: 'Shweta',
@@ -65,13 +65,13 @@ const speakers = [
         with astronomical knowledge and skills for economic sustainability in the region.`,
     },
     avatar: 'shweta-kulkarni',
-    featured: true,
+    is_featured: true,
   },
 ]
 
-const filterSpeakers = (featured: boolean, toSort = false) => {
+const filterSpeakers = (is_featured: boolean, toSort = false) => {
   return speakers
-    .filter((s: Speaker): boolean | undefined => s.featured === featured)
+    .filter((s: Speaker): boolean | undefined => s.is_featured === is_featured)
     .sort((a: Speaker, b: Speaker) => {
       if (!toSort) return 0
       if (a.given_name < b.given_name) {
@@ -99,7 +99,7 @@ const filterSpeakers = (featured: boolean, toSort = false) => {
         v-for="speaker in filterSpeakers(true)"
         :key="speaker.given_name"
         :speaker="speaker"
-        featured
+        is-featured
       />
     </div>
   </div>

@@ -24,6 +24,7 @@ export interface Opportunity {
   salary?: number
   tags?: string[]
   hot_score?: number
+  is_featured: boolean
 
   // Additional optional fields from joins or computed values
   companies?: {

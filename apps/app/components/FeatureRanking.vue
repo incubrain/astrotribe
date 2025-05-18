@@ -43,7 +43,7 @@ const handleVote = async (featureId: string, voteType: 1 | -1) => {
 
     <div
       v-if="featureStore.isLoading"
-      class="space-y-2 relative"
+      class="flex gap-2 relative"
     >
       <div
         v-for="n in 3"
@@ -59,18 +59,19 @@ const handleVote = async (featureId: string, voteType: 1 | -1) => {
       <TransitionGroup
         name="list"
         tag="div"
-        class="space-y-4"
+        class="flex gap-4"
       >
+        <!-- Outer container for each card -->
         <div
           v-for="feature in featureStore.visibleFeatures"
           :key="feature.id"
           class="w-full"
         >
           <div
-            class="group relative bg-gray-800/50 p-4 rounded-lg border border-gray-700 transition-all duration-300 hover:bg-gray-800"
+            class="group relative flex justify-between h-full bg-gray-800/50 p-4 rounded-lg border border-gray-700 transition-all duration-300 hover:bg-gray-800"
           >
             <!-- Feature Status Badge -->
-            <div class="absolute top-3 right-3">
+            <div class="absolute top-3 right-3 z-10">
               <span
                 class="px-2 py-1 text-xs rounded-full"
                 :class="{
@@ -84,46 +85,42 @@ const handleVote = async (featureId: string, voteType: 1 | -1) => {
             </div>
 
             <!-- Content -->
-            <div class="mb-4">
+            <div>
               <h4 class="text-lg font-medium mb-2">{{ feature.title }}</h4>
               <p class="text-sm text-gray-400">{{ feature.description }}</p>
             </div>
 
-            <!-- Action Bar -->
-            <div class="flex items-center justify-end">
-              <!-- Actions -->
-              <div class="flex items-center gap-2">
-                <!-- Upvote -->
-                <button
-                  class="p-2 hover:bg-gray-700 rounded border border-gray-700 transition-colors duration-200 flex items-center gap-1"
-                  :class="{
-                    'bg-green-800/50 border-green-700':
-                      featureStore.getFeatureVote(feature.id) === 1,
-                  }"
-                  @click="handleVote(feature.id, 1)"
-                >
-                  <Icon
-                    name="material-symbols:thumb-up"
-                    class="w-5 h-5"
-                  />
-                  <span class="text-sm">{{ feature.upvotes }}</span>
-                </button>
+            <!-- Action Bar pinned to bottom right -->
+            <div class="flex flex-col items-end justify-end h-full pl-4 gap-2">
+              <!-- Upvote -->
+              <button
+                class="p-2 hover:bg-gray-700 rounded border border-gray-700 transition-colors duration-200 flex items-center gap-1"
+                :class="{
+                  'bg-green-800/50 border-green-700': featureStore.getFeatureVote(feature.id) === 1,
+                }"
+                @click="handleVote(feature.id, 1)"
+              >
+                <Icon
+                  name="material-symbols:thumb-up"
+                  class="w-5 h-5"
+                />
+                <span class="text-sm">{{ feature.upvotes }}</span>
+              </button>
 
-                <!-- Downvote -->
-                <button
-                  class="p-2 hover:bg-gray-700 rounded border border-gray-700 transition-colors duration-200 flex items-center gap-1"
-                  :class="{
-                    'bg-red-800/50 border-red-700': featureStore.getFeatureVote(feature.id) === -1,
-                  }"
-                  @click="handleVote(feature.id, -1)"
-                >
-                  <Icon
-                    name="material-symbols:thumb-down"
-                    class="w-5 h-5"
-                  />
-                  <span class="text-sm">{{ feature.downvotes }}</span>
-                </button>
-              </div>
+              <!-- Downvote -->
+              <button
+                class="p-2 hover:bg-gray-700 rounded border border-gray-700 transition-colors duration-200 flex items-center gap-1"
+                :class="{
+                  'bg-red-800/50 border-red-700': featureStore.getFeatureVote(feature.id) === -1,
+                }"
+                @click="handleVote(feature.id, -1)"
+              >
+                <Icon
+                  name="material-symbols:thumb-down"
+                  class="w-5 h-5"
+                />
+                <span class="text-sm">{{ feature.downvotes }}</span>
+              </button>
             </div>
           </div>
         </div>
@@ -132,25 +129,4 @@ const handleVote = async (featureId: string, voteType: 1 | -1) => {
   </div>
 </template>
 
-<style scoped>
-.list-move,
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.4s ease;
-}
-
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.list-leave-active {
-  position: absolute;
-  width: calc(100% - 2rem);
-}
-
-.list-leave-active .group {
-  width: 100%;
-}
-</style>
+<style scoped></style>

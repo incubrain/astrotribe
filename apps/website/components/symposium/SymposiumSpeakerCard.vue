@@ -13,7 +13,7 @@ defineProps({
     type: Object,
     required: true,
   },
-  featured: {
+  isFeatured: {
     type: Boolean,
     default: false,
   },
@@ -51,7 +51,7 @@ function openBioPopover() {
       </div>
 
       <div
-        v-if="featured"
+        v-if="isFeatured"
         class="absolute top-4 left-4 bg-primary-500/80 text-white px-3 py-1 rounded-full text-xs font-medium"
       >
         Featured

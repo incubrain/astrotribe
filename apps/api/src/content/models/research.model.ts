@@ -12,7 +12,6 @@ export interface ResearchModel extends BaseModel {
   version?: number
   id: string
   abstract?: string
-  keywords?: string
   month?: string
   year?: string
   abstract_url: string
