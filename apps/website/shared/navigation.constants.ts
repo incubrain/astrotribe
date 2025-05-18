@@ -95,6 +95,17 @@ export const PAGES: PageInfo[] = [
     lastModified: new Date().toISOString(),
   },
   {
+    key: 'dsi-certificate',
+    title: 'DSI Certificate',
+    description: 'DSI Acknowledgement Certificate',
+    path: '/darksky-acknowledgement',
+    sitemap: 'main',
+    priority: 0.9,
+    icon: 'i-mdi-certificate-outline',
+    parentKey: 'darksky-section',
+    lastModified: new Date().toISOString(),
+  },
+  {
     key: 'conferences',
     title: 'Conferences',
     description: 'Information about dark sky conservation conferences',

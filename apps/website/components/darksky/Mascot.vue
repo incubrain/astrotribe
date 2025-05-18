@@ -119,6 +119,28 @@ async function shareNatively() {
             </div>
           </div>
         </IBGlass>
+        <div class="mt-6 w-full flex justify-center items-center">
+          <NuxtLink to="/darksky-acknowledgement">
+            <PrimeButton
+              v-motion
+              outlined
+              severity="secondary"
+              :initial="{ opacity: 0, scale: 0.9 }"
+              :enter="{
+                opacity: 1,
+                scale: 1,
+                transition: { type: 'spring', stiffness: 300, damping: 15, delay: 1.0 },
+              }"
+              class="px-6 py-3"
+            >
+              <Icon
+                name="mdi:light-flood-down"
+                class="mr-2"
+              />
+              We've teamed up with Dark Sky International
+            </PrimeButton>
+          </NuxtLink>
+        </div>
       </div>
 
       <div

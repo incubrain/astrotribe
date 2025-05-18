@@ -170,6 +170,12 @@ const about = {
       body: "DST, GOI granted funds for AstronEra's Astrotourism and light pollution awareness in Himachal Pradesh and Leh Ladakh.",
       icon: 'i-lucide-map',
     },
+    {
+      date: { month: 'May', year: 2025 },
+      title: 'DSI Partnership',
+      body: 'Dark Sky International acknoledges AstronEra as their partner for furthering the cause of dark sky conservation and reducing light pollution in India.',
+      icon: 'i-lucide-landmark',
+    },
   ],
 }
 

@@ -105,17 +105,6 @@ onMounted(() => {
         id="cta"
         class="my-24"
       />
-      <PopupContainer>
-        <IBImage :img="{ src: '/workshop/astronomy-workshop.jpeg' }" />
-        <div class="flex justify-center my-4">
-          <NuxtLink
-            to="https://rzp.io/rzp/AstronEraSpaceWorkshop"
-            target="_blank"
-          >
-            <PrimeButton>Register Now</PrimeButton>
-          </NuxtLink>
-        </div>
-      </PopupContainer>
     </main>
 
     <!-- Floating scroll-to-top button -->
