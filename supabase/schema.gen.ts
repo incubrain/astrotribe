@@ -2530,10 +2530,7 @@ export type Database = {
       contact_type: 'personal' | 'company' | 'professional' | 'recruitment' | 'founder'
       content_status:
         | 'draft'
-        | 'pending_agent_action'
-        | 'pending_agent_review'
-        | 'pending_human_review'
-        | 'pending_relevance_check'
+        | 'pending_review'
         | 'irrelevant'
         | 'scheduled'
         | 'unpublished'
