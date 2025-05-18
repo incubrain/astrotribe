@@ -13,18 +13,13 @@ export default defineEventHandler(async (event) => {
       throw new Error('No authentication session found')
     }
 
-    const { data, meta, success } = await $fetch(`${apiURL}/api/v1/payments/subscriptions`, {
+    const response = await $fetch(`${apiURL}/v1/payments/subscriptions`, {
       headers: {
         Authorization: `Bearer ${session.access_token}`,
       },
     })
 
-    if (!success) {
-      console.error('Get Subscriptions', meta)
-      throw new Error('Could not get subscriptions')
-    }
-
-    return data
+    if ((response as Record<string, any>)?.items) return (response as Record<string, any>).items
   } catch (error: any) {
     console.error('Get Subscriptions', error)
     return error

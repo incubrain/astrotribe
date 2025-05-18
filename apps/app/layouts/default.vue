@@ -15,6 +15,7 @@ const showPrelaunchMessage = useCookie<boolean>('frontiers_message', { default: 
         <div class="overflow-y-auto overflow-x-hidden h-full foreground">
           <div class="h-full">
             <slot />
+            <IBConsultationButton />
           </div>
         </div>
       </div>

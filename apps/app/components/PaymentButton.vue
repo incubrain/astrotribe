@@ -29,7 +29,7 @@ interface Props {
   notes?: Record<string, string>
 }
 
-const razorpay = usePayments('razorpay')
+const razorpay = usePayments()
 const toast = useNotification()
 
 const props = withDefaults(defineProps<Props>(), {
@@ -133,10 +133,10 @@ const createSubscription = async () => {
   const subscription = await razorpay.createOrder({
     plan_id: props.plan.id,
     external_plan_id: props.plan.external_plan_id,
-    total_count: props.plan.interval === 'monthly' ? 1200 : 100,
+    total_count: props.plan.interval === 'monthly' ? 360 : 30,
   })
 
-  if (subscription.start_at > Date.now() / 1000) {
+  if (subscription?.start_at > Date.now() / 1000) {
     razorpayOptions.value.subscriptionStartsLater = true
   }
   razorpayOptions.value.subscription_id = subscription.id

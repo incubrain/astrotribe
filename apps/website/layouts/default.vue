@@ -9,6 +9,7 @@ const route = useRoute()
     <div class="relative">
       <div class="relative z-10">
         <slot />
+        <IBConsultationButton />
       </div>
       <ClientOnly fallback-tag="div">
         <IBBackground />

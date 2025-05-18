@@ -5,10 +5,11 @@ import { onMounted } from 'vue'
 
 const currentUser = useCurrentUser()
 const loading = ref(true)
+const confirmingSubscription = ref(false)
 
 const { profile } = storeToRefs(currentUser)
 
-const razorpay = usePayments('razorpay')
+const razorpay = usePayments()
 const { lastEvent, isConnected } = useEvents()
 const subscriptions = ref([])
 
@@ -25,19 +26,21 @@ const triggerConfetti = () => {
 watch(lastEvent, async (event) => {
   if (event?.module !== 'subscription') return
 
+  confirmingSubscription.value = false
+
   if (event?.type === 'created') {
-    if (!subscriptions.value.some((item) => item.id === event.data.id)) {
-      const subscription = event.data
+    const subscription = event.data
+    const existingIndex =
+      subscriptions.value?.findIndex((item) => item.id === subscription.id) ?? -1
+
+    if (existingIndex === -1) {
+      // Add new subscription to the beginning of the array
       subscriptions.value = subscriptions.value?.length
-        ? [subscription.data, ...subscriptions.value]
-        : [subscription.data]
+        ? [subscription, ...subscriptions.value]
+        : [subscription]
     } else {
-      subscriptions.value = subscriptions.value.map((sub) => {
-        if (sub.id === event.data.id) {
-          return event.data
-        }
-        return sub
-      })
+      // Replace existing subscription
+      subscriptions.value[existingIndex] = subscription
     }
   }
 
@@ -161,8 +164,8 @@ const plans = computed<PlanConfig>(() =>
               period: item.interval_type,
               price:
                 item.interval_type === 'monthly'
-                  ? item.monthly_amount.d / 100
-                  : item.annual_amount.d / 100,
+                  ? item.monthly_amount / 100
+                  : item.annual_amount / 100,
               razorPayConfig,
             }
           }),
@@ -181,6 +184,7 @@ const plans = computed<PlanConfig>(() =>
 
 const handlePaymentSuccess = (response: any) => {
   // Handle successful payment
+  confirmingSubscription.value = true
   console.log('Payment successful:', response)
 }
 
@@ -367,5 +371,19 @@ onMounted(async () => {
     >
       <PrimeProgressSpinner />
     </div>
+    <PrimeDialog
+      :closable="false"
+      :draggable="false"
+      v-model:visible="confirmingSubscription"
+      modal
+      class="bg-white"
+    >
+      <template #header>
+        <div class="flex flex-col justify-center items-center gap-4">
+          <h2 class="text-black">Confirming Subscription</h2>
+          <PrimeProgressSpinner />
+        </div>
+      </template>
+    </PrimeDialog>
   </div>
 </template>
