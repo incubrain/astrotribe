@@ -50,7 +50,7 @@ const { razorpayKey } = useRuntimeConfig()
 const loading = ref(false)
 const isRazorpayLoaded = ref(false)
 
-const razorpayOptions = computed(() => ({
+const razorpayOptions = reactive({
   key: razorpayKey,
   subscription_id: props.plan.subscription_id,
   subscriptionStartsLater: false,
@@ -80,13 +80,13 @@ const razorpayOptions = computed(() => ({
   theme: {
     color: props.theme.color,
   },
-}))
+})
 
 let rzp: any
 
 // Watch for changes in razorpayOptions and recreate instance if needed
 watch(
-  () => razorpayOptions.value,
+  () => razorpayOptions,
   (newOptions) => {
     if (isRazorpayLoaded.value) {
       rzp = new (window as any).Razorpay(newOptions)
@@ -113,7 +113,7 @@ const loadRazorpay = async () => {
   })
 
   // Initialize Razorpay after script is loaded
-  rzp = new (window as any).Razorpay(razorpayOptions.value)
+  rzp = new (window as any).Razorpay(razorpayOptions)
 }
 
 const unloadRazorpay = () => {
@@ -137,16 +137,16 @@ const createSubscription = async () => {
   })
 
   if (subscription?.start_at > Date.now() / 1000) {
-    razorpayOptions.value.subscriptionStartsLater = true
+    razorpayOptions.subscriptionStartsLater = true
   }
-  razorpayOptions.value.subscription_id = subscription.id
+  razorpayOptions.subscription_id = subscription.external_subscription_id
 }
 
 const handlePayment = async () => {
   loading.value = true
-  if (!razorpayOptions.value.subscription_id) await createSubscription()
+  if (!razorpayOptions.subscription_id) await createSubscription()
 
-  if (razorpayOptions.value.subscriptionStartsLater) {
+  if (razorpayOptions.subscriptionStartsLater) {
     toast.success({
       summary: 'Subscription Created',
       message:
