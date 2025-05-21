@@ -3,6 +3,27 @@ export const usePayments = () => {
   const error = ref(null)
   const currentUser = useCurrentUser()
   const { profile } = storeToRefs(currentUser)
+
+  const verifyPayment = async (paymentId: string, subscriptionId: string) => {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      const response = await $fetch(`/api/payment/subscriptions/verify`, {
+        method: 'POST',
+        body: {
+          paymentId,
+          subscriptionId,
+        },
+      })
+
+      return response
+    } catch (error) {
+      console.error('Could not verify payment', error)
+      return { error }
+    }
+  }
+
   const createOrder = async (plan: Record<string, any>) => {
     isLoading.value = true
     error.value = null
@@ -30,29 +51,12 @@ export const usePayments = () => {
           }),
           user_id: profile.value.id,
           total_count,
+          provider: 'razorpay',
         },
       })
-
       return response
     } catch (error: any) {
       console.error(`Error creating order`, error)
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  const verifyPayment = async (paymentData: any) => {
-    isLoading.value = true
-    error.value = null
-
-    try {
-      const response = await $fetch(`/api/payment/verify-payment`, {
-        method: 'POST',
-        body: paymentData,
-      })
-      return response
-    } catch (error: any) {
-      console.error(`Error verifying payment`, error)
     } finally {
       isLoading.value = false
     }

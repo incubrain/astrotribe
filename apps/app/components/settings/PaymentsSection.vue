@@ -26,37 +26,44 @@ const triggerConfetti = () => {
 watch(lastEvent, async (event) => {
   if (event?.module !== 'subscription') return
 
-  confirmingSubscription.value = false
-
   if (event?.type === 'created') {
-    const subscription = event.data
-    const existingIndex =
-      subscriptions.value?.findIndex((item) => item.id === subscription.id) ?? -1
-
-    if (existingIndex === -1) {
-      // Add new subscription to the beginning of the array
-      subscriptions.value = subscriptions.value?.length
-        ? [subscription, ...subscriptions.value]
-        : [subscription]
-    } else {
-      // Replace existing subscription
-      subscriptions.value[existingIndex] = subscription
-    }
+    createdSubscription(event.data)
   }
 
   if (event?.type === 'updated') {
-    subscriptions.value = subscriptions.value.map((sub) => {
-      if (sub.id === event.data.id) {
-        return event.data
-      }
-      return sub
-    })
-
-    if (['active', 'resumed', 'completed'].includes(event.data.status)) {
-      triggerConfetti()
-    }
+    updateSubscription(event.data)
   }
 })
+
+const createdSubscription = (subscription) => {
+  confirmingSubscription.value = false
+  const existingIndex = subscriptions.value?.findIndex((item) => item.id === subscription.id) ?? -1
+
+  if (existingIndex === -1) {
+    // Add new subscription to the beginning of the array
+    subscriptions.value = subscriptions.value?.length
+      ? [subscription, ...subscriptions.value]
+      : [subscription]
+  } else {
+    // Replace existing subscription
+    subscriptions.value[existingIndex] = subscription
+  }
+}
+
+const updateSubscription = (subscription) => {
+  confirmingSubscription.value = false
+
+  subscriptions.value = subscriptions.value.map((sub) => {
+    if (sub.id === subscription.id) {
+      return subscription
+    }
+    return sub
+  })
+
+  if (['active', 'resumed', 'completed'].includes(subscription.status)) {
+    triggerConfetti()
+  }
+}
 
 const plansData = ref([])
 
@@ -182,10 +189,23 @@ const plans = computed<PlanConfig>(() =>
     : null,
 )
 
-const handlePaymentSuccess = (response: any) => {
+const handlePaymentSuccess = async (response: any) => {
   // Handle successful payment
   confirmingSubscription.value = true
-  console.log('Payment successful:', response)
+
+  if (!response || !response.razorpay_payment_id || !response.razorpay_subscription_id) {
+    console.error('Something went wrong: ', response)
+    confirmingSubscription.value = false
+    return
+  }
+
+  const { razorpay_payment_id: paymentId, razorpay_subscription_id: subscriptionId } = response
+  const { error } = await razorpay.verifyPayment(paymentId, subscriptionId)
+
+  if (error) {
+    confirmingSubscription.value = false
+    return
+  }
 }
 
 const handlePaymentError = (error: any) => {
