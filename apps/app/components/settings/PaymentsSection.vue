@@ -10,6 +10,7 @@ const confirmingSubscription = ref(false)
 const { profile } = storeToRefs(currentUser)
 
 const razorpay = usePayments()
+const toast = useNotification()
 const { lastEvent, isConnected } = useEvents()
 const subscriptions = ref([])
 
@@ -62,6 +63,7 @@ const updateSubscription = (subscription) => {
 
   if (['active', 'resumed', 'completed'].includes(subscription.status)) {
     triggerConfetti()
+    toast.success({ summary: 'Congratulations', message: 'Your subscription is now active' })
   }
 }
 
@@ -195,6 +197,10 @@ const handlePaymentSuccess = async (response: any) => {
 
   if (!response || !response.razorpay_payment_id || !response.razorpay_subscription_id) {
     console.error('Something went wrong: ', response)
+    toast.error({
+      summary: 'Could not create subscription',
+      message: 'Please contact the administrator',
+    })
     confirmingSubscription.value = false
     return
   }
@@ -204,13 +210,24 @@ const handlePaymentSuccess = async (response: any) => {
 
   if (error) {
     confirmingSubscription.value = false
+    toast.error({
+      summary: 'Could not create subscription',
+      message: 'Please contact the administrator',
+    })
     return
   }
+
+  toast.success({ summary: 'Payment Successful', message: 'Your subscription is being activated' })
 }
 
 const handlePaymentError = (error: any) => {
   // Handle payment error
   console.error('Payment failed:', error)
+
+  toast.error({
+    summary: 'Payment Failure',
+    message: 'Please try again or a different payment method',
+  })
 }
 
 const getDiscountedPrice = (plan) => {
