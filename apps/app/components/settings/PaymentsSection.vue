@@ -34,6 +34,8 @@ watch(lastEvent, async (event) => {
   if (event?.type === 'updated') {
     updateSubscription(event.data)
   }
+
+  await currentUser.refreshUserStore()
 })
 
 const createdSubscription = (subscription) => {
@@ -61,9 +63,21 @@ const updateSubscription = (subscription) => {
     return sub
   })
 
+  // Handle different subscription statuses
   if (['active', 'resumed', 'completed'].includes(subscription.status)) {
     triggerConfetti()
-    toast.success({ summary: 'Congratulations', message: 'Your subscription is now active' })
+    toast.success({
+      summary: 'Congratulations',
+      message: 'Your subscription is now active',
+    })
+  } else if (subscription.status === 'created' && subscription.start_at) {
+    const startDate = new Date(subscription.start_at)
+    if (startDate > new Date()) {
+      toast.info({
+        summary: 'Subscription Scheduled',
+        message: `Your subscription will activate on ${startDate.toDateString()}`,
+      })
+    }
   }
 }
 
@@ -107,89 +121,99 @@ const freePlan = {
   availableFrom: null,
 }
 
-const plans = computed<PlanConfig>(() =>
-  plansData.value?.length
-    ? [
-        (!subscriptions.value?.length ||
-          !subscriptions.value.some((subscription) =>
-            activeStates.includes(subscription.status),
-          )) &&
-          freePlan,
-      ]
-        .filter((plan) => plan)
-        .concat(
-          plansData.value.map((item: any) => {
-            let isActive = false,
-              buttonLabel = `Subscribe to ${item.name} (${item.interval_type})`
-            let razorPayConfig = {
-              isActive,
-              buttonLabel,
-              subscription_id: null,
-              subscription_status: null,
-            }
+const plans = computed<PlanConfig>(() => {
+  if (!plansData.value?.length) return null
 
-            const subscription = subscriptions.value?.find((sub) => sub.plan_id === item.id)
+  return [
+    // Free plan logic...
+    (!subscriptions.value?.length ||
+      !subscriptions.value.some((subscription) => activeStates.includes(subscription.status))) &&
+      freePlan,
+  ]
+    .filter((plan) => plan)
+    .concat(
+      plansData.value.map((item: any) => {
+        let isActive = false
+        let buttonLabel = `Subscribe to ${item.name} (${item.interval_type})`
+        let razorPayConfig = {
+          isActive,
+          buttonLabel,
+          subscription_id: null,
+          subscription_status: null,
+        }
 
-            if (subscription && subscription.plan_id === item.id) {
-              const period =
-                item.interval_type.charAt(0).toUpperCase() + item.interval_type.slice(1)
-              switch (subscription.status) {
-                case 'created':
-                  const start_at = new Date(subscription.start_at).getTime()
-                  if (start_at > Date.now()) {
-                    isActive = true
-                    buttonLabel = `(${period}) Plan starts on ${new Date(start_at).toDateString()}`
-                  }
-                  break
-                case 'active':
-                case 'resumed':
-                case 'completed':
-                  isActive = true
-                  buttonLabel = `Current Plan (${period})`
-                  break
-                case 'charged':
-                  buttonLabel = `Renew Plan (${period})`
-                  break
-                case 'pending':
-                  isActive = true
-                  buttonLabel = 'Please Update Payment Method'
-                  break
-                default:
-                  buttonLabel = `Subscribe to ${item.name} (${period})`
+        const subscription = subscriptions.value?.find((sub) => sub.plan_id === item.id)
+
+        if (subscription && subscription.plan_id === item.id) {
+          const period = item.interval_type.charAt(0).toUpperCase() + item.interval_type.slice(1)
+
+          switch (subscription.status) {
+            case 'created':
+              const start_at = new Date(subscription.start_at).getTime()
+              if (start_at > Date.now()) {
+                isActive = true
+                buttonLabel = `Scheduled to start ${new Date(start_at).toDateString()}`
+              } else {
+                buttonLabel = `Activate ${period} Plan`
               }
+              break
+            case 'active':
+            case 'resumed':
+            case 'completed':
+              isActive = true
+              buttonLabel = `Current Plan (${period})`
 
-              razorPayConfig = {
-                subscription_id: subscription.external_subscription_id,
-                subscription_status: subscription.status,
-                isActive,
-                buttonLabel,
+              // Check if there's another subscription scheduled after this one
+              const futureSubscription = subscriptions.value?.find(
+                (sub) =>
+                  sub.plan_id !== item.id &&
+                  sub.status === 'created' &&
+                  new Date(sub.start_at) >
+                    new Date(subscription.current_end || subscription.end_at),
+              )
+
+              if (futureSubscription) {
+                buttonLabel += ` - Next: ${futureSubscription.plan.name}`
               }
-            }
-
-            return {
-              ...item,
-              availableFrom: item.created_at,
-              isActive: item.is_active,
-              period: item.interval_type,
-              price:
-                item.interval_type === 'monthly'
-                  ? item.monthly_amount / 100
-                  : item.annual_amount / 100,
-              razorPayConfig,
-            }
-          }),
-        )
-        .reduce((acc, plan) => {
-          if (!acc[plan.name]) {
-            // Initialize the group if not already present
-            acc[plan.name] = []
+              break
+            case 'charged':
+              buttonLabel = `Renew Plan (${period})`
+              break
+            case 'pending':
+              isActive = true
+              buttonLabel = 'Please Update Payment Method'
+              break
+            default:
+              buttonLabel = `Subscribe to ${item.name} (${period})`
           }
-          // Add the current plan to the appropriate group
-          acc[plan.name].push(plan)
-          return acc
-        }, {})
-    : null,
-)
+
+          razorPayConfig = {
+            subscription_id: subscription.external_subscription_id,
+            subscription_status: subscription.status,
+            isActive,
+            buttonLabel,
+          }
+        }
+
+        return {
+          ...item,
+          availableFrom: item.created_at,
+          isActive: item.is_active,
+          period: item.interval_type,
+          price:
+            item.interval_type === 'monthly' ? item.monthly_amount / 100 : item.annual_amount / 100,
+          razorPayConfig,
+        }
+      }),
+    )
+    .reduce((acc, plan) => {
+      if (!acc[plan.name]) {
+        acc[plan.name] = []
+      }
+      acc[plan.name].push(plan)
+      return acc
+    }, {})
+})
 
 const handlePaymentSuccess = async (response: any) => {
   // Handle successful payment

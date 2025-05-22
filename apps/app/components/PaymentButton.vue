@@ -130,34 +130,63 @@ const unloadRazorpay = () => {
 }
 
 const createSubscription = async () => {
-  const subscription = await razorpay.createOrder({
-    plan_id: props.plan.id,
-    external_plan_id: props.plan.external_plan_id,
-    total_count: props.plan.interval === 'monthly' ? 360 : 30,
-  })
+  try {
+    const subscription = await razorpay.createOrder({
+      plan_id: props.plan.id,
+      external_plan_id: props.plan.external_plan_id,
+      total_count: props.plan.interval === 'monthly' ? 360 : 30,
+    })
 
-  if (subscription?.start_at > Date.now() / 1000) {
-    razorpayOptions.subscriptionStartsLater = true
+    if (!subscription) {
+      console.error('Could not create subscription', subscription)
+      toast.error({
+        summary: 'Could not create subscription',
+        message: 'If the error persists, please contact the administrator',
+      })
+      return false
+    }
+
+    // Check if subscription starts in the future
+    if (subscription?.start_at && subscription.start_at > Math.floor(Date.now() / 1000)) {
+      razorpayOptions.subscriptionStartsLater = true
+
+      // Show user when the subscription will start and be charged
+      const startDate = new Date(subscription.start_at * 1000)
+      toast.success({
+        summary: 'Subscription Scheduled',
+        message: `Your new subscription will start on ${startDate.toDateString()} and you'll be charged then.`,
+      })
+
+      return false // Don't proceed to payment since it's scheduled for later
+    }
+
+    razorpayOptions.subscription_id = subscription.external_subscription_id
+    return true
+  } catch (error) {
+    console.error('Error creating subscription:', error)
+    toast.error({
+      summary: 'Error',
+      message: 'Failed to create subscription. Please try again.',
+    })
+    return false
   }
-  razorpayOptions.subscription_id = subscription.external_subscription_id
 }
 
 const handlePayment = async () => {
   loading.value = true
-  if (!razorpayOptions.subscription_id) await createSubscription()
-
-  if (razorpayOptions.subscriptionStartsLater) {
-    toast.success({
-      summary: 'Subscription Created',
-      message:
-        'Your new subscription will start and will be charged at the end of your current subscription',
-    })
-    return
-  }
-
-  await loadRazorpay()
 
   try {
+    if (!razorpayOptions.subscription_id) {
+      const shouldProceedToPayment = await createSubscription()
+
+      if (!shouldProceedToPayment) {
+        loading.value = false
+        return // Subscription was scheduled for later, no immediate payment needed
+      }
+    }
+
+    // Only proceed with Razorpay if subscription should start immediately
+    await loadRazorpay()
     rzp.open()
   } catch (error: any) {
     emit('payment-error', error)

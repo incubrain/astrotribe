@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     quantity,
     start_at,
     expire_by,
-    customer_notify,
+    customer_notify = 1, // Default to immediate notification/charging
     addons,
     offer_id,
     notes,
@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
         quantity,
         start_at,
         expire_by,
-        customer_notify,
+        customer_notify, // This controls when Razorpay charges the customer
         addons,
         offer_id,
         notes,
@@ -58,6 +58,6 @@ export default defineEventHandler(async (event) => {
       status: 'error',
       severity: 'critical',
     })
-    return error
+    throw error
   }
 })
