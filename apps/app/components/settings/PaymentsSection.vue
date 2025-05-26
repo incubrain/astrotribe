@@ -6,6 +6,9 @@ import { onMounted } from 'vue'
 const currentUser = useCurrentUser()
 const loading = ref(true)
 const confirmingSubscription = ref(false)
+const confirmingPayment = ref(false)
+
+const paymentConfig = ref(null)
 
 const { profile } = storeToRefs(currentUser)
 
@@ -52,6 +55,12 @@ const createdSubscription = (subscription) => {
     subscriptions.value[existingIndex] = subscription
   }
 }
+
+const emit = defineEmits<{
+  (e: 'confirm'): void
+  (e: 'cancel'): void
+  (e: 'update:show', value: boolean): void
+}>()
 
 const updateSubscription = (subscription) => {
   confirmingSubscription.value = false
@@ -119,6 +128,11 @@ const freePlan = {
   },
   isActive: true,
   availableFrom: null,
+}
+
+const handlePlanSelect = (plan) => {
+  paymentConfig.value = { plan }
+  confirmingPayment.value = true
 }
 
 const plans = computed<PlanConfig>(() => {
@@ -367,28 +381,17 @@ onMounted(async () => {
               class="mt-4"
             >
               <div v-if="plan.isActive">
-                <PaymentButton
+                <button
                   v-if="
                     !plan.razorPayConfig?.isActive &&
                     !['charged', 'expired', 'halted', 'pending'].includes(
                       plan.razorPayConfig?.subscription_status,
                     )
                   "
-                  :plan="{
-                    id: plan.id,
-                    external_plan_id: plan.external_plan_id,
-                    name: plan.name,
-                    description: `Monthly ${plan.name} Plan`,
-                    amount: plan.price,
-                    subscription_id: plan.razorPayConfig?.subscription_id,
-                  }"
-                  :customer="customerInfo"
-                  :button-label="plan.razorPayConfig?.buttonLabel"
-                  :theme="{ color: '#3B82F6' }"
-                  class="w-full"
-                  @payment-success="handlePaymentSuccess"
-                  @payment-error="handlePaymentError"
-                />
+                  @click="handlePlanSelect(plan)"
+                  class="w-full bg-[#3B82F6] text-white p-3 rounded"
+                  >{{ plan.razorPayConfig?.buttonLabel }}</button
+                >
                 <button
                   v-else
                   class="w-full py-2 text-sm font-medium rounded-md bg-gray-800 text-gray-400 cursor-not-allowed"
@@ -444,6 +447,63 @@ onMounted(async () => {
           <h2 class="text-black">Confirming Subscription</h2>
           <PrimeProgressSpinner />
         </div>
+      </template>
+    </PrimeDialog>
+    <PrimeDialog
+      :draggable="false"
+      :closable="true"
+      :dismissable-mask="true"
+      v-model:visible="confirmingPayment"
+      modal
+      :pt="{
+        closeButton: 'text-white hover:text-primary-300',
+        header: 'bg-primary-900 border-b border-primary-700',
+        content: 'bg-primary-900 p-0',
+      }"
+      header="Confirm Subscription"
+    >
+      <template
+        v-if="paymentConfig"
+        #header
+      >
+        <div class="flex flex-col">
+          <PaymentButton
+            :plan="{
+              id: paymentConfig.plan.id,
+              external_plan_id: paymentConfig.plan.external_plan_id,
+              name: paymentConfig.plan.name,
+              description: `Monthly ${paymentConfig.plan.name} Plan`,
+              amount: paymentConfig.plan.price,
+              subscription_id: paymentConfig.plan.razorPayConfig?.subscription_id,
+            }"
+            :customer="customerInfo"
+            button-label="Confirm Payment"
+            :theme="{ color: '#3B82F6' }"
+            class="w-full"
+            @payment-success="handlePaymentSuccess"
+            @payment-error="handlePaymentError"
+            @click="$emit('confirm')"
+          />
+          <PrimeButton
+            label="Cancel"
+            class="p-button-text"
+            @click="confirmingPayment = false"
+          />
+        </div>
+      </template>
+      <template
+        v-else
+        #header
+      >
+        <p
+          >Something went wrong. Please try again and if the error persists, please contact the
+          administrator</p
+        >
+        <PrimeButton
+          label="Close"
+          class="p-button-text"
+          @click="$emit('cancel')"
+        />
       </template>
     </PrimeDialog>
   </div>
