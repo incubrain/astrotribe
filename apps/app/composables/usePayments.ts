@@ -41,6 +41,7 @@ export const usePayments = () => {
       let start_at = null
       let count = total_count
       let customer_notify = 1 // Default to notify customer
+      let oldSubscriptionId = null
 
       // If there are active subscriptions, find the latest end date
       if (activeSubscriptions && activeSubscriptions.length > 0) {
@@ -65,6 +66,8 @@ export const usePayments = () => {
               ? Math.max(0, 360 - monthsFromNow)
               : Math.max(0, 30 - Math.ceil(monthsFromNow / 12))
         }
+
+        oldSubscriptionId = latestSubscription.id
       }
 
       const response = await $fetch(`/api/payment/subscriptions/create`, {
@@ -79,6 +82,7 @@ export const usePayments = () => {
             start_at,
             customer_notify, // Control when customer gets charged
           }),
+          ...(oldSubscriptionId && { oldSubscriptionId }),
         },
       })
 
