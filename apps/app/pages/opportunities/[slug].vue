@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { parseOpportunityDescription, calculateDaysToDeadline, formatSalary } from '~/utils/opportunityFormatters'
+import { calculateDaysToDeadline, formatSalary } from '~/utils/opportunityFormatters'
 import type { Opportunity } from '~/types/opportunities'
 
 // Route parameters and opportunity data loading
@@ -28,7 +28,8 @@ const formattedDate = computed(() => {
 // Parse opportunity description
 const parsedDescription = computed(() => {
   if (!opportunity.value?.description) return null
-  return parseOpportunityDescription(opportunity.value.description)
+  // return parseOpportunityDescription(opportunity.value.description)
+  return opportunity.value.description
 })
 
 // Deadline status
@@ -478,8 +479,8 @@ onMounted(() => {
                     {{ opportunity.company }}
                   </h2>
                   <p class="text-gray-400 mb-6">
-                    Leading company in its sector, {{ opportunity.company }} constantly innovates to create
-                    the best technological solutions.
+                    Leading company in its sector, {{ opportunity.company }} constantly innovates to
+                    create the best technological solutions.
                   </p>
                   <div class="space-y-4">
                     <div class="flex items-center gap-3 text-sm">
