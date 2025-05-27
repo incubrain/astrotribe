@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div
     class="relative w-full h-screen overflow-hidden bg-slate-950 text-slate-200 flex flex-col font-sans"
   >
@@ -117,7 +117,7 @@ import {
   useStarLifecycleStore,
   type StageThreeJSParams,
   type StarStage,
-} from '~/stores/starLifecycleStore'
+} from '@/stores/starLifecycleStore'
 
 // Dynamically import Three.js only on the client
 let THREE: typeof import('three')
@@ -500,4 +500,4 @@ html {
   height: 100%; /* Ensure html and body take full height */
   background-color: #020617; /* slate-950, match with component bg */
 }
-</style>
+</style> -->
