@@ -501,3 +501,7 @@ html {
   background-color: #020617; /* slate-950, match with component bg */
 }
 </style> -->
+
+<template>
+  <div>Simulation</div>
+</template>
