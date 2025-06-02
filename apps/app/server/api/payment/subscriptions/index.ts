@@ -1,4 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
+import { isArray } from '@primevue/core'
 
 export default defineEventHandler(async (event) => {
   const { apiURL } = useRuntimeConfig().public
@@ -20,6 +21,7 @@ export default defineEventHandler(async (event) => {
     })
 
     if ((response as Record<string, any>)?.items) return (response as Record<string, any>).items
+    if (isArray(response)) return response
   } catch (error: any) {
     console.error('Get Subscriptions', error)
     return error

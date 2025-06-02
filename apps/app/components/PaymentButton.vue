@@ -27,9 +27,11 @@ interface Props {
     logo?: string
   }
   notes?: Record<string, string>
+  toggleLoader: (message?: string) => void
+  handlePaymentSuccess: (response: any) => void
+  handlePaymentError: (response: any) => void
 }
 
-const razorpay = usePayments()
 const toast = useNotification()
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,6 +41,8 @@ const props = withDefaults(defineProps<Props>(), {
   customer: () => ({}),
   notes: () => ({}),
 })
+
+const subscriptions = useSubscriptions(props.toggleLoader)
 
 const emit = defineEmits<{
   'payment-success': [response: any]
@@ -60,7 +64,7 @@ const razorpayOptions = reactive({
   description: props.plan.description,
   image: props.theme.logo,
   handler: function (response: any) {
-    emit('payment-success', response)
+    props.handlePaymentSuccess(response)
     unloadRazorpay()
   },
   modal: {
@@ -131,7 +135,7 @@ const unloadRazorpay = () => {
 
 const createSubscription = async () => {
   try {
-    const subscription = await razorpay.createOrder({
+    const subscription = await subscriptions.createSubscription({
       plan_id: props.plan.id,
       external_plan_id: props.plan.external_plan_id,
       total_count: props.plan.interval === 'monthly' ? 360 : 30,
@@ -189,7 +193,7 @@ const handlePayment = async () => {
     await loadRazorpay()
     rzp.open()
   } catch (error: any) {
-    emit('payment-error', error)
+    props.handlePaymentError(error)
     loading.value = false
   }
 }

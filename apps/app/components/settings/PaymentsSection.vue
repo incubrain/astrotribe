@@ -4,20 +4,27 @@ import confetti from 'canvas-confetti'
 import { onMounted } from 'vue'
 
 const currentUser = useCurrentUser()
+const loader = ref<Record<string, any>>({ loading: false, message: null })
+const toggleLoader = (message?: string): void => {
+  if (message) {
+    loader.value = { loading: true, message }
+  } else {
+    loader.value = { loading: false, message: null }
+  }
+}
+const { getSubscriptions, updateSubscription, subscriptions } = useSubscriptions(toggleLoader)
+const { getPlans, getFormattedPlans, getDiscountedPrice } = usePlans(toggleLoader, subscriptions)
+const { handlePaymentSuccess, handlePaymentError } = usePayments(toggleLoader)
+
 const loading = ref(true)
-const confirmingSubscription = ref(false)
 const confirmingPayment = ref(false)
 
-const paymentConfig = ref(null)
+let plans = ref<Record<string, any>>()
+const selectedPlan = ref()
 
 const { profile } = storeToRefs(currentUser)
 
-const razorpay = usePayments()
-const toast = useNotification()
-const { lastEvent, isConnected } = useEvents()
-const subscriptions = ref([])
-
-const activeStates = ['active', 'completed', 'pending', 'charged']
+const { lastEvent } = useEvents()
 
 const triggerConfetti = () => {
   confetti({
@@ -28,259 +35,15 @@ const triggerConfetti = () => {
 }
 
 watch(lastEvent, async (event) => {
-  if (event?.module !== 'subscription') return
-
-  if (event?.type === 'created') {
-    createdSubscription(event.data)
-  }
-
-  if (event?.type === 'updated') {
-    updateSubscription(event.data)
+  if (event?.module === 'subscription') {
+    const subscriptionActivated = updateSubscription(event.data.subscription || event.data)
+    toggleLoader()
+    confirmingPayment.value = false
+    subscriptionActivated && triggerConfetti()
   }
 
   await currentUser.refreshUserStore()
 })
-
-const createdSubscription = (subscription) => {
-  confirmingSubscription.value = false
-  const existingIndex = subscriptions.value?.findIndex((item) => item.id === subscription.id) ?? -1
-
-  if (existingIndex === -1) {
-    // Add new subscription to the beginning of the array
-    subscriptions.value = subscriptions.value?.length
-      ? [subscription, ...subscriptions.value]
-      : [subscription]
-  } else {
-    // Replace existing subscription
-    subscriptions.value[existingIndex] = subscription
-  }
-}
-
-const emit = defineEmits<{
-  (e: 'confirm'): void
-  (e: 'cancel'): void
-  (e: 'update:show', value: boolean): void
-}>()
-
-const updateSubscription = (subscription) => {
-  confirmingSubscription.value = false
-
-  subscriptions.value = subscriptions.value.map((sub) => {
-    if (sub.id === subscription.id) {
-      return subscription
-    }
-    return sub
-  })
-
-  // Handle different subscription statuses
-  if (['active', 'resumed', 'completed'].includes(subscription.status)) {
-    triggerConfetti()
-    toast.success({
-      summary: 'Congratulations',
-      message: 'Your subscription is now active',
-    })
-  } else if (subscription.status === 'created' && subscription.start_at) {
-    const startDate = new Date(subscription.start_at)
-    if (startDate > new Date()) {
-      toast.info({
-        summary: 'Subscription Scheduled',
-        message: `Your subscription will activate on ${startDate.toDateString()}`,
-      })
-    }
-  }
-}
-
-const plansData = ref([])
-
-interface PlanConfig {
-  id: string
-  name: string
-  price: string
-  period: string
-  description: string
-  features: string[]
-  isActive: boolean
-  availableFrom: string | null
-  razorpayConfig?: {
-    subscription_id: string
-    amount: number
-  }
-}
-
-const freePlan = {
-  id: 1,
-  name: 'Free',
-  price: '0',
-  period: 'forever',
-  description: 'Get started with free features',
-  features: {
-    values: [
-      'Basic project access',
-      'Community support',
-      '2 team members',
-      '1GB storage',
-      'Basic analytics',
-    ],
-  },
-  razorPayConfig: {
-    isActive: true,
-    buttonLabel: 'Current Plan',
-  },
-  isActive: true,
-  availableFrom: null,
-}
-
-const handlePlanSelect = (plan) => {
-  paymentConfig.value = { plan }
-  confirmingPayment.value = true
-}
-
-const plans = computed<PlanConfig>(() => {
-  if (!plansData.value?.length) return null
-
-  return [
-    // Free plan logic...
-    (!subscriptions.value?.length ||
-      !subscriptions.value.some((subscription) => activeStates.includes(subscription.status))) &&
-      freePlan,
-  ]
-    .filter((plan) => plan)
-    .concat(
-      plansData.value.map((item: any) => {
-        let isActive = false
-        let buttonLabel = `Subscribe to ${item.name} (${item.interval_type})`
-        let razorPayConfig = {
-          isActive,
-          buttonLabel,
-          subscription_id: null,
-          subscription_status: null,
-        }
-
-        const subscription = subscriptions.value?.find((sub) => sub.plan_id === item.id)
-
-        if (subscription && subscription.plan_id === item.id) {
-          const period = item.interval_type.charAt(0).toUpperCase() + item.interval_type.slice(1)
-
-          switch (subscription.status) {
-            case 'created':
-              const start_at = new Date(subscription.start_at).getTime()
-              if (start_at > Date.now()) {
-                isActive = true
-                buttonLabel = `Scheduled to start ${new Date(start_at).toDateString()}`
-              } else {
-                buttonLabel = `Activate ${period} Plan`
-              }
-              break
-            case 'active':
-            case 'resumed':
-            case 'completed':
-              isActive = true
-              buttonLabel = `Current Plan (${period})`
-
-              // Check if there's another subscription scheduled after this one
-              const futureSubscription = subscriptions.value?.find(
-                (sub) =>
-                  sub.plan_id !== item.id &&
-                  sub.status === 'created' &&
-                  new Date(sub.start_at) >
-                    new Date(subscription.current_end || subscription.end_at),
-              )
-
-              if (futureSubscription) {
-                buttonLabel += ` - Next: ${futureSubscription.plan.name}`
-              }
-              break
-            case 'charged':
-              buttonLabel = `Renew Plan (${period})`
-              break
-            case 'pending':
-              isActive = true
-              buttonLabel = 'Please Update Payment Method'
-              break
-            default:
-              buttonLabel = `Subscribe to ${item.name} (${period})`
-          }
-
-          razorPayConfig = {
-            subscription_id: subscription.external_subscription_id,
-            subscription_status: subscription.status,
-            isActive,
-            buttonLabel,
-          }
-        }
-
-        return {
-          ...item,
-          availableFrom: item.created_at,
-          isActive: item.is_active,
-          period: item.interval_type,
-          price:
-            item.interval_type === 'monthly' ? item.monthly_amount / 100 : item.annual_amount / 100,
-          razorPayConfig,
-        }
-      }),
-    )
-    .reduce((acc, plan) => {
-      if (!acc[plan.name]) {
-        acc[plan.name] = []
-      }
-      acc[plan.name].push(plan)
-      return acc
-    }, {})
-})
-
-const handlePaymentSuccess = async (response: any) => {
-  // Handle successful payment
-  confirmingSubscription.value = true
-
-  if (!response || !response.razorpay_payment_id || !response.razorpay_subscription_id) {
-    console.error('Something went wrong: ', response)
-    toast.error({
-      summary: 'Could not create subscription',
-      message: 'Please contact the administrator',
-    })
-    confirmingSubscription.value = false
-    return
-  }
-
-  const { razorpay_payment_id: paymentId, razorpay_subscription_id: subscriptionId } = response
-  const { error } = await razorpay.verifyPayment(paymentId, subscriptionId)
-
-  if (error) {
-    confirmingSubscription.value = false
-    toast.error({
-      summary: 'Could not create subscription',
-      message: 'Please contact the administrator',
-    })
-    return
-  }
-
-  toast.success({ summary: 'Payment Successful', message: 'Your subscription is being activated' })
-}
-
-const handlePaymentError = (error: any) => {
-  // Handle payment error
-  console.error('Payment failed:', error)
-
-  toast.error({
-    summary: 'Payment Failure',
-    message: 'Please try again or a different payment method',
-  })
-}
-
-const getDiscountedPrice = (plan) => {
-  const offer = plan.offers[0]
-
-  if (offer.already_discounted) {
-    let oldPrice
-    if (offer.discount_type == 'percentage') {
-      oldPrice = plan.price / (1 - offer.discount.d[0] / 100)
-    } else {
-      oldPrice = plan.price + offer.discount.d[0]
-    }
-    return { oldPrice, newPrice: plan.price }
-  }
-}
 
 // Get customer info from profile
 const customerInfo = computed(() => ({
@@ -291,16 +54,10 @@ const customerInfo = computed(() => ({
 
 onMounted(async () => {
   await currentUser.refreshUserStore()
-  try {
-    subscriptions.value = await razorpay.fetchSubscriptions({
-      status: { notIn: ['cancelled', 'expired'] },
-    })
-    plansData.value = await razorpay.fetchPlans()
-  } catch (error: any) {
-    console.error('Error fetching subscriptions:', error)
-  } finally {
-    loading.value = false
-  }
+  await getSubscriptions()
+  await getPlans()
+  plans = getFormattedPlans()
+  loading.value = false
 })
 </script>
 
@@ -388,7 +145,7 @@ onMounted(async () => {
                       plan.razorPayConfig?.subscription_status,
                     )
                   "
-                  @click="handlePlanSelect(plan)"
+                  @click="((selectedPlan = plan), (confirmingPayment = true))"
                   class="w-full bg-[#3B82F6] text-white p-3 rounded"
                   >{{ plan.razorPayConfig?.buttonLabel }}</button
                 >
@@ -438,13 +195,13 @@ onMounted(async () => {
     <PrimeDialog
       :closable="false"
       :draggable="false"
-      v-model:visible="confirmingSubscription"
+      v-model:visible="loader.loading"
       modal
       class="bg-white"
     >
       <template #header>
         <div class="flex flex-col justify-center items-center gap-4">
-          <h2 class="text-black">Confirming Subscription</h2>
+          <h2 class="text-black">{{ loader.message }}</h2>
           <PrimeProgressSpinner />
         </div>
       </template>
@@ -463,26 +220,27 @@ onMounted(async () => {
       header="Confirm Subscription"
     >
       <template
-        v-if="paymentConfig"
+        v-if="selectedPlan"
         #header
       >
         <div class="flex flex-col">
           <PaymentButton
             :plan="{
-              id: paymentConfig.plan.id,
-              external_plan_id: paymentConfig.plan.external_plan_id,
-              name: paymentConfig.plan.name,
-              description: `Monthly ${paymentConfig.plan.name} Plan`,
-              amount: paymentConfig.plan.price,
-              subscription_id: paymentConfig.plan.razorPayConfig?.subscription_id,
+              id: selectedPlan.id,
+              external_plan_id: selectedPlan.external_plan_id,
+              name: selectedPlan.name,
+              description: `Monthly ${selectedPlan.name} Plan`,
+              amount: selectedPlan.price,
+              subscription_id: selectedPlan.razorPayConfig?.subscription_id,
             }"
             :customer="customerInfo"
             button-label="Confirm Payment"
             :theme="{ color: '#3B82F6' }"
             class="w-full"
-            @payment-success="handlePaymentSuccess"
-            @payment-error="handlePaymentError"
-            @click="$emit('confirm')"
+            :toggleLoader="toggleLoader"
+            :handle-payment-success="handlePaymentSuccess"
+            :handle-payment-error="handlePaymentError"
+            @click="($emit('confirm'), (confirmingPayment = false))"
           />
           <PrimeButton
             label="Cancel"

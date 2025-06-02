@@ -49,6 +49,7 @@
   "devDependencies": {
     "@nuxt/schema": "^3.15.2",
     "@nuxt/test-utils": "^3.14.4",
+    "@types/canvas-confetti": "^1.9.0",
     "h3": "^1.8.2",
     "msw": "^2.6.5",
     "nuxt": "^3.16.1",
