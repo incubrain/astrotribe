@@ -12,8 +12,9 @@ const toggleLoader = (message?: string): void => {
     loader.value = { loading: false, message: null }
   }
 }
+
 const { getSubscriptions, updateSubscription, subscriptions } = useSubscriptions(toggleLoader)
-const { getPlans, getFormattedPlans, getDiscountedPrice } = usePlans(toggleLoader, subscriptions)
+const { getPlans, getFormattedPlans, getDiscountedPrice } = usePlans(subscriptions)
 const { handlePaymentSuccess, handlePaymentError } = usePayments(toggleLoader)
 
 const confirmingPayment = ref(false)
@@ -56,12 +57,16 @@ const customerInfo = computed(() => ({
 }))
 
 onMounted(async () => {
-  toggleLoader('Getting Plans')
-  await currentUser.refreshUserStore()
-  await getSubscriptions()
-  await getPlans()
-  plansLoaded.value = true
-  toggleLoader()
+  try {
+    toggleLoader('Getting Plans')
+    await currentUser.refreshUserStore()
+    await getSubscriptions()
+    await getPlans()
+    plansLoaded.value = true
+  } catch (error: any) {
+  } finally {
+    toggleLoader()
+  }
 })
 </script>
 
@@ -170,25 +175,6 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-
-      <!-- Simplified Payment Methods Section -->
-      <!-- <div class="mt-8 border-t border-gray-800 pt-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="text-sm font-medium text-white">Payment Methods</h3>
-            <p class="text-sm text-gray-400">Manage your saved payment methods</p>
-          </div>
-          <button
-            class="inline-flex items-center px-4 py-2 bg-gray-800 text-sm font-medium text-white rounded-md hover:bg-gray-700 transition-colors"
-          >
-            <Icon
-              name="mdi:credit-card"
-              class="mr-2"
-            />
-            Manage Methods
-          </button>
-        </div>
-      </div> -->
     </SettingsCard>
     <div
       v-if="loader.loading"

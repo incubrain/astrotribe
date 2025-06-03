@@ -34,13 +34,9 @@ interface Subscription {
 
 export const useSubscriptions = (toggleLoader: (message?: string) => void) => {
   const subscriptions = ref<Array<Subscription>>([])
-  const activeStates = ['active', 'completed', 'pending', 'charged']
-  const error = ref(null)
   const toast = useNotification()
 
   const getSubscriptions = async (query?: Record<string, any>) => {
-    error.value = null
-
     try {
       const response = await $fetch(`/api/payment/subscriptions`, {
         query: { ...(query ? query : {}) },
@@ -48,7 +44,12 @@ export const useSubscriptions = (toggleLoader: (message?: string) => void) => {
 
       subscriptions.value = response
     } catch (error: any) {
-      console.error(`Error verifying payment`, error)
+      console.error(`Error getting subscriptions`, error)
+      toast.error({
+        summary: 'Could not get subscriptions',
+        message: 'Please retry or contact the administrator if the error persists',
+      })
+      throw error
     } finally {
       toggleLoader()
     }
@@ -56,8 +57,6 @@ export const useSubscriptions = (toggleLoader: (message?: string) => void) => {
 
   const createSubscription = async (plan: Record<string, any>): Promise<Subscription | null> => {
     toggleLoader('Creating Subscription')
-    error.value = null
-
     const { plan_id, external_plan_id, total_count } = plan
 
     try {
@@ -118,6 +117,10 @@ export const useSubscriptions = (toggleLoader: (message?: string) => void) => {
       return response as Subscription
     } catch (error: any) {
       console.error(`Error creating order`, error)
+      toast.error({
+        summary: 'Could not create subscriptions',
+        message: 'Please retry or contact the administrator if the error persists',
+      })
       throw error
     } finally {
       toggleLoader()
@@ -168,7 +171,6 @@ export const useSubscriptions = (toggleLoader: (message?: string) => void) => {
 
   return {
     subscriptions,
-    activeStates,
     getSubscriptions,
     createSubscription,
     updateSubscription,

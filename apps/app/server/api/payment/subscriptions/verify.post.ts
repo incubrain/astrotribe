@@ -27,13 +27,7 @@ export default defineEventHandler(async (event) => {
 
     return response
   } catch (error: any) {
-    console.error('Failed to create subscription', {
-      error,
-      domain: 'customers',
-      action: 'creating',
-      status: 'error',
-      severity: 'critical',
-    })
+    console.error('Failed to create subscription', error)
     return error
   }
 })

@@ -17,15 +17,10 @@ export interface Plan {
   offers?: Array<Record<string, any>>
 }
 
-export const usePlans = (
-  toggleLoader: (message?: string) => void,
-  subscriptions: Ref<Array<any>>,
-) => {
+export const usePlans = (subscriptions: Ref<Array<any>>) => {
   const plans = ref<Array<Plan>>([])
-  const error = ref(null)
-  const isLoading = ref(false)
-
-  const { activeStates } = useSubscriptions(toggleLoader)
+  const activeStates = ['active', 'completed', 'pending', 'charged']
+  const toast = useNotification()
 
   const freePlan: Plan = {
     id: 1,
@@ -51,9 +46,6 @@ export const usePlans = (
   }
 
   const getPlans = async (query?: Record<string, any>) => {
-    isLoading.value = true
-    error.value = null
-
     try {
       const response = await $fetch(`/api/payment/plans`, {
         query: { ...(query ? query : {}) },
@@ -61,9 +53,12 @@ export const usePlans = (
 
       plans.value = response
     } catch (error: any) {
-      console.error(`Error verifying payment`, error)
-    } finally {
-      isLoading.value = false
+      console.error(`Error getting plans`, error)
+      toast.error({
+        summary: 'Could not get plans',
+        message: 'Please retry or contact the administrator if the error persists',
+      })
+      throw error
     }
   }
 
