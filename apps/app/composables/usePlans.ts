@@ -97,8 +97,6 @@ export const usePlans = (
                   if (start_at > Date.now()) {
                     isActive = true
                     buttonLabel = `Scheduled to start ${new Date(start_at).toDateString()}`
-                  } else {
-                    buttonLabel = `Activate ${period} Plan`
                   }
                   break
                 case 'active':
