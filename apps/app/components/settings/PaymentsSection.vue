@@ -16,7 +16,6 @@ const { getSubscriptions, updateSubscription, subscriptions } = useSubscriptions
 const { getPlans, getFormattedPlans, getDiscountedPrice } = usePlans(toggleLoader, subscriptions)
 const { handlePaymentSuccess, handlePaymentError } = usePayments(toggleLoader)
 
-const loading = ref(true)
 const confirmingPayment = ref(false)
 
 let plans = ref<Record<string, any>>()
@@ -53,11 +52,12 @@ const customerInfo = computed(() => ({
 }))
 
 onMounted(async () => {
+  toggleLoader('Getting Plans')
   await currentUser.refreshUserStore()
   await getSubscriptions()
   await getPlans()
   plans = getFormattedPlans()
-  loading.value = false
+  toggleLoader()
 })
 </script>
 
@@ -65,8 +65,8 @@ onMounted(async () => {
   <div>
     <SettingsCard
       :class="{
-        'opacity-50': loading,
-        'pointer-events': loading ? 'none' : 'auto',
+        'opacity-50': loader.loading,
+        'pointer-events': loader.loading ? 'none' : 'auto',
       }"
       :title="{
         main: 'Payment Settings',
@@ -187,25 +187,12 @@ onMounted(async () => {
       </div> -->
     </SettingsCard>
     <div
-      v-if="loading"
-      class="flex items-center justify-center"
+      v-if="loader.loading"
+      class="flex flex-col items-center justify-center"
     >
       <PrimeProgressSpinner />
+      <h2>{{ loader.message }}</h2>
     </div>
-    <PrimeDialog
-      :closable="false"
-      :draggable="false"
-      v-model:visible="loader.loading"
-      modal
-      class="bg-white"
-    >
-      <template #header>
-        <div class="flex flex-col justify-center items-center gap-4">
-          <h2 class="text-black">{{ loader.message }}</h2>
-          <PrimeProgressSpinner />
-        </div>
-      </template>
-    </PrimeDialog>
     <PrimeDialog
       :draggable="false"
       :closable="true"
