@@ -17,8 +17,12 @@ const { getPlans, getFormattedPlans, getDiscountedPrice } = usePlans(toggleLoade
 const { handlePaymentSuccess, handlePaymentError } = usePayments(toggleLoader)
 
 const confirmingPayment = ref(false)
+const plansLoaded = ref(false)
+const plans = computed(() => {
+  if (!plansLoaded.value) return null
+  return getFormattedPlans()?.value || null
+})
 
-let plans = ref<Record<string, any>>()
 const selectedPlan = ref()
 
 const { profile } = storeToRefs(currentUser)
@@ -56,7 +60,7 @@ onMounted(async () => {
   await currentUser.refreshUserStore()
   await getSubscriptions()
   await getPlans()
-  plans = getFormattedPlans()
+  plansLoaded.value = true
   toggleLoader()
 })
 </script>
