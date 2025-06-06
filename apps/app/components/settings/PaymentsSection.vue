@@ -73,116 +73,121 @@ onMounted(async () => {
 <template>
   <div>
     <SettingsCard
-      :class="{
-        'opacity-50': loader.loading,
-        'pointer-events': loader.loading ? 'none' : 'auto',
-      }"
       :title="{
         main: 'Payment Settings',
         subtitle: 'Manage your subscription and payment methods',
       }"
     >
-      <!-- Pricing Cards Grid -->
-      <div
-        v-if="plans"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4"
-      >
+      <div class="relative h-full">
+        <!-- Loader -->
         <div
-          v-for="[name, allPlans] in Object.entries(plans)"
-          :key="name"
-          class="relative rounded-xl overflow-hidden"
-          :class="{
-            'bg-gray-900 border-2 border-blue-500': profile?.user_plan === name.toLowerCase(),
-            'bg-gray-900/80': !allPlans[0].isActive && profile?.user_plan !== name.toLowerCase(),
-            'bg-gray-900': allPlans[0].isActive && profile?.user_plan !== name.toLowerCase(),
-          }"
+          v-if="loader.loading"
+          class="absolute left-[50%] z-10 top-[25%] flex flex-col items-center justify-center"
         >
-          <!-- Current Plan Badge -->
+          <PrimeProgressSpinner />
+          <h2>{{ loader.message }}</h2>
+        </div>
+        <!-- Pricing Cards Grid -->
+        <div
+          :class="{
+            'opacity-40': loader.loading,
+            'pointer-events': loader.loading ? 'none' : 'auto',
+          }"
+          v-if="plans"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4"
+        >
           <div
-            v-if="profile?.user_plan === name.toLowerCase()"
-            class="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 text-sm font-medium rounded-full"
+            v-for="[name, allPlans] in Object.entries(plans)"
+            :key="name"
+            class="relative rounded-xl overflow-hidden"
+            :class="{
+              'bg-gray-900 border-2 border-blue-500': profile?.user_plan === name.toLowerCase(),
+              'bg-gray-900/80': !allPlans[0].isActive && profile?.user_plan !== name.toLowerCase(),
+              'bg-gray-900': allPlans[0].isActive && profile?.user_plan !== name.toLowerCase(),
+            }"
           >
-            Current Plan
-          </div>
+            <!-- Current Plan Badge -->
+            <div
+              v-if="profile?.user_plan === name.toLowerCase()"
+              class="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 text-sm font-medium rounded-full"
+            >
+              Current Plan
+            </div>
 
-          <div class="p-6 flex flex-col justify-between h-full">
-            <!-- Plan Header -->
-            <div>
-              <h3 class="text-xl font-semibold text-white">{{ name }}</h3>
+            <div class="p-6 flex flex-col justify-between h-full">
+              <!-- Plan Header -->
+              <div>
+                <h3 class="text-xl font-semibold text-white">{{ name }}</h3>
+                <div
+                  v-for="plan in allPlans"
+                  :key="plan.id"
+                  class="mt-2 flex flex-col items-baseline"
+                >
+                  <div>
+                    <span class="text-3xl font-bold text-white">₹{{ plan.price }}</span>
+                    <span class="ml-1 text-sm text-gray-400">/{{ plan.period }}</span>
+                  </div>
+                  <div v-if="!!plan?.offers?.length">
+                    <span class="line-through"
+                      >₹{{ getDiscountedPrice(plan)?.oldPrice }}/yearly</span
+                    >
+                  </div>
+                </div>
+                <p class="mt-3 text-sm text-gray-400">{{ allPlans[0].description }}</p>
+              </div>
+
+              <!-- Features List -->
+              <ul class="mt-6 space-y-4 flex-grow flex flex-col h-full">
+                <li
+                  v-for="feature in allPlans[0].features.values"
+                  :key="feature"
+                  class="flex items-start"
+                >
+                  <Icon
+                    name="mdi:check-circle"
+                    class="h-5 w-5 text-blue-500 mr-2 flex-shrink-0"
+                  />
+                  <span class="text-sm text-gray-300">{{ feature }}</span>
+                </li>
+              </ul>
+
+              <!-- Action Button -->
               <div
                 v-for="plan in allPlans"
                 :key="plan.id"
-                class="mt-2 flex flex-col items-baseline"
+                class="mt-4"
               >
-                <div>
-                  <span class="text-3xl font-bold text-white">₹{{ plan.price }}</span>
-                  <span class="ml-1 text-sm text-gray-400">/{{ plan.period }}</span>
+                <div v-if="plan.isActive">
+                  <button
+                    v-if="
+                      !plan.razorPayConfig?.isActive &&
+                      !['charged', 'expired', 'halted', 'pending'].includes(
+                        plan.razorPayConfig?.subscription_status,
+                      )
+                    "
+                    @click="((selectedPlan = plan), (confirmingPayment = true))"
+                    class="w-full bg-[#3B82F6] text-white p-3 rounded"
+                    >{{ plan.razorPayConfig?.buttonLabel }}</button
+                  >
+                  <button
+                    v-else
+                    class="w-full py-2 text-sm font-medium rounded-md bg-gray-800 text-gray-400 cursor-not-allowed"
+                  >
+                    {{ plan.razorPayConfig?.buttonLabel }}
+                  </button>
                 </div>
-                <div v-if="!!plan?.offers?.length">
-                  <span class="line-through">₹{{ getDiscountedPrice(plan)?.oldPrice }}/yearly</span>
-                </div>
-              </div>
-              <p class="mt-3 text-sm text-gray-400">{{ allPlans[0].description }}</p>
-            </div>
-
-            <!-- Features List -->
-            <ul class="mt-6 space-y-4 flex-grow flex flex-col h-full">
-              <li
-                v-for="feature in allPlans[0].features.values"
-                :key="feature"
-                class="flex items-start"
-              >
-                <Icon
-                  name="mdi:check-circle"
-                  class="h-5 w-5 text-blue-500 mr-2 flex-shrink-0"
-                />
-                <span class="text-sm text-gray-300">{{ feature }}</span>
-              </li>
-            </ul>
-
-            <!-- Action Button -->
-            <div
-              v-for="plan in allPlans"
-              :key="plan.id"
-              class="mt-4"
-            >
-              <div v-if="plan.isActive">
-                <button
-                  v-if="
-                    !plan.razorPayConfig?.isActive &&
-                    !['charged', 'expired', 'halted', 'pending'].includes(
-                      plan.razorPayConfig?.subscription_status,
-                    )
-                  "
-                  @click="((selectedPlan = plan), (confirmingPayment = true))"
-                  class="w-full bg-[#3B82F6] text-white p-3 rounded"
-                  >{{ plan.razorPayConfig?.buttonLabel }}</button
-                >
-                <button
+                <div
                   v-else
-                  class="w-full py-2 text-sm font-medium rounded-md bg-gray-800 text-gray-400 cursor-not-allowed"
+                  class="w-full py-2 px-4 bg-gray-800 text-sm text-gray-400 rounded-md text-center"
                 >
-                  {{ plan.razorPayConfig?.buttonLabel }}
-                </button>
-              </div>
-              <div
-                v-else
-                class="w-full py-2 px-4 bg-gray-800 text-sm text-gray-400 rounded-md text-center"
-              >
-                {{ plan.availableFrom ?? 'Currently unavailable' }}
+                  {{ plan.availableFrom ?? 'Currently unavailable' }}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </SettingsCard>
-    <div
-      v-if="loader.loading"
-      class="flex flex-col items-center justify-center"
-    >
-      <PrimeProgressSpinner />
-      <h2>{{ loader.message }}</h2>
-    </div>
     <PrimeDialog
       :draggable="false"
       :closable="true"
