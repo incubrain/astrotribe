@@ -84,7 +84,7 @@ export const useSubscriptions = (toggleLoader: (message?: string) => void) => {
         if (latestSubscription.current_end || latestSubscription.end_at) {
           const endDate = latestSubscription.current_end || latestSubscription.end_at
           start_at = convertToDate(endDate)
-          customer_notify = 0 // Don't charge immediately since it starts later
+          customer_notify = 0
           const now = new Date()
           const futureStart = new Date(endDate)
           const monthsFromNow = getMonthDiff(now, futureStart)
@@ -108,7 +108,7 @@ export const useSubscriptions = (toggleLoader: (message?: string) => void) => {
           provider: 'razorpay',
           ...(start_at && {
             start_at,
-            customer_notify, // Control when customer gets charged
+            customer_notify,
           }),
           ...(oldSubscriptionId && { oldSubscriptionId }),
         },

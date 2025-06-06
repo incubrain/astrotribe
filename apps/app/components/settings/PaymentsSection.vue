@@ -13,7 +13,8 @@ const toggleLoader = (message?: string): void => {
   }
 }
 
-const { getSubscriptions, updateSubscription, subscriptions } = useSubscriptions(toggleLoader)
+const { createSubscription, getSubscriptions, updateSubscription, subscriptions } =
+  useSubscriptions(toggleLoader)
 const { getPlans, getFormattedPlans, getDiscountedPrice } = usePlans(subscriptions)
 const { handlePaymentSuccess, handlePaymentError } = usePayments(toggleLoader)
 
@@ -219,7 +220,7 @@ onMounted(async () => {
             button-label="Confirm Payment"
             :theme="{ color: '#3B82F6' }"
             class="w-full"
-            :toggleLoader="toggleLoader"
+            :create-subscription="createSubscription"
             :handle-payment-success="handlePaymentSuccess"
             :handle-payment-error="handlePaymentError"
             @click="($emit('confirm'), (confirmingPayment = false))"

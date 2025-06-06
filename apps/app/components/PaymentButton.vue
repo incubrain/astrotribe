@@ -19,6 +19,7 @@ interface CustomerInfo {
 
 interface Props {
   plan: PlanDetails
+  createSubscription: (plan: Record<string, any>) => Promise<Record<string, any> | null>
   customer?: CustomerInfo
   buttonLabel?: string
   buttonIcon?: string
@@ -27,7 +28,6 @@ interface Props {
     logo?: string
   }
   notes?: Record<string, string>
-  toggleLoader: (message?: string) => void
   handlePaymentSuccess: (response: any) => void
   handlePaymentError: (response: any) => void
 }
@@ -41,8 +41,6 @@ const props = withDefaults(defineProps<Props>(), {
   customer: () => ({}),
   notes: () => ({}),
 })
-
-const subscriptions = useSubscriptions(props.toggleLoader)
 
 const emit = defineEmits<{
   'payment-success': [response: any]
@@ -135,7 +133,7 @@ const unloadRazorpay = () => {
 
 const createSubscription = async () => {
   try {
-    const subscription = await subscriptions.createSubscription({
+    const subscription = await props.createSubscription({
       plan_id: props.plan.id,
       external_plan_id: props.plan.external_plan_id,
       total_count: props.plan.interval === 'monthly' ? 360 : 30,
