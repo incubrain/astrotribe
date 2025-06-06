@@ -149,17 +149,21 @@ const createSubscription = async () => {
     }
 
     // Check if subscription starts in the future
-    if (subscription?.start_at && subscription.start_at > Math.floor(Date.now() / 1000)) {
-      razorpayOptions.subscriptionStartsLater = true
+    if (subscription?.start_at) {
+      const start_at = getTimestamp(subscription.start_at)
 
-      // Show user when the subscription will start and be charged
-      const startDate = new Date(subscription.start_at * 1000)
-      toast.success({
-        summary: 'Subscription Scheduled',
-        message: `Your new subscription will start on ${startDate.toDateString()} and you'll be charged then.`,
-      })
+      if (start_at > Math.floor(Date.now() / 1000)) {
+        razorpayOptions.subscriptionStartsLater = true
 
-      return false // Don't proceed to payment since it's scheduled for later
+        // Show user when the subscription will start and be charged
+        const startDate = new Date(start_at * 1000)
+        toast.success({
+          summary: 'Subscription Scheduled',
+          message: `Your new subscription will start on ${startDate.toDateString()} and you'll be charged then.`,
+        })
+
+        return false // Don't proceed to payment since it's scheduled for later
+      }
     }
 
     razorpayOptions.subscription_id = subscription.external_subscription_id
@@ -172,6 +176,17 @@ const createSubscription = async () => {
     })
     return false
   }
+}
+
+const getTimestamp = (start_at: string) => {
+  // Replace space with 'T' to make it ISO 8601-compliant
+  const isoString = start_at.replace(' ', 'T')
+
+  // Create a Date object
+  const date = new Date(isoString)
+
+  // Convert to Unix timestamp (in seconds)
+  return Math.floor(date.getTime() / 1000)
 }
 
 const handlePayment = async () => {

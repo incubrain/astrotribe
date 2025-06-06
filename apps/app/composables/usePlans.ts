@@ -96,6 +96,7 @@ export const usePlans = (subscriptions: Ref<Array<any>>) => {
                   break
                 case 'active':
                 case 'resumed':
+                case 'authenticated':
                 case 'completed':
                   isActive = true
                   buttonLabel = `Current Plan (${period})`
@@ -104,7 +105,7 @@ export const usePlans = (subscriptions: Ref<Array<any>>) => {
                   const futureSubscription = subscriptions.value?.find(
                     (sub) =>
                       sub.plan_id !== item.id &&
-                      sub.status === 'created' &&
+                      ['created', 'authenticated'].includes(sub.status) &&
                       new Date(sub.start_at) >
                         new Date(subscription.current_end || subscription.end_at),
                   )
